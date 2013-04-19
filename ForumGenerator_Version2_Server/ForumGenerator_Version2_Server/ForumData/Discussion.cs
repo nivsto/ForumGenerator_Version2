@@ -9,13 +9,13 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     class Discussion
     {
-        protected int discussionId;
-        protected String title;
-        protected String content;
-        protected DateTime publishDate;
-        protected Member publisher;
-        protected List<Comment> comments;
-        protected SubForum parentSubForum;
+        internal int discussionId;
+        internal String title;
+        internal String content;
+        internal DateTime publishDate;
+        internal Member publisher;
+        internal List<Comment> comments;
+        internal SubForum parentSubForum;
 
         public Discussion(int discussionId, string title, string content, Member user, SubForum parentSubForum)
         {

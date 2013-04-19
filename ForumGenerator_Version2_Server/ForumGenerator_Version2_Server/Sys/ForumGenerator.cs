@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumGenerator_Version2_Server.System
+namespace ForumGenerator_Version2_Server.Sys
 {
     class ForumGenerator
     {
-        protected SuperUser superUser;
-        protected List<Forum> forums;
+        internal SuperUser superUser;
+        internal List<Forum> forums;
 
 
         public ForumGenerator(string superUserName, string superUserPass)

@@ -10,11 +10,11 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     class Forum
     {
-        protected int forumId;
-        protected Administrator admin;
-        protected List<SubForum> subForums;
-        protected string forumName;
-        protected List<Member> members;
+        internal int forumId;
+        internal Administrator admin;
+        internal List<SubForum> subForums;
+        internal string forumName;
+        internal List<Member> members;
 
 
         public Forum(int forumId, string forumName, string adminUserName, string adminPassword)

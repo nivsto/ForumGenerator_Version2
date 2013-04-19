@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ForumGenerator_Version2_Server.System;
+using ForumGenerator_Version2_Server.Sys;
 using ForumGenerator_Version2_Server.Communication;
 using System.Threading;
 

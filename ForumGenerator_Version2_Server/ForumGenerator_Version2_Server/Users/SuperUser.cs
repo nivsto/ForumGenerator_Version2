@@ -8,9 +8,9 @@ namespace ForumGenerator_Version2_Server.Users
 {
     class SuperUser
     {
-        protected String userName;
-        protected String password;
-        protected Boolean isLoggedIn;
+        internal String userName;
+        internal String password;
+        internal Boolean isLoggedIn;
 
         public SuperUser(string superUserName, string superUserPass)
         {

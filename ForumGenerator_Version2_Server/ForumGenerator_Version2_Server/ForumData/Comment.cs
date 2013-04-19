@@ -8,11 +8,11 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     class Comment
     {
-        protected int commentId;
-        protected string content;
-        protected DateTime publishDate;
-        protected Member publisher;
-        protected Discussion parentDiscussion;
+        internal int commentId;
+        internal string content;
+        internal DateTime publishDate;
+        internal Member publisher;
+        internal Discussion parentDiscussion;
 
         public Comment(int commentId, string content, Member user, Discussion parentDiscussion)
         {
@@ -24,7 +24,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal int getCommentId()
         {
-            return this.commentId
+            return this.commentId;
         }
 
         internal string getPublisherName()

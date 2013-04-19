@@ -16,7 +16,7 @@ namespace ForumGenerator_Version2_Server.Users
             this.userName = adminUserName;
             this.password = adminPassword;
             this.email = "";
-            this.friends = new List<Member>;
+            this.friends = new List<Member>();
             this.signature = "";
             this.isLoggedIn = false;
             this.forum = forum;
