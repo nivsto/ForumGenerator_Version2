@@ -67,12 +67,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             return this.content;
         }
 
-        internal Tuple<int, string> createNewComment(string content, Member user)
+        internal Tuple<string, string> createNewComment(string content, Member user)
         {
             int commentId = this.comments.Count();
             Comment newComment = new Comment(commentId, content, user, this);
             this.comments.Add(newComment);
-            return new Tuple<int, string>(1, newComment.getCommentId().ToString());
+            return new Tuple<string, string>("1", newComment.getCommentId().ToString());
         }
     }
 }

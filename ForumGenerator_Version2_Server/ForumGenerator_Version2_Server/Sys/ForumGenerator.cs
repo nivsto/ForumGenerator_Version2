@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    class ForumGenerator
+    public class ForumGenerator
     {
         internal SuperUser superUser;
         internal List<Forum> forums;
@@ -95,10 +95,12 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //creates a new forum and a new user which is the forum's administrator
-        public Tuple<int, string> createNewForum(int userId, string forumName, string adminUserName, string adminPassword)
+        public Tuple<int, string> createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
-            if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)
+            if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)   // in case there is already such a forum
                 return new Tuple<int, string>(0, "forum name already exists");
+            if (!Security.checkSuperUserAuthorization(this, userName, password))
+                return new Tuple<int, string>(0, "no permission");
             int forumId = this.forums.Count();
             Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword);
             this.forums.Add(newForum);
@@ -106,29 +108,56 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //creates a new sub-forum and a new user which is the forum's administrator
-        public Tuple<int, string> createNewSubForum(int userId, int forumId, string subForumTitle)
+        public Tuple<int, string> createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
-            return getForum(forumId).createNewSubForum(subForumTitle);
+            Forum forum = getForum(forumId);
+            if (!Security.checkAdminAuthorization(forum, userName, password))
+                return new Tuple<int, string>(0, "no permission");
+            return forum.createNewSubForum(subForumTitle);
         }
 
         //creates a new discussion and a new user which is the forum's administrator
-        public Tuple<int, string> createNewDiscussion(int userId, int forumId, int subForumId, string title, string content)
+        public Tuple<int, string> createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
-            Member user = getForum(forumId).getUser(userId);
+            Forum forum = getForum(forumId);
+            if (!Security.checkMemberAuthorization(forum, userName, password))
+                return new Tuple<int, string>(0, "no permission");
+            Member user = getForum(forumId).getUser(userName);
             return getForum(forumId).getSubForum(subForumId).createNewDiscussion(title, content, user);
         }
 
         //creates a new comment and a new user which is the forum's administrator
-        public Tuple<int, string> createNewComment(int userId, int forumId, int subForumId, int discussionId, string content)
+        public Tuple<int, string> createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
-            Member user = getForum(forumId).getUser(userId);
+            Forum forum = getForum(forumId);
+            if (!Security.checkMemberAuthorization(forum, userName, password))
+                return new Tuple<int, string>(0, "no permission");
+            Member user = getForum(forumId).getUser(userName);
             return getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).createNewComment(content, user);
+        }
+
+        //creates a new comment and a new user which is the forum's administrator
+        public Tuple<int, string> changeAdmin(string userName, string password, int forumId, int newAdminUserId)
+        {
+            if (!Security.checkSuperUserAuthorization(this, userName, password))
+                return new Tuple<int, string>(0, "no permission");
+            return getForum(forumId).changeAdmin(newAdminUserId);
         }
 
         //get a forum by its forumId
         internal Forum getForum(int forumId)
         {
             return forums.ElementAt(forumId);
+        }
+
+        internal SuperUser getSuperUser()
+        {
+            return this.superUser;
+        }
+
+        public int getForumCount()
+        {
+            return this.forums.Count();
         }
     }
 }

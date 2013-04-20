@@ -35,26 +35,26 @@ namespace ForumGenerator_Version2_Server.Users
             return this.userName;
         }
 
-        internal Tuple<int, string> login(string password)
+        internal Tuple<string, string> login(string password)
         {
             if (this.password == password)
             {
                 this.isLoggedIn = true;
-                return new Tuple<int, string>(1, this.GetType().Name);
+                return new Tuple<string, string>("1", this.GetType().Name);
             }
             else
-                return new Tuple<int, string>(0, "incorrect password");
+                return new Tuple<string, string>("0", "incorrect password");
         }
 
-        internal Tuple<int, string> logout()
+        internal Tuple<string, string> logout()
         {
             if (this.isLoggedIn)
             {
                 this.isLoggedIn = false;
-                return new Tuple<int, string>(1, "OK"); ;
+                return new Tuple<string, string>("1", "OK"); ;
             }
             else
-                return new Tuple<int, string>(0, "user wasn't loggedin");
+                return new Tuple<string, string>("0", "user wasn't loggedin");
         }
 
         internal int getMemberID()
@@ -65,6 +65,16 @@ namespace ForumGenerator_Version2_Server.Users
         internal string getEmail()
         {
             return this.email;
+        }
+
+        internal string getPassword()
+        {
+            return this.password;
+        }
+
+        internal bool isLogged()
+        {
+            return this.isLoggedIn;
         }
     }
 }

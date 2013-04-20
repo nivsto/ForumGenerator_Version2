@@ -29,29 +29,29 @@ namespace ForumGenerator_Version2_Server.ForumData
 
 
 
-        internal Tuple<int,string> login(string userName, string password)
+        internal Tuple<string, string> login(string userName, string password)
         {
             Member user = this.members.Find(
                             delegate(Member mem)
                                 {return mem.userName == userName;});
             if (user == null)
-                return new Tuple<int, string>(0, "incorrect username or password");
+                return new Tuple<string, string>("0", "incorrect username or password");
             else
                 return user.login(password);
         }
 
-        internal Tuple<int, string> logout(int userId)
+        internal Tuple<string, string> logout(int userId)
         {
             return this.members.ElementAt(userId).logout();
         }
 
-        internal Tuple<int, string> register(string userName, string password, string email, string signature)
+        internal Tuple<string, string> register(string userName, string password, string email, string signature)
         {
             if (this.members.Find(delegate(Member mem) { return mem.userName == userName; }) != null)
-                return new Tuple<int, string>(0, "username already exists");
+                return new Tuple<string, string>(0, "username already exists");
             Member newUser = new Member(this.members.Count(), userName, password, email, signature, this);
             this.members.Add(newUser);
-            return new Tuple<int, string>(1, "Member");
+            return new Tuple<string, string>(1, "Member");
         }
 
         public int getForumId()
@@ -97,19 +97,24 @@ namespace ForumGenerator_Version2_Server.ForumData
             return subForums.ElementAt(subForumId);
         }
 
-        internal Tuple<int, string> createNewSubForum(string subForumTitle)
+        internal Tuple<string, string> createNewSubForum(string subForumTitle)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
-                return new Tuple<int, string>(0, "forum name already exists");
+                return new Tuple<string, string>(0, "forum name already exists");
             int subForumId = this.subForums.Count();
             SubForum newSubForum = new SubForum(subForumId, subForumTitle, this);
             this.subForums.Add(newSubForum);
-            return new Tuple<int, string>(1, newSubForum.getSubForumId().ToString());
+            return new Tuple<string, string>(1, newSubForum.getSubForumId().ToString());
         }
 
         internal Member getUser(int userId)
         {
             return this.members.ElementAt(userId);
+        }
+
+        internal Member getUser(string userName)
+        {
+            return this.members.Find(delegate(Member mem) { return mem.userName == userName; });
         }
 
         internal Tuple<string, string[], string[,]> getUsers()
@@ -124,6 +129,22 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 2] = current.getEmail();
             }
             return new Tuple<string, string[], string[,]>("User", properties, data);
+        }
+
+        internal Tuple<string, string> changeAdmin(int newAdminUserId)
+        {
+            Member currentMember = getUser(newAdminUserId);
+            if (currentMember == null)
+                return new Tuple<string, string>(0, "No such UserID");
+            this.admin = new Administrator(currentMember.getMemberID(), currentMember.getUserName(), currentMember.getPassword(), this);
+            this.members.Insert(this.members.IndexOf(currentMember), this.admin);
+            this.members.Remove(currentMember);
+            return new Tuple<string, string>(1, "OK");
+        }
+
+        internal Administrator getAdmin()
+        {
+            return this.admin;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForumGenerator_Version2_Server", "ForumGenerator_Version2_Server\ForumGenerator_Version2_Server.csproj", "{9348D782-8904-4316-AE0C-5893356CC773}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79B31556-5912-4A8D-B2EF-DBBD68B7BC65}"
@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForumGeneratorTest", "ForumGeneratorTest\ForumGeneratorTest.csproj", "{2B3FE2F4-07B8-4C19-BB06-CF2D2C4C734F}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -23,6 +25,10 @@ Global
 		{9348D782-8904-4316-AE0C-5893356CC773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9348D782-8904-4316-AE0C-5893356CC773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9348D782-8904-4316-AE0C-5893356CC773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3FE2F4-07B8-4C19-BB06-CF2D2C4C734F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3FE2F4-07B8-4C19-BB06-CF2D2C4C734F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3FE2F4-07B8-4C19-BB06-CF2D2C4C734F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3FE2F4-07B8-4C19-BB06-CF2D2C4C734F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

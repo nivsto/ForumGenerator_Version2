@@ -69,5 +69,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             return discussions.ElementAt(discussionId);
         }
+
+        internal Forum getParentForum()
+        {
+            return this.parentForum;
+        }
     }
 }

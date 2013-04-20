@@ -10,7 +10,7 @@ namespace ForumGenerator_Version2_Server.Users
     {
         internal String userName;
         internal String password;
-        internal Boolean isLoggedIn;
+        internal bool isLoggedIn;
 
         public SuperUser(string superUserName, string superUserPass)
         {
@@ -42,6 +42,21 @@ namespace ForumGenerator_Version2_Server.Users
             }
             else
                 return new Tuple<int, string>(0, "Superuser wasn't loggedin");
+        }
+
+        internal string getUserName()
+        {
+            return this.userName;
+        }
+
+        internal string getPassword()
+        {
+            return this.password;
+        }
+
+        internal bool isLogged()
+        {
+            return this.isLoggedIn;
         }
     }
 }

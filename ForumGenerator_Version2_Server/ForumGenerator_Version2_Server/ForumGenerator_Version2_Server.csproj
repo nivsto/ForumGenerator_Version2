@@ -49,6 +49,7 @@
     <Compile Include="ForumData\Comment.cs" />
     <Compile Include="ForumData\Discussion.cs" />
     <Compile Include="Sys\ForumGenerator.cs" />
+    <Compile Include="Sys\Security.cs" />
     <Compile Include="Users\Member.cs" />
     <Compile Include="Users\Moderator.cs" />
     <Compile Include="Users\Administrator.cs" />
