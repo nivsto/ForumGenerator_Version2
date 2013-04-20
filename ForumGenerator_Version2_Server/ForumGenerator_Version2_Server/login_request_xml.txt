@@ -1,0 +1,11 @@
+login client request
+
+<XML>
+	<HTTP>
+		<Login>
+			<ForumID>123</ForumID>
+			<UserName>gid</UserName>
+			<Password>456</Password>
+		</Login>
+	</HTTP>
+</XML>

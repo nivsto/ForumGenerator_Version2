@@ -23,6 +23,36 @@ namespace ForumGenerator_Version2_Server.Communication
             this.xml = new XmlTextWriter(str);
         }
 
+        public String XMLwrite(String startElement, String property, String property_value)
+        {
+            XmlWriter writer = null;
+
+            try
+            {
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.IndentChars = ("\t");
+                settings.OmitXmlDeclaration = true;
+                writer = XmlWriter.Create("temp_xml.xml", settings);
+
+                writer.WriteStartElement("XML");
+                writer.WriteStartElement("HTTP");
+                writer.WriteStartElement("Login");
+                writer.WriteElementString("ForumId", startElement);
+                writer.WriteElementString("UserName", property);
+                writer.WriteElementString("Password", property_value);
+
+                writer.Flush();
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
+
+            string res = File.ReadAllText(@"temp_xml.xml");
+            return res;
+        }
         public String writeXML(String startElement, String[] properties, String[][] data)
         {
             // Root.

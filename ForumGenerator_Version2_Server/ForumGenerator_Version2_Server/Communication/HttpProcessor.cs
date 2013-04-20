@@ -73,13 +73,18 @@ namespace ForumGenerator_Version2_Server.Communication
             socket.Close();             
         }
 
+        /*
+         * http request examples: 
+         * get: GET /myurl HTTP/1.0
+         * post: POST /foo.php HTTP/1.1 
+         */
         public void parseRequest() {
             String request = streamReadLine(inputStream);
             string[] tokens = request.Split(' ');
-            if (tokens.Length != 3) {
+            if (tokens.Length != 3) { //3 - number of arguments in the http request
                 throw new Exception("invalid http request line");
             }
-            http_method = tokens[0].ToUpper();
+            http_method = tokens[0].ToUpper(); 
             http_url = tokens[1];
             http_protocol_versionstring = tokens[2];
 

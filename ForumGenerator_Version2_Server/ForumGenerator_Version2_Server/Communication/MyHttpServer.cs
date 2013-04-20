@@ -10,12 +10,11 @@ namespace ForumGenerator_Version2_Server.Communication
     public class MyHttpServer : HttpServer
     {
         public MyHttpServer(int port)
-            : base(port)
-        {
+            : base(port) {
         }
         public override void handleGETRequest(HttpProcessor p)
         {
-
+            
             if (p.http_url.Equals("/Test.png"))
             {
                 Stream fs = File.Open("../../Test.png", FileMode.Open);
