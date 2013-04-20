@@ -104,35 +104,54 @@ namespace ForumGenerator_Version2_Server.Communication
             return res_method_args;
         }
 
-        //NIVS
-        public String writeXML(string startElement, string[] properties, string[,] data)
+        /*
+         * method_name - name of method - "getForums"/"getSubForums"/"getThreads" etc
+         * startElement - "Forum"/"SubForum"/"Discussion"/"Comment"
+         * properties - array of strings - for example "ForumID" and "ForumTitle"
+         * data - first column is for "ForumID" values and 2nd column is for "ForumTitle"
+         */
+        public String writeXML(string method_name, string startElement, string[] properties, string[,] data)
         {
-            // Root.
-            xml.WriteStartDocument();
-            xml.WriteStartElement("List");
-            xml.WriteWhitespace("\n");
+            XmlWriterSettings xsettings = createXmlSettings();
+            XmlWriter xwriter = null;
+            StringWriter swriter = null;
 
-            // Loop over Tuples.
-            for (int j = 0; j < data.GetLength(0); j++)
+            // Root.
+            try
             {
-                // Write Employee data.
-                xml.WriteStartElement(startElement);
+                //creating xml writer with xsettings that writes the result to a string
+                swriter = new StringWriter();
+                xwriter = XmlWriter.Create(swriter, xsettings);
+
+                xwriter.WriteStartElement("XML");
+                xwriter.WriteStartElement("HTTP");
+                xwriter.WriteElementString("MessageType", "request");
+                xwriter.WriteElementString("MethodName", method_name);
+
+                // Loop over Tuples.
+                for (int j = 0; j < data.GetLength(0); j++)
                 {
-                    for (int i = 0; i < properties.Length; i++)
+                    // Write Employee data.
+                    xwriter.WriteStartElement(startElement);
                     {
-                        xml.WriteElementString(properties[i], data[j, i]);
+                        for (int i = 0; i < properties.Length; i++)
+                        {
+                            xwriter.WriteElementString(properties[i], data[j, i]);
+                        }
                     }
+
+                    xwriter.WriteEndElement();
                 }
-                xml.WriteEndElement();
-                xml.WriteWhitespace("\n");
+
+                xwriter.Flush();
+            }
+            finally
+            {
+                if (xwriter != null)
+                    xwriter.Close();
             }
 
-            // End.
-            xml.WriteEndElement();
-            xml.WriteEndDocument();
-
-            // Result is a string.
-            return str.ToString();
+            return swriter.ToString();
         }
     }
 }

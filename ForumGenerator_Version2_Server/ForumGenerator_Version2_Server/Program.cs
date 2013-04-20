@@ -19,8 +19,8 @@ namespace ForumGenerator_Version2_Server
             ForumGenerator forumGenerator = initProgram("admin", "admin"); // initialize the system with a super-user (username,password)
             Console.WriteLine("testing HttpServer");
 
-            startServer();
-            stubClient();
+            startServer(forumGenerator);
+            //stubClient();
         }
 
         private static ForumGenerator initProgram(string superUserName, string superUserPass)
@@ -59,19 +59,42 @@ namespace ForumGenerator_Version2_Server
             //Stream requestStream = post_request.GetRequestStream();
             //requestStream.Write(data, 0, data.Length);
 
-            int forum_id = 123;
-            int user_id = 456;
+            string username = "admin";
+            string password = "admin";
             XmlHandler x_test = new XmlHandler();
             LinkedList<Tuple<string, string>> test_args_list = new LinkedList<Tuple<string, string>>();
-            Tuple<string, string> t1 = new Tuple<string, string>("ForumID", forum_id.ToString());
-            Tuple<string, string> t2 = new Tuple<string, string>("UserID", user_id.ToString());
+            Tuple<string, string> t1 = new Tuple<string, string>("UserName", username);
+            Tuple<string, string> t2 = new Tuple<string, string>("Password", password);
             test_args_list.AddLast(t1);
             test_args_list.AddLast(t2);
-            string logout_res = x_test.cCreateXml("logout", test_args_list);
+            string logout_res = x_test.cCreateXml("adminlogin", test_args_list);
             byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
+
+            //string forum_id = "126";
+            //string username = "gid";
+            //string password = "123";
+            //string email = "blabla@gmail.com";
+            //string signature = "gideon";
+            //XmlHandler x_test = new XmlHandler();
+            //LinkedList<Tuple<string, string>> test_args_list = new LinkedList<Tuple<string, string>>();
+            //Tuple<string, string> t1 = new Tuple<string, string>("ForumID", forum_id);
+            //Tuple<string, string> t2 = new Tuple<string, string>("UserName", username);
+            //Tuple<string, string> t3 = new Tuple<string, string>("Password", password);
+            //Tuple<string, string> t4 = new Tuple<string, string>("Email", email);
+            //Tuple<string, string> t5 = new Tuple<string, string>("Signature", signature);
+            //test_args_list.AddLast(t1);
+            //test_args_list.AddLast(t2);
+            //test_args_list.AddLast(t3);
+            //test_args_list.AddLast(t4);
+            //test_args_list.AddLast(t5);
+            //string logout_res = x_test.cCreateXml("register", test_args_list);
+            //byte[] data = Encoding.ASCII.GetBytes(logout_res);
+            //post_request.ContentLength = data.Length;
+            //Stream requestStream = post_request.GetRequestStream();
+            //requestStream.Write(data, 0, data.Length);
         }
 
         public static string cGenLoginXML(int forum_id, string user_name, string password)
@@ -82,9 +105,9 @@ namespace ForumGenerator_Version2_Server
             return null;
         }
 
-        public static void startServer()
+        public static void startServer(ForumGenerator fg)
         {
-            HttpServer httpServer = new MyHttpServer(80);
+            HttpServer httpServer = new MyHttpServer(80, fg);
             Thread thread = new Thread(new ThreadStart(httpServer.listen));
             thread.Start();
         }
