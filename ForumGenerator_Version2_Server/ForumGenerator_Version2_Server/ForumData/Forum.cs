@@ -48,10 +48,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Tuple<string, string> register(string userName, string password, string email, string signature)
         {
             if (this.members.Find(delegate(Member mem) { return mem.userName == userName; }) != null)
-                return new Tuple<string, string>(0, "username already exists");
+                return new Tuple<string, string>("0", "username already exists");
             Member newUser = new Member(this.members.Count(), userName, password, email, signature, this);
             this.members.Add(newUser);
-            return new Tuple<string, string>(1, "Member");
+            return new Tuple<string, string>("1", "Member");
         }
 
         public int getForumId()
@@ -100,11 +100,11 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Tuple<string, string> createNewSubForum(string subForumTitle)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
-                return new Tuple<string, string>(0, "forum name already exists");
+                return new Tuple<string, string>("0", "forum name already exists");
             int subForumId = this.subForums.Count();
             SubForum newSubForum = new SubForum(subForumId, subForumTitle, this);
             this.subForums.Add(newSubForum);
-            return new Tuple<string, string>(1, newSubForum.getSubForumId().ToString());
+            return new Tuple<string, string>("1", newSubForum.getSubForumId().ToString());
         }
 
         internal Member getUser(int userId)
@@ -135,11 +135,11 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             Member currentMember = getUser(newAdminUserId);
             if (currentMember == null)
-                return new Tuple<string, string>(0, "No such UserID");
+                return new Tuple<string, string>("0", "No such UserID");
             this.admin = new Administrator(currentMember.getMemberID(), currentMember.getUserName(), currentMember.getPassword(), this);
             this.members.Insert(this.members.IndexOf(currentMember), this.admin);
             this.members.Remove(currentMember);
-            return new Tuple<string, string>(1, "OK");
+            return new Tuple<string, string>("1", "OK");
         }
 
         internal Administrator getAdmin()

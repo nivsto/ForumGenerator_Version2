@@ -57,12 +57,12 @@ namespace ForumGenerator_Version2_Server.ForumData
         //    return discussions.ElementAt(discussionId);
         //}
 
-        internal Tuple<int, string> createNewDiscussion(string title, string content, Member user)
+        internal Tuple<string, string> createNewDiscussion(string title, string content, Member user)
         {
             int discussionId = this.discussions.Count();
             Discussion newDiscussion = new Discussion(discussionId, title, content, user, this);
             this.discussions.Add(newDiscussion);
-            return new Tuple<int, string>(1, newDiscussion.getDiscussionId().ToString());
+            return new Tuple<string, string>("1", newDiscussion.getDiscussionId().ToString());
         }
 
         internal Discussion getDiscussion(int discussionId)

@@ -22,31 +22,31 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         // returns userid
-        public Tuple<int,string> login(int forumId, string userName, string password)
+        public Tuple<string, string> login(int forumId, string userName, string password)
         {
             return getForum(forumId).login(userName, password);
         }
 
         // returns 1 for success or 0 for failure
-        public Tuple<int, string> logout(int forumId, int userId)
+        public Tuple<string, string> logout(int forumId, int userId)
         {
             return getForum(forumId).logout(userId);
         }
 
         // returns userid
-        public Tuple<int, string> adminLogin(string userName, string password)
+        public Tuple<string, string> adminLogin(string userName, string password)
         {
             return this.superUser.login(userName, password);
         }
 
         // returns 1 for success or 0 for failure
-        public Tuple<int, string> adminLogout()
+        public Tuple<string, string> adminLogout()
         {
             return this.superUser.logout();
         }
 
         // returns 1 for success or 0 for failure
-        public Tuple<int, string> register(int forumId, string userName, string password, string email, string signature)
+        public Tuple<string, string> register(int forumId, string userName, string password, string email, string signature)
         {
             return getForum(forumId).register(userName, password, email, signature);
         }
@@ -95,52 +95,52 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //creates a new forum and a new user which is the forum's administrator
-        public Tuple<int, string> createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
+        public Tuple<string, string> createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
             if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)   // in case there is already such a forum
-                return new Tuple<int, string>(0, "forum name already exists");
+                return new Tuple<string, string>("0", "forum name already exists");
             if (!Security.checkSuperUserAuthorization(this, userName, password))
-                return new Tuple<int, string>(0, "no permission");
+                return new Tuple<string, string>("0", "no permission");
             int forumId = this.forums.Count();
             Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword);
             this.forums.Add(newForum);
-            return new Tuple<int, string>(1, newForum.getForumId().ToString());
+            return new Tuple<string, string>("1", newForum.getForumId().ToString());
         }
 
         //creates a new sub-forum and a new user which is the forum's administrator
-        public Tuple<int, string> createNewSubForum(string userName, string password, int forumId, string subForumTitle)
+        public Tuple<string, string> createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
             Forum forum = getForum(forumId);
             if (!Security.checkAdminAuthorization(forum, userName, password))
-                return new Tuple<int, string>(0, "no permission");
+                return new Tuple<string, string>("0", "no permission");
             return forum.createNewSubForum(subForumTitle);
         }
 
         //creates a new discussion and a new user which is the forum's administrator
-        public Tuple<int, string> createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
+        public Tuple<string, string> createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
             Forum forum = getForum(forumId);
             if (!Security.checkMemberAuthorization(forum, userName, password))
-                return new Tuple<int, string>(0, "no permission");
+                return new Tuple<string, string>("0", "no permission");
             Member user = getForum(forumId).getUser(userName);
             return getForum(forumId).getSubForum(subForumId).createNewDiscussion(title, content, user);
         }
 
         //creates a new comment and a new user which is the forum's administrator
-        public Tuple<int, string> createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
+        public Tuple<string, string> createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
             Forum forum = getForum(forumId);
             if (!Security.checkMemberAuthorization(forum, userName, password))
-                return new Tuple<int, string>(0, "no permission");
+                return new Tuple<string, string>("0", "no permission");
             Member user = getForum(forumId).getUser(userName);
             return getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).createNewComment(content, user);
         }
 
         //creates a new comment and a new user which is the forum's administrator
-        public Tuple<int, string> changeAdmin(string userName, string password, int forumId, int newAdminUserId)
+        public Tuple<string, string> changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
             if (!Security.checkSuperUserAuthorization(this, userName, password))
-                return new Tuple<int, string>(0, "no permission");
+                return new Tuple<string, string>("0", "no permission");
             return getForum(forumId).changeAdmin(newAdminUserId);
         }
 

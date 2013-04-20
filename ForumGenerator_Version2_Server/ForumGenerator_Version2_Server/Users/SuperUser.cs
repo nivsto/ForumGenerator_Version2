@@ -20,28 +20,28 @@ namespace ForumGenerator_Version2_Server.Users
         }
 
         // returns tuple(1 for success or 0 for fail, error msg or user type
-        internal Tuple<int,string> login(string userName, string password)
+        internal Tuple<string, string> login(string userName, string password)
         {
             if (this.userName == userName && this.password == password)
             {
                 this.isLoggedIn = true;
-                return new Tuple<int,string>(1,"SuperUser");
+                return new Tuple<string, string>("1","SuperUser");
             }
             else if (this.userName == userName && this.password != password)
-                return new Tuple<int, string>(0, "incorrect password");
+                return new Tuple<string, string>("0", "incorrect password");
             else
-                return new Tuple<int, string>(0, "incorrect username or password");
+                return new Tuple<string, string>("0", "incorrect username or password");
         }
 
-        internal Tuple<int,string> logout()
+        internal Tuple<string, string> logout()
         {
             if (this.isLoggedIn)
             {
                 this.isLoggedIn = false;
-                return new Tuple<int,string>(1,"OK");;
+                return new Tuple<string, string>("1","OK");;
             }
             else
-                return new Tuple<int, string>(0, "Superuser wasn't loggedin");
+                return new Tuple<string, string>("0", "Superuser wasn't loggedin");
         }
 
         internal string getUserName()
