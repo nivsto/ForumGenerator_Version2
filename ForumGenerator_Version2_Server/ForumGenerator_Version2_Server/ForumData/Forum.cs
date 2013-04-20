@@ -71,13 +71,13 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public string getSubForumsXML()
         {
-            string[] properties = {"ID", "Title"};
-            string[][] data = new string[this.subForums.Count()][];
-            for (int i=0; i<this.subForums.Count(); i++)
+            string[] properties = { "ID", "Title" };
+            string[,] data = new string[this.subForums.Count(), properties.Length];
+            for (int i = 0; i < this.subForums.Count(); i++)
             {
                 SubForum current = this.subForums.ElementAt(i);
-                data[i][0] = current.getSubForumId().ToString();
-                data[i][1] = current.getSubForumTitle();
+                data[i, 0] = current.getSubForumId().ToString();
+                data[i, 1] = current.getSubForumTitle();
             }
             return new XmlHandler().writeXML("SubForum", properties, data);
         }

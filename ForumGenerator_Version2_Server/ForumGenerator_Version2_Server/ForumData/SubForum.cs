@@ -28,16 +28,16 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public string getDiscussionsXML()
         {
-            string[] properties = { "ID", "Title", "Publisher", "PublishDate", "Content"};
-            string[][] data = new string[this.discussions.Count()][];
+            string[] properties = { "ID", "Title", "Publisher", "PublishDate", "Content" };
+            string[,] data = new string[this.discussions.Count(), properties.Length];
             for (int i = 0; i < this.discussions.Count(); i++)
             {
                 Discussion current = this.discussions.ElementAt(i);
-                data[i][0] = current.getDiscussionId().ToString();
-                data[i][1] = current.getTitle();
-                data[i][2] = current.getPublisherName();
-                data[i][3] = current.getPublishDate();
-                data[i][4] = current.getContent();
+                data[i, 0] = current.getDiscussionId().ToString();
+                data[i, 1] = current.getTitle();
+                data[i, 2] = current.getPublisherName();
+                data[i, 3] = current.getPublishDate();
+                data[i, 4] = current.getContent();
             }
             return new XmlHandler().writeXML("Discussion", properties, data);
         }
@@ -52,10 +52,10 @@ namespace ForumGenerator_Version2_Server.ForumData
             throw new NotImplementedException();
         }
 
-        internal Discussion getDiscussionsXML(int discussionId)
-        {
-            return discussions.ElementAt(discussionId);
-        }
+        //internal Discussion getDiscussionsXML(int discussionId)
+        //{
+        //    return discussions.ElementAt(discussionId);
+        //}
 
         internal void createNewDiscussion(string title, string content, Member user)
         {

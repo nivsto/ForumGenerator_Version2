@@ -24,7 +24,8 @@ namespace ForumGenerator_Version2_Server.Users
 
         internal string getUserName()
         {
-            throw new NotImplementedException();
+            return this.userName;
         }
+
     }
 }

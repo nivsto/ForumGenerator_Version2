@@ -16,10 +16,12 @@ namespace ForumGenerator_Version2_Server
     {
         static void Main(string[] args)
         {
-            //ForumGenerator forumGenerator = initProgram("admin", "admin"); // initialize the system with a super-user (username,password)
+            ForumGenerator forumGenerator = initProgram("admin", "admin"); // initialize the system with a super-user (username,password)
             Console.WriteLine("testing HttpServer");
-            startServer();
-            stubClient();
+            //startServer();
+            //stubClient();
+            forumGenerator.createNewForum(1, "Try", "admin", "admin");
+            Console.WriteLine(forumGenerator.getForums());
         }
 
         private static ForumGenerator initProgram(string superUserName, string superUserPass)

@@ -53,7 +53,7 @@ namespace ForumGenerator_Version2_Server.Communication
             string res = File.ReadAllText(@"temp_xml.xml");
             return res;
         }
-        public String writeXML(String startElement, String[] properties, String[][] data)
+        public String writeXML(string startElement, string[] properties, string[,] data)
         {
             // Root.
             xml.WriteStartDocument();
@@ -61,17 +61,16 @@ namespace ForumGenerator_Version2_Server.Communication
             xml.WriteWhitespace("\n");
 
             // Loop over Tuples.
-            foreach (String[] element in data)
+            for (int j = 0; j < data.GetLength(0); j++)
             {
                 // Write Employee data.
                 xml.WriteStartElement(startElement);
                 {
-                    for(int i=0; i<properties.Length; i++)
+                    for (int i = 0; i < properties.Length; i++)
                     {
-                        xml.WriteElementString(properties[i], element[i]);
+                        xml.WriteElementString(properties[i], data[j, i]);
                         xml.WriteWhitespace("\n");
                     }
-
                 }
                 xml.WriteEndElement();
                 xml.WriteWhitespace("\n");

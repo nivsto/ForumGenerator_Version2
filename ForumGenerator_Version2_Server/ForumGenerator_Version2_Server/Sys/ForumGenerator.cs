@@ -54,14 +54,14 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the forums in the system
         public string getForums()
         {
-            string[] properties = {"ID", "Name", "adminName"};
-            string[][] data = new string[this.forums.Count()][];
-            for (int i=0; i<this.forums.Count(); i++)
+            string[] properties = { "ID", "Name", "adminName" };
+            string[,] data = new string[this.forums.Count(), properties.Length];
+            for (int i = 0; i < this.forums.Count(); i++)
             {
                 Forum current = this.forums.ElementAt(i);
-                data[i][0] = current.getForumId().ToString();
-                data[i][1] = current.getForumName();
-                data[i][2] = current.getAdminName();
+                data[i, 0] = current.getForumId().ToString();
+                data[i, 1] = current.getForumName();
+                data[i, 2] = current.getAdminName();
             }
             return new XmlHandler().writeXML("Forum", properties, data);
         }
@@ -83,7 +83,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the comments in the system
         public string getComments(int forumId, int subForumId, int discussionId)
         {
-            Discussion parentDiscussion = this.getForum(forumId).getSubForum(subForumId).getDiscussionsXML(discussionId);
+            Discussion parentDiscussion = this.getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId);
             return parentDiscussion.getCommentsXML();
         }
 

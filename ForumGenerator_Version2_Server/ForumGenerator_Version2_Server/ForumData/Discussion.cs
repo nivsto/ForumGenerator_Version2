@@ -30,14 +30,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         public String getCommentsXML()
         {
             String[] properties = { "ID", "Publisher", "PublishDate", "Content" };
-            String[][] data = new String[this.comments.Count()][];
+            String[,] data = new String[this.comments.Count(), properties.Length];
             for (int i = 0; i < this.comments.Count(); i++)
             {
                 Comment current = this.comments.ElementAt(i);
-                data[i][0] = current.getCommentId().ToString();
-                data[i][2] = current.getPublisherName();
-                data[i][3] = current.getPublishDate();
-                data[i][4] = current.getContent();
+                data[i, 0] = current.getCommentId().ToString();
+                data[i, 2] = current.getPublisherName();
+                data[i, 3] = current.getPublishDate();
+                data[i, 4] = current.getContent();
             }
             return new XmlHandler().writeXML("Comment", properties, data);
         }
