@@ -49,26 +49,30 @@ namespace ForumGenerator_Version2_Server.Communication
             string xml_data = inputData.ReadToEnd(); //xml_data now contains XML from application
 
             XmlHandler xparser = new XmlHandler();
-            xparser.getXmlParse(xml_data);
-            string method_name = xparser.sParseXMLMethod(xml_data); //getting method name from XML
+            Tuple<String, LinkedList<String>> parsed_info = xparser.getXmlParse(xml_data); //parsed_info contains method name and values of args
+            string method_name = parsed_info.Item1;            
+            LinkedList<string> args_list = parsed_info.Item2; 
+
             switch (method_name)
             {
                 case "login":
-                    string login_info = xparser.sGetLoginInfo(xml_data); //retrieve login info
-                    string[] login_words = login_info.Split(' '); 
-                    Tuple<int, string> login_success_usertype = _forum_gen.login(Convert.ToInt32(login_words[0]), login_words[1], login_words[2]);
-                    if (login_success_usertype.Item1 == 1)
-                    { //success
-                        //send xml with user type
-                    }
-                    else
-                    { //failure
-                        //send xml with error message
-                    }
-
+                    int forum_id = Convert.ToInt32(args_list.ElementAt(0));
+                    string username = args_list.ElementAt(1);
+                    string password = args_list.ElementAt(2);
+                    Tuple<int, string> login_success_usertype  = _forum_gen.login(forum_id, username, password);
+                    xparser.cCreateXml(method_name, login_success_usertype);
                     break;
+
                 case "logout":
-                    string logout_info = xparser.sGetLogoutInfo(xml_data); //retrieve logout info
+                    int forum_id = Convert.ToInt32(args_list.ElementAt(0));
+                    int user_id = Convert.ToInt32(args_list.ElementAt(1));
+                    Tuple<string, string> logout_sucess_usertype = _forum_gen.logout(forum_id, user_id);
+                    xparser.cCreateXml(method_name, logout_sucess_usertype);
+                    break;
+
+                    case "
+
+                      string logout_info = xparser.sGetLogoutInfo(xml_data); //retrieve logout info
                     string[] logout_words = logout_info.Split(' ');
                     Tuple<int,string> login_sucess_usertype = _forum_gen.logout(Convert.ToInt32(logout_words[0]), Convert.ToInt32(logout_words[1]));
                     break;

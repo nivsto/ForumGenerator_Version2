@@ -25,192 +25,8 @@ namespace ForumGenerator_Version2_Server.Communication
         }
 
         /*
-         * retrieves the logout info (forum id, user id) from the xml_string
-         * returns a string containing forum id and user id seperated by whitespace
+         * defines global xml settings for xml creation
          */
-        public string sGetLogoutInfo(string xml_string)
-        {
-            if (xml_string == null)
-                return null;
-
-            int forum_id = 0;
-            int user_id = 0;
-            XmlReader xreader = XmlReader.Create(new StringReader(xml_string.ToLower()));
-
-            xreader.ReadToFollowing("params");
-            xreader.Read(); //read the following whitespace
-            xreader.Read(); //read the forumid
-            forum_id = Convert.ToInt32(xreader.ReadInnerXml()); //save forumid's value
-            xreader.Read(); //read the following whitespace
-            user_id = Convert.ToInt32(xreader.ReadInnerXml());
-
-            return forum_id + " " + user_id; //returns all logout data seperated by whitespaces
-        }
-        
-        /*
-         * returns the forum id, username and password from the xml_string
-         * returns null on failure
-         */
-        public string sGetLoginInfo(string xml_string)
-        {
-            if (xml_string == null)
-                return null;
-
-            //init
-            int forum_id = 0;
-            string user_name = null;
-            string password = null;
-            XmlReader xreader = XmlReader.Create(new StringReader(xml_string.ToLower()));
-            
-            //reading info from xml
-            xreader.ReadToFollowing("params");
-            xreader.Read(); //read the following whitespace
-            xreader.Read(); //read the forumid
-            forum_id = Convert.ToInt32(xreader.ReadInnerXml()); //save forumid's value
-            xreader.Read(); //read the following whitespace
-            user_name = xreader.ReadInnerXml();
-            xreader.Read(); //read the following whitespace
-            password = xreader.ReadInnerXml();
-
-            return forum_id + " " + user_name + " " + password; //returns all login data seperated by whitespaces
-        }
-
-     
-
-        /*
-         * this method receives xml string and parses the type of method invocation.
-         * returns: method name string on success or "UnknownMethod" otherwise
-         */
-        public string sParseXMLMethod(string xml_string)
-        {
-            XmlReader xreader = XmlReader.Create(new StringReader(xml_string));
-            xreader.ReadToFollowing("MessageType");
-            
-            if (xreader.ReadInnerXml() != "request")
-            {
-                Console.WriteLine("error in sParseXMLMethod - given xml is not a request xml");
-                return "UnknownMethod";
-            }
-
-            //add call to xmlParse here
-            string str_method_name = null;
-            xreader.ReadToFollowing("MethodName");
-            switch (xreader.ReadInnerXml())
-            {
-                case "login":
-                    Console.WriteLine("LOGIN");
-                    str_method_name = "login";
-                    break;
-                case "logout":
-                    Console.WriteLine("LOGOUT");
-                    str_method_name = "logout";
-                    break;
-                default:
-                    Console.WriteLine("Error in MethodType in sParseXMLMethod");
-                    break;
-            }
-
-            return str_method_name;
-        }
-
-        
-        public XmlWriterSettings cWritePrelogueXML() {
-            XmlWriterSettings xsettings = new XmlWriterSettings();
-            xsettings.Indent = true;
-            xsettings.IndentChars = ("\t");
-            xsettings.OmitXmlDeclaration = true;
-            return xsettings;
-        }
-
-        public string cWriteLogoutXML(int forum_id, int user_id, XmlWriterSettings xsettings)
-        {
-            //init
-            string s_forum_id = forum_id.ToString();
-            string s_user_id = user_id.ToString();
-            XmlWriter xwriter = null;
-            StringWriter swriter = null;
-
-            try
-            {
-                //creating xml writer with xsettings that writes the result to a string
-                swriter = new StringWriter();
-                xwriter = XmlWriter.Create(swriter, xsettings);
-
-                //creating prelogue
-                xwriter.WriteStartElement("XML");
-                xwriter.WriteStartElement("HTTP");
-                xwriter.WriteElementString("MessageType", "request");
-                xwriter.WriteElementString("MethodName", "logout");
-
-                            ////inserting relevant info
-                xwriter.WriteStartElement("params");
-                xwriter.WriteElementString("ForumID", s_forum_id);
-                xwriter.WriteElementString("UserName", s_user_id);
-
-                xwriter.Flush();
-            }
-            finally
-            {
-                if (xwriter != null)
-                    xwriter.Close();
-            }
-
-            return swriter.ToString(); //swriter contains full xml for logout request
-
-            }
-
-        public string cWriteLoginXML(int forum_id, string username, string password, XmlWriterSettings xsettings)
-        {
-            //init
-            string s_forum_id = forum_id.ToString();
-            XmlWriter xwriter = null;
-            StringWriter swriter = null;
-
-            try
-            {
-                //creating xml writer with xsettings that writes the result to a string
-                swriter = new StringWriter();
-                xwriter = XmlWriter.Create(swriter, xsettings);
-
-                //creating prelogue
-                xwriter.WriteStartElement("XML");
-                xwriter.WriteStartElement("HTTP");
-                xwriter.WriteElementString("MessageType", "request");
-                xwriter.WriteElementString("MethodName", "login");
-
-                //inserting relevant info
-                xwriter.WriteStartElement("params");
-                xwriter.WriteStartElement("arg");
-                xwriter.WriteAttributeString("Name", "ForumID");
-                xwriter.WriteString("123");
-                xwriter.WriteEndElement();
-
-                xwriter.WriteStartElement("arg");
-                xwriter.WriteAttributeString("Name", "UserName");
-                xwriter.WriteString("gid");
-                xwriter.WriteEndElement();
-
-                xwriter.WriteStartElement("arg");
-                xwriter.WriteAttributeString("Name", "Password");
-                xwriter.WriteString("456");
-                xwriter.WriteEndElement();
-
-                //xwriter.WriteElementString("ForumID", s_forum_id);
-                //xwriter.WriteElementString("UserName", username);
-                //xwriter.WriteElementString("Password", password);
-
-                xwriter.Flush();
-            }
-            finally
-            {
-                if (xwriter != null)
-                    xwriter.Close();
-            }
-
-            return swriter.ToString(); //swriter contains full xml for login request
-        }
-
-
         public XmlWriterSettings createXmlSettings()
         {
             XmlWriterSettings xsettings = new XmlWriterSettings();
@@ -220,6 +36,10 @@ namespace ForumGenerator_Version2_Server.Communication
             return xsettings;
         }
 
+        /*
+         * Receives a method name and a list of tuples where each tuple contains args attribute and args value.
+         * Returns XML string with the relevant data
+         */
         public string cCreateXml(string method_name, LinkedList<Tuple<string, string>> args_list)
         {
             XmlWriterSettings xsettings = createXmlSettings();
@@ -284,6 +104,7 @@ namespace ForumGenerator_Version2_Server.Communication
             return res_method_args;
         }
 
+        //NIVS
         public String writeXML(string startElement, string[] properties, string[,] data)
         {
             // Root.
