@@ -44,7 +44,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal int getSubForumId()
         {
-            this.subForumId;
+            return this.subForumId;
         }
 
         internal string getSubForumTitle()
@@ -67,7 +67,14 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal Discussion getDiscussion(int discussionId)
         {
-            return discussions.ElementAt(discussionId);
+            try
+            {
+                return discussions.ElementAt(discussionId);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new ArgumentOutOfRangeException("Discussion" + discussionId);
+            }
         }
 
         internal Forum getParentForum()

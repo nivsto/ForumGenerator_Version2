@@ -41,7 +41,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 3] = current.getPublishDate();
                 data[i, 4] = current.getContent();
             }
-            return new Tuplebool, string, string[], string[,]>(true, "Comment", properties, data);
+            return new Tuple<bool, string, string[], string[,]>(true, "Comment", properties, data);
         }
 
         internal int getDiscussionId()

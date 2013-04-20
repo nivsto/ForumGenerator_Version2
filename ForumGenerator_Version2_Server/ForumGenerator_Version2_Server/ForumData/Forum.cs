@@ -95,7 +95,14 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal SubForum getSubForum(int subForumId)
         {
-            return subForums.ElementAt(subForumId);
+            try
+            {
+                return subForums.ElementAt(subForumId);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new ArgumentOutOfRangeException("SubForum" + forumId);
+            }
         }
 
         internal Tuple<string, string> createNewSubForum(string subForumTitle)
