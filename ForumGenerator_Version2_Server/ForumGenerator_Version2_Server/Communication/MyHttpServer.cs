@@ -51,31 +51,26 @@ namespace ForumGenerator_Version2_Server.Communication
             XmlHandler xparser = new XmlHandler();
             Tuple<String, LinkedList<String>> parsed_info = xparser.getXmlParse(xml_data); //parsed_info contains method name and values of args
             string method_name = parsed_info.Item1;            
-            LinkedList<string> args_list = parsed_info.Item2; 
+            LinkedList<string> args_list = parsed_info.Item2;
+            int forum_id = 0;
 
             switch (method_name)
             {
                 case "login":
-                    int forum_id = Convert.ToInt32(args_list.ElementAt(0));
+                    forum_id = Convert.ToInt32(args_list.ElementAt(0));
                     string username = args_list.ElementAt(1);
                     string password = args_list.ElementAt(2);
-                    Tuple<int, string> login_success_usertype  = _forum_gen.login(forum_id, username, password);
+                    Tuple<string, string> login_success_usertype  = _forum_gen.login(forum_id, username, password);
                     xparser.cCreateXml(method_name, login_success_usertype);
                     break;
 
                 case "logout":
-                    int forum_id = Convert.ToInt32(args_list.ElementAt(0));
+                    forum_id = Convert.ToInt32(args_list.ElementAt(0));
                     int user_id = Convert.ToInt32(args_list.ElementAt(1));
                     Tuple<string, string> logout_sucess_usertype = _forum_gen.logout(forum_id, user_id);
                     xparser.cCreateXml(method_name, logout_sucess_usertype);
                     break;
 
-                    case "
-
-                      string logout_info = xparser.sGetLogoutInfo(xml_data); //retrieve logout info
-                    string[] logout_words = logout_info.Split(' ');
-                    Tuple<int,string> login_sucess_usertype = _forum_gen.logout(Convert.ToInt32(logout_words[0]), Convert.ToInt32(logout_words[1]));
-                    break;
                 default:
                     break;
             }
