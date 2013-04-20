@@ -27,10 +27,10 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.parentSubForum = parentSubForum;
         }
 
-        public String getCommentsXML()
+        public Tuple<string, string[], string[,]> getCommentsXML()
         {
-            String[] properties = { "ID", "Publisher", "PublishDate", "Content" };
-            String[,] data = new String[this.comments.Count(), properties.Length];
+            string[] properties = { "ID", "Publisher", "PublishDate", "Content" };
+            string[,] data = new string[this.comments.Count(), properties.Length];
             for (int i = 0; i < this.comments.Count(); i++)
             {
                 Comment current = this.comments.ElementAt(i);
@@ -39,7 +39,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 3] = current.getPublishDate();
                 data[i, 4] = current.getContent();
             }
-            return new XmlHandler().writeXML("Comment", properties, data);
+            return new Tuple<string, string[], string[,]>("Comment", properties, data);
         }
 
         internal int getDiscussionId()
@@ -67,11 +67,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             return this.content;
         }
 
-        internal void createNewComment(string content, Member user)
+        internal Tuple<int, string> createNewComment(string content, Member user)
         {
             int commentId = this.comments.Count();
             Comment newComment = new Comment(commentId, content, user, this);
             this.comments.Add(newComment);
+            return new Tuple<int, string>(1, newComment.getCommentId().ToString());
         }
     }
 }

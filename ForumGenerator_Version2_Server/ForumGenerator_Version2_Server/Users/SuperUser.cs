@@ -14,20 +14,34 @@ namespace ForumGenerator_Version2_Server.Users
 
         public SuperUser(string superUserName, string superUserPass)
         {
-            // TODO: Complete member initialization
             this.userName = superUserName;
             this.password = superUserPass;
             this.isLoggedIn = false;
         }
 
-        internal string login(string userName, string password)
+        // returns tuple(1 for success or 0 for fail, error msg or user type
+        internal Tuple<int,string> login(string userName, string password)
         {
-            throw new NotImplementedException();
+            if (this.userName == userName && this.password == password)
+            {
+                this.isLoggedIn = true;
+                return new Tuple<int,string>(1,"SuperUser");
+            }
+            else if (this.userName == userName && this.password != password)
+                return new Tuple<int, string>(0, "incorrect password");
+            else
+                return new Tuple<int, string>(0, "incorrect username or password");
         }
 
-        internal string logout()
+        internal Tuple<int,string> logout()
         {
-            throw new NotImplementedException();
+            if (this.isLoggedIn)
+            {
+                this.isLoggedIn = false;
+                return new Tuple<int,string>(1,"OK");;
+            }
+            else
+                return new Tuple<int, string>(0, "Superuser wasn't loggedin");
         }
     }
 }

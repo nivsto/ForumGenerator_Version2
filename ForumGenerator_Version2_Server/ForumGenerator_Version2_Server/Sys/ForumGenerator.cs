@@ -22,39 +22,39 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         // returns userid
-        public string login(int forumId, string userName, string password)
+        public Tuple<int,string> login(int forumId, string userName, string password)
         {
             return getForum(forumId).login(userName, password);
         }
 
         // returns 1 for success or 0 for failure
-        public string logout(int forumId, int userId)
+        public Tuple<int, string> logout(int forumId, int userId)
         {
             return getForum(forumId).logout(userId);
         }
 
         // returns userid
-        public string adminLogin(string userName, string password)
+        public Tuple<int, string> adminLogin(string userName, string password)
         {
             return this.superUser.login(userName, password);
         }
 
         // returns 1 for success or 0 for failure
-        public string adminLogout()
+        public Tuple<int, string> adminLogout()
         {
             return this.superUser.logout();
         }
 
         // returns 1 for success or 0 for failure
-        public string register(int forumId, string userName, string password, string email, string signature)
+        public Tuple<int, string> register(int forumId, string userName, string password, string email, string signature)
         {
             return getForum(forumId).register(userName, password, email, signature);
         }
 
         //returns an XML list of all the forums in the system
-        public string getForums()
+        public Tuple<string, string[], string[,]> getForums()
         {
-            string[] properties = { "ID", "Name", "adminName" };
+            string[] properties = { "ID", "Name", "AdminName" };
             string[,] data = new string[this.forums.Count(), properties.Length];
             for (int i = 0; i < this.forums.Count(); i++)
             {
@@ -63,56 +63,66 @@ namespace ForumGenerator_Version2_Server.Sys
                 data[i, 1] = current.getForumName();
                 data[i, 2] = current.getAdminName();
             }
-            return new XmlHandler().writeXML("Forum", properties, data);
+            return new Tuple<string, string[], string[,]>("Forum", properties, data);
         }
 
         //returns an XML list of all the sub-forums in the system
-        public string getSubForums(int forumId)
+        public Tuple<string, string[], string[,]> getSubForums(int forumId)
         {
             Forum parentForum = this.getForum(forumId);
             return parentForum.getSubForumsXML();
         }
 
-        //returns an XML list of all the discussions in the system
-        public string getDiscussions(int forumId, int subForumId)
+        //returns an XML list of all the discussions in a specific sub-forum
+        public Tuple<string, string[], string[,]> getDiscussions(int forumId, int subForumId)
         {
             SubForum parentSubForum = this.getForum(forumId).getSubForum(subForumId);
             return parentSubForum.getDiscussionsXML();
         }
 
-        //returns an XML list of all the comments in the system
-        public string getComments(int forumId, int subForumId, int discussionId)
+        //returns an XML list of all the comments of a specific discussion
+        public Tuple<string, string[], string[,]> getComments(int forumId, int subForumId, int discussionId)
         {
             Discussion parentDiscussion = this.getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId);
             return parentDiscussion.getCommentsXML();
         }
 
-        //creates a new forum and a new user which is the forum's administrator
-        public void createNewForum(int userId, string forumName, string adminUserName, string adminPassword)
+        //returns an XML list of all the users in a specific forum
+        public Tuple<string, string[], string[,]> getUsers(int forumId)
         {
+            Forum parentForum = this.getForum(forumId);
+            return parentForum.getUsers();
+        }
+
+        //creates a new forum and a new user which is the forum's administrator
+        public Tuple<int, string> createNewForum(int userId, string forumName, string adminUserName, string adminPassword)
+        {
+            if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)
+                return new Tuple<int, string>(0, "forum name already exists");
             int forumId = this.forums.Count();
             Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword);
             this.forums.Add(newForum);
+            return new Tuple<int, string>(1, newForum.getForumId().ToString());
         }
 
         //creates a new sub-forum and a new user which is the forum's administrator
-        public void createNewSubForum(int userId, int forumId, string subForumTitle)
+        public Tuple<int, string> createNewSubForum(int userId, int forumId, string subForumTitle)
         {
-            getForum(forumId).createNewSubForum(subForumTitle);
+            return getForum(forumId).createNewSubForum(subForumTitle);
         }
 
         //creates a new discussion and a new user which is the forum's administrator
-        public void createNewDiscussion(int userId, int forumId, int subForumId, string title, string content)
+        public Tuple<int, string> createNewDiscussion(int userId, int forumId, int subForumId, string title, string content)
         {
             Member user = getForum(forumId).getUser(userId);
-            getForum(forumId).getSubForum(subForumId).createNewDiscussion(title, content, user);
+            return getForum(forumId).getSubForum(subForumId).createNewDiscussion(title, content, user);
         }
 
         //creates a new comment and a new user which is the forum's administrator
-        public void createNewComment(int userId, int forumId, int subForumId, int discussionId, string content)
+        public Tuple<int, string> createNewComment(int userId, int forumId, int subForumId, int discussionId, string content)
         {
             Member user = getForum(forumId).getUser(userId);
-            getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).createNewComment(content, user);
+            return getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).createNewComment(content, user);
         }
 
         //get a forum by its forumId
