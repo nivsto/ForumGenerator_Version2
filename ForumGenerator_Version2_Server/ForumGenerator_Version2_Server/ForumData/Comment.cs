@@ -18,6 +18,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             this.commentId = commentId;
             this.content = content;
+            this.publishDate = DateTime.Now;
             this.publisher = user;
             this.parentDiscussion = parentDiscussion;
         }

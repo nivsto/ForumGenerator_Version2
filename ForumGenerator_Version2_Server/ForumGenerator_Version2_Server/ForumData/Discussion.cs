@@ -23,11 +23,13 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.discussionId = discussionId;
             this.title = title;
             this.content = content;
+            this.publishDate = DateTime.Now;
             this.publisher = user;
+            this.comments = new List<Comment>();
             this.parentSubForum = parentSubForum;
         }
 
-        public Tuple<string, string[], string[,]> getCommentsXML()
+        public Tuple<bool, string, string[], string[,]> getCommentsXML()
         {
             string[] properties = { "ID", "Publisher", "PublishDate", "Content" };
             string[,] data = new string[this.comments.Count(), properties.Length];
@@ -39,7 +41,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 3] = current.getPublishDate();
                 data[i, 4] = current.getContent();
             }
-            return new Tuple<string, string[], string[,]>("Comment", properties, data);
+            return new Tuplebool, string, string[], string[,]>(true, "Comment", properties, data);
         }
 
         internal int getDiscussionId()

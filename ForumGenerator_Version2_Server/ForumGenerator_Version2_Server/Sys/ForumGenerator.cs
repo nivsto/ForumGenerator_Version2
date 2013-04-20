@@ -73,7 +73,7 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //returns an XML list of all the forums in the system
-        public Tuple<string, string[], string[,]> getForums()
+        public Tuple<bool, string, string[], string[,]> getForums()
         {
             string[] properties = { "ID", "Name", "AdminName" };
             string[,] data = new string[this.forums.Count(), properties.Length];
@@ -84,32 +84,32 @@ namespace ForumGenerator_Version2_Server.Sys
                 data[i, 1] = current.getForumName();
                 data[i, 2] = current.getAdminName();
             }
-            return new Tuple<string, string[], string[,]>("Forum", properties, data);
+            return new Tuple<bool, string, string[], string[,]>(true, "Forum", properties, data);
         }
 
         //returns an XML list of all the sub-forums in the system
-        public Tuple<string, string[], string[,]> getSubForums(int forumId)
+        public Tuple<bool, string, string[], string[,]> getSubForums(int forumId)
         {
             Forum parentForum = this.getForum(forumId);
             return parentForum.getSubForumsXML();
         }
 
         //returns an XML list of all the discussions in a specific sub-forum
-        public Tuple<string, string[], string[,]> getDiscussions(int forumId, int subForumId)
+        public Tuple<bool, string, string[], string[,]> getDiscussions(int forumId, int subForumId)
         {
             SubForum parentSubForum = this.getForum(forumId).getSubForum(subForumId);
             return parentSubForum.getDiscussionsXML();
         }
 
         //returns an XML list of all the comments of a specific discussion
-        public Tuple<string, string[], string[,]> getComments(int forumId, int subForumId, int discussionId)
+        public Tuple<bool, string, string[], string[,]> getComments(int forumId, int subForumId, int discussionId)
         {
             Discussion parentDiscussion = this.getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId);
             return parentDiscussion.getCommentsXML();
         }
 
         //returns an XML list of all the users in a specific forum
-        public Tuple<string, string[], string[,]> getUsers(int forumId)
+        public Tuple<bool, string, string[], string[,]> getUsers(int forumId)
         {
             Forum parentForum = this.getForum(forumId);
             return parentForum.getUsers();

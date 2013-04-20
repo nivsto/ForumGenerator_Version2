@@ -26,7 +26,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public Tuple<string, string[], string[,]> getDiscussionsXML()
+        public Tuple<bool, string, string[], string[,]> getDiscussionsXML()
         {
             string[] properties = { "ID", "Title", "Publisher", "PublishDate", "Content" };
             string[,] data = new string[this.discussions.Count(), properties.Length];
@@ -39,17 +39,17 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 3] = current.getPublishDate();
                 data[i, 4] = current.getContent();
             }
-            return new Tuple<string, string[], string[,]>("Discussion", properties, data);
+            return new Tuple<bool, string, string[], string[,]>(true, "Discussion", properties, data);
         }
 
         internal int getSubForumId()
         {
-            throw new NotImplementedException();
+            this.subForumId;
         }
 
         internal string getSubForumTitle()
         {
-            throw new NotImplementedException();
+            return this.subForumTitle;
         }
 
         //internal Discussion getDiscussionsXML(int discussionId)

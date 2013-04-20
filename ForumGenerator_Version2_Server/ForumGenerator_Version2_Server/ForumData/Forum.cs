@@ -25,6 +25,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.members = new List<Member>();
             this.admin = new Administrator(members.Count(), adminUserName, adminPassword, this);
             this.members.Add(this.admin);
+            this.subForums = new List<SubForum>();
         }
 
 
@@ -79,7 +80,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             return this.subForums;
         }
 
-        public Tuple<string, string[], string[,]> getSubForumsXML()
+        public Tuple<bool, string, string[], string[,]> getSubForumsXML()
         {
             string[] properties = { "ID", "Title" };
             string[,] data = new string[this.subForums.Count(), properties.Length];
@@ -89,7 +90,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 0] = current.getSubForumId().ToString();
                 data[i, 1] = current.getSubForumTitle();
             }
-            return new Tuple<string, string[], string[,]>("SubForum", properties, data);
+            return new Tuple<bool, string, string[], string[,]>(true, "SubForum", properties, data);
         }
 
         internal SubForum getSubForum(int subForumId)
@@ -117,7 +118,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             return this.members.Find(delegate(Member mem) { return mem.userName == userName; });
         }
 
-        internal Tuple<string, string[], string[,]> getUsers()
+        internal Tuple<bool, string, string[], string[,]> getUsers()
         {
             string[] properties = { "ID", "UserName","Email" };
             string[,] data = new string[this.members.Count(), properties.Length];
@@ -128,7 +129,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 data[i, 1] = current.getUserName();
                 data[i, 2] = current.getEmail();
             }
-            return new Tuple<string, string[], string[,]>("User", properties, data);
+            return new Tuple<bool, string, string[], string[,]>(true, "User", properties, data);
         }
 
         internal Tuple<string, string> changeAdmin(int newAdminUserId)
