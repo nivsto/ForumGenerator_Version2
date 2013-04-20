@@ -28,7 +28,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 return getForum(forumId).login(userName, password);
             }
-            catch (NullReferenceException)
+            catch (Exception)
             {
                 return new Tuple<string, string>("0", "No such forum");
             }
@@ -37,7 +37,14 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns 1 for success or 0 for failure
         public Tuple<string, string> logout(int forumId, int userId)
         {
-            return getForum(forumId).logout(userId);
+            try
+            {
+                return getForum(forumId).logout(userId);
+            }
+            catch (Exception)
+            {
+                return new Tuple<string, string>("0", "No such forum");
+            }
         }
 
         // returns userid
@@ -55,7 +62,14 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns 1 for success or 0 for failure
         public Tuple<string, string> register(int forumId, string userName, string password, string email, string signature)
         {
-            return getForum(forumId).register(userName, password, email, signature);
+            try
+            {
+                return getForum(forumId).register(userName, password, email, signature);
+            }
+            catch (Exception)
+            {
+                return new Tuple<string, string>("0", "No such forum");
+            }
         }
 
         //returns an XML list of all the forums in the system
