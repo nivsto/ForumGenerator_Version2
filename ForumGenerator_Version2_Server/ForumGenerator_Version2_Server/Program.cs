@@ -49,11 +49,25 @@ namespace ForumGenerator_Version2_Server
 
             ASCIIEncoding encoding = new ASCIIEncoding();
 
+            //int forum_id = 123;
+            //int user_id = 456;
+            //XmlHandler x_test = new XmlHandler();
+            //XmlWriterSettings xsettings = x_test.cWritePrelogueXML();
+            //string logout_res = x_test.cWriteLoginXML(forum_id, "gid", "456", xsettings);
+            //byte[] data = Encoding.ASCII.GetBytes(logout_res);
+            //post_request.ContentLength = data.Length;
+            //Stream requestStream = post_request.GetRequestStream();
+            //requestStream.Write(data, 0, data.Length);
+
             int forum_id = 123;
             int user_id = 456;
             XmlHandler x_test = new XmlHandler();
-            XmlWriterSettings xsettings = x_test.cWritePrelogueXML();
-            string logout_res = x_test.cWriteLogoutXML(forum_id, user_id, xsettings);
+            LinkedList<Tuple<string, string>> test_args_list = new LinkedList<Tuple<string, string>>();
+            Tuple<string, string> t1 = new Tuple<string, string>("ForumID", forum_id.ToString());
+            Tuple<string, string> t2 = new Tuple<string, string>("UserID", user_id.ToString());
+            test_args_list.AddLast(t1);
+            test_args_list.AddLast(t2);
+            string logout_res = x_test.cCreateXml("logout", test_args_list);
             byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();

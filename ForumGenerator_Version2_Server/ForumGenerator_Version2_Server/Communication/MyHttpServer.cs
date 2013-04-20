@@ -46,21 +46,31 @@ namespace ForumGenerator_Version2_Server.Communication
         {
 
             Console.WriteLine("POST request: {0}", p.http_url);
-            string xml_data = inputData.ReadToEnd(); //data now contains XML from application
+            string xml_data = inputData.ReadToEnd(); //xml_data now contains XML from application
 
             XmlHandler xparser = new XmlHandler();
+            xparser.getXmlParse(xml_data);
             string method_name = xparser.sParseXMLMethod(xml_data); //getting method name from XML
             switch (method_name)
             {
                 case "login":
                     string login_info = xparser.sGetLoginInfo(xml_data); //retrieve login info
                     string[] login_words = login_info.Split(' '); 
-                    _forum_gen.login(Convert.ToInt32(login_words[0]), login_words[1], login_words[2]);
+                    Tuple<int, string> login_success_usertype = _forum_gen.login(Convert.ToInt32(login_words[0]), login_words[1], login_words[2]);
+                    if (login_success_usertype.Item1 == 1)
+                    { //success
+                        //send xml with user type
+                    }
+                    else
+                    { //failure
+                        //send xml with error message
+                    }
+
                     break;
                 case "logout":
                     string logout_info = xparser.sGetLogoutInfo(xml_data); //retrieve logout info
                     string[] logout_words = logout_info.Split(' ');
-                    _forum_gen.logout(Convert.ToInt32(logout_words[0]), Convert.ToInt32(logout_words[1]));
+                    Tuple<int,string> login_sucess_usertype = _forum_gen.logout(Convert.ToInt32(logout_words[0]), Convert.ToInt32(logout_words[1]));
                     break;
                 default:
                     break;
