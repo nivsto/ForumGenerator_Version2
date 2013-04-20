@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.Users
 {
-    class SuperUser
+    public class SuperUser
     {
         internal String userName;
         internal String password;
@@ -54,7 +54,7 @@ namespace ForumGenerator_Version2_Server.Users
             return this.password;
         }
 
-        internal bool isLogged()
+        public bool isLogged()
         {
             return this.isLoggedIn;
         }

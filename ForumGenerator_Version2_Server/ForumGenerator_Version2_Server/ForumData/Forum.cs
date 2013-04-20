@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
-    class Forum
+    public class Forum
     {
         internal int forumId;
         internal Administrator admin;
@@ -107,12 +107,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             return new Tuple<string, string>("1", newSubForum.getSubForumId().ToString());
         }
 
-        internal Member getUser(int userId)
+        public Member getUser(int userId)
         {
             return this.members.ElementAt(userId);
         }
 
-        internal Member getUser(string userName)
+        public Member getUser(string userName)
         {
             return this.members.Find(delegate(Member mem) { return mem.userName == userName; });
         }

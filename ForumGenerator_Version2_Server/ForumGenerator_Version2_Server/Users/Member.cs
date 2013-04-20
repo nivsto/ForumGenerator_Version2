@@ -30,7 +30,7 @@ namespace ForumGenerator_Version2_Server.Users
             this.forum = forum;
         }
 
-        internal string getUserName()
+        public string getUserName()
         {
             return this.userName;
         }
@@ -57,12 +57,12 @@ namespace ForumGenerator_Version2_Server.Users
                 return new Tuple<string, string>("0", "user wasn't loggedin");
         }
 
-        internal int getMemberID()
+        public int getMemberID()
         {
             return this.memberID;
         }
 
-        internal string getEmail()
+        public string getEmail()
         {
             return this.email;
         }
@@ -72,7 +72,7 @@ namespace ForumGenerator_Version2_Server.Users
             return this.password;
         }
 
-        internal bool isLogged()
+        public bool isLogged()
         {
             return this.isLoggedIn;
         }

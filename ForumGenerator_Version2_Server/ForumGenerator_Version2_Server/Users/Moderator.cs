@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.Users
 {
-    class Moderator : Member
+    public class Moderator : Member
     {
         internal Moderator(int memberId, string userName, string password, string email, string signature, Forum forum) :
             base(memberId, userName, password, email, signature, forum)

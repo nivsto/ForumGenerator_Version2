@@ -24,7 +24,14 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns userid
         public Tuple<string, string> login(int forumId, string userName, string password)
         {
-            return getForum(forumId).login(userName, password);
+            try
+            {
+                return getForum(forumId).login(userName, password);
+            }
+            catch (NullReferenceException)
+            {
+                return new Tuple<string, string>("0", "No such forum");
+            }
         }
 
         // returns 1 for success or 0 for failure
@@ -145,12 +152,12 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //get a forum by its forumId
-        internal Forum getForum(int forumId)
+        public Forum getForum(int forumId)
         {
             return forums.ElementAt(forumId);
         }
 
-        internal SuperUser getSuperUser()
+        public SuperUser getSuperUser()
         {
             return this.superUser;
         }
@@ -159,5 +166,6 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             return this.forums.Count();
         }
+
     }
 }

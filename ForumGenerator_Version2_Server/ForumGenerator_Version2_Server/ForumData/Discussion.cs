@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
-    class Discussion
+    public class Discussion
     {
         internal int discussionId;
         internal String title;

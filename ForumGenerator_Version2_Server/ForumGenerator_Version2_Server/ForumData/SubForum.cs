@@ -8,7 +8,7 @@ using ForumGenerator_Version2_Server.Communication;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
-    class SubForum
+    public class SubForum
     {
         internal int subForumId;
         internal string subForumTitle;

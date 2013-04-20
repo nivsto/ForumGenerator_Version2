@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    static class Security
+    public static class Security
     {
         public static bool checkSuperUserAuthorization(ForumGenerator fg, string userName, string password)
         {

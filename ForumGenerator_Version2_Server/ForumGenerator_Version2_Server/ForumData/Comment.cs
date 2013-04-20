@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
-    class Comment
+    public class Comment
     {
         internal int commentId;
         internal string content;
