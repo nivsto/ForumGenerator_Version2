@@ -76,10 +76,10 @@ namespace ForumGenerator_Version2_Server
 
         public static string cGenLoginXML(int forum_id, string user_name, string password)
         {
-            XmlHandler xml_converter = new XmlHandler();
-            XmlWriterSettings xsettings = xml_converter.cWritePrelogueXML();
-            string xml_str = xml_converter.cWriteLoginXML(forum_id, user_name, password, xsettings);
-            return xml_str;
+            //XmlHandler xml_converter = new XmlHandler();
+            //XmlWriterSettings xsettings = xml_converter.cWritePrelogueXML();
+            //string xml_str = xml_converter.cWriteLoginXML(forum_id, user_name, password, xsettings);
+            return null;
         }
 
         public static void startServer()

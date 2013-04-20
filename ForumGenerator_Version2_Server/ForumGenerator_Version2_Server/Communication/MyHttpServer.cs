@@ -53,6 +53,7 @@ namespace ForumGenerator_Version2_Server.Communication
             string method_name = parsed_info.Item1;            
             LinkedList<string> args_list = parsed_info.Item2;
             int forum_id = 0;
+            LinkedList<Tuple<string, string>> arguments_list = new LinkedList<Tuple<string, string>>();
 
             switch (method_name)
             {
@@ -61,14 +62,16 @@ namespace ForumGenerator_Version2_Server.Communication
                     string username = args_list.ElementAt(1);
                     string password = args_list.ElementAt(2);
                     Tuple<string, string> login_success_usertype  = _forum_gen.login(forum_id, username, password);
-                    xparser.cCreateXml(method_name, login_success_usertype);
+                    arguments_list.AddLast(login_success_usertype);
+                    xparser.cCreateXml(method_name, arguments_list);
                     break;
 
                 case "logout":
                     forum_id = Convert.ToInt32(args_list.ElementAt(0));
                     int user_id = Convert.ToInt32(args_list.ElementAt(1));
                     Tuple<string, string> logout_sucess_usertype = _forum_gen.logout(forum_id, user_id);
-                    xparser.cCreateXml(method_name, logout_sucess_usertype);
+                    arguments_list.AddLast(logout_sucess_usertype);
+                    xparser.cCreateXml(method_name, arguments_list);
                     break;
 
                 default:
