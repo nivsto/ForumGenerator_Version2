@@ -18,10 +18,9 @@ namespace ForumGenerator_Version2_Server
         {
             ForumGenerator forumGenerator = initProgram("admin", "admin"); // initialize the system with a super-user (username,password)
             Console.WriteLine("testing HttpServer");
-            //startServer();
-            //stubClient();
-            forumGenerator.createNewForum(1, "Try", "admin", "admin");
-            Console.WriteLine(forumGenerator.getForums());
+
+            startServer();
+            stubClient();
         }
 
         private static ForumGenerator initProgram(string superUserName, string superUserPass)
@@ -38,28 +37,34 @@ namespace ForumGenerator_Version2_Server
             
             //ASCIIEncoding encoding = new ASCIIEncoding();
 
-            string forum_id = "123";
-            string user_name = "gid";
-            string password = "456";
+            //int forum_id = 123;
+            //string user_name = "gid";
+            //string password = "456";
 
-            string post_data = generateLoginXML(forum_id, user_name, password);
-            byte[] data = Encoding.ASCII.GetBytes(post_data);
+            //string post_data = cGenLoginXML(forum_id, user_name, password);
+            //byte[] data = Encoding.ASCII.GetBytes(post_data);
+            //post_request.ContentLength = data.Length;
+            //Stream requestStream = post_request.GetRequestStream();
+            //requestStream.Write(data, 0, data.Length);
+
+            ASCIIEncoding encoding = new ASCIIEncoding();
+
+            int forum_id = 123;
+            int user_id = 456;
+            XmlHandler x_test = new XmlHandler();
+            XmlWriterSettings xsettings = x_test.cWritePrelogueXML();
+            string logout_res = x_test.cWriteLogoutXML(forum_id, user_id, xsettings);
+            byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
-            
-            //Console.WriteLine(result);
-            //startServer();
-            //MyHttpServer testServer = new MyHttpServer(80);
-            //testServer.listen();
-            //startServer();  //starting the server and waiting for requests
-
         }
 
-        public static string generateLoginXML(string forum_id, string user_name, string password)
+        public static string cGenLoginXML(int forum_id, string user_name, string password)
         {
             XmlHandler xml_converter = new XmlHandler();
-            String xml_str = xml_converter.XMLwrite(forum_id, user_name, password);
+            XmlWriterSettings xsettings = xml_converter.cWritePrelogueXML();
+            string xml_str = xml_converter.cWriteLoginXML(forum_id, user_name, password, xsettings);
             return xml_str;
         }
 
