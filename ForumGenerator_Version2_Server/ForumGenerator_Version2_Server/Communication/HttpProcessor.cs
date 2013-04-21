@@ -117,11 +117,14 @@ namespace ForumGenerator_Version2_Server.Communication
         }
 
         public void handleGETRequest() {
-            srv.handleGETRequest(this);
+            string response_xml;            
+            response_xml = srv.handleGETRequest(this);
+            writeSuccess(response_xml);
         }
 
         private const int BUF_SIZE = 4096;
         public void handlePOSTRequest() {
+            string response_xml;
             // this post data processing just reads everything into a memory stream.
             // this is fine for smallish things, but for large stuff we should really
             // hand an input stream to the request processor. However, the input stream 
@@ -158,15 +161,22 @@ namespace ForumGenerator_Version2_Server.Communication
                  ms.Seek(0, SeekOrigin.Begin);
             }
             Console.WriteLine("get post data end");
-            srv.handlePOSTRequest(this, new StreamReader(ms));
-
+            response_xml = srv.handlePOSTRequest(this, new StreamReader(ms));
+            writeSuccess(response_xml);
         }
 
-        public void writeSuccess(string content_type="text/html") {
+        public void writeResponse(string response_xml)
+        {
+            outputStream.WriteLine(response_xml);
+        }
+
+        public void writeSuccess(string response_xml) {
+            string content_type = "text/html";
             outputStream.WriteLine("HTTP/1.0 200 OK");            
             outputStream.WriteLine("Content-Type: " + content_type);
             outputStream.WriteLine("Connection: close");
             outputStream.WriteLine("");
+            outputStream.WriteLine(response_xml);
         }
 
         public void writeFailure() {

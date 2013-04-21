@@ -58,7 +58,7 @@ namespace ForumGenerator_Version2_Server.Communication
             }
         }
 
-        public abstract void handleGETRequest(HttpProcessor p);
-        public abstract void handlePOSTRequest(HttpProcessor p, StreamReader inputData);
+        public abstract string handleGETRequest(HttpProcessor p);
+        public abstract string handlePOSTRequest(HttpProcessor p, StreamReader inputData);
     }
 }

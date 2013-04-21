@@ -35,6 +35,7 @@ namespace ForumGenerator_Version2_Server
             post_request.Method = "POST";
             post_request.ContentType = "text/xml";
             
+            
             //ASCIIEncoding encoding = new ASCIIEncoding();
 
             //int forum_id = 123;
@@ -72,11 +73,34 @@ namespace ForumGenerator_Version2_Server
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
+            
 
-            HttpWebResponse response = (HttpWebResponse)post_request.GetResponse();
-            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+           
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
 
-            int bla = 0;
+            Console.WriteLine("\r\nResponse stream received.");
+            Char[] read = new Char[256];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 256);
+            Console.WriteLine("HTML...\r\n");
+            string str = null;
+            while (count > 0)
+            {
+                // Dumps the 256 characters on a string and displays the string to the console.
+                str = new String(read, 0, count);
+                Console.Write(str);
+                count = readStream.Read(read, 0, 256);
+            }
+
+            Console.WriteLine("this is the str: {0}", str);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
             //string forum_id = "126";
             //string username = "gid";
             //string password = "123";

@@ -19,7 +19,7 @@ namespace ForumGenerator_Version2_Server.Communication
         {
             _forum_gen = forum_gen;
         }
-        public override void handleGETRequest(HttpProcessor p)
+        public override string handleGETRequest(HttpProcessor p)
         {
 
             string full_get_url = p.http_url; //http://localhost/requests?function=getforums --> /requests?function=getforums 
@@ -51,7 +51,7 @@ namespace ForumGenerator_Version2_Server.Communication
                     if (get_params.Length != 2)
                     {
                         Console.WriteLine("error with getsubforums - wrong number of params");
-                        return;
+                        return "error get forums";
                     }
                     get_forum_id = get_params[1].Split('=');
                     forum_id = Convert.ToInt32(get_forum_id[1]);     
@@ -63,7 +63,7 @@ namespace ForumGenerator_Version2_Server.Communication
                     if (get_params.Length != 3)
                     {
                         Console.WriteLine("error with getdiscussions - wrong number of params");
-                        return;
+                        return "erro get discussions";
                     }
                     get_forum_id = get_params[1].Split('=');
                     get_subforum_id = get_params[2].Split('=');
@@ -77,7 +77,7 @@ namespace ForumGenerator_Version2_Server.Communication
                     if (get_params.Length != 4)
                     {
                         Console.WriteLine("error with getcomments - wrong number of params");
-                        return;
+                        return "error get comments";
                     }
                     get_forum_id = get_params[1].Split('=');
                     get_subforum_id = get_params[2].Split('=');
@@ -93,7 +93,7 @@ namespace ForumGenerator_Version2_Server.Communication
                     if (get_params.Length != 2)
                     {
                         Console.WriteLine("error with getcomments - wrong number of params");
-                        return;
+                        return "error get users";
                     }
                     get_forum_id = get_params[1].Split('=');
                     forum_id = Convert.ToInt32(get_forum_id[1]);     
@@ -103,15 +103,16 @@ namespace ForumGenerator_Version2_Server.Communication
 
                 default:
                     Console.WriteLine("error with get - unrecognized method");
-                    xml_string = "Error";
+                    xml_string = "error general";
                     break;
             }
             
             //xml_string now contains xml_response to client
-            sendPostRequest("http://localhost/", xml_string);
+            return xml_string;
+            //sendPostRequest(p, "http://localhost/", xml_string);
         }
 
-        public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
+        public override string handlePOSTRequest(HttpProcessor p, StreamReader inputData)
         {
 
             Console.WriteLine("POST request: {0}", p.http_url);
@@ -281,14 +282,14 @@ namespace ForumGenerator_Version2_Server.Communication
                     break;
             }
 
-            sendPostRequest("http://localhost/", response_xml);
+            return response_xml;
         }
 
         /*
          * sends a http POST request/response to the given URI and attaches the xml_string if exists
          * returns 0 on success or -1 on failure
          */
-        public int sendPostRequest(string uri, string xml_string)
+        public int sendPostRequest(HttpProcessor p,string uri, string xml_string)
         {
             if (uri == null || xml_string == null)
                 return -1;
