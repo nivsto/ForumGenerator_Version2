@@ -119,41 +119,41 @@
             this.loginUserToolStripMenuItem,
             this.loginSuperUserToolStripMenuItem});
             this.loginToolStripMenuItem1.Name = "loginToolStripMenuItem1";
-            this.loginToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.loginToolStripMenuItem1.Size = new System.Drawing.Size(118, 22);
             this.loginToolStripMenuItem1.Text = "Login";
             // 
             // loginUserToolStripMenuItem
             // 
             this.loginUserToolStripMenuItem.Name = "loginUserToolStripMenuItem";
-            this.loginUserToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loginUserToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.loginUserToolStripMenuItem.Text = "User";
             this.loginUserToolStripMenuItem.Click += new System.EventHandler(this.loginUserToolStripMenuItem_Click);
             // 
             // loginSuperUserToolStripMenuItem
             // 
             this.loginSuperUserToolStripMenuItem.Name = "loginSuperUserToolStripMenuItem";
-            this.loginSuperUserToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loginSuperUserToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.loginSuperUserToolStripMenuItem.Text = "Super-User";
             this.loginSuperUserToolStripMenuItem.Click += new System.EventHandler(this.loginSuperUserToolStripMenuItem_Click);
             // 
             // registerToolStripMenuItem
             // 
             this.registerToolStripMenuItem.Name = "registerToolStripMenuItem";
-            this.registerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.registerToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.registerToolStripMenuItem.Text = "Register";
             this.registerToolStripMenuItem.Click += new System.EventHandler(this.registerToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click_1);
             // 
             // quitToolStripMenuItem1
             // 
             this.quitToolStripMenuItem1.Name = "quitToolStripMenuItem1";
-            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(118, 22);
             this.quitToolStripMenuItem1.Text = "Quit";
             this.quitToolStripMenuItem1.Click += new System.EventHandler(this.quitToolStripMenuItem1_Click);
             // 
@@ -164,6 +164,7 @@
             this.superToolStripMenuItem.Name = "superToolStripMenuItem";
             this.superToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.superToolStripMenuItem.Text = "Super-User";
+            this.superToolStripMenuItem.Click += new System.EventHandler(this.superToolStripMenuItem_Click);
             // 
             // newForumToolStripMenuItem
             // 
@@ -256,6 +257,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(279, 264);
             this.listBox1.TabIndex = 3;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // btnView
             // 

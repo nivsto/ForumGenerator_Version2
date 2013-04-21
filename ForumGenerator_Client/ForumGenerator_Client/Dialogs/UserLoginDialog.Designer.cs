@@ -114,6 +114,7 @@
             this.Name = "UserLoginDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.UserLoginDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

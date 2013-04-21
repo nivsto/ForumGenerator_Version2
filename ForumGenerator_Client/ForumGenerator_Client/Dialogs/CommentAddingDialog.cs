@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ForumGenerator_Client.Communication;
+
 
 namespace ForumGenerator_Client
 {
@@ -25,6 +27,8 @@ namespace ForumGenerator_Client
             else
             {
                 text = txtBoxTxt.Text;
+        //        Communicator com = new Communicator();
+          //      com.sendCreateNewCommentReq(userName, password, forumId, subForumId, discussionId, text);
                 Close();
             }
         }

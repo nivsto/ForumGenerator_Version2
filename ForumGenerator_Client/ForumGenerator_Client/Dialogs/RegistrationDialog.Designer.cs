@@ -36,83 +36,83 @@
             this.txtBoxUsername = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtBoxPassword = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtBoxEmail = new System.Windows.Forms.TextBox();
+            this.txtBoxSignature = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnRegister
             // 
-            this.btnRegister.AccessibleDescription = null;
-            this.btnRegister.AccessibleName = null;
             resources.ApplyResources(this.btnRegister, "btnRegister");
-            this.btnRegister.BackgroundImage = null;
-            this.btnRegister.Font = null;
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.UseVisualStyleBackColor = true;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.AccessibleDescription = null;
-            this.btnCancel.AccessibleName = null;
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.BackgroundImage = null;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Font = null;
+            resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // label1
             // 
-            this.label1.AccessibleDescription = null;
-            this.label1.AccessibleName = null;
             resources.ApplyResources(this.label1, "label1");
-            this.label1.Font = null;
             this.label1.Name = "label1";
             // 
             // label2
             // 
-            this.label2.AccessibleDescription = null;
-            this.label2.AccessibleName = null;
             resources.ApplyResources(this.label2, "label2");
-            this.label2.Font = null;
             this.label2.Name = "label2";
             // 
             // txtBoxUsername
             // 
-            this.txtBoxUsername.AccessibleDescription = null;
-            this.txtBoxUsername.AccessibleName = null;
             resources.ApplyResources(this.txtBoxUsername, "txtBoxUsername");
-            this.txtBoxUsername.BackgroundImage = null;
-            this.txtBoxUsername.Font = null;
             this.txtBoxUsername.Name = "txtBoxUsername";
             this.txtBoxUsername.TextChanged += new System.EventHandler(this.txtBoxUsername_TextChanged);
             // 
             // label3
             // 
-            this.label3.AccessibleDescription = null;
-            this.label3.AccessibleName = null;
             resources.ApplyResources(this.label3, "label3");
-            this.label3.Font = null;
             this.label3.Name = "label3";
             // 
             // txtBoxPassword
             // 
-            this.txtBoxPassword.AccessibleDescription = null;
-            this.txtBoxPassword.AccessibleName = null;
             resources.ApplyResources(this.txtBoxPassword, "txtBoxPassword");
-            this.txtBoxPassword.BackgroundImage = null;
-            this.txtBoxPassword.Font = null;
             this.txtBoxPassword.Name = "txtBoxPassword";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // txtBoxEmail
+            // 
+            resources.ApplyResources(this.txtBoxEmail, "txtBoxEmail");
+            this.txtBoxEmail.Name = "txtBoxEmail";
+            // 
+            // txtBoxSignature
+            // 
+            resources.ApplyResources(this.txtBoxSignature, "txtBoxSignature");
+            this.txtBoxSignature.Name = "txtBoxSignature";
             // 
             // RegistrationDialog
             // 
             this.AcceptButton = this.btnRegister;
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.CancelButton = this.btnCancel;
+            this.Controls.Add(this.txtBoxSignature);
+            this.Controls.Add(this.txtBoxEmail);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.txtBoxPassword);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtBoxUsername);
@@ -120,8 +120,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnRegister);
-            this.Font = null;
-            this.Icon = null;
             this.Name = "RegistrationDialog";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -137,5 +135,9 @@
         private System.Windows.Forms.TextBox txtBoxUsername;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtBoxPassword;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtBoxEmail;
+        private System.Windows.Forms.TextBox txtBoxSignature;
     }
 }

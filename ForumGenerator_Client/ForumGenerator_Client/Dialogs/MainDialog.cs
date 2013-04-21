@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ForumGenerator_Client.Communication;
 
 namespace ForumGenerator_Client
 {
@@ -31,6 +32,7 @@ namespace ForumGenerator_Client
         int currentView = (int)view.MAIN;
         int loginLevel = (int)loginLevels.GUEST;
         string userName = null;
+        string password = null;
 
         int currForumId = 0;
         int currSubForumId = 0;
@@ -53,7 +55,7 @@ namespace ForumGenerator_Client
 
         private void loginUser()
         {
-            UserLoginDialog userLog = new UserLoginDialog();
+            UserLoginDialog userLog = new UserLoginDialog(currForumId);
             userLog.ShowDialog(this);
             if (userLog.isOkClicked())
             {
@@ -61,12 +63,12 @@ namespace ForumGenerator_Client
                 {
                     loginLevel = userLog.getLoginLevel();
                     userName = userLog.getUserName();
+                    password = userLog.getPassword();
                     updateVisibilty();
 
                 }
                 else
                 {
-                    //incorrect super user
                     MessageBox.Show("Incorrect Username Or Password. Try Again!", "Error", MessageBoxButtons.OK);
                     loginUser();
                 }
@@ -91,7 +93,7 @@ namespace ForumGenerator_Client
 
         private void loginSuperUser()
         {
-            UserLoginDialog userLog = new UserLoginDialog();
+            UserLoginDialog userLog = new UserLoginDialog(currForumId);
 
             userLog.ShowDialog(this);
             if (userLog.isOkClicked())
@@ -102,6 +104,7 @@ namespace ForumGenerator_Client
                 {
                     loginLevel = (int)loginLevels.SUPER;
                     userName = userLog.getUserName();
+                    password = userLog.getPassword();
                     updateVisibilty();
 
                 }
@@ -135,6 +138,7 @@ namespace ForumGenerator_Client
         /*************************************/
         private void logoutToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
+
             logout();   
 
         }
@@ -148,8 +152,16 @@ namespace ForumGenerator_Client
         {
             if (MessageBox.Show("Are You Sure?", "Logout", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
+                Communicator com = new Communicator();
+                if (loginLevel != (int)loginLevels.SUPER)
+                    com.sendLogoutReq(currForumId, userName);
+                else
+                    com.sendAdminLogoutReq(userName);
+
                 loginLevel = 0;
                 userName = null;
+                password = null;
+           
                 updateVisibilty();
             }
         }
@@ -160,11 +172,12 @@ namespace ForumGenerator_Client
         /*************************************/
         private void registerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RegistrationDialog reg = new RegistrationDialog();
+            RegistrationDialog reg = new RegistrationDialog(currForumId);
             reg.ShowDialog();
             if (reg.getUserName() != null)
             {
                 userName = reg.getUserName();
+                password = reg.getPassword();
                 loginLevel = 1;
                 updateVisibilty();
             }
@@ -263,6 +276,9 @@ namespace ForumGenerator_Client
             logoutToolStripMenuItem.Visible = true;
             logoutToolStripMenuItem1.Visible = true;
 
+            toolStripStatusLabel1.Text = "Hello " + userName +"!";
+
+
 
             if (currentView == (int)view.MAIN)
             {
@@ -318,6 +334,8 @@ namespace ForumGenerator_Client
                 newToolStripMenuItem1.Visible = false;
                 logoutToolStripMenuItem.Visible = false;
                 logoutToolStripMenuItem1.Visible = false;
+                toolStripStatusLabel1.Text = "Hello Guest!";
+
                 initMsgList();
             }
 
@@ -326,23 +344,32 @@ namespace ForumGenerator_Client
 
         private void initForumsList()
         {
-
+            Communicator com = new Communicator();
+            com.sendGetForumsReq();
         }
 
         private void initSubForumsList()
         {
-
+            Communicator com = new Communicator();
+            com.sendGetSubForumsReq();
+    
         }
 
 
         private void initThreadList()
         {
-
+            Communicator com = new Communicator();
+            com.sendGetDiscussionsReq();
+    
         }
 
         private void initMsgList()
         {
-
+            Communicator com = new Communicator();
+            com.sendGetCommentsReq();
+    
         }
+
+
     }
 }

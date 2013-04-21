@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ForumGenerator_Client.Communication;
 
 namespace ForumGenerator_Client
 {
@@ -14,10 +15,12 @@ namespace ForumGenerator_Client
         int loginLevel = 0;
         bool okClicked = false;
         string userName = null;
-        
+        int forumId = 0;
+        string password = null;
 
-        public UserLoginDialog()
+        public UserLoginDialog(int forumId)
         {
+            this.forumId = forumId;
             InitializeComponent();
         }
 
@@ -32,10 +35,17 @@ namespace ForumGenerator_Client
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            okClicked = true;
+            if (!String.IsNullOrEmpty(txtBoxUserName.Text.Trim()) && !String.IsNullOrEmpty(txtBoxPassword.Text.Trim()))
+            {
 
+                okClicked = true;
+                userName = txtBoxUserName.Text;
+                password = txtBoxPassword.Text;
+                Communicator com = new Communicator();
+                com.sendLoginReq(forumId, userName, password);
 
-            Hide();
+                Hide();
+            }
         }
 
         public int getLoginLevel()
@@ -52,5 +62,11 @@ namespace ForumGenerator_Client
         {
             return userName;
         }
+
+        public string getPassword()
+        {
+            return password;
+        }
+
     }
 }
