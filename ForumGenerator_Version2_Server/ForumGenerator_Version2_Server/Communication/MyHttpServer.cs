@@ -25,19 +25,90 @@ namespace ForumGenerator_Version2_Server.Communication
             string full_get_url = p.http_url; //http://localhost/requests?function=getforums --> /requests?function=getforums 
             int q_mark_loca = full_get_url.IndexOf('?'); //9
             string get_url = full_get_url.Substring(q_mark_loca, full_get_url.Length - q_mark_loca); //function=getforums 
+            get_url.ToLower(); //verifying everything is in lowercase
+            XmlHandler xparser = new XmlHandler();
 
-            //#TBD - parse by & delimiter and invoke relevant methods
+            //case variables
+            string[] get_params = get_url.Split('&');
+            string[] function_param = get_params[0].Split('=');
+            string[] get_forum_id; //forumid=123
+            string[] get_subforum_id; //subforumid=456
+            string[] get_discussion_id; //discussionid=789
+
+            int discussion_id;
+            int subforum_id;
+            int forum_id;
+            string xml_string;
+
+            switch (function_param[1])
+            {
+                case "getforums":
+                    Tuple<bool, string, string[], string[,]> getforums_result = _forum_gen.getForums();
+                    xml_string = xparser.writeXML("getforums", getforums_result.Item2, getforums_result.Item3, getforums_result.Item4);
+                    break;
+
+                case "getsubforums":
+                    if (get_params.Length != 2)
+                    {
+                        Console.WriteLine("error with getsubforums - wrong number of params");
+                        return;
+                    }
+                    get_forum_id = get_params[1].Split('=');
+                    forum_id = Convert.ToInt32(get_forum_id[1]);     
+                    Tuple<bool, string, string[], string[,]> getsubforums_result = _forum_gen.getSubForums(forum_id);
+                    xml_string = xparser.writeXML("getsubforums", getsubforums_result.Item2, getsubforums_result.Item3, getsubforums_result.Item4);
+                    break;
+
+                case "getdiscussions":
+                    if (get_params.Length != 3)
+                    {
+                        Console.WriteLine("error with getdiscussions - wrong number of params");
+                        return;
+                    }
+                    get_forum_id = get_params[1].Split('=');
+                    get_subforum_id = get_params[2].Split('=');
+                    forum_id = Convert.ToInt32(get_forum_id[1]);     
+                    subforum_id = Convert.ToInt32(get_subforum_id[1]);
+                    Tuple<bool, string, string[], string[,]> getdiscussions_result = _forum_gen.getDiscussions(forum_id, subforum_id);
+                    xml_string = xparser.writeXML("getdiscussions", getdiscussions_result.Item2, getdiscussions_result.Item3, getdiscussions_result.Item4);
+                    break;
+
+                case "getcomments":
+                    if (get_params.Length != 4)
+                    {
+                        Console.WriteLine("error with getcomments - wrong number of params");
+                        return;
+                    }
+                    get_forum_id = get_params[1].Split('=');
+                    get_subforum_id = get_params[2].Split('=');
+                    get_discussion_id = get_params[3].Split('=');
+                    forum_id = Convert.ToInt32(get_forum_id[1]);     
+                    subforum_id = Convert.ToInt32(get_subforum_id[1]);
+                    discussion_id = Convert.ToInt32(get_discussion_id[1]);
+                    Tuple<bool, string, string[], string[,]> getcomments_result = _forum_gen.getComments(forum_id, subforum_id, discussion_id);
+                    xml_string = xparser.writeXML("getcomments", getcomments_result.Item2, getcomments_result.Item3, getcomments_result.Item4);
+                    break;
+
+                case "getusers":
+                    if (get_params.Length != 2)
+                    {
+                        Console.WriteLine("error with getcomments - wrong number of params");
+                        return;
+                    }
+                    get_forum_id = get_params[1].Split('=');
+                    forum_id = Convert.ToInt32(get_forum_id[1]);     
+                    Tuple<bool, string, string[], string[,]> getusers_result = _forum_gen.getUsers(forum_id);
+                    xml_string = xparser.writeXML("getusers", getusers_result.Item2, getusers_result.Item3, getusers_result.Item4);
+                    break;
+
+                default:
+                    Console.WriteLine("error with get - unrecognized method");
+                    xml_string = "Error";
+                    break;
+            }
             
-            Console.WriteLine("request: {0}", p.http_url);
-            p.writeSuccess();
-            p.outputStream.WriteLine("<html><body><h1>test server</h1>");
-            p.outputStream.WriteLine("Current Time: " + DateTime.Now.ToString());
-            p.outputStream.WriteLine("url : {0}", p.http_url);
-
-            p.outputStream.WriteLine("<form method=post action=/form>");
-            p.outputStream.WriteLine("<input type=text name=foo value=foovalue>");
-            p.outputStream.WriteLine("<input type=submit name=bar value=barvalue>");
-            p.outputStream.WriteLine("</form>");
+            //xml_string now contains xml_response to client
+            sendPostRequest("http://localhost/", xml_string);
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
@@ -51,8 +122,9 @@ namespace ForumGenerator_Version2_Server.Communication
             string method_name = parsed_info.Item1;            
             LinkedList<string> args_list = parsed_info.Item2;
 
-            //variables to be later used for switch (can not be declared in the switch)
-            int forum_id = 0; //for login, logout
+            //switch declarations
+            int forum_id = 0; 
+            int sub_forum_id = 0;
             LinkedList<Tuple<string, string>> xarguments_list = new LinkedList<Tuple<string, string>>(); 
             string username = null;
             string password = null;
@@ -152,24 +224,57 @@ namespace ForumGenerator_Version2_Server.Communication
                     response_xml = xparser.cCreateXml(method_name, xarguments_list);
                     break;
 
-                //case "getforums":
-                //    Tuple<bool, string, string[], string[,]> getforums_success_result = _forum_gen.getForums();
-                //    response_xml = xparser.writeXML("getForums", getforums_success_result.Item2, getforums_success_result.Item3, getforums_success_result.Item4);
-                //    break;
+                case "createnewsubforum":
+                    username = args_list.ElementAt(0);
+                    password = args_list.ElementAt(1);
+                    forum_id = Convert.ToInt32(args_list.ElementAt(2));
+                    string sub_forum_title = args_list.ElementAt(3);
+                    Tuple<string, string> createnewsubforum_success_usertype = _forum_gen.createNewSubForum(username, password, forum_id, sub_forum_title);
+                    succ_tuple = new Tuple<string, string>("success", createnewsubforum_success_usertype.Item1);
+                    if (createnewsubforum_success_usertype.Item1 == "1")
+                        msg_tuple = new Tuple<string, string>("UserType", createnewsubforum_success_usertype.Item2); //success on login
+                    else
+                        msg_tuple = new Tuple<string, string>("ErrorMsg", createnewsubforum_success_usertype.Item2); //failure on login
+                    xarguments_list.AddLast(succ_tuple);
+                    xarguments_list.AddLast(msg_tuple);
+                    response_xml = xparser.cCreateXml(method_name, xarguments_list);
+                    break;
 
-                //case "getsubforums":
-                //    forum_id = Convert.ToInt32(args_list.ElementAt(0));
-                //    Tuple<bool, string, string[], string[,]> getsubforums_success_result = _forum_gen.getSubForums(forum_id);
-                //    response_xml = xparser.writeXML("getSubForums", getsubforums_success_result.Item2, getsubforums_success_result.Item3, getsubforums_success_result.Item4);
-                //    break;
+                case "createnewdiscussion":
+                    username = args_list.ElementAt(0);
+                    password = args_list.ElementAt(1);
+                    forum_id = Convert.ToInt32(args_list.ElementAt(2));
+                    sub_forum_id = Convert.ToInt32(args_list.ElementAt(3));
+                    string discussion_title = args_list.ElementAt(4);
+                    string discussion_content = args_list.ElementAt(5);
+                    Tuple<string, string> createnewdiscussion_success_usertype = _forum_gen.createNewDiscussion(username, password, forum_id, sub_forum_id, discussion_title, discussion_content);
+                    succ_tuple = new Tuple<string, string>("success", createnewdiscussion_success_usertype.Item1);
+                    if (createnewdiscussion_success_usertype.Item1 == "1")
+                        msg_tuple = new Tuple<string, string>("UserType", createnewdiscussion_success_usertype.Item2); //success on login
+                    else
+                        msg_tuple = new Tuple<string, string>("ErrorMsg", createnewdiscussion_success_usertype.Item2); //failure on login
+                    xarguments_list.AddLast(succ_tuple);
+                    xarguments_list.AddLast(msg_tuple);
+                    response_xml = xparser.cCreateXml(method_name, xarguments_list);
+                    break;
 
-                //case "getdiscussions":
-                //    forum_id = Convert.ToInt32(args_list.ElementAt(0));
-                //    int subforum_id = Convert.ToInt32(args_list.ElementAt(1));
-                //    Tuple<bool, string, string[], string[,]> getdiscussions_success_result = _forum_gen.getDiscussions(forum_id, subforum_id);
-                //    response_xml = xparser.writeXML("getDiscussions", getdiscussions_success_result.Item2, getdiscussions_success_result.Item3, getdiscussions_success_result.Item4);
-                //    break;
-
+                case "createnewcomment":
+                    username = args_list.ElementAt(0);
+                    password = args_list.ElementAt(1);
+                    forum_id = Convert.ToInt32(args_list.ElementAt(2));
+                    sub_forum_id = Convert.ToInt32(args_list.ElementAt(3));
+                    int discussion_id = Convert.ToInt32(args_list.ElementAt(4));
+                    string comment_content = args_list.ElementAt(5);
+                    Tuple<string, string> createnewcomment_success_usertype = _forum_gen.createNewComment(username, password, forum_id, sub_forum_id, discussion_id, comment_content);
+                    succ_tuple = new Tuple<string, string>("success", createnewcomment_success_usertype.Item1);
+                    if (createnewcomment_success_usertype.Item1 == "1")
+                        msg_tuple = new Tuple<string, string>("UserType", createnewcomment_success_usertype.Item2); //success on login
+                    else
+                        msg_tuple = new Tuple<string, string>("ErrorMsg", createnewcomment_success_usertype.Item2); //failure on login
+                    xarguments_list.AddLast(succ_tuple);
+                    xarguments_list.AddLast(msg_tuple);
+                    response_xml = xparser.cCreateXml(method_name, xarguments_list);
+                    break;
 
 
                 default:
@@ -201,5 +306,7 @@ namespace ForumGenerator_Version2_Server.Communication
 
             return 0;
         }
+
+  
     }
 }

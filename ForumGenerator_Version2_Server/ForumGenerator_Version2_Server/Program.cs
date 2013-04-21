@@ -20,7 +20,7 @@ namespace ForumGenerator_Version2_Server
             Console.WriteLine("testing HttpServer");
 
             startServer(forumGenerator);
-            //stubClient();
+            stubClient();
         }
 
         private static ForumGenerator initProgram(string superUserName, string superUserPass)
@@ -73,6 +73,10 @@ namespace ForumGenerator_Version2_Server
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
+            HttpWebResponse response = (HttpWebResponse)post_request.GetResponse();
+            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            int bla = 0;
             //string forum_id = "126";
             //string username = "gid";
             //string password = "123";
