@@ -17,10 +17,13 @@ namespace ForumGenerator_Client
         string userName = null;
         int forumId = 0;
         string password = null;
+        bool superUser = false;
 
-        public UserLoginDialog(int forumId)
+
+        public UserLoginDialog(int forumId, bool superUser)
         {
             this.forumId = forumId;
+            this.superUser = superUser;
             InitializeComponent();
         }
 
@@ -42,10 +45,30 @@ namespace ForumGenerator_Client
                 userName = txtBoxUserName.Text;
                 password = txtBoxPassword.Text;
                 Communicator com = new Communicator();
-                com.sendLoginReq(forumId, userName, password);
+                Tuple<int, String> result;
+
+                if (superUser)
+                    result = com.sendAdminLoginReq(userName, password);
+                else
+                    result = com.sendLoginReq(forumId, userName, password);
+
+                if (result.Item1 == 1)
+                {
+                    string tmp = result.Item2;
+                    if (tmp == "Member")
+                        loginLevel = 1;
+                    if (tmp == "Administrator")
+                        loginLevel = 2;
+                    if (tmp == "SuperUser")
+                        loginLevel = 3;
+                }
+                else
+                    MessageBox.Show("Incorrect Username Or Password. Try Again!", "Error", MessageBoxButtons.OK);
 
                 Hide();
             }
+            else
+                MessageBox.Show("Please Fill All Fields!", "Error", MessageBoxButtons.OK);
         }
 
         public int getLoginLevel()

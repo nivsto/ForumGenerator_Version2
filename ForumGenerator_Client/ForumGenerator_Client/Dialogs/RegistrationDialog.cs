@@ -35,7 +35,7 @@ namespace ForumGenerator_Client
                 userName = txtBoxUsername.Text;
                 password = txtBoxPassword.Text;
                 Communicator com = new Communicator();
-                com.sendRegisterReq(forumId, userName, password, txtBoxEmail.Text, txtBoxSignature.Text);
+                Tuple<int, String> result = com.sendRegisterReq(forumId, userName, password, txtBoxEmail.Text, txtBoxSignature.Text);
 
                 Close();
             }

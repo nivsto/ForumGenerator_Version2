@@ -12,7 +12,7 @@ namespace ForumGenerator_Client.Communication
 {
     class Communicator
     {
-        public void sendLoginReq(int forumId, string userName, string password)
+        public Tuple<int, string> sendLoginReq(int forumId, string userName, string password)
         {
             HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
             post_request.Method = "POST";
@@ -32,6 +32,26 @@ namespace ForumGenerator_Client.Communication
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
+
+
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 
@@ -78,7 +98,25 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 
@@ -106,6 +144,7 @@ namespace ForumGenerator_Client.Communication
         public Tuple<int, string> sendRegisterReq(int forumId, string userName, string password, string email, string signature)
         {
             HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
+           
             post_request.Method = "POST";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
@@ -130,7 +169,24 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();   
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);       
+            Tuple<int, String> result = new Tuple<int,string>( Convert.ToInt16(res_method_args.Item2.ElementAt(0)) , res_method_args.Item2.ElementAt(1));
+            
+            return result;
         }
 
         public LinkedList<Tuple<int, string>> sendGetForumsReq()
@@ -148,7 +204,26 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            LinkedList<Tuple<int, string>> result = null;
+
+            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 
@@ -167,8 +242,26 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            LinkedList<Tuple<int, string>> result = null;
 
-            return null;
+            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 
@@ -187,10 +280,29 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            LinkedList<Tuple<int, string>> result = null;
+
+            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
-        public LinkedList<Tuple<int, string>>> sendGetCommentsReq()
+        public LinkedList<Tuple<int, string>> sendGetCommentsReq()
         {
             HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
             post_request.Method = "GET";
@@ -205,7 +317,26 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            LinkedList<Tuple<int, string>> result = null;
+
+            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
         public LinkedList<Tuple<int, string>> sendGetUsersReq()
@@ -223,7 +354,27 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            LinkedList<Tuple<int, string>> result = null;
+
+            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+            
+            return result;
 
         }
 
@@ -249,13 +400,30 @@ namespace ForumGenerator_Client.Communication
             args_list.AddLast(t4);
             args_list.AddLast(t5);
 
-            string logout_res = x_test.cCreateXml("createNewForum", args_list);
+            string logout_res = x_test.cCreateXml("createnewforum", args_list);
             byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
         public Tuple<int, string> sendCreateNewSubForumReq(string userName, string password, int forumId, string subForumTitle)
@@ -283,7 +451,25 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 
@@ -318,7 +504,25 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 
@@ -351,7 +555,25 @@ namespace ForumGenerator_Client.Communication
             Stream requestStream = post_request.GetRequestStream();
             requestStream.Write(data, 0, data.Length);
 
-            return null;
+
+            HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
+            // Gets the stream associated with the response.
+            Stream receiveStream = myHttpWebResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, encoding);
+            Char[] read = new Char[512];
+            // Reads 256 characters at a time.     
+            int count = readStream.Read(read, 0, 512);
+            string response = null;
+            response = new String(read, 0, count);
+            // Releases the resources of the response.
+            myHttpWebResponse.Close();
+            // Releases the resources of the Stream.
+            readStream.Close();
+            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
+            Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+
+            return result;
         }
 
 

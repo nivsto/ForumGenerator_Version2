@@ -32,9 +32,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtBoxName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnCreate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtBoxPassword = new System.Windows.Forms.TextBox();
+            this.txtBoxAdmin = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -49,7 +51,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 62);
+            this.label2.Location = new System.Drawing.Point(37, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 13);
             this.label2.TabIndex = 1;
@@ -57,7 +59,7 @@
             // 
             // txtBoxName
             // 
-            this.txtBoxName.Location = new System.Drawing.Point(114, 59);
+            this.txtBoxName.Location = new System.Drawing.Point(132, 59);
             this.txtBoxName.Name = "txtBoxName";
             this.txtBoxName.Size = new System.Drawing.Size(144, 20);
             this.txtBoxName.TabIndex = 2;
@@ -71,17 +73,9 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Forum Admin:";
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(114, 96);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(144, 21);
-            this.comboBox1.TabIndex = 5;
-            // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(50, 146);
+            this.btnCreate.Location = new System.Drawing.Point(53, 169);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 6;
@@ -91,7 +85,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(165, 146);
+            this.btnCancel.Location = new System.Drawing.Point(169, 169);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
@@ -99,14 +93,40 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(37, 130);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Admin Password:";
+            // 
+            // txtBoxPassword
+            // 
+            this.txtBoxPassword.Location = new System.Drawing.Point(132, 130);
+            this.txtBoxPassword.Name = "txtBoxPassword";
+            this.txtBoxPassword.PasswordChar = '*';
+            this.txtBoxPassword.Size = new System.Drawing.Size(144, 20);
+            this.txtBoxPassword.TabIndex = 9;
+            // 
+            // txtBoxAdmin
+            // 
+            this.txtBoxAdmin.Location = new System.Drawing.Point(132, 96);
+            this.txtBoxAdmin.Name = "txtBoxAdmin";
+            this.txtBoxAdmin.Size = new System.Drawing.Size(144, 20);
+            this.txtBoxAdmin.TabIndex = 10;
+            // 
             // NewForumDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 181);
+            this.ClientSize = new System.Drawing.Size(303, 204);
+            this.Controls.Add(this.txtBoxAdmin);
+            this.Controls.Add(this.txtBoxPassword);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCreate);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtBoxName);
             this.Controls.Add(this.label2);
@@ -124,9 +144,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button btnCreate;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TextBox txtBoxName;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtBoxPassword;
+        private System.Windows.Forms.TextBox txtBoxAdmin;
     }
 }

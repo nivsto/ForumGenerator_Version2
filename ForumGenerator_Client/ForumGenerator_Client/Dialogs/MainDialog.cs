@@ -55,23 +55,15 @@ namespace ForumGenerator_Client
 
         private void loginUser()
         {
-            UserLoginDialog userLog = new UserLoginDialog(currForumId);
+            UserLoginDialog userLog = new UserLoginDialog(currForumId, false);
             userLog.ShowDialog(this);
             if (userLog.isOkClicked())
             {
-                if (userLog.getUserName() != null)
-                {
                     loginLevel = userLog.getLoginLevel();
                     userName = userLog.getUserName();
                     password = userLog.getPassword();
-                    updateVisibilty();
+                    updateVisibilty();               
 
-                }
-                else
-                {
-                    MessageBox.Show("Incorrect Username Or Password. Try Again!", "Error", MessageBoxButtons.OK);
-                    loginUser();
-                }
             }
         }
 
@@ -93,7 +85,7 @@ namespace ForumGenerator_Client
 
         private void loginSuperUser()
         {
-            UserLoginDialog userLog = new UserLoginDialog(currForumId);
+            UserLoginDialog userLog = new UserLoginDialog(currForumId, true);
 
             userLog.ShowDialog(this);
             if (userLog.isOkClicked())
@@ -235,6 +227,7 @@ namespace ForumGenerator_Client
         {
             NewSubForumDialog sub = new NewSubForumDialog();
             sub.ShowDialog();
+            updateVisibilty();
         }
 
         /*************************************/
@@ -244,6 +237,7 @@ namespace ForumGenerator_Client
         {
             NewThreadDialog thr = new NewThreadDialog();
             thr.ShowDialog();
+            updateVisibilty();
 
         }
 
@@ -254,6 +248,7 @@ namespace ForumGenerator_Client
         {
             CommentAddingDialog cmnt = new CommentAddingDialog();
             cmnt.ShowDialog();
+            updateVisibilty();
         }
 
         /*************************************/
@@ -261,8 +256,9 @@ namespace ForumGenerator_Client
         /*************************************/
         private void newForumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewForumDialog nForum = new NewForumDialog();
+            NewForumDialog nForum = new NewForumDialog(userName, password);
             nForum.ShowDialog();
+            updateVisibilty();
         }
 
 
@@ -320,6 +316,8 @@ namespace ForumGenerator_Client
                 btnGoBack.Visible = true;
                 newToolStripMenuItem1.Visible = true;
                 lblTitle.Text = "Current Sub-Forum Messages:";
+
+                initMsgList();
                 
             }
 
@@ -335,8 +333,6 @@ namespace ForumGenerator_Client
                 logoutToolStripMenuItem.Visible = false;
                 logoutToolStripMenuItem1.Visible = false;
                 toolStripStatusLabel1.Text = "Hello Guest!";
-
-                initMsgList();
             }
 
         }
@@ -345,29 +341,78 @@ namespace ForumGenerator_Client
         private void initForumsList()
         {
             Communicator com = new Communicator();
-            com.sendGetForumsReq();
+      //      com.sendGetForumsReq();
+
+            Tuple<int, string> t1 = new Tuple<int, string>(0, "Forum #0");
+            Tuple<int, string> t2 = new Tuple<int, string>(1, "Forum #1");
+            Tuple<int, string> t3 = new Tuple<int, string>(2, "Forum #2");
+            Tuple<int, string> t4 = new Tuple<int, string>(3, "Forum #3");
+            Tuple<int, string> t5 = new Tuple<int, string>(4, "Forum #4");
+
+            listBox1.Items.Clear();
+            listBox1.Items.Add(t1);
+            listBox1.Items.Add(t2);
+            listBox1.Items.Add(t3);
+            listBox1.Items.Add(t4);
+            listBox1.Items.Add(t5);
         }
 
         private void initSubForumsList()
         {
             Communicator com = new Communicator();
-            com.sendGetSubForumsReq();
-    
+        //    com.sendGetSubForumsReq();
+            Tuple<int, string> t1 = new Tuple<int, string>(0, "Sub-Forum #0");
+            Tuple<int, string> t2 = new Tuple<int, string>(1, "Sub-Forum #1");
+            Tuple<int, string> t3 = new Tuple<int, string>(2, "Sub-Forum #2");
+            Tuple<int, string> t4 = new Tuple<int, string>(3, "Sub-Forum #3");
+            Tuple<int, string> t5 = new Tuple<int, string>(4, "Sub-Forum #4");
+
+            listBox1.Items.Clear();
+            listBox1.Items.Add(t1);
+            listBox1.Items.Add(t2);
+            listBox1.Items.Add(t3);
+            listBox1.Items.Add(t4);
+            listBox1.Items.Add(t5);
         }
 
 
         private void initThreadList()
         {
             Communicator com = new Communicator();
-            com.sendGetDiscussionsReq();
+         //   com.sendGetDiscussionsReq();
+            Tuple<int, string> t1 = new Tuple<int, string>(0, "Thread #0");
+            Tuple<int, string> t2 = new Tuple<int, string>(1, "Thread #1");
+            Tuple<int, string> t3 = new Tuple<int, string>(2, "Thread #2");
+            Tuple<int, string> t4 = new Tuple<int, string>(3, "Thread #3");
+            Tuple<int, string> t5 = new Tuple<int, string>(4, "Thread #4");
+
+            listBox1.Items.Clear();
+            listBox1.Items.Add(t1);
+            listBox1.Items.Add(t2);
+            listBox1.Items.Add(t3);
+            listBox1.Items.Add(t4);
+            listBox1.Items.Add(t5);
     
         }
 
         private void initMsgList()
         {
             Communicator com = new Communicator();
-            com.sendGetCommentsReq();
-    
+           // com.sendGetCommentsReq();
+            Tuple<int, string> t1 = new Tuple<int, string>(0, "First Message");
+            Tuple<int, string> t2 = new Tuple<int, string>(1, "Comment #1");
+            Tuple<int, string> t3 = new Tuple<int, string>(2, "Comment #2");
+            Tuple<int, string> t4 = new Tuple<int, string>(3, "Comment #3");
+            Tuple<int, string> t5 = new Tuple<int, string>(4, "Comment #4");
+
+            listBox1.Items.Clear();
+            listBox1.Items.Add(t1);
+            listBox1.Items.Add(t2);
+            listBox1.Items.Add(t3);
+            listBox1.Items.Add(t4);
+            listBox1.Items.Add(t5);
+
+            
         }
 
 
