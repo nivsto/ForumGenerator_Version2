@@ -20,6 +20,7 @@ namespace ForumGenerator_Client
         string admin = null;
         string adminPassword = null;
 
+        int forumId = 0;
 
         public NewForumDialog(string currUser,  string userPassword)
         {
@@ -41,6 +42,7 @@ namespace ForumGenerator_Client
                 adminPassword = txtBoxPassword.Text;
                 Communicator com = new Communicator();
                 Tuple<int, String> result = com.sendCreateNewForumReq(currUser, userPassword, forumName, admin, adminPassword);
+                forumId = Convert.ToInt16(result.Item2);
                 Close();
             }
         }
@@ -50,6 +52,9 @@ namespace ForumGenerator_Client
             Close();
         }
 
-
+        public int getForumId()
+        {
+            return forumId;
+        }
     }
 }

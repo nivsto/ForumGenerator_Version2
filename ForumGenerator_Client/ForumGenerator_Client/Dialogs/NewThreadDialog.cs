@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ForumGenerator_Client.Communication;
 
 namespace ForumGenerator_Client
 {
@@ -13,9 +14,18 @@ namespace ForumGenerator_Client
     {
         string subject = null;
         string text = null;
+        string userName;
+        string password;
+        int forumId;
+        int subForumId;
+        int threadId;
 
-        public NewThreadDialog()
+        public NewThreadDialog(string userName,  string password,  int forumId,  int subForumId)
         {
+            this.userName = userName;
+            this.password = password;
+            this.forumId = forumId;
+            this.subForumId = subForumId;
             InitializeComponent();
         }
 
@@ -29,6 +39,12 @@ namespace ForumGenerator_Client
                 subject = txtBoxSubject.Text;
                 text = txyBoxMsg.Text;
 
+                Communicator com = new Communicator();
+                Tuple<int, String> result = com.sendCreateNewDiscussionReq(userName, password, forumId, subForumId, subject, text);
+
+                threadId = Convert.ToInt16(result.Item2);
+
+
                 Close();
             }
         }
@@ -36,6 +52,11 @@ namespace ForumGenerator_Client
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        public int getThreadId()
+        {
+            return threadId;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ForumGenerator_Client.Communication;
 
 namespace ForumGenerator_Client
 {
@@ -13,9 +14,17 @@ namespace ForumGenerator_Client
     {
         string name = null;
         string[] admins = null;
+        int forumId = 0;
+        string currUser = null;
+        string userPassword = null;
 
-        public NewSubForumDialog()
+
+        int subForumId = 0; 
+
+        public NewSubForumDialog(string currUser, string userPassword, int forumId)
         {
+            this.currUser = currUser;
+            this.userPassword = userPassword;
             InitializeComponent();
         }
 
@@ -31,6 +40,11 @@ namespace ForumGenerator_Client
                 {
                     name = txtBoxName.Text;
                    // admins = checkedListBox1.CheckedItems;
+                    Communicator com = new Communicator();
+                    Tuple<int, String> result = com.sendCreateNewSubForumReq(currUser, userPassword, forumId, name);
+                  
+                    subForumId = Convert.ToInt16(result.Item2);
+
                     Close();
                 }
             }
@@ -39,6 +53,11 @@ namespace ForumGenerator_Client
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        public int getSubForumId()
+        {
+            return this.subForumId;
         }
     }
 }

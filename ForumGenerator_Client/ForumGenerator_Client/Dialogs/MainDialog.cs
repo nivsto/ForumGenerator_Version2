@@ -225,8 +225,9 @@ namespace ForumGenerator_Client
         /*************************************/
         private void createNewSubForumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewSubForumDialog sub = new NewSubForumDialog();
+            NewSubForumDialog sub = new NewSubForumDialog(userName, password, currForumId);
             sub.ShowDialog();
+            currSubForumId = sub.getSubForumId();
             updateVisibilty();
         }
 
@@ -235,8 +236,9 @@ namespace ForumGenerator_Client
         /*************************************/
         private void publishNewMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewThreadDialog thr = new NewThreadDialog();
+            NewThreadDialog thr = new NewThreadDialog(userName, password, currForumId, currSubForumId);
             thr.ShowDialog();
+            currThreadId = thr.getThreadId();
             updateVisibilty();
 
         }
@@ -258,6 +260,7 @@ namespace ForumGenerator_Client
         {
             NewForumDialog nForum = new NewForumDialog(userName, password);
             nForum.ShowDialog();
+            currForumId = nForum.getForumId();
             updateVisibilty();
         }
 
@@ -341,7 +344,11 @@ namespace ForumGenerator_Client
         private void initForumsList()
         {
             Communicator com = new Communicator();
-      //      com.sendGetForumsReq();
+            //LinkedList<Tuple<int, string>> forums = com.sendGetForumsReq();
+            //listBox1.Items.Clear();
+
+            //for (int i = 0; i < forums.Count; i++)
+            //    listBox1.Items.Add(forums.ElementAt(i).Item2);
 
             Tuple<int, string> t1 = new Tuple<int, string>(0, "Forum #0");
             Tuple<int, string> t2 = new Tuple<int, string>(1, "Forum #1");
@@ -355,12 +362,18 @@ namespace ForumGenerator_Client
             listBox1.Items.Add(t3);
             listBox1.Items.Add(t4);
             listBox1.Items.Add(t5);
+            
+            
         }
 
         private void initSubForumsList()
         {
             Communicator com = new Communicator();
-        //    com.sendGetSubForumsReq();
+
+            //LinkedList<Tuple<int, string>> subForums = com.sendGetSubForumsReq();
+            //listBox1.Items.Clear();
+            //for (int i = 0; i < subForums.Count; i++)
+            //    listBox1.Items.Add(subForums.ElementAt(i).Item2);
             Tuple<int, string> t1 = new Tuple<int, string>(0, "Sub-Forum #0");
             Tuple<int, string> t2 = new Tuple<int, string>(1, "Sub-Forum #1");
             Tuple<int, string> t3 = new Tuple<int, string>(2, "Sub-Forum #2");
@@ -373,13 +386,18 @@ namespace ForumGenerator_Client
             listBox1.Items.Add(t3);
             listBox1.Items.Add(t4);
             listBox1.Items.Add(t5);
+            
         }
 
 
         private void initThreadList()
         {
             Communicator com = new Communicator();
-         //   com.sendGetDiscussionsReq();
+            //LinkedList<Tuple<int, string>> threads = com.sendGetDiscussionsReq();
+            //listBox1.Items.Clear();
+            //for (int i = 0; i < threads.Count; i++)
+            //    listBox1.Items.Add(threads.ElementAt(i).Item2);
+
             Tuple<int, string> t1 = new Tuple<int, string>(0, "Thread #0");
             Tuple<int, string> t2 = new Tuple<int, string>(1, "Thread #1");
             Tuple<int, string> t3 = new Tuple<int, string>(2, "Thread #2");
@@ -397,13 +415,18 @@ namespace ForumGenerator_Client
 
         private void initMsgList()
         {
-            Communicator com = new Communicator();
-           // com.sendGetCommentsReq();
+            //Communicator com = new Communicator();
+            //LinkedList<Tuple<int, string>> comments = com.sendGetCommentsReq();
+            //listBox1.Items.Clear();
+            //for (int i = 0; i < comments.Count; i++)
+            //    listBox1.Items.Add(comments.ElementAt(i).Item2);
+
             Tuple<int, string> t1 = new Tuple<int, string>(0, "First Message");
             Tuple<int, string> t2 = new Tuple<int, string>(1, "Comment #1");
             Tuple<int, string> t3 = new Tuple<int, string>(2, "Comment #2");
             Tuple<int, string> t4 = new Tuple<int, string>(3, "Comment #3");
             Tuple<int, string> t5 = new Tuple<int, string>(4, "Comment #4");
+
 
             listBox1.Items.Clear();
             listBox1.Items.Add(t1);
@@ -411,10 +434,10 @@ namespace ForumGenerator_Client
             listBox1.Items.Add(t3);
             listBox1.Items.Add(t4);
             listBox1.Items.Add(t5);
-
-            
+    
         }
 
 
     }
 }
+

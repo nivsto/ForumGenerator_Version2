@@ -191,18 +191,12 @@ namespace ForumGenerator_Client.Communication
 
         public LinkedList<Tuple<int, string>> sendGetForumsReq()
         {
-            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
+            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/requests?function=getforums");
             post_request.Method = "GET";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
 
-            XmlHandler x_test = new XmlHandler();
 
-            string logout_res = x_test.cCreateXml("getForums", null);
-            byte[] data = Encoding.ASCII.GetBytes(logout_res);
-            post_request.ContentLength = data.Length;
-            Stream requestStream = post_request.GetRequestStream();
-            requestStream.Write(data, 0, data.Length);
 
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
             // Gets the stream associated with the response.
@@ -218,10 +212,9 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
-            LinkedList<Tuple<int, string>> result = null;
 
-            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+            XmlHandler x_test = new XmlHandler();
+            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
@@ -256,10 +249,7 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
-            LinkedList<Tuple<int, string>> result = null;
-
-            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
@@ -294,10 +284,7 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
-            LinkedList<Tuple<int, string>> result = null;
-
-            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
@@ -331,10 +318,7 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
-            LinkedList<Tuple<int, string>> result = null;
-
-            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
+            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
@@ -369,11 +353,8 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            Tuple<String, LinkedList<String>> res_method_args = x_test.getXmlParse(response);
-            LinkedList<Tuple<int, string>> result = null;
-
-            //result = new LinkedList<Tuple<int, string>>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
-            
+            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
+        
             return result;
 
         }
