@@ -53,16 +53,19 @@ namespace ConsoleApplication1
             testAdminLogin();
             testAdminLogout();
             testGetForums();
-            //testCreateNewForum();
+            testCreateNewForum();
             
             //    testLogin();
             //    testLogout();
             //    testCreateNewSubForum();
             //    testRegister();
             //    testGetsubForums();
-            //    testCreateNewDiscussion();
-            //    testCreateNewComment();
 
+                testCreateNewDiscussion();
+                testCreateNewComment();
+                //testGetDiscussions();
+                //testGetComments();
+                
             sumTests();
         }
 
@@ -289,7 +292,68 @@ namespace ConsoleApplication1
         private void testCreateNewDiscussion()
         {
             testsLogger.logAction("testing createNewDiscussion...  ");
-            /* same as login */
+            int testNum = 1;
+            //success:
+            try
+            {
+                bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+                int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName2", ADMIN_USR, ADMIN_PSWD).Item2);
+                bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
+                int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle2").Item2);
+                bridge.register(forumId, "u_name2", "u_password2", "e@mail.com2", "sign2");
+                bridge.login(forumId, "u_name2", "u_password2");
+                int discussionId = int.Parse(bridge.createNewDiscussion("u_name2", "u_password2", forumId, subForumId,
+                                                "discussion_title2", "discussion_content2").Item2);
+
+                AssertTrue(discussionId >= 0);        // #fail - returns 0 (error "no permission")             
+            }
+
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
+
+            testNum++;
+
+            //failure:
+            try
+            {
+                bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+                int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName52", ADMIN_USR, ADMIN_PSWD).Item2);
+                bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
+                int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle52").Item2);
+                bridge.register(forumId, "u_name52", "u_password52", "e@mail.com2", "sign2");
+                bridge.login(forumId, "u_name52", "u_password52");
+                int discussionId = int.Parse(bridge.createNewDiscussion("u_name52", "u_password52", forumId, subForumId,
+                                "", "discussion_content").Item2);
+                AssertFalse(discussionId >= 0);        // #fail - returns 0 --> title's length = 0!
+            }
+
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
+
+            testNum++;
+
+            try
+            {
+                bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+                int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName12", ADMIN_USR, ADMIN_PSWD).Item2);
+                bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
+                int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle23").Item2);
+                bridge.register(forumId, "u_name22", "u_password22", "e@mail.com22", "sign2");
+                bridge.login(forumId, "u_name22", "u_password22");
+                int discussionId = int.Parse(bridge.createNewDiscussion("u_name22", "u_password22", forumId, subForumId,
+                                                "disc_title", "תווים לא חוקיים").Item2);
+                AssertFalse(discussionId >= 0);        // #fail - returns 0 --> hebrew characters is not legal!
+
+            }
+
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
 
             testsLogger.logAction("OK");
         }
@@ -298,7 +362,48 @@ namespace ConsoleApplication1
         private void testCreateNewComment()
         {
             testsLogger.logAction("testing createNewComment...  ");
-            /* same as login */
+            int testNum = 1;
+                        
+            try
+            {
+                bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+                int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumBla", ADMIN_USR, ADMIN_PSWD).Item2);
+                bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
+                int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle2").Item2);
+                bridge.register(forumId, "u_name", "u_password", "e@mail.com2", "sign2");
+                bridge.login(forumId, "u_name", "u_password");
+                int discussionId = int.Parse(bridge.createNewDiscussion("u_name", "u_password", forumId, subForumId,
+                                                "discussion_title", "discussion_content").Item2);
+                int commentId = int.Parse(bridge.createNewComment("u_name", "u_password", forumId, subForumId, discussionId,
+                                                "comment_content").Item2);
+                AssertTrue(commentId >= 0);        // #fail - returns 0 (error "no permission")
+                
+            }
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
+             //failure:
+            testNum++;
+             try 
+             {
+               bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+               int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumBla2", ADMIN_USR, ADMIN_PSWD).Item2);
+               bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
+               int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle3").Item2);
+               bridge.register(forumId, "u_name1", "u_password1", "e@mail.com1", "sign1");
+               bridge.login(forumId, "u_name1", "u_password1");
+               int discussionId = int.Parse(bridge.createNewDiscussion("u_name1", "u_password1", forumId, subForumId,
+                                                "discussion_title1", "discussion_content1").Item2);
+               int commentId = int.Parse(bridge.createNewComment("u_name1", "u_password1", forumId, subForumId, discussionId,
+                                                "לא קורא עברית").Item2);
+               AssertFalse(commentId >= 0);        // #fail - returns 0 (error "no permission") --> can't read hebrew!
+
+            }
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
 
             testsLogger.logAction("OK");
         }
