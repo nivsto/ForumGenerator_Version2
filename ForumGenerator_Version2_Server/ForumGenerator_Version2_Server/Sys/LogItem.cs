@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    class LogItem
+    public class LogItem
     {
         internal int logItemId;
         internal string description;

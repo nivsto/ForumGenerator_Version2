@@ -5,10 +5,10 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    class Logger
+    public class Logger
     {
-        List<LogItem> actionLog;
-        List<LogItem> errorLog;
+        public List<LogItem> actionLog;
+        public List<LogItem> errorLog;
 
         public Logger()
         {

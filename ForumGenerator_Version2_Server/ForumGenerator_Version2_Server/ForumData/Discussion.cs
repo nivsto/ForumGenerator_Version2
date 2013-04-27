@@ -37,9 +37,9 @@ namespace ForumGenerator_Version2_Server.ForumData
             {
                 Comment current = this.comments.ElementAt(i);
                 data[i, 0] = current.getCommentId().ToString();
-                data[i, 2] = current.getPublisherName();
-                data[i, 3] = current.getPublishDate();
-                data[i, 4] = current.getContent();
+                data[i, 1] = current.getPublisherName();
+                data[i, 2] = current.getPublishDate();
+                data[i, 3] = current.getContent();
             }
             return new Tuple<bool, string, string[], string[,]>(true, "Comment", properties, data);
         }

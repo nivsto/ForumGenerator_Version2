@@ -13,7 +13,6 @@ namespace ForumGeneratorTest
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
 
-
             // act
             fg.adminLogin("admin", "admin");
 
@@ -66,7 +65,127 @@ namespace ForumGeneratorTest
             Assert.IsNotNull(fg.getForum(0).getUser("user1"), "user isn't registered");
         }
 
+        [TestMethod]
+        public void forum_returned_on_getForums()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
 
+            // act
+            int forumCounter = fg.getForums().Item4.GetLength(0);
+
+            // assert
+            Assert.AreEqual(1, forumCounter);
+        }
+
+        [TestMethod]
+        public void subforum_created_on_createSubForum()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
+            fg.login(0, "admin1", "admin1");
+
+            // act
+            fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
+            int subforumCounter = fg.getSubForums(0).Item4.GetLength(0);
+
+            // assert
+            Assert.AreEqual(1, subforumCounter);
+            Assert.AreEqual("subforum1", fg.getSubForums(0).Item4[0,1]);
+        }
+
+        [TestMethod]
+        public void error_returned_on_createsubforum_with_wrong_forumID()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
+            fg.login(0, "admin1", "admin1");
+
+            // act
+            string ans = fg.createNewSubForum("admin1", "admin1", 4, "subforum1").Item1;
+
+            // assert
+            Assert.AreEqual("0", ans);
+        }
+
+        [TestMethod]
+        public void discussion_created_on_createDiscussion()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
+            fg.login(0, "admin1", "admin1");
+            fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
+
+            // act
+            fg.createNewDiscussion("admin1", "admin1", 0, 0, "Discussion1", "no content");
+            int discussionCounter = fg.getDiscussions(0,0).Item4.GetLength(0);
+
+            // assert
+            Assert.AreEqual(1, discussionCounter);
+            Assert.AreEqual("Discussion1", fg.getDiscussions(0, 0).Item4[0, 1]);
+        }
+
+        [TestMethod]
+        public void error_returned_on_creatediscussion_with_loggedout_user()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
+            fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
+
+            // act
+            string ans = fg.createNewDiscussion("admin1", "admin1", 0, 0, "Discussion1", "no content").Item1;
+
+            // assert
+            Assert.AreEqual("0", ans);
+        }
+
+        [TestMethod]
+        public void error_returned_on_getdiscussions_with_wrong_subForumID()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
+            fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
+            fg.login(0, "admin1", "admin1");
+            fg.createNewDiscussion("admin1", "admin1", 0, 0, "Discussion1", "no content");
+            
+            // act
+            bool ans = fg.getDiscussions(0, 2).Item1;
+
+            // assert
+            Assert.IsFalse(ans);
+        }
+
+        [TestMethod]
+        public void comment_created_on_createComment()
+        {
+            // arrange
+            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            fg.adminLogin("admin", "admin");
+            fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
+            fg.login(0, "admin1", "admin1");
+            fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
+            fg.createNewDiscussion("admin1", "admin1", 0, 0, "Discussion1", "no content");
+
+            // act
+            fg.createNewComment("admin1", "admin1", 0, 0, 0, "comment1");
+            int commentsCounter = fg.getComments(0, 0, 0).Item4.GetLength(0);
+
+            // assert
+            Assert.AreEqual(1, commentsCounter);
+            Assert.AreEqual("comment1", fg.getComments(0, 0, 0).Item4[0, 3]);
+        }
 
     }
 }

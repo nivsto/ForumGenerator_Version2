@@ -13,6 +13,7 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             if (fg.getSuperUser().getUserName() == userName && fg.getSuperUser().getPassword() == password && fg.getSuperUser().isLogged())
                 return true;
+            fg.logger.logError("incorrect password");
             return false;
         }
 
@@ -27,7 +28,9 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             Member mem = f.getUser(userName);
             if (mem == null)
+            {
                 return false;
+            }
             else if (mem.getUserName() == userName && mem.getPassword() == password && mem.isLogged())
                 return true;
             return false;

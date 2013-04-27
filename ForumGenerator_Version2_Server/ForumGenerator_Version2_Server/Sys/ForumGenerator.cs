@@ -13,7 +13,7 @@ namespace ForumGenerator_Version2_Server.Sys
     {
         internal SuperUser superUser;
         internal List<Forum> forums;
-        internal Logger logger;
+        public Logger logger;
 
 
         public ForumGenerator(string superUserName, string superUserPass)
@@ -221,6 +221,7 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (Exception)
             {
+                this.logger.logError("unknown error");
                 return new Tuple<string, string>("0", "unknown error");
             }
         }
