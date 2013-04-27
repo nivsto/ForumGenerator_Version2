@@ -1,0 +1,14 @@
+ -- T E S T S   L O G G E R --
+
+** ForumGenerator Tests **
+Testin on Real mode
+
+testing adminLogin...  
+adminLogin tests PASSED
+testing adminLogout...  
+adminLogout tests PASSED
+testing getForums...  
+-- FAILED --  failed test number 1
+
+FAIL
+
