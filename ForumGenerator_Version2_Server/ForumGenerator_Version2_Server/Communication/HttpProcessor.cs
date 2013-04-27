@@ -119,7 +119,11 @@ namespace ForumGenerator_Version2_Server.Communication
         public void handleGETRequest() {
             string response_xml;            
             response_xml = srv.handleGETRequest(this);
-            writeSuccess(response_xml);
+            string[] response_array = response_xml.Split(' ');
+            if (response_array[0] != "error")
+                writeSuccess(response_xml);
+            else
+                writeFailure();
         }
 
         private const int BUF_SIZE = 4096;
@@ -162,6 +166,7 @@ namespace ForumGenerator_Version2_Server.Communication
             }
             Console.WriteLine("get post data end");
             response_xml = srv.handlePOSTRequest(this, new StreamReader(ms));
+
             writeSuccess(response_xml);
         }
 

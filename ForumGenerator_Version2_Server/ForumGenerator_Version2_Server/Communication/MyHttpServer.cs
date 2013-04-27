@@ -63,7 +63,7 @@ namespace ForumGenerator_Version2_Server.Communication
                     if (get_params.Length != 3)
                     {
                         Console.WriteLine("error with getdiscussions - wrong number of params");
-                        return "erro get discussions";
+                        return "error get discussions";
                     }
                     get_forum_id = get_params[1].Split('=');
                     get_subforum_id = get_params[2].Split('=');
@@ -109,7 +109,6 @@ namespace ForumGenerator_Version2_Server.Communication
             
             //xml_string now contains xml_response to client
             return xml_string;
-            //sendPostRequest(p, "http://localhost/", xml_string);
         }
 
         public override string handlePOSTRequest(HttpProcessor p, StreamReader inputData)
@@ -133,6 +132,7 @@ namespace ForumGenerator_Version2_Server.Communication
             Tuple<string, string> msg_tuple = new Tuple<string, string>("", "");
 
             string response_xml = null;
+            method_name.ToLower();
 
             switch (method_name)
             {

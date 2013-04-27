@@ -95,7 +95,8 @@ namespace ForumGenerator_Version2_Server.Communication
 
             param_list = xreader.GetElementsByTagName("params");
             XmlNodeList args_list = param_list.Item(0).ChildNodes;
-            foreach (XmlNode current_arg in args_list) { //args_list is a list of all child nodes for params
+            foreach (XmlNode current_arg in args_list)
+            { //args_list is a list of all child nodes for params
                 string current_arg_value = current_arg.InnerText;
                 res_args_list.AddLast(current_arg_value);
             }
@@ -103,6 +104,33 @@ namespace ForumGenerator_Version2_Server.Communication
             Tuple<String, LinkedList<String>> res_method_args = new Tuple<string, LinkedList<string>>(method_name, res_args_list);
             return res_method_args;
         }
+
+        public LinkedList<Tuple<string,string>> parseXmlGets(string xml_string)
+        {
+            XmlDocument xreader = new XmlDocument();
+            xreader.LoadXml(xml_string);
+
+            //getting the list of args
+            //init
+            LinkedList<Tuple<string, string>> res_args_list = new LinkedList<Tuple<string, string>>();
+
+            //XmlNodeList getSubArgs_list = xreader.GetElementsByTagName("getSubArgs");
+            XmlNodeList getSubArgs_list = xreader.GetElementsByTagName("getSubArgs");
+            int number_of_subargs = 0;
+
+                while (number_of_subargs < getSubArgs_list.Count)
+                {
+                    string current_id = getSubArgs_list.Item(number_of_subargs).InnerText.ToString();
+                    number_of_subargs++;
+                    string current_title = getSubArgs_list.Item(number_of_subargs).InnerText.ToString();
+                    number_of_subargs++;
+                    Tuple<string, string> curr_tuple = new Tuple<string, string>(current_id, current_title);
+                    res_args_list.AddLast(curr_tuple);
+                }
+
+            return res_args_list;
+        }
+
 
         /*
          * method_name - name of method - "getForums"/"getSubForums"/"getThreads" etc
@@ -125,25 +153,30 @@ namespace ForumGenerator_Version2_Server.Communication
 
                 xwriter.WriteStartElement("XML");
                 xwriter.WriteStartElement("HTTP");
-                xwriter.WriteElementString("MessageType", "request");
+                xwriter.WriteElementString("MessageType", "response");
                 xwriter.WriteElementString("MethodName", method_name);
-
+                xwriter.WriteStartElement("params");
                 // Loop over Tuples.
                 for (int j = 0; j < data.GetLength(0); j++)
                 {
                     // Write Employee data.
-                    xwriter.WriteStartElement(startElement);
-                    {
-                        for (int i = 0; i < properties.Length; i++)
+                    xwriter.WriteStartElement("getArgs");
+                    xwriter.WriteAttributeString("Name", startElement);
+                    
+                        for (int i = 0; i < 2; i++) //taking only the first 2 elements
                         {
-                            xwriter.WriteElementString(properties[i], data[j, i]);
+                            xwriter.WriteStartElement("getSubArgs");
+                            xwriter.WriteAttributeString("Name", properties[i]);
+                            xwriter.WriteString(data[j, i]);
+                            xwriter.WriteEndElement();
+                            //xwriter.WriteElementString(properties[i], data[j, i]);
                         }
-                    }
 
                     xwriter.WriteEndElement();
                 }
-
+                xwriter.WriteEndElement();
                 xwriter.Flush();
+
             }
             finally
             {
