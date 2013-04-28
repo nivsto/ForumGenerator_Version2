@@ -158,30 +158,31 @@ namespace ForumGenerator_Client.Communication
         }
 
 
-
-        public LinkedList<Tuple<int, string>> parseXmlGets(string xml_string)
+        public LinkedList<Tuple<string, string>> parseXmlGets(string xml_string)
         {
             XmlDocument xreader = new XmlDocument();
             xreader.LoadXml(xml_string);
 
             //getting the list of args
             //init
-            LinkedList<Tuple<int, string>> res_args_list = new LinkedList<Tuple<int, string>>();
+            LinkedList<Tuple<string, string>> res_args_list = new LinkedList<Tuple<string, string>>();
 
+            //XmlNodeList getSubArgs_list = xreader.GetElementsByTagName("getSubArgs");
             XmlNodeList getSubArgs_list = xreader.GetElementsByTagName("getSubArgs");
             int number_of_subargs = 0;
 
             while (number_of_subargs < getSubArgs_list.Count)
             {
-                int current_id = Convert.ToInt32(getSubArgs_list.Item(number_of_subargs).InnerText);
+                string current_id = getSubArgs_list.Item(number_of_subargs).InnerText.ToString();
                 number_of_subargs++;
                 string current_title = getSubArgs_list.Item(number_of_subargs).InnerText.ToString();
                 number_of_subargs++;
-                Tuple<int, string> curr_tuple = new Tuple<int, string>(current_id, current_title);
+                Tuple<string, string> curr_tuple = new Tuple<string, string>(current_id, current_title);
                 res_args_list.AddLast(curr_tuple);
             }
 
             return res_args_list;
         }
+
     }
 }

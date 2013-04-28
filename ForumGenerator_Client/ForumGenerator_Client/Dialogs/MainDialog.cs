@@ -38,6 +38,8 @@ namespace ForumGenerator_Client
         int currSubForumId = 0;
         int currThreadId = 0;
 
+        LinkedList<Tuple<string, string>> list;
+
         public MainDialog()
         {
             InitializeComponent();
@@ -248,7 +250,7 @@ namespace ForumGenerator_Client
         /*************************************/
         private void addACommentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CommentAddingDialog cmnt = new CommentAddingDialog();
+            CommentAddingDialog cmnt = new CommentAddingDialog(userName, password, currForumId, currSubForumId, currThreadId);
             cmnt.ShowDialog();
             updateVisibilty();
         }
@@ -308,7 +310,9 @@ namespace ForumGenerator_Client
                 btnView.Text = "View Thread";
                 btnGoBack.Visible = true;
                 btnView.Visible = true;
-                newToolStripMenuItem1.Visible = false;
+                newToolStripMenuItem1.Visible = true;
+                publishNewMessageToolStripMenuItem.Visible = true;
+                addACommentToolStripMenuItem.Visible = false;
                 lblTitle.Text = "Choose a Thread";
                 initThreadList();
             }
@@ -318,6 +322,8 @@ namespace ForumGenerator_Client
                 btnView.Visible = false;
                 btnGoBack.Visible = true;
                 newToolStripMenuItem1.Visible = true;
+                publishNewMessageToolStripMenuItem.Visible = false;
+                addACommentToolStripMenuItem.Visible = true;
                 lblTitle.Text = "Current Sub-Forum Messages:";
 
                 initMsgList();
@@ -344,48 +350,22 @@ namespace ForumGenerator_Client
         private void initForumsList()
         {
             Communicator com = new Communicator();
-            //LinkedList<Tuple<int, string>> forums = com.sendGetForumsReq();
-            //listBox1.Items.Clear();
-
-            //for (int i = 0; i < forums.Count; i++)
-            //    listBox1.Items.Add(forums.ElementAt(i).Item2);
-
-            Tuple<int, string> t1 = new Tuple<int, string>(0, "Forum #0");
-            Tuple<int, string> t2 = new Tuple<int, string>(1, "Forum #1");
-            Tuple<int, string> t3 = new Tuple<int, string>(2, "Forum #2");
-            Tuple<int, string> t4 = new Tuple<int, string>(3, "Forum #3");
-            Tuple<int, string> t5 = new Tuple<int, string>(4, "Forum #4");
-
+            list = com.sendGetForumsReq();
             listBox1.Items.Clear();
-            listBox1.Items.Add(t1);
-            listBox1.Items.Add(t2);
-            listBox1.Items.Add(t3);
-            listBox1.Items.Add(t4);
-            listBox1.Items.Add(t5);
-            
-            
+            for (int i = 0; i < list.Count; i++)
+                listBox1.Items.Add(list.ElementAt(i).Item2);
+
+                       
         }
 
         private void initSubForumsList()
         {
             Communicator com = new Communicator();
-
-            //LinkedList<Tuple<int, string>> subForums = com.sendGetSubForumsReq();
-            //listBox1.Items.Clear();
-            //for (int i = 0; i < subForums.Count; i++)
-            //    listBox1.Items.Add(subForums.ElementAt(i).Item2);
-            Tuple<int, string> t1 = new Tuple<int, string>(0, "Sub-Forum #0");
-            Tuple<int, string> t2 = new Tuple<int, string>(1, "Sub-Forum #1");
-            Tuple<int, string> t3 = new Tuple<int, string>(2, "Sub-Forum #2");
-            Tuple<int, string> t4 = new Tuple<int, string>(3, "Sub-Forum #3");
-            Tuple<int, string> t5 = new Tuple<int, string>(4, "Sub-Forum #4");
-
+            list = com.sendGetSubForumsReq(currForumId);
             listBox1.Items.Clear();
-            listBox1.Items.Add(t1);
-            listBox1.Items.Add(t2);
-            listBox1.Items.Add(t3);
-            listBox1.Items.Add(t4);
-            listBox1.Items.Add(t5);
+            for (int i = 0; i < list.Count; i++)
+                listBox1.Items.Add(list.ElementAt(i).Item2);
+
             
         }
 
@@ -393,48 +373,40 @@ namespace ForumGenerator_Client
         private void initThreadList()
         {
             Communicator com = new Communicator();
-            //LinkedList<Tuple<int, string>> threads = com.sendGetDiscussionsReq();
-            //listBox1.Items.Clear();
-            //for (int i = 0; i < threads.Count; i++)
-            //    listBox1.Items.Add(threads.ElementAt(i).Item2);
-
-            Tuple<int, string> t1 = new Tuple<int, string>(0, "Thread #0");
-            Tuple<int, string> t2 = new Tuple<int, string>(1, "Thread #1");
-            Tuple<int, string> t3 = new Tuple<int, string>(2, "Thread #2");
-            Tuple<int, string> t4 = new Tuple<int, string>(3, "Thread #3");
-            Tuple<int, string> t5 = new Tuple<int, string>(4, "Thread #4");
-
+            list = com.sendGetDiscussionsReq(currForumId, currSubForumId);
             listBox1.Items.Clear();
-            listBox1.Items.Add(t1);
-            listBox1.Items.Add(t2);
-            listBox1.Items.Add(t3);
-            listBox1.Items.Add(t4);
-            listBox1.Items.Add(t5);
+            for (int i = 0; i < list.Count; i++)
+                listBox1.Items.Add(list.ElementAt(i).Item2);
+
     
         }
 
         private void initMsgList()
         {
-            //Communicator com = new Communicator();
-            //LinkedList<Tuple<int, string>> comments = com.sendGetCommentsReq();
-            //listBox1.Items.Clear();
-            //for (int i = 0; i < comments.Count; i++)
-            //    listBox1.Items.Add(comments.ElementAt(i).Item2);
-
-            Tuple<int, string> t1 = new Tuple<int, string>(0, "First Message");
-            Tuple<int, string> t2 = new Tuple<int, string>(1, "Comment #1");
-            Tuple<int, string> t3 = new Tuple<int, string>(2, "Comment #2");
-            Tuple<int, string> t4 = new Tuple<int, string>(3, "Comment #3");
-            Tuple<int, string> t5 = new Tuple<int, string>(4, "Comment #4");
-
-
+            Communicator com = new Communicator();
+            list = com.sendGetCommentsReq(currForumId, currSubForumId, currThreadId);
             listBox1.Items.Clear();
-            listBox1.Items.Add(t1);
-            listBox1.Items.Add(t2);
-            listBox1.Items.Add(t3);
-            listBox1.Items.Add(t4);
-            listBox1.Items.Add(t5);
-    
+            for (int i = 0; i < list.Count; i++)
+                listBox1.Items.Add(list.ElementAt(i).Item2);
+
+   
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = listBox1.SelectedIndex;
+            int id = Convert.ToInt16(list.ElementAt(index).Item1);
+
+            if (currentView == (int)view.MAIN)
+                currForumId = id;
+
+            if (currentView == (int)view.FORUM)
+                currSubForumId = id;
+
+            if (currentView == (int)view.SUB)
+                currThreadId = id;
+
+
         }
 
 

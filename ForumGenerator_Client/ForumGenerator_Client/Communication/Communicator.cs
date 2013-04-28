@@ -189,15 +189,13 @@ namespace ForumGenerator_Client.Communication
             return result;
         }
 
-        public LinkedList<Tuple<int, string>> sendGetForumsReq()
+        public LinkedList<Tuple<string, string>> sendGetForumsReq()
         {
             HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/requests?function=getforums");
             post_request.Method = "GET";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
 
-
-
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
             // Gets the stream associated with the response.
             Stream receiveStream = myHttpWebResponse.GetResponseStream();
@@ -214,26 +212,20 @@ namespace ForumGenerator_Client.Communication
             readStream.Close();
 
             XmlHandler x_test = new XmlHandler();
-            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
+            LinkedList<Tuple<string, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
 
 
-        public LinkedList<Tuple<int, string>> sendGetSubForumsReq()
+        public LinkedList<Tuple<string, string>> sendGetSubForumsReq(int forumId)
         {
-            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
+            string get = "http://localhost/requests?function=getsubforums&forumid=" + forumId.ToString();
+
+            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create(get);
             post_request.Method = "GET";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
-
-            XmlHandler x_test = new XmlHandler();
-
-            string logout_res = x_test.cCreateXml("getSubForums", null);
-            byte[] data = Encoding.ASCII.GetBytes(logout_res);
-            post_request.ContentLength = data.Length;
-            Stream requestStream = post_request.GetRequestStream();
-            requestStream.Write(data, 0, data.Length);
 
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
             // Gets the stream associated with the response.
@@ -249,26 +241,21 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
+            XmlHandler x_test = new XmlHandler();        
+            LinkedList<Tuple<string, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
 
 
-        public LinkedList<Tuple<int, string>> sendGetDiscussionsReq()
+        public LinkedList<Tuple<string, string>> sendGetDiscussionsReq(int forumId, int subForumId)
         {
-            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
+            string get = "http://localhost/requests?function=getdiscussions&forumid=" + forumId.ToString() + "&subforumid=" + subForumId.ToString(); 
+            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create(get);
+     
             post_request.Method = "GET";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
-
-            XmlHandler x_test = new XmlHandler();
-
-            string logout_res = x_test.cCreateXml("getDiscussions", null);
-            byte[] data = Encoding.ASCII.GetBytes(logout_res);
-            post_request.ContentLength = data.Length;
-            Stream requestStream = post_request.GetRequestStream();
-            requestStream.Write(data, 0, data.Length);
 
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
             // Gets the stream associated with the response.
@@ -284,25 +271,20 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
+            XmlHandler x_test = new XmlHandler();
+            LinkedList<Tuple<string, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
 
-        public LinkedList<Tuple<int, string>> sendGetCommentsReq()
+        public LinkedList<Tuple<string, string>> sendGetCommentsReq(int forumId, int subForumId, int dissId)
         {
-            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
+            string get = "http://localhost/requests?function=getcomments&forumid=" + forumId.ToString() + "&subforumid=" + subForumId.ToString() + "&discussionid=" + dissId.ToString();
+            
+            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create(get);
             post_request.Method = "GET";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
-
-            XmlHandler x_test = new XmlHandler();
-
-            string logout_res = x_test.cCreateXml("getComments", null);
-            byte[] data = Encoding.ASCII.GetBytes(logout_res);
-            post_request.ContentLength = data.Length;
-            Stream requestStream = post_request.GetRequestStream();
-            requestStream.Write(data, 0, data.Length);
 
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
             // Gets the stream associated with the response.
@@ -318,25 +300,21 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
+
+            XmlHandler x_test = new XmlHandler();
+            LinkedList<Tuple<string, string>> result = x_test.parseXmlGets(response);
 
             return result;
         }
 
-        public LinkedList<Tuple<int, string>> sendGetUsersReq()
+        public LinkedList<Tuple<string, string>> sendGetUsersReq(int forumId)
         {
-            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create("http://localhost/");
+            string get = "http://localhost/requests?function=getusers&forumid=" + forumId.ToString();
+
+            HttpWebRequest post_request = (HttpWebRequest)WebRequest.Create(get);
             post_request.Method = "GET";
             post_request.ContentType = "text/xml";
             ASCIIEncoding encoding = new ASCIIEncoding();
-
-            XmlHandler x_test = new XmlHandler();
-
-            string logout_res = x_test.cCreateXml("getUsers", null);
-            byte[] data = Encoding.ASCII.GetBytes(logout_res);
-            post_request.ContentLength = data.Length;
-            Stream requestStream = post_request.GetRequestStream();
-            requestStream.Write(data, 0, data.Length);
 
 
             HttpWebResponse myHttpWebResponse = (HttpWebResponse)post_request.GetResponse();
@@ -353,7 +331,8 @@ namespace ForumGenerator_Client.Communication
             myHttpWebResponse.Close();
             // Releases the resources of the Stream.
             readStream.Close();
-            LinkedList<Tuple<int, string>> result = x_test.parseXmlGets(response);
+            XmlHandler x_test = new XmlHandler();
+            LinkedList<Tuple<string, string>> result = x_test.parseXmlGets(response);
         
             return result;
 
@@ -426,7 +405,7 @@ namespace ForumGenerator_Client.Communication
             args_list.AddLast(t3);
             args_list.AddLast(t4);
 
-            string logout_res = x_test.cCreateXml("createNewSubForum", args_list);
+            string logout_res = x_test.cCreateXml("createnewsubforum", args_list);
             byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
@@ -451,6 +430,7 @@ namespace ForumGenerator_Client.Communication
             Tuple<int, String> result = new Tuple<int, string>(Convert.ToInt16(res_method_args.Item2.ElementAt(0)), res_method_args.Item2.ElementAt(1));
 
             return result;
+ 
         }
 
 
@@ -479,7 +459,7 @@ namespace ForumGenerator_Client.Communication
             args_list.AddLast(t6);
 
 
-            string logout_res = x_test.cCreateXml("createNewDiscussion", args_list);
+            string logout_res = x_test.cCreateXml("createnewdiscussion", args_list);
             byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();
@@ -530,7 +510,7 @@ namespace ForumGenerator_Client.Communication
             args_list.AddLast(t5);
             args_list.AddLast(t6);
 
-            string logout_res = x_test.cCreateXml("createNewComment", args_list);
+            string logout_res = x_test.cCreateXml("createnewcomment", args_list);
             byte[] data = Encoding.ASCII.GetBytes(logout_res);
             post_request.ContentLength = data.Length;
             Stream requestStream = post_request.GetRequestStream();

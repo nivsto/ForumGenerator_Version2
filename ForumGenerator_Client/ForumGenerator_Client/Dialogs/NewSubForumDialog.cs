@@ -34,9 +34,9 @@ namespace ForumGenerator_Client
                 MessageBox.Show("Please Enter Sub-Forum Name!", "Error");
             else
             {
-                if (checkedListBox1.Items.Count <= 0)
-                    MessageBox.Show("Please Select Sub-Forum Admins!", "Error");
-                else
+                //if (checkedListBox1.Items.Count <= 0)
+                 //   MessageBox.Show("Please Select Sub-Forum Admins!", "Error");
+                //else
                 {
                     name = txtBoxName.Text;
                    // admins = checkedListBox1.CheckedItems;

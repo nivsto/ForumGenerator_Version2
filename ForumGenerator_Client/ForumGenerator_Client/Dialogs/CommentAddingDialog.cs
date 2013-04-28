@@ -14,9 +14,19 @@ namespace ForumGenerator_Client
     public partial class CommentAddingDialog : Form
     { 
         string text = null;
+        string userName;
+        string password;
+        int forumId;
+        int subForumId;
+        int discussionId;
         
-        public CommentAddingDialog()
+        public CommentAddingDialog( string userName, string password, int forumId,  int subForumId, int discussionId)
         {
+            this.userName = userName;
+            this.password = password;
+            this.forumId = forumId;
+            this.subForumId = subForumId;
+            this.discussionId = discussionId;
             InitializeComponent();
         }
 
@@ -27,8 +37,8 @@ namespace ForumGenerator_Client
             else
             {
                 text = txtBoxTxt.Text;
-        //        Communicator com = new Communicator();
-          //      com.sendCreateNewCommentReq(userName, password, forumId, subForumId, discussionId, text);
+                Communicator com = new Communicator();
+                com.sendCreateNewCommentReq(userName, password, forumId, subForumId, discussionId, text);
                 Close();
             }
         }
