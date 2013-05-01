@@ -74,11 +74,47 @@
     <Compile Include="Client.cs" />
     <Compile Include="Communication\Communicator.cs" />
     <Compile Include="Communication\XmlHandler.cs" />
+    <Compile Include="Dialogs\AddModeratorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\AddModeratorDialog.Designer.cs">
+      <DependentUpon>AddModeratorDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\CommentAddingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\CommentAddingDialog.Designer.cs">
       <DependentUpon>CommentAddingDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DeleteModeratorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DeleteModeratorDialog.Designer.cs">
+      <DependentUpon>DeleteModeratorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\EditMsgDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\EditMsgDialog.Designer.cs">
+      <DependentUpon>EditMsgDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MsgPerUserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\MsgPerUserDialog.Designer.cs">
+      <DependentUpon>MsgPerUserDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MutualMembersDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\MutualMembersDialog.Designer.cs">
+      <DependentUpon>MutualMembersDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NotificationsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NotificationsDialog.Designer.cs">
+      <DependentUpon>NotificationsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\MainDialog.cs">
       <SubType>Form</SubType>
@@ -104,12 +140,33 @@
     <Compile Include="Dialogs\NewThreadDialog.Designer.cs">
       <DependentUpon>NewThreadDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\RepliersPerUserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RepliersPerUserDialog.Designer.cs">
+      <DependentUpon>RepliersPerUserDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Dialogs\addModeratorDialog.resx">
+      <DependentUpon>AddModeratorDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\CommentAddingDialog.resx">
       <DependentUpon>CommentAddingDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DeleteModeratorDialog.resx">
+      <DependentUpon>DeleteModeratorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\EditMsgDialog.resx">
+      <DependentUpon>EditMsgDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\MainDialog.resx">
       <DependentUpon>MainDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\MsgPerUserDialog.resx">
+      <DependentUpon>MsgPerUserDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\MutualMembersDialog.resx">
+      <DependentUpon>MutualMembersDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\NewForumDialog.resx">
       <DependentUpon>NewForumDialog.cs</DependentUpon>
@@ -119,6 +176,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\NewThreadDialog.resx">
       <DependentUpon>NewThreadDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\NotificationsDialog.resx">
+      <DependentUpon>NotificationsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RepliersPerUserDialog.resx">
+      <DependentUpon>RepliersPerUserDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

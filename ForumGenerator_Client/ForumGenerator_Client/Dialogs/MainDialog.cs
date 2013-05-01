@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.Dialogs;
 
 namespace ForumGenerator_Client
 {
@@ -324,7 +325,7 @@ namespace ForumGenerator_Client
                 newToolStripMenuItem1.Visible = true;
                 publishNewMessageToolStripMenuItem.Visible = false;
                 addACommentToolStripMenuItem.Visible = true;
-                lblTitle.Text = "Current Sub-Forum Messages:";
+                lblTitle.Text = "Current Discussion:";
 
                 initMsgList();
                 
@@ -408,6 +409,96 @@ namespace ForumGenerator_Client
 
 
         }
+
+        /*************************************/
+        /*   Edit Message                    */
+        /*************************************/
+        private void editMessageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditMsgDialog edit = new EditMsgDialog();
+            edit.ShowDialog();
+        }
+
+        /*************************************/
+        /*   Delete Message                  */
+        /*************************************/
+        private void deleteMessageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show message - "are u sure?"
+        }
+
+        /*************************************/
+        /*   View Number Of Posts Per User   */
+        /*************************************/
+        private void userMessagesNumberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MsgPerUserDialog mpu = new MsgPerUserDialog();
+            mpu.ShowDialog();
+        }
+
+        /*************************************/
+        /*   View Repliers Per User          */
+        /*************************************/
+        private void repliersPerUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RepliersPerUserDialog rep = new RepliersPerUserDialog();
+            rep.ShowDialog();
+        }
+
+        /*************************************/
+        /*   View Number Of Sub-Forums       */
+        /*************************************/
+        private void numberOfSubForumsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show msg = "number of subs = 123"
+        }
+
+        /*************************************/
+        /*   Add New Moderator               */
+        /*************************************/
+        private void newModrtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddModeratorDialog mod = new AddModeratorDialog();
+            mod.ShowDialog();
+        }
+
+        /*************************************/
+        /*   Delete Moderator                */
+        /*************************************/
+        private void DeleteModrtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteModeratorDialog del = new DeleteModeratorDialog();
+            del.ShowDialog();
+        }
+
+        /*************************************/
+        /*   Delete Sub Forum                */
+        /*************************************/
+        private void deleteSubForumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show msg - "are u sure?"
+        }
+
+        /*************************************/
+        /*   View Num Of Forums              */
+        /*************************************/
+        private void numberOfForumsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //show msg - "num of forum: 345"
+        }
+
+        /*************************************/
+        /*   View Mutual Members             */
+        /*************************************/
+        private void mutualMembersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MutualMembersDialog mut = new MutualMembersDialog();
+            mut.ShowDialog();
+        }
+
+
+
+
 
 
     }
