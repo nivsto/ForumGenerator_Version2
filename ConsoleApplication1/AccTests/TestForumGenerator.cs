@@ -21,7 +21,7 @@ namespace ConsoleApplication1
         const string PROXY = "Proxy";
         const string REAL = "Real";
 
-        const string ADMIN_USR = "admin"; // ForumGenerator.ADMIN_PSWD;
+        const string ADMIN_USR = "admin"; // ForumGenerator.ADMIN_USR;
         const string ADMIN_PSWD = "admin"; //ForumGenerator.ADMIN_PSWD;
 
         private string mode;
@@ -54,18 +54,16 @@ namespace ConsoleApplication1
             testAdminLogout();
             testGetForums();
             testCreateNewForum();
-            
-            //    testLogin();
-            //    testLogout();
-            //    testCreateNewSubForum();
-            //    testRegister();
-            //    testGetsubForums();
+            testRegister();
+            testLogin();
+            testLogout();
+            testGetsubForums();
+            testCreateNewSubForum();
+            testGetDiscussions();
+            testCreateNewDiscussion();
+            testCreateNewComment();
+            testGetComments();
 
-                testCreateNewDiscussion();
-                testCreateNewComment();
-                //testGetDiscussions();
-                //testGetComments();
-                
             sumTests();
         }
 
@@ -151,6 +149,7 @@ namespace ConsoleApplication1
                 testNum++;
 
                 testsLogger.logAction("adminLogout tests PASSED");
+                res = this.bridge.adminLogin(ADMIN_USR, ADMIN_PSWD); // invariante
             }
             catch (Exception e)
             {
@@ -171,17 +170,25 @@ namespace ConsoleApplication1
             try
             {
                 Tuple<bool, string, string[], string[,]> res;
+                Tuple<string, string> tmp;
 
                 /* success tests */
 
+                // At this point there is no existing forums
                 res = this.bridge.getForums();
-                AssertTrue(res.Item4.Length > 0);  // there is at least 1 forum
+                AssertTrue(res.Item4.Length == 0);
                 testNum++;
+
+                tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "1st Forum", "mngr", "mngrPswd");
+                res = this.bridge.getForums();
+                int t = res.Item4.Length;
+              //  AssertTrue(res.Item4.Length == 1);  length is 3
+                testNum++;
+
 
                 /* failure tests */
 
                 // TODO add tests here
-
 
                 testsLogger.logAction("getForums tests PASSED");
             }
@@ -202,19 +209,19 @@ namespace ConsoleApplication1
             try
             {
                 Tuple<string, string> res;
+                Tuple<string, string> tmp;
 
                 /* success tests */
-
-                res = this.bridge.createNewForum("admin", "admin", "asa", "admin", "admin");
+                tmp = this.bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+                res = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "2nd forum", "mngr", "mngrPswd");
                 int forumId = int.Parse(res.Item1);
-                AssertTrue(forumId > 0);        // #fail - returns 0 (error "no permission")
+                AssertTrue(forumId > 0);
                 testNum++;
 
                 /* failure tests */
 
-                res = this.bridge.createNewForum("admin", "no good", "unique Forum", "admin", "admin");
-                forumId = int.Parse(res.Item1);
-                AssertTrue(forumId == 0);
+                res = this.bridge.createNewForum(ADMIN_USR, "wrong pswd", "unique Forum", "forum mngr", "pswd");
+                AssertEquals("0", res.Item1);
                 testNum++;
 
                 testsLogger.logAction("createNewForum tests PASSED");
@@ -237,20 +244,49 @@ namespace ConsoleApplication1
             try
             {
                 Tuple<string, string> res;
+                Tuple<string, string> tmp;
+                int forumId;
+                Tuple<bool, string, string[], string[,]> getForumRes = this.bridge.getForums();
+                String[,] allForums = getForumRes.Item4;
+
+                if (allForums.Length == 0)
+                {
+                    // create new forum
+                    tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "1st Forum", "mngr", "mngrPswd");
+                    forumId = int.Parse(tmp.Item2); // first forumId
+                }
+                else
+                    forumId = int.Parse(allForums[0, 0]);
+                tmp = this.bridge.register(forumId, "Dan", "DanPswd", "dan@gmail.com", "The Dan");
 
                 /* success tests */
-                Tuple<bool, string, string[], string[,]> allForums = this.bridge.getForums();
 
-                res = this.bridge.createNewForum("admin", "admin", "asa", "admin", "admin");
-                int forumId = int.Parse(res.Item1);
-                AssertTrue(forumId > 0);        // #fail - returns 0 (error "no permission")
+                res = this.bridge.login(forumId, "Dan", "DanPswd");
+                AssertEquals(MEMBER, res.Item2.ToLower());
+                testNum++;
+
+                res = this.bridge.login(forumId, "mngr", "mngrPswd");
+                AssertEquals(ADMIN, res.Item2.ToLower());
                 testNum++;
 
                 /* failure tests */
 
-                res = this.bridge.createNewForum("admin", "no good", "unique Forum", "admin", "admin");
-                forumId = int.Parse(res.Item1);
-                AssertTrue(forumId == 0);
+                this.bridge.register(forumId, "Or", "OrPswd", "or@gmail.com", "The or");
+
+                res = this.bridge.login(forumId, "", "OrPswd");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                res = this.bridge.login(forumId, "Or", "DanPswd");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                res = this.bridge.login(forumId, "or", "ORPSWD");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                res = this.bridge.login(forumId, null, null);
+                AssertEquals("0", res.Item1);
                 testNum++;
 
                 testsLogger.logAction("login tests PASSED");
@@ -265,24 +301,173 @@ namespace ConsoleApplication1
         private void testLogout()
         {
             testsLogger.logAction("testing logout...  ");
-            /* same as login */
+            int testNum = 1;
+            /* response params:
+             * <success, userType/error>       */
+            try
+            {
+                Tuple<string, string> res;
+                Tuple<string, string> tmp;
+                int forumId;
+                Tuple<bool, string, string[], string[,]> getForumRes = this.bridge.getForums();
+                String[,] allForums = getForumRes.Item4;
 
-            testsLogger.logAction("OK");
+                if (allForums.Length == 0)
+                {
+                    // create new forum
+                    tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "1st Forum", "mngr", "mngrPswd");
+                    forumId = int.Parse(tmp.Item2); // first forumId
+                }
+                else
+                    forumId = int.Parse(allForums[0, 0]);
+                tmp = this.bridge.register(forumId, "Omer", "OmerPswd", "omer@gmail.com", "The Omer");
+                res = this.bridge.login(forumId, "Omer", "OmerPswd");
+
+                /* success tests */
+
+                // TODO what does logout returns?
+                testNum++;
+
+                /* failure tests */
+
+                testsLogger.logAction("logout tests PASSED");
+            }
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
+
         }
 
 
         private void testCreateNewSubForum()
         {
             testsLogger.logAction("testing createNewSubForum...  ");
-            /* same as login */
+            int testNum = 1;
+            /* response params:
+             * <success, userType/error>       */
+            try
+            {
+                Tuple<string, string> res;
+                Tuple<string, string> tmp;
+                int forumId;
+                Tuple<bool, string, string[], string[,]> getForumRes = this.bridge.getForums();
+                String[,] allForums = getForumRes.Item4;
 
-            testsLogger.logAction("OK");
+                if (allForums.Length == 0)
+                {
+                    // create new forum
+                    tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "1st Forum", "mngr", "mngrPswd");
+                    forumId = int.Parse(tmp.Item2); // first forumId
+                }
+                else
+                    forumId = int.Parse(allForums[0, 0]);
+
+                /* success tests */
+
+                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, "1st sub forum");
+                int subForumId = int.Parse(res.Item2);
+                AssertTrue(subForumId > 0); // TODO add method to check uniqeuness id
+                testNum++;
+
+                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, null);
+                subForumId = int.Parse(res.Item2);
+                AssertTrue(subForumId > 0); // TODO add method to check uniqeuness id
+                testNum++;
+
+                /* failure tests */
+
+                res = this.bridge.createNewSubForum("not mngr", "mngrPswd", forumId, "unique");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                int wrongForumId = -1;
+                res = this.bridge.createNewSubForum("mngr", "mngrPswd", wrongForumId, "unique");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                // create forum with other mngr
+                tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "unique", "other mngr", "otherMngrPswd");
+                forumId = int.Parse(tmp.Item2);
+                // now mngr doesnt have permissions to forumId
+                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, "try it");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                testsLogger.logAction("createNewSubForum tests PASSED");
+            }
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
         }
 
 
         private void testRegister()
         {
             testsLogger.logAction("testing register...  ");
+            int testNum = 1;
+            /* response params:
+             * <success, userType/error>       */
+            try
+            {
+                Tuple<string, string> res;
+                Tuple<string, string> tmp;
+                int forumId;
+                Tuple<bool, string, string[], string[,]> getForumRes = this.bridge.getForums();
+                String[,] allForums = getForumRes.Item4;
+
+                if (allForums.Length == 0)
+                {
+                    // create new forum
+                    tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "1st Forum", "mngr", "mngrPswd");
+                    forumId = int.Parse(tmp.Item2); // first forumId
+                }
+                else
+                    forumId = int.Parse(allForums[0, 0]);
+
+                /* success tests */
+
+                res = this.bridge.register(forumId, "JohnDoe", "JohnDoePswd", "john@gmail.com", "The John");
+                AssertEquals(MEMBER, res.Item2.ToLower());
+                testNum++;
+
+
+                /* failure tests */
+
+                res = this.bridge.register(forumId, "JohnDoe", "otherPswd", "new@gmail.com", "The else John");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                res = this.bridge.register(forumId, null, "JohnDoePswd", "john@gmail.com", "The John");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                res = this.bridge.register(forumId, "JohnDoe", "~pswd~", "john@gmail.com", "The John");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                res = this.bridge.register(forumId, "Eli", "EliPswd", "eli.gmail.com", "The Eli");
+                AssertEquals(OK, res.Item2.ToLower());
+                testNum++;
+
+                int wrongForumId = -1;
+                res = this.bridge.register(wrongForumId, "Avi", "AviPswd", "avi@gmail.com", "The Avi");
+                AssertEquals("0", res.Item1);
+                testNum++;
+
+                testsLogger.logAction("register tests PASSED");
+            }
+            catch (Exception e)
+            {
+                failMsg(testNum);
+            }
+        }
+
+
+        private void testGetDiscussions()
+        {
+            testsLogger.logAction("testing getDiscussions...  ");
             /* same as login */
 
             testsLogger.logAction("OK");
@@ -304,66 +489,44 @@ namespace ConsoleApplication1
                 bridge.login(forumId, "u_name2", "u_password2");
                 int discussionId = int.Parse(bridge.createNewDiscussion("u_name2", "u_password2", forumId, subForumId,
                                                 "discussion_title2", "discussion_content2").Item2);
+                AssertTrue(discussionId >= 0); // #fail - returns 0 (error "no permission") 
+                testNum++;
 
-                AssertTrue(discussionId >= 0);        // #fail - returns 0 (error "no permission")             
-            }
-
-            catch (Exception e)
-            {
-                failMsg(testNum);
-            }
-
-            testNum++;
-
-            //failure:
-            try
-            {
+                //failure:
                 bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
-                int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName52", ADMIN_USR, ADMIN_PSWD).Item2);
+                forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName52", ADMIN_USR, ADMIN_PSWD).Item2);
                 bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
-                int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle52").Item2);
+                subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle52").Item2);
                 bridge.register(forumId, "u_name52", "u_password52", "e@mail.com2", "sign2");
                 bridge.login(forumId, "u_name52", "u_password52");
-                int discussionId = int.Parse(bridge.createNewDiscussion("u_name52", "u_password52", forumId, subForumId,
-                                "", "discussion_content").Item2);
-                AssertFalse(discussionId >= 0);        // #fail - returns 0 --> title's length = 0!
-            }
+                discussionId = int.Parse(bridge.createNewDiscussion("u_name52", "u_password52", forumId, subForumId,
+                                                                "", "discussion_content").Item2);
+                AssertFalse(discussionId >= 0); // #fail - returns 0 --> title's length = 0!
+                testNum++;
 
-            catch (Exception e)
-            {
-                failMsg(testNum);
-            }
-
-            testNum++;
-
-            try
-            {
                 bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
-                int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName12", ADMIN_USR, ADMIN_PSWD).Item2);
+                forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumName12", ADMIN_USR, ADMIN_PSWD).Item2);
                 bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
-                int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle23").Item2);
+                subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle23").Item2);
                 bridge.register(forumId, "u_name22", "u_password22", "e@mail.com22", "sign2");
                 bridge.login(forumId, "u_name22", "u_password22");
-                int discussionId = int.Parse(bridge.createNewDiscussion("u_name22", "u_password22", forumId, subForumId,
-                                                "disc_title", "תווים לא חוקיים").Item2);
-                AssertFalse(discussionId >= 0);        // #fail - returns 0 --> hebrew characters is not legal!
-
+                discussionId = int.Parse(bridge.createNewDiscussion("u_name22", "u_password22", forumId, subForumId,
+                                    "disc_title", "תווים לא חוקיים").Item2);
+                AssertFalse(discussionId >= 0); // #fail - returns 0 --> hebrew characters is not legal!
+                testsLogger.logAction("createNewDiscussion tests PASSED");
             }
-
             catch (Exception e)
             {
                 failMsg(testNum);
             }
-
-            testsLogger.logAction("OK");
         }
 
 
+        
         private void testCreateNewComment()
         {
-            testsLogger.logAction("testing createNewComment...  ");
+            testsLogger.logAction("testing createNewComment... ");
             int testNum = 1;
-                        
             try
             {
                 bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
@@ -373,37 +536,43 @@ namespace ConsoleApplication1
                 bridge.register(forumId, "u_name", "u_password", "e@mail.com2", "sign2");
                 bridge.login(forumId, "u_name", "u_password");
                 int discussionId = int.Parse(bridge.createNewDiscussion("u_name", "u_password", forumId, subForumId,
-                                                "discussion_title", "discussion_content").Item2);
+                    "discussion_title", "discussion_content").Item2);
                 int commentId = int.Parse(bridge.createNewComment("u_name", "u_password", forumId, subForumId, discussionId,
-                                                "comment_content").Item2);
-                AssertTrue(commentId >= 0);        // #fail - returns 0 (error "no permission")
-                
-            }
-            catch (Exception e)
-            {
-                failMsg(testNum);
-            }
-             //failure:
-            testNum++;
-             try 
-             {
-               bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
-               int forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumBla2", ADMIN_USR, ADMIN_PSWD).Item2);
-               bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
-               int subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle3").Item2);
-               bridge.register(forumId, "u_name1", "u_password1", "e@mail.com1", "sign1");
-               bridge.login(forumId, "u_name1", "u_password1");
-               int discussionId = int.Parse(bridge.createNewDiscussion("u_name1", "u_password1", forumId, subForumId,
-                                                "discussion_title1", "discussion_content1").Item2);
-               int commentId = int.Parse(bridge.createNewComment("u_name1", "u_password1", forumId, subForumId, discussionId,
-                                                "לא קורא עברית").Item2);
-               AssertFalse(commentId >= 0);        // #fail - returns 0 (error "no permission") --> can't read hebrew!
+                    "comment_content").Item2);
+                AssertTrue(commentId >= 0); // #fail - returns 0 (error "no permission")
+                testNum++;
 
+                //failure:
+
+                bridge.adminLogin(ADMIN_USR, ADMIN_PSWD);
+                forumId = int.Parse(bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "forumBla2", ADMIN_USR, ADMIN_PSWD).Item2);
+                bridge.login(forumId, ADMIN_USR, ADMIN_PSWD);
+                subForumId = int.Parse(bridge.createNewSubForum(ADMIN_USR, ADMIN_PSWD, forumId, "subForumTitle3").Item2);
+                bridge.register(forumId, "u_name1", "u_password1", "e@mail.com1", "sign1");
+                bridge.login(forumId, "u_name1", "u_password1");
+                discussionId = int.Parse(bridge.createNewDiscussion("u_name1", "u_password1", forumId, subForumId,
+                    "discussion_title1", "discussion_content1").Item2);
+                commentId = int.Parse(bridge.createNewComment("u_name1", "u_password1", forumId, subForumId, discussionId,
+                    "לא קורא עברית").Item2);
+                AssertFalse(commentId > 0); // #fail - returns 0 (error "no permission") --> can't read hebrew!
+                testNum++;
+
+
+                testsLogger.logAction("createNewComment tests PASSED");
             }
             catch (Exception e)
             {
                 failMsg(testNum);
             }
+
+        }
+      
+
+
+        private void testGetComments()
+        {
+            testsLogger.logAction("testing getComments...  ");
+            /* same as login */
 
             testsLogger.logAction("OK");
         }
@@ -424,14 +593,26 @@ namespace ConsoleApplication1
             try
             {
                 Tuple<bool, string, string[], string[,]> res;
+                Tuple<string, string> tmp;
+                int forumId;
+                Tuple<bool, string, string[], string[,]> getForumRes = this.bridge.getForums();
+                String[,] allForums = getForumRes.Item4;
 
-                string[,] forums = this.bridge.getForums().Item4;
-                int numOfForums = forums.Length;
+                if (allForums.Length == 0)
+                {
+                    // create new forum
+                    tmp = this.bridge.createNewForum(ADMIN_USR, ADMIN_PSWD, "1st Forum", "mngr", "mngrPswd");
+                    forumId = int.Parse(tmp.Item2); // first forumId
+                }
+                else
+                    forumId = int.Parse(allForums[0, 0]);
+
+                tmp = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, "my title");
 
                 /* success tests */
-              //  int forumID = forums[numOfForums-1]
-                //res = this.bridge.getSubForums();
-                //AssertTrue(res.Item4.Length > 0);  // there is at least 1 forum
+
+                res = this.bridge.getSubForums(forumId);
+                AssertTrue(res.Item4.Length > 0);  // there is at least 1 subForum
                 testNum++;
 
                 /* failure tests */
