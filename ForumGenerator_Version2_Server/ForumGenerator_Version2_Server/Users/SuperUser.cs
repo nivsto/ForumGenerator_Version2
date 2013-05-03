@@ -8,9 +8,9 @@ namespace ForumGenerator_Version2_Server.Users
 {
     public class SuperUser
     {
-        internal String userName;
-        internal String password;
-        internal bool isLoggedIn;
+        internal String userName { get; private set; }
+        internal String password { get; private set; }
+        internal bool isLoggedIn { get; private set; }
 
         public SuperUser(string superUserName, string superUserPass)
         {
@@ -20,38 +20,28 @@ namespace ForumGenerator_Version2_Server.Users
         }
 
         // returns tuple(1 for success or 0 for fail, error msg or user type
-        internal Tuple<string, string> login(string userName, string password)
+        internal SuperUser login(string userName, string password)
         {
             if (this.userName == userName && this.password == password)
             {
                 this.isLoggedIn = true;
-                return new Tuple<string, string>("1","SuperUser");
+                return this;
             }
             else if (this.userName == userName && this.password != password)
-                return new Tuple<string, string>("0", "incorrect password");
+                throw new Exception();///////// change!;
             else
-                return new Tuple<string, string>("0", "incorrect username or password");
+                throw new Exception();///////// change!;
         }
 
-        internal Tuple<string, string> logout()
+        internal bool logout()
         {
             if (this.isLoggedIn)
             {
                 this.isLoggedIn = false;
-                return new Tuple<string, string>("1","OK");;
+                return true;
             }
             else
-                return new Tuple<string, string>("0", "Superuser wasn't loggedin");
-        }
-
-        internal string getUserName()
-        {
-            return this.userName;
-        }
-
-        internal string getPassword()
-        {
-            return this.password;
+                throw new Exception();///////// change!
         }
 
         public bool isLogged()

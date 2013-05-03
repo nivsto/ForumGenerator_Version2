@@ -1,5 +1,6 @@
 ﻿using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.ForumData;
+using ForumGenerator_Version2_Server.Sys.Exceptions;
 using ForumGenerator_Version2_Server.Users;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    public class ForumGenerator
+    public class ForumGenerator : IForumGenerator
     {
-        internal SuperUser superUser;
-        internal List<Forum> forums;
-        public Logger logger;
+        internal SuperUser superUser { get; private set; }
+        internal List<Forum> forums { get; private set; }
+        public Logger logger { get; private set; }
 
 
         public ForumGenerator(string superUserName, string superUserPass)
@@ -24,7 +25,7 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         // returns userid
-        public Tuple<string, string> login(int forumId, string userName, string password)
+        public User login(int forumId, string userName, string password)
         {
             try
             {
@@ -32,18 +33,18 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (ArgumentOutOfRangeException e)
             {
-                this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                this.logger.logError(e.Message);
+                throw e;
             }
             catch (Exception)
             {
                 this.logger.logError("Unknown Error");
-                return new Tuple<string, string>("0", "Unknown Error");
+                return null;
             }
         }
 
         // returns 1 for success or 0 for failure
-        public Tuple<string, string> logout(int forumId, int userId)
+        public bool logout(int forumId, int userId)
         {
             try
             {
@@ -52,17 +53,17 @@ namespace ForumGenerator_Version2_Server.Sys
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
                 this.logger.logError("Unknown Error");
-                return new Tuple<string, string>("0", "Unknown Error");
+                throw new Exception();///////// change!
             }
         }
 
         // returns userid
-        public Tuple<string, string> adminLogin(string userName, string password)
+        public SuperUser superUserLogin(string userName, string password)
         {
             try
             {
@@ -71,12 +72,12 @@ namespace ForumGenerator_Version2_Server.Sys
             catch (Exception)
             {
                 this.logger.logError("Unknown Error");
-                return new Tuple<string, string>("0", "Unknown Error");
+                throw new Exception();///////// change!
             }
         }
 
         // returns 1 for success or 0 for failure
-        public Tuple<string, string> adminLogout()
+        public bool superUserLogout()
         {
             try
             {
@@ -84,12 +85,12 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (Exception)
             {
-                return new Tuple<string, string>("0", "Unknown Error");
+                throw new Exception();///////// change!
             }
         }
 
         // returns 1 for success or 0 for failure
-        public Tuple<string, string> register(int forumId, string userName, string password, string email, string signature)
+        public User register(int forumId, string userName, string password, string email, string signature)
         {
             try
             {
@@ -98,216 +99,207 @@ namespace ForumGenerator_Version2_Server.Sys
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
                 this.logger.logError("Unknown Error");
-                return new Tuple<string, string>("0", "Unknown Error");
+                throw new Exception();///////// change!
             }
         }
 
         //returns an XML list of all the forums in the system
-        public Tuple<bool, string, string[], string[,]> getForums()
+        public List<Forum> getForums()
         {
             try
             {
-                string[] properties = { "ID", "Name", "AdminName" };
-                string[,] data = new string[this.forums.Count(), properties.Length];
-                for (int i = 0; i < this.forums.Count(); i++)
-                {
-                    Forum current = this.forums.ElementAt(i);
-                    data[i, 0] = current.getForumId().ToString();
-                    data[i, 1] = current.getForumName();
-                    data[i, 2] = current.getAdminName();
-                }
-                return new Tuple<bool, string, string[], string[,]>(true, "Forum", properties, data);
+                return this.forums;
             }
             catch (Exception)
             {
-                return new Tuple<bool, string, string[], string[,]>(false, "Unknown Error",null, null);
+                throw new Exception();///////// change!
             }
         }
 
         //returns an XML list of all the sub-forums in the system
-        public Tuple<bool, string, string[], string[,]> getSubForums(int forumId)
+        public List<SubForum> getSubForums(int forumId)
         {
             try
             {
                 Forum parentForum = this.getForum(forumId);
-                return parentForum.getSubForumsXML();
+                return parentForum.subForums;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<bool, string, string[], string[,]>(false, "No such " + e.Message,null, null);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<bool, string, string[], string[,]>(false, "Unknown Error",null, null);
+                throw new Exception();///////// change!
             }
         }
 
         //returns an XML list of all the discussions in a specific sub-forum
-        public Tuple<bool, string, string[], string[,]> getDiscussions(int forumId, int subForumId)
+        public List<Discussion> getDiscussions(int forumId, int subForumId)
         {
             try
             {
                 SubForum parentSubForum = this.getForum(forumId).getSubForum(subForumId);
-                return parentSubForum.getDiscussionsXML();
+                return parentSubForum.discussions;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<bool, string, string[], string[,]>(false, "No such " + e.Message,null, null);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<bool, string, string[], string[,]>(false, "unknown error", null, null);
+                throw new Exception();///////// change!
             }
         }
 
         //returns an XML list of all the comments of a specific discussion
-        public Tuple<bool, string, string[], string[,]> getComments(int forumId, int subForumId, int discussionId)
+        public List<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
             try
             {
                 Discussion parentDiscussion = this.getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId);
-                return parentDiscussion.getCommentsXML();
+                return parentDiscussion.comments;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<bool, string, string[], string[,]>(false, "No such " + e.Message, null, null);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<bool, string, string[], string[,]>(false, "unknown error", null, null);
+                throw new Exception();///////// change!
             }
         }
 
         //returns an XML list of all the users in a specific forum
-        public Tuple<bool, string, string[], string[,]> getUsers(int forumId)
+        public List<User> getUsers(int forumId)
         {
             try
             {
                 Forum parentForum = this.getForum(forumId);
-                return parentForum.getUsers();
+                return parentForum.members;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<bool, string, string[], string[,]>(false, "No such " + e.Message, null, null);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<bool, string, string[], string[,]>(false, "unknown error", null, null);
+                throw new Exception();///////// change!
             }
         }
 
         //creates a new forum and a new user which is the forum's administrator
-        public Tuple<string, string> createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
             try
             {
                 if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)   // in case there is already such a forum
-                    return new Tuple<string, string>("0", "forum name already exists");
+                    throw new UnauthorizedOperationException("forum name already exists");
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
-                    return new Tuple<string, string>("0", "no permission");
+                    throw new UnauthorizedUserException();
                 int forumId = this.forums.Count();
                 Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword);
                 this.forums.Add(newForum);
-                return new Tuple<string, string>("1", newForum.getForumId().ToString());
+                return newForum;
             }
             catch (Exception)
             {
                 this.logger.logError("unknown error");
-                return new Tuple<string, string>("0", "unknown error");
+                throw new Exception();///////// change!
             }
         }
 
         //creates a new sub-forum and a new user which is the forum's administrator
-        public Tuple<string, string> createNewSubForum(string userName, string password, int forumId, string subForumTitle)
+        public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
             try
             {
                 Forum forum = getForum(forumId);
                 if (!Security.checkAdminAuthorization(forum, userName, password))
-                    return new Tuple<string, string>("0", "no permission");
+                    throw new UnauthorizedUserException();
                 return forum.createNewSubForum(subForumTitle);
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<string, string>("0", "unknown error");
+                throw new Exception();///////// change!
             }
         }
 
         //creates a new discussion and a new user which is the forum's administrator
-        public Tuple<string, string> createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
+        public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
             try
             {
                 Forum forum = getForum(forumId);
                 if (!Security.checkMemberAuthorization(forum, userName, password))
-                    return new Tuple<string, string>("0", "no permission");
-                Member user = getForum(forumId).getUser(userName);
+                    throw new Exception();///////// change!
+                User user = getForum(forumId).getUser(userName);
                 return getForum(forumId).getSubForum(subForumId).createNewDiscussion(title, content, user);
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<string, string>("0", "unknown error");
+                throw new Exception();///////// change!
             }
         }
 
         //creates a new comment and a new user which is the forum's administrator
-        public Tuple<string, string> createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
+        public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
             try
             {
                 Forum forum = getForum(forumId);
                 if (!Security.checkMemberAuthorization(forum, userName, password))
-                    return new Tuple<string, string>("0", "no permission");
-                Member user = getForum(forumId).getUser(userName);
+                    throw new Exception();///////// change!
+                User user = getForum(forumId).getUser(userName);
                 return getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).createNewComment(content, user);
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<string, string>("0", "unknown error");
+                throw new Exception();///////// change!
             }
         }
 
         //creates a new comment and a new user which is the forum's administrator
-        public Tuple<string, string> changeAdmin(string userName, string password, int forumId, int newAdminUserId)
+        public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
             try
             {
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
-                    return new Tuple<string, string>("0", "no permission");
+                    throw new Exception();///////// change!
                 return getForum(forumId).changeAdmin(newAdminUserId);
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("No such " + e.Message);
-                return new Tuple<string, string>("0", "No such " + e.Message);
+                throw new Exception();///////// change!
             }
             catch (Exception)
             {
-                return new Tuple<string, string>("0", "unknown error");
+                throw new Exception();///////// change!
             }
         }
 
@@ -320,7 +312,7 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new ArgumentOutOfRangeException("Forum" + forumId);
+                throw new ArgumentOutOfRangeException("Forum" + forumId + "doesnt exist");
             }
         }
 

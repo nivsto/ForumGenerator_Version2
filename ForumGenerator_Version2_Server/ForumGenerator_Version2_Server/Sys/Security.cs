@@ -11,7 +11,7 @@ namespace ForumGenerator_Version2_Server.Sys
     {
         public static bool checkSuperUserAuthorization(ForumGenerator fg, string userName, string password)
         {
-            if (fg.getSuperUser().getUserName() == userName && fg.getSuperUser().getPassword() == password && fg.getSuperUser().isLogged())
+            if (fg.getSuperUser().userName == userName && fg.getSuperUser().password == password && fg.getSuperUser().isLogged())
                 return true;
             fg.logger.logError("incorrect password");
             return false;
@@ -19,19 +19,19 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public static bool checkAdminAuthorization(Forum f, string userName, string password)
         {
-            if (f.getAdmin().getUserName() == userName && f.getAdmin().getPassword() == password && f.getAdmin().isLogged())
+            if (f.admin.userName == userName && f.admin.password == password && f.admin.isLogged())
                 return true;
             return false;
         }
 
         public static bool checkMemberAuthorization(Forum f, string userName, string password)
         {
-            Member mem = f.getUser(userName);
+            User mem = f.getUser(userName);
             if (mem == null)
             {
                 return false;
             }
-            else if (mem.getUserName() == userName && mem.getPassword() == password && mem.isLogged())
+            else if (mem.userName == userName && mem.password == password && mem.isLogged())
                 return true;
             return false;
         }

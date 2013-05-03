@@ -10,11 +10,11 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     public class Forum
     {
-        internal int forumId;
-        internal Administrator admin;
-        internal List<SubForum> subForums;
-        internal string forumName;
-        internal List<Member> members;
+        internal int forumId { get; private set; }
+        internal User admin { get; private set; }
+        internal List<SubForum> subForums { get; private set; }
+        internal string forumName { get; private set; }
+        internal List<User> members { get; private set; }
 
 
         public Forum(int forumId, string forumName, string adminUserName, string adminPassword)
@@ -22,75 +22,40 @@ namespace ForumGenerator_Version2_Server.ForumData
             // TODO: Complete member initialization
             this.forumId = forumId;
             this.forumName = forumName;
-            this.members = new List<Member>();
-            this.admin = new Administrator(members.Count(), adminUserName, adminPassword, this);
+            this.members = new List<User>();
+            this.admin = new User(members.Count(), adminUserName, adminPassword, "", "", this);
             this.members.Add(this.admin);
             this.subForums = new List<SubForum>();
         }
 
-
-
-        internal Tuple<string, string> login(string userName, string password)
+        internal User login(string userName, string password)
         {
-            Member user = this.members.Find(
-                            delegate(Member mem)
+            User user = this.members.Find(
+                            delegate(User mem)
                                 {return mem.userName == userName;});
             if (user == null)
-                return new Tuple<string, string>("0", "incorrect username or password");
+                throw new NullReferenceException("no user named " + userName);
             else
                 return user.login(password);
         }
 
-        internal Tuple<string, string> logout(int userId)
+        internal bool logout(int userId)
         {
             return this.members.ElementAt(userId).logout();
         }
 
-        internal Tuple<string, string> register(string userName, string password, string email, string signature)
+        internal User register(string userName, string password, string email, string signature)
         {
-            if (this.members.Find(delegate(Member mem) { return mem.userName == userName; }) != null)
-                return new Tuple<string, string>("0", "username already exists");
-            Member newUser = new Member(this.members.Count(), userName, password, email, signature, this);
+            if (this.members.Find(delegate(User mem) { return mem.userName == userName; }) != null)
+                throw new UnauthorizedAccessException("username already exists");
+            User newUser = new User(this.members.Count(), userName, password, email, signature, this);
             this.members.Add(newUser);
-            return new Tuple<string, string>("1", "Member");
-        }
-
-        public int getForumId()
-        {
-            return this.forumId;
-        }
-
-        public string getForumName()
-        {
-            return this.forumName;
-        }
-
-        public string getAdminName()
-        {
-            return this.admin.getUserName();
+            return newUser;
         }
 
         internal int getSize()
         {
             return this.subForums.Count();
-        }
-
-        internal List<SubForum> getSubForums()
-        {
-            return this.subForums;
-        }
-
-        public Tuple<bool, string, string[], string[,]> getSubForumsXML()
-        {
-            string[] properties = { "ID", "Title" };
-            string[,] data = new string[this.subForums.Count(), properties.Length];
-            for (int i = 0; i < this.subForums.Count(); i++)
-            {
-                SubForum current = this.subForums.ElementAt(i);
-                data[i, 0] = current.getSubForumId().ToString();
-                data[i, 1] = current.getSubForumTitle();
-            }
-            return new Tuple<bool, string, string[], string[,]>(true, "SubForum", properties, data);
         }
 
         internal SubForum getSubForum(int subForumId)
@@ -105,54 +70,36 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
         }
 
-        internal Tuple<string, string> createNewSubForum(string subForumTitle)
+        internal SubForum createNewSubForum(string subForumTitle)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
-                return new Tuple<string, string>("0", "forum name already exists");
+                throw new Exception();///////// change!
             int subForumId = this.subForums.Count();
             SubForum newSubForum = new SubForum(subForumId, subForumTitle, this);
             this.subForums.Add(newSubForum);
-            return new Tuple<string, string>("1", newSubForum.getSubForumId().ToString());
+            return newSubForum;
         }
 
-        public Member getUser(int userId)
+        public User getUser(int userId)
         {
             return this.members.ElementAt(userId);
         }
 
-        public Member getUser(string userName)
+        public User getUser(string userName)
         {
-            return this.members.Find(delegate(Member mem) { return mem.userName == userName; });
+            return this.members.Find(delegate(User mem) { return mem.userName == userName; });
         }
 
-        internal Tuple<bool, string, string[], string[,]> getUsers()
+        internal User changeAdmin(int newAdminUserId)
         {
-            string[] properties = { "ID", "UserName","Email" };
-            string[,] data = new string[this.members.Count(), properties.Length];
-            for (int i = 0; i < this.members.Count(); i++)
-            {
-                Member current = this.members.ElementAt(i);
-                data[i, 0] = current.getMemberID().ToString();
-                data[i, 1] = current.getUserName();
-                data[i, 2] = current.getEmail();
-            }
-            return new Tuple<bool, string, string[], string[,]>(true, "User", properties, data);
-        }
-
-        internal Tuple<string, string> changeAdmin(int newAdminUserId)
-        {
-            Member currentMember = getUser(newAdminUserId);
+            User currentMember = getUser(newAdminUserId);
             if (currentMember == null)
-                return new Tuple<string, string>("0", "No such UserID");
-            this.admin = new Administrator(currentMember.getMemberID(), currentMember.getUserName(), currentMember.getPassword(), this);
+                throw new Exception();///////// change!
+            this.admin = new User(currentMember.memberID, currentMember.userName, currentMember.password, "", "", this);
             this.members.Insert(this.members.IndexOf(currentMember), this.admin);
             this.members.Remove(currentMember);
-            return new Tuple<string, string>("1", "OK");
-        }
-
-        internal Administrator getAdmin()
-        {
             return this.admin;
         }
+
     }
 }

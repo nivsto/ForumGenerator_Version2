@@ -9,15 +9,15 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     public class Discussion
     {
-        internal int discussionId;
-        internal String title;
-        internal String content;
-        internal DateTime publishDate;
-        internal Member publisher;
-        internal List<Comment> comments;
-        internal SubForum parentSubForum;
+        internal int discussionId { get; private set; }
+        internal String title { get; private set; }
+        internal String content { get; private set; }
+        internal DateTime publishDate { get; private set; }
+        internal User publisher { get; private set; }
+        internal List<Comment> comments { get; private set; }
+        internal SubForum parentSubForum { get; private set; }
 
-        public Discussion(int discussionId, string title, string content, Member user, SubForum parentSubForum)
+        public Discussion(int discussionId, string title, string content, User user, SubForum parentSubForum)
         {
             // TODO: Complete member initialization
             this.discussionId = discussionId;
@@ -29,52 +29,17 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.parentSubForum = parentSubForum;
         }
 
-        public Tuple<bool, string, string[], string[,]> getCommentsXML()
-        {
-            string[] properties = { "ID", "Publisher", "PublishDate", "Content" };
-            string[,] data = new string[this.comments.Count(), properties.Length];
-            for (int i = 0; i < this.comments.Count(); i++)
-            {
-                Comment current = this.comments.ElementAt(i);
-                data[i, 0] = current.getCommentId().ToString();
-                data[i, 1] = current.getPublisherName();
-                data[i, 2] = current.getPublishDate();
-                data[i, 3] = current.getContent();
-            }
-            return new Tuple<bool, string, string[], string[,]>(true, "Comment", properties, data);
-        }
-
-        internal int getDiscussionId()
-        {
-            return this.discussionId;
-        }
-
-        internal string getTitle()
-        {
-            return this.title;
-        }
-
-        internal string getPublisherName()
-        {
-            return this.publisher.getUserName();
-        }
-
         internal string getPublishDate()
         {
             return this.publishDate.ToShortDateString();
         }
 
-        internal string getContent()
-        {
-            return this.content;
-        }
-
-        internal Tuple<string, string> createNewComment(string content, Member user)
+        internal Comment createNewComment(string content, User user)
         {
             int commentId = this.comments.Count();
             Comment newComment = new Comment(commentId, content, user, this);
             this.comments.Add(newComment);
-            return new Tuple<string, string>("1", newComment.getCommentId().ToString());
+            return newComment;
         }
     }
 }

@@ -11,10 +11,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal int commentId;
         internal string content;
         internal DateTime publishDate;
-        internal Member publisher;
+        internal User publisher;
         internal Discussion parentDiscussion;
 
-        public Comment(int commentId, string content, Member user, Discussion parentDiscussion)
+        public Comment(int commentId, string content, User user, Discussion parentDiscussion)
         {
             this.commentId = commentId;
             this.content = content;
@@ -30,7 +30,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal string getPublisherName()
         {
-            return this.publisher.getUserName();
+            return this.publisher.userName;
         }
 
         internal string getPublishDate()
