@@ -19,5 +19,37 @@ namespace ConsoleApplication1
     public abstract class AccTestsForumGenerator : AccTest
     {
         protected BridgeForumGenerator bridge;
+
+        bool isForumExist(LinkedList<Forum> forums, string forumName)
+        {
+            bool res = false;
+            foreach (Forum f in forums)
+            {
+                if (f.name.equals(forumName))
+                {
+                    res = true;
+                    break;
+                }
+            }
+            return res;
+        }
+
+
+        bool isUserNameExist(Forum forum, string userName)
+        {
+            bool res = false;
+            LinkedList<User> users = forum.users;
+
+            foreach (User u in users)
+            {
+                if (u.userName.equals(userName))
+                {
+                    res = true;
+                    break;
+                }
+            }
+            return res;
+        }
+
     }
 }
