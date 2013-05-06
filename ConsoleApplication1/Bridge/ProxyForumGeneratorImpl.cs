@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Threading.Tasks;
+using ForumGenerator_Version2_Server;
+using ForumGenerator_Version2_Server.Sys;
+using ForumGenerator_Version2_Server.Communication;
+using ForumGenerator_Version2_Server.Users;
+using ForumGenerator_Version2_Server.ForumData;
+using System.Threading;
+using System.Net;
+using System.Xml;
+using System.IO;
+
 namespace ConsoleApplication1
 {
 
     public class ProxyForumGeneratorImpl : BridgeForumGenerator
     {
 
-        public User superUserLogin(string usrName, string usrPswd)
+        public SuperUser superUserLogin(string usrName, string usrPswd)
         {
             throw new NotImplementedException();
         }
@@ -34,42 +45,42 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public ForumGenerator_Version2_Server.ForumData.Forum createNewForum(string superUserName, string superUserpassword, string forumName, string mngrUserName, string mngrPassword)
+        public Forum createNewForum(string superUserName, string superUserpassword, string forumName, string mngrUserName, string mngrPassword)
         {
             throw new NotImplementedException();
         }
 
-        public ForumGenerator_Version2_Server.ForumData.SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
+        public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
             throw new NotImplementedException();
         }
 
-        public ForumGenerator_Version2_Server.ForumData.Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
+        public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
             throw new NotImplementedException();
         }
 
-        public ForumGenerator_Version2_Server.ForumData.Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
+        public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<ForumGenerator_Version2_Server.ForumData.Forum> getForums()
+        public LinkedList<Forum> getForums()
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<ForumGenerator_Version2_Server.ForumData.SubForum> getSubForums(int forumId)
+        public LinkedList<SubForum> getSubForums(int forumId)
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<ForumGenerator_Version2_Server.ForumData.Discussion> getThreads(int forumId, int subForumId)
+        public LinkedList<Discussion> getDiscussions(int forumId, int subForumId)
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<ForumGenerator_Version2_Server.ForumData.Comment> getComments(int forumId, int subForumId, int discussionId)
+        public LinkedList<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
             throw new NotImplementedException();
         }

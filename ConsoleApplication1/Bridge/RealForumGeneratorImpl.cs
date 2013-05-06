@@ -34,7 +34,7 @@ namespace ConsoleApplication1
 
 
 
-        public User superUserLogin(string usrName, string usrPswd)
+        public SuperUser superUserLogin(string usrName, string usrPswd)
         {
             return this.forumGen.superUserLogin(usrName, usrPswd);
         }
@@ -90,7 +90,7 @@ namespace ConsoleApplication1
             return this.forumGen.getSubForums(forumId);
         }
 
-        LinkedList<Discussion> BridgeForumGenerator.getThreads(int forumId, int subForumId)
+        LinkedList<Discussion> BridgeForumGenerator.getDiscussions(int forumId, int subForumId)
         {
             return this.forumGen.getDiscussions(forumId, subForumId);
         }

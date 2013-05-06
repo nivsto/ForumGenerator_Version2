@@ -20,12 +20,13 @@ namespace ConsoleApplication1
     {
         protected BridgeForumGenerator bridge;
 
-        bool isForumExist(LinkedList<Forum> forums, string forumName)
+
+        public bool isForumExist(LinkedList<Forum> forums, string forumName)
         {
             bool res = false;
             foreach (Forum f in forums)
             {
-                if (f.name.equals(forumName))
+                if (f.forumName.equals(forumName))
                 {
                     res = true;
                     break;
@@ -35,14 +36,58 @@ namespace ConsoleApplication1
         }
 
 
-        bool isUserNameExist(Forum forum, string userName)
+        public string getUniqueForumName(LinkedList<Forum> forums)
+        {
+            Random random = new Random();
+            string res = "forum" + random.Next(0, 9);
+            
+            while (isForumExist(forums, res))
+            {
+                res += random.Next(0, 9);
+            }
+
+            return res;
+        }
+
+
+        public bool isSubForumExist(Forum forum, string subForumTitle)
         {
             bool res = false;
-            LinkedList<User> users = forum.users;
+            foreach (SubForum sf in forum.subForums)
+            {
+                if (sf.subForumTitle.equals(subForumTitle))
+                {
+                    res = true;
+                    break;
+                }
+            }
+            return res;
+        }
+
+
+        public string getUniqueSubForumTitle(Forum forum)
+        {
+            Random random = new Random();
+            string res = "subForum" + random.Next(0, 9);
+
+            while (isSubForumExist(forum, res))
+            {
+                res += random.Next(0, 9);
+            }
+
+            return res;
+        }
+
+
+
+        public bool isUserNameExist(Forum forum, string userName)
+        {
+            bool res = false;
+            List<User> users = forum.members;
 
             foreach (User u in users)
             {
-                if (u.userName.equals(userName))
+                if (u.userName.Equals(userName))
                 {
                     res = true;
                     break;
@@ -51,5 +96,20 @@ namespace ConsoleApplication1
             return res;
         }
 
+
+        public string getUniqueUserName(Forum forum)
+        {
+            Random random = new Random();
+            string res = "user" + random.Next(0, 9);
+
+            while (isUserNameExist(forum, res))
+            {
+                res += random.Next(0, 9);
+            }
+
+            return res;
+        }
+
+       
     }
 }

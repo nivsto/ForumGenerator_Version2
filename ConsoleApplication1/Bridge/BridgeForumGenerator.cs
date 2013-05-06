@@ -18,7 +18,7 @@ namespace ConsoleApplication1
 {
     public interface BridgeForumGenerator
     {
-        User superUserLogin(string usrName, string usrPswd);
+        SuperUser superUserLogin(string usrName, string usrPswd);
         bool superUserLogout();
         User login(int forumID, string usrName, string usrPswd);
         bool logout(int forumID, int usrID);
@@ -35,7 +35,7 @@ namespace ConsoleApplication1
 
         LinkedList<Forum> getForums();
         LinkedList<SubForum> getSubForums(int forumId);
-        LinkedList<Discussion> getThreads(int forumId, int subForumId);
+        LinkedList<Discussion> getDiscussions(int forumId, int subForumId);
         LinkedList<Comment> getComments(int forumId, int subForumId, int discussionId);
     }
 }
