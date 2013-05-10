@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ForumGenerator_Version2_Server.Sys.Exceptions
 {
-    class ForumNotFounException : Exception
+    class ForumNotFoundException : Exception
     {
     }
 }

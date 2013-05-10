@@ -16,6 +16,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal User publisher { get; private set; }
         internal List<Comment> comments { get; private set; }
         internal SubForum parentSubForum { get; private set; }
+        internal int nextCommentId = 1;
 
         public Discussion(int discussionId, string title, string content, User user, SubForum parentSubForum)
         {
@@ -36,7 +37,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal Comment createNewComment(string content, User user)
         {
-            int commentId = this.comments.Count();
+            int commentId = this.nextCommentId++;
             Comment newComment = new Comment(commentId, content, user, this);
             this.comments.Add(newComment);
             return newComment;

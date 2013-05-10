@@ -17,12 +17,24 @@ namespace ForumGenerator_Version2_Server.Sys
             return false;
         }
 
+
         public static bool checkAdminAuthorization(Forum f, string userName, string password)
         {
             if (f.admin.userName == userName && f.admin.password == password && f.admin.isLogged())
                 return true;
             return false;
         }
+
+
+        public static bool checkModeratorAuthorization(SubForum sf, string userName, string password)
+        {
+            // forum admin is also a subforum moderator
+            User moderator = sf.getModerator(userName);
+            if (moderator != null && moderator.password == password && moderator.isLogged())
+                return true;
+            return false;
+        }
+
 
         public static bool checkMemberAuthorization(Forum f, string userName, string password)
         {
@@ -35,6 +47,28 @@ namespace ForumGenerator_Version2_Server.Sys
                 return true;
             return false;
         }
+
+        // check if user <@param user name> is the publisher of the discussion d.
+        public static bool checkPublisherAuthorization(Discussion d, string userName, string password)
+        {
+            User publisher = d.publisher;
+            if (publisher != null && publisher.password == password && publisher.isLogged())
+                return true;
+            return false;
+        }
+
+
+        // check if user <@param user name> is the publisher of the comment c.
+        public static bool checkPublisherAuthorization(Comment c, string userName, string password)
+        {
+            User publisher = c.publisher;
+            if (publisher != null && publisher.password == password && publisher.isLogged())
+                return true;
+            return false;
+        }
+
+
+        // check end cases
 
 
     }

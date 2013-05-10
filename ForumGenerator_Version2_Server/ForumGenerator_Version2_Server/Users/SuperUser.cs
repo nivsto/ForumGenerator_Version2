@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ForumGenerator_Version2_Server.Sys.Exceptions;
+
 namespace ForumGenerator_Version2_Server.Users
 {
     public class SuperUser
@@ -27,10 +29,10 @@ namespace ForumGenerator_Version2_Server.Users
                 this.isLoggedIn = true;
                 return this;
             }
-            else if (this.userName == userName && this.password != password)
-                throw new Exception();///////// change!;
+            else if (this.userName != userName || this.password != password)
+                throw new UnauthorizedUserException();
             else
-                throw new Exception();///////// change!;
+                throw new Exception();
         }
 
         internal bool logout()
@@ -41,7 +43,7 @@ namespace ForumGenerator_Version2_Server.Users
                 return true;
             }
             else
-                throw new Exception();///////// change!
+                throw new Exception("superUser is already logout");
         }
 
         public bool isLogged()

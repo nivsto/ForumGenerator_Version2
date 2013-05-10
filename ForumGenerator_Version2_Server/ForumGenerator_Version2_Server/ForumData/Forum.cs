@@ -1,5 +1,6 @@
 ﻿using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Users;
+using ForumGenerator_Version2_Server.Sys.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal List<SubForum> subForums { get; private set; }
         internal string forumName { get; private set; }
         internal List<User> members { get; private set; }
-
+        internal int nextSubForumId = 1;
+        internal int nextUserId = 1;
 
         public Forum(int forumId, string forumName, string adminUserName, string adminPassword)
         {
@@ -23,7 +25,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.forumId = forumId;
             this.forumName = forumName;
             this.members = new List<User>();
-            this.admin = new User(members.Count(), adminUserName, adminPassword, "", "", this);
+            int userId = nextUserId++;
+            this.admin = new User(userId, adminUserName, adminPassword, "", "", this);
             this.members.Add(this.admin);
             this.subForums = new List<SubForum>();
         }
@@ -48,7 +51,8 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             if (this.members.Find(delegate(User mem) { return mem.userName == userName; }) != null)
                 throw new UnauthorizedAccessException("username already exists");
-            User newUser = new User(this.members.Count(), userName, password, email, signature, this);
+            int userId = this.nextUserId++;
+            User newUser = new User(userId, userName, password, email, signature, this);
             this.members.Add(newUser);
             return newUser;
         }
@@ -66,7 +70,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new ArgumentOutOfRangeException("SubForum" + forumId);
+                throw new SubForumNotFoundException();
             }
         }
 
@@ -74,7 +78,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
                 throw new Exception();///////// change!
-            int subForumId = this.subForums.Count();
+            int subForumId = this.nextSubForumId++;
             SubForum newSubForum = new SubForum(subForumId, subForumTitle, this);
             this.subForums.Add(newSubForum);
             return newSubForum;
