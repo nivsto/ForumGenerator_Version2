@@ -11,7 +11,7 @@ namespace ForumGenerator_Version2_Server.ForumData
     {
         internal int discussionId { get; private set; }
         internal String title { get; private set; }
-        internal String content { get; private set; }
+        public String content;
         internal DateTime publishDate { get; private set; }
         internal User publisher { get; private set; }
         internal List<Comment> comments { get; private set; }
@@ -41,6 +41,30 @@ namespace ForumGenerator_Version2_Server.ForumData
             Comment newComment = new Comment(commentId, content, user, this);
             this.comments.Add(newComment);
             return newComment;
+        }
+
+
+        internal int getNumOfCommentsSingleUser(User user)
+        {
+            int result = 0;
+            foreach (Comment c in comments)
+            {
+                if (c.publisher == user)
+                    result++;
+            }
+            return result;
+        }
+
+
+        internal List<User> getResponsersForSingleUser(User user)
+        {
+            List<User> responsers = new List<User>();
+            foreach (Comment c in comments)
+            {
+                if (c.publisher != user)
+                    responsers.Add(c.publisher);
+            }
+            return responsers;
         }
     }
 }

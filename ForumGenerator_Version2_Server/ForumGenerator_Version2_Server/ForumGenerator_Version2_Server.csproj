@@ -46,7 +46,7 @@
     <Compile Include="ForumData\Discussion.cs" />
     <Compile Include="Sys\Exceptions\CommentNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\DiscussionNotFoundException.cs" />
-    <Compile Include="Sys\Exceptions\ForumNotFounException.cs" />
+    <Compile Include="Sys\Exceptions\ForumNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\SubForumNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\UnauthorizedOperationException.cs" />
     <Compile Include="Sys\Exceptions\UserNotFoundException.cs" />

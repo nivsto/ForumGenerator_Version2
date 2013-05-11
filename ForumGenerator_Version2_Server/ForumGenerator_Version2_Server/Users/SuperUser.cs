@@ -21,7 +21,7 @@ namespace ForumGenerator_Version2_Server.Users
             this.isLoggedIn = false;
         }
 
-        // returns tuple(1 for success or 0 for fail, error msg or user type
+ 
         internal SuperUser login(string userName, string password)
         {
             if (this.userName == userName && this.password == password)
@@ -35,15 +35,17 @@ namespace ForumGenerator_Version2_Server.Users
                 throw new Exception();
         }
 
-        internal bool logout()
+        internal bool logout(string userName, string password)
         {
-            if (this.isLoggedIn)
+            if (this.userName == userName && this.password == password)
             {
                 this.isLoggedIn = false;
                 return true;
             }
+            else if (this.userName != userName || this.password != password || !this.isLoggedIn)
+                throw new UnauthorizedUserException();
             else
-                throw new Exception("superUser is already logout");
+                throw new Exception("unknown error");
         }
 
         public bool isLogged()

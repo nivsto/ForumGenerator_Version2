@@ -35,7 +35,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             User user = this.members.Find(
                             delegate(User mem)
-                                {return mem.userName == userName;});
+                            { return mem.userName == userName; });
             if (user == null)
                 throw new NullReferenceException("no user named " + userName);
             else
@@ -98,12 +98,40 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             User currentMember = getUser(newAdminUserId);
             if (currentMember == null)
-                throw new Exception();///////// change!
+                throw new UserNotFoundException();
             this.admin = new User(currentMember.memberID, currentMember.userName, currentMember.password, "", "", this);
             this.members.Insert(this.members.IndexOf(currentMember), this.admin);
             this.members.Remove(currentMember);
             return this.admin;
         }
 
+
+        internal int getNumOfCommentsSingleUser(string userName)
+        {
+            int result = 0;
+            User user = getUser(userName);
+            if (user == null)
+                throw new UserNotFoundException();
+
+            foreach (SubForum sf in this.subForums)
+            {
+                result += sf.getNumOfCommentsSingleUser(user);
+            }
+            return result;
+        }
+
+
+        internal List<User> getResponsersForSingleUser(string userName)
+        {
+            List<User> responsers = new List<User>();
+            User user = getUser(userName);
+            if (user == null)
+                throw new UserNotFoundException();
+
+            foreach (SubForum sf in this.subForums)
+            {
+                responsers.Concat(sf.getResponsersForSingleUser(user));
+            }
+            return responsers;
     }
 }

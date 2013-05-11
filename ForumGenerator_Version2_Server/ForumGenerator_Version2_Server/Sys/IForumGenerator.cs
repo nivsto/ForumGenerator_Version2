@@ -9,20 +9,14 @@ namespace ForumGenerator_Version2_Server.Sys
 {
     public interface IForumGenerator
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="forumId"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <returns>The User object of the loggedin user</returns>
+        
         User login(int forumId, string userName, string password);
 
         bool logout(int forumId, int userId);
 
         SuperUser superUserLogin(string userName, string password);
 
-        bool superUserLogout();
+        bool superUserLogout(string userName, string password);
 
         User register(int forumId, string userName, string password, string email, string signature);
 
@@ -45,6 +39,24 @@ namespace ForumGenerator_Version2_Server.Sys
         Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content);
 
         User changeAdmin(string userName, string password, int forumId, int newAdminUserId);
+
+        // added in version 3:
+
+        Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
+
+        Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
+
+        Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
+
+        Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+
+        List<User> getMutualForumMembers(string userName, string pswd);
+
+        int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
+
+        List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName);
+
+
 
 
     }

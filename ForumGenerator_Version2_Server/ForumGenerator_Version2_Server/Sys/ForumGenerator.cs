@@ -29,7 +29,7 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns userid
         public User login(int forumId, string userName, string password)
         {
-            this.logger.logAction("login: forumId: " + forumId + " userName: " + userName + 
+            this.logger.logAction("performing login: forumId: " + forumId + " userName: " + userName + 
                                                                 " password: " + password);
             try
             {
@@ -50,7 +50,7 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns 1 for success or 0 for failure
         public bool logout(int forumId, int userId)
         {
-            this.logger.logAction("logout: forumId: " + forumId + 
+            this.logger.logAction("performing logout: forumId: " + forumId + 
                                          " userId: " + userId);
             try
             {
@@ -71,7 +71,7 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns userid
         public SuperUser superUserLogin(string userName, string password)
         {
-            this.logger.logAction("superUserLogin: userName: " + userName +
+            this.logger.logAction("performing superUserLogin: userName: " + userName +
                                                   " password: " + password);
             try
             {
@@ -89,13 +89,13 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-        // returns 1 for success or 0 for failure
-        public bool superUserLogout()
+  
+        public bool superUserLogout(string userName, string password)
         {
-            this.logger.logAction("superUserLogout");
+            this.logger.logAction("performing superUserLogout");
             try
             {
-                return this.superUser.logout();
+                return this.superUser.logout(userName, password);
             }
             catch (Exception e)
             {
@@ -107,7 +107,7 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns 1 for success or 0 for failure
         public User register(int forumId, string userName, string password, string email, string signature)
         {
-            this.logger.logAction("register: "); // TODO add content
+            this.logger.logAction("performing register: "); // TODO add content
             try
             {
                 Forum f = this.getForum(forumId);
@@ -133,7 +133,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the forums in the system
         public List<Forum> getForums()
         {
-            this.logger.logAction("getForums");
+            this.logger.logAction("performing getForums");
             try
             {
                 return this.forums;
@@ -148,7 +148,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the sub-forums in the system
         public List<SubForum> getSubForums(int forumId)
         {
-            this.logger.logAction("getSubForums: forunId: " + forumId);
+            this.logger.logAction("performing getSubForums: forunId: " + forumId);
             try
             {
                 Forum parentForum = this.getForum(forumId);
@@ -169,7 +169,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the discussions in a specific sub-forum
         public List<Discussion> getDiscussions(int forumId, int subForumId)
         {
-            this.logger.logAction("getDiscussions: forumId: " + forumId +
+            this.logger.logAction("performing getDiscussions: forumId: " + forumId +
                                                   "subForumId: " + subForumId);
             try
             {
@@ -197,7 +197,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the comments of a specific discussion
         public List<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
-            this.logger.logAction("getComments: forumId: " + forumId +
+            this.logger.logAction("performing getComments: forumId: " + forumId +
                                                   "subForumId: " + subForumId +
                                                 " discussionId: " + discussionId);
             try
@@ -232,7 +232,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //returns an XML list of all the users in a specific forum
         public List<User> getUsers(int forumId)
         {
-            this.logger.logAction("getUsers: forumId: " + forumId);
+            this.logger.logAction("performing getUsers: forumId: " + forumId);
             try
             {
                 Forum parentForum = this.getForum(forumId);
@@ -254,7 +254,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new forum and a new user which is the forum's administrator
         public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
-            this.logger.logAction("createNewForum: "); // TODO add content
+            this.logger.logAction("performing createNewForum: "); // TODO add content
             try
             {
                 if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)   // in case there is already such a forum
@@ -279,7 +279,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new sub-forum and a new user which is the forum's administrator
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
-            this.logger.logAction("createNewSubForum: "); // TODO add content
+            this.logger.logAction("performing createNewSubForum: "); // TODO add content
             try
             {
                 Forum forum = getForum(forumId);
@@ -307,7 +307,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new discussion and a new user which is the forum's administrator
         public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
-            this.logger.logAction("createNewDiscussion: "); // TODO add content
+            this.logger.logAction("performing createNewDiscussion: "); // TODO add content
             try
             {
                 Forum forum = getForum(forumId);
@@ -342,7 +342,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new comment and a new user which is the forum's administrator
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
-            this.logger.logAction("createNewComment: "); // TODO add content
+            this.logger.logAction("performing createNewComment: "); // TODO add content
             try
             {
                 Forum forum = getForum(forumId);
@@ -379,7 +379,57 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
+        
+        // This method never returns false.
+        // Throws Exceptions:
+        // UnauthorizedUserException - in case user is not authorized to delete this discussion.
+        // ForumNotFoundException - forum not found
+        // SubForumNotFoundException, DiscussionNotFoundException - same reason
+        // Exception - unknown error.
+        public bool deleteDiscussion(int forumId, int subForumId, int discussionId,
+                     string userName, string password)
+        {
+            this.logger.logAction("performing deleteDiscussion: "); // TODO add content
+            try
+            {
+                Forum f = this.getForum(forumId);
+                SubForum sf = f.getSubForum(subForumId);
+                Discussion d = sf.getDiscussion(discussionId);
+                // check authorization
+                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
+                    !Security.checkAdminAuthorization(f, userName, password) ||
+                    !Security.checkModeratorAuthorization(sf, userName, password) ||
+                    !Security.checkPublisherAuthorization(d, userName, password))
+                {
+                    this.logger.logError("deleteDiscussion: unauthorized user");
+                    throw new UnauthorizedUserException();
+                } // if
 
+                if (!sf.discussions.Remove(d))
+                    throw new Exception("remove Discussion from vector failed");
+                return true;
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("delete discussion: forum not found");
+                throw e;
+            }
+            catch (SubForumNotFoundException e)
+            {
+                this.logger.logError("delete discussion: subForum not found");
+                throw e;
+            }
+            catch (DiscussionNotFoundException e)
+            {
+                this.logger.logError("delete discussion: discussion not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("delete discussion: unknown error");
+                throw e;
+            }
+        }
         
 
 
@@ -387,7 +437,7 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new comment and a new user which is the forum's administrator
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
-            this.logger.logAction("changeAdmin: "); // TODO add content
+            this.logger.logAction("performing changeAdmin: "); // TODO add content
             try
             {
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
@@ -403,9 +453,15 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.logger.logError("changeAdmin: forum not found");
                 throw e;
             }
-            catch (Exception)
+            catch (UserNotFoundException e)
             {
-                throw new Exception();///////// change!
+                this.logger.logError("changeAdmin: userId " + newAdminUserId + " not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("changeAdmin: unknown error");
+                throw e;
             }
         }
 
@@ -430,6 +486,200 @@ namespace ForumGenerator_Version2_Server.Sys
         public int getForumCount()
         {
             return this.forums.Count();
+        }
+
+
+
+        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        {
+            this.logger.logAction("performing addModerator: "); // TODO add content
+            try
+            {
+                Forum f = this.getForum(forumId);
+                SubForum sf = f.getSubForum(subForumId);
+                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) ||
+                    !Security.checkAdminAuthorization(f, adderUsrName, adderUsrName))
+                {
+                    this.logger.logError("addModerator: unauthorized user");
+                    throw new UnauthorizedUserException();
+                }
+               
+                if (! sf.addModerator(modUserName))
+                    throw new Exception("unknown error");
+                return true;
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("addModerator: forum not found");
+                throw e;
+            }
+            catch (SubForumNotFoundException e)
+            {
+                this.logger.logError("addModerator: subForum not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("addModerator: unknown error");
+                throw e;
+            }
+
+                    
+        }
+
+        public bool removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        {
+            this.logger.logAction("performing removeModerator: "); // TODO add content
+            try
+            {
+                Forum f = this.getForum(forumId);
+                SubForum sf = f.getSubForum(subForumId);
+                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) ||
+                    !Security.checkAdminAuthorization(f, adderUsrName, adderUsrName))
+                {
+                    this.logger.logError("removeModerator: unauthorized user");
+                    throw new UnauthorizedUserException();
+                }
+                
+                if( !sf.removeModerator(modUserName))
+                    throw new Exception("unknown error");
+                return true;
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("removeModerator: forum not found");
+                throw e;
+            }
+            catch (SubForumNotFoundException e)
+            {
+                this.logger.logError("removeModerator: subForum not found");
+                throw e;
+            }
+            catch (UnauthorizedOperationException e)
+            {
+                this.logger.logError("removeModerator: " + e.Message);
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("removeModerator: unknown error");
+                throw e;
+            }
+        }
+
+        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string password, string newContent)
+        {
+            this.logger.logAction("editDiscussion: "); // TODO add content
+            try
+            {
+                Forum f = this.getForum(forumId);
+                SubForum sf = f.getSubForum(subForumId);
+                Discussion d = sf.getDiscussion(discussionId);
+                // check authorization
+                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
+                    !Security.checkAdminAuthorization(f, userName, password) ||
+                    !Security.checkModeratorAuthorization(sf, userName, password) ||
+                    !Security.checkPublisherAuthorization(d, userName, password))
+                {
+                    this.logger.logError("editDiscussion: unauthorized user");
+                    throw new UnauthorizedUserException();
+                } // if
+
+                return sf.editDiscussion(d.discussionId, newContent);
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("editDiscussion: forum not found");
+                throw e;
+            }
+            catch (SubForumNotFoundException e)
+            {
+                this.logger.logError("editDiscussion: subForum not found");
+                throw e;
+            }
+            catch (DiscussionNotFoundException e)
+            {
+                this.logger.logError("editDiscussion: discussion not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("editDiscussion: unknown error");
+                throw e;
+            }
+        }
+        
+
+        public List<User> getMutualForumMembers(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
+        {
+            this.logger.logAction("performing getNumOfCommentsSingleUser: "); //TODO add content
+            try
+            {
+                Forum forum = this.getForum(forumId);
+                if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) ||
+                    !Security.checkAdminAuthorization(forum, reqUserName, reqPswd))
+                {
+                    this.logger.logError("getNumOfCommentsSingleUser: unauthorized user");
+                    throw new UnauthorizedUserException();
+                }
+
+                return forum.getNumOfCommentsSingleUser(userName);
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("getNumOfCommentsSingleUser: forum not found");
+                throw e;
+            }
+            catch (UserNotFoundException e)
+            {
+                this.logger.logError("getNumOfCommentsSingleUser: user not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("getNumOfCommentsSingleUser: unknown error");
+                throw e;
+            }
+
+        }
+
+
+        public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
+        {
+            this.logger.logAction("performing getResponsersForSingleUser: "); //TODO add content
+            try
+            {
+                Forum forum = this.getForum(forumId);
+                if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) ||
+                    !Security.checkAdminAuthorization(forum, reqUserName, reqPswd))
+                {
+                    this.logger.logError("getResponsersForSingleUser: unauthorized user");
+                    throw new UnauthorizedUserException();
+                }
+
+                return forum.getResponsersForSingleUser(memberUserName);
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("getResponsersForSingleUser: forum not found");
+                throw e;
+            }
+            catch (UserNotFoundException e)
+            {
+                this.logger.logError("getResponsersForSingleUser: user not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("getResponsersForSingleUser: unknown error");
+                throw e;
+            }
         }
 
     }

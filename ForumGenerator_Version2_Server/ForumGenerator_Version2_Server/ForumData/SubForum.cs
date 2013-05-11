@@ -5,6 +5,7 @@ using System.Text;
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.Communication;
+using ForumGenerator_Version2_Server.Sys.Exceptions;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
@@ -49,6 +50,27 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
+        internal Boolean editDiscussion(int discussionId, string newContent)
+        {
+            try
+            {
+                Discussion d = getDiscussion(discussionId);
+                if (discussions.Remove(d))    // remove old
+                {
+                    d.content = newContent;
+                    discussions.Add(d);      // add edited discussion.
+                    return true;
+                }
+                else
+                    throw new Exception("unknown error");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new DiscussionNotFoundException();
+            }
+        }
+
+
         public User getModerator(string userName)
         {
             return this.moderators.Find(
@@ -56,16 +78,68 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public Boolean addModerator(User newModerator)
+        public Boolean addModerator(string modUserName)
         {
-         try{
-             if(Se
-
-            moderators.Add(newModerator);
+            User newModerator = parentForum.getUser(modUserName);
+            // check if user is registered to the forum
+            if (newModerator == null)
+            {
+                throw new UserNotFoundException();
+            }
+            // check if user is already a moderator of this subforum
+            try
+            {
+                this.getModerator(modUserName);
+                // if found - means that this user is already a moderator
+                throw new UnauthorizedOperationException("user is already a moderator");
+            }
+            catch (Exception)
+            {
+                this.moderators.Add(newModerator);
+                return true;
+            }
         }
 
 
+        internal Boolean removeModerator(string modUserName)
+        {
+            if (parentForum.admin.userName == modUserName)            // not allowed
+            {
+                throw new UnauthorizedOperationException("can not remove forum admin from being a moderator");
+            }
 
+            User moderator = parentForum.getUser(modUserName);
+            if (moderator == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            return moderators.Remove(moderator);
+        }
+
+
+        internal int getNumOfCommentsSingleUser(User user)
+        {
+            int result = 0;
+            foreach (Discussion d in discussions)
+            {
+                result += getNumOfCommentsSingleUser(user);
+            }
+            return result;
+        }
+
+
+        internal List<User> getResponsersForSingleUser(User user)
+        {
+            List<User> responsers = new List<User>();
+            foreach (Discussion d in discussions)
+            {
+                responsers.Concat(d.getResponsersForSingleUser(user));
+            }
+            return responsers;
+        }
+
+        
 
     }
 }
