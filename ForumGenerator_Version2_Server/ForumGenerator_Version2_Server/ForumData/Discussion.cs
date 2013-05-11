@@ -66,5 +66,11 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
             return responsers;
         }
+
+
+        internal int getNumOfComments()
+        {
+            return comments.Count;
+        }
     }
 }

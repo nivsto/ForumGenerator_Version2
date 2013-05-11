@@ -54,9 +54,11 @@ namespace ForumGenerator_Version2_Server.Sys
 
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
 
+        int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId);
+
         List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName);
 
-
+        List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
 
     }

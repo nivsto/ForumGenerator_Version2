@@ -121,6 +121,15 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
+        internal int getNumOfCommentsSubForum(int subForumId)
+        {
+            SubForum sf = getSubForum(subForumId);
+
+            if (sf == null)
+                throw new UserNotFoundException();
+            return sf.getNumOfComments();
+        }
+
         internal List<User> getResponsersForSingleUser(string userName)
         {
             List<User> responsers = new List<User>();
@@ -133,5 +142,22 @@ namespace ForumGenerator_Version2_Server.ForumData
                 responsers.Concat(sf.getResponsersForSingleUser(user));
             }
             return responsers;
+        }
+
+
+        internal List<User> getMutualUsers(Forum other)
+        {
+            List<User> mutuals = new List<User>();
+            // Go all over other's members and for each one check
+            // if he is a member in this forum.
+            foreach (User user in other.members)
+            {
+                if (this.getUser(user.memberID) != null)
+                {
+                    mutuals.Add(user);
+                }
+            }
+            return mutuals;
+        }
     }
 }

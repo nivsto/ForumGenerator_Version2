@@ -257,7 +257,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("performing createNewForum: "); // TODO add content
             try
             {
-                if (this.forums.Find(delegate(Forum frm) { return frm.forumName == forumName; }) != null)   // in case there is already such a forum
+                if (this.getForum(forumName) != null)   // in case there is already such a forum
                     throw new UnauthorizedOperationException("forum name already exists");
                 if (!Security.checkSuperUserAuthorization(this, userName, password)) {
                     this.logger.logError("createNewForum: unauthorized superUser");
@@ -478,6 +478,14 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
+
+        //get a forum by its forum name
+        public Forum getForum(string forumName)
+        {
+            return this.forums.Find(delegate(Forum f) { return f.forumName == forumName; });
+        }
+
+
         public SuperUser getSuperUser()
         {
             return this.superUser;
@@ -682,5 +690,65 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
+
+
+        public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
+        {
+            this.logger.logAction("performing getNumOfCommentsSubForum: "); //TODO add content
+            try
+            {
+                Forum forum = this.getForum(forumId);
+                if (!Security.checkSuperUserAuthorization(this, userName, pswd))
+                {
+                    this.logger.logError("getNumOfCommentsSubForum: unauthorized user");
+                    throw new UnauthorizedUserException();
+                }
+
+                return forum.getNumOfCommentsSubForum(subForumId);
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("getNumOfCommentsSubForum: forum not found");
+                throw e;
+            }
+            catch (SubForumNotFoundException e)
+            {
+                this.logger.logError("getNumOfCommentsSubForum: subForum not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("getNumOfCommentsSubForum: unknown error");
+                throw e;
+            }
+        }
+
+
+        public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
+        {
+            this.logger.logAction("performing getMutualUsers: "); //TODO add content
+            try
+            {
+                Forum forum1 = this.getForum(forumId1);
+                Forum forum2 = this.getForum(forumId2);
+                if (!Security.checkSuperUserAuthorization(this, userName, password))
+                {
+                    this.logger.logError("getMutualUsers: unauthorized user");
+                    throw new UnauthorizedUserException();
+                }
+
+                return forum1.getMutualUsers(forum2);
+            }
+            catch (ForumNotFoundException e)
+            {
+                this.logger.logError("getMutualUsers: forum not found");
+                throw e;
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("getMutualUsers: unknown error");
+                throw e;
+            }
+        }
     }
 }

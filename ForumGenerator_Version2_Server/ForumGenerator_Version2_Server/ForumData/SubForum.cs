@@ -139,7 +139,17 @@ namespace ForumGenerator_Version2_Server.ForumData
             return responsers;
         }
 
-        
+
+        internal int getNumOfComments()
+        {
+            int result = 0;
+
+            foreach (Discussion d in discussions)
+            {
+                result += d.getNumOfComments();
+            }
+            return result;
+        }
 
     }
 }
