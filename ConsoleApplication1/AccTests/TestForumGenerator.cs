@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumGenerator_Version2_Server;
 using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
@@ -50,8 +49,8 @@ namespace ConsoleApplication1
                                         "Testin on " + this.mode + " mode\n");
 
             // Most important: basic tests comes first !!!
-            testAdminLogin();
-            testAdminLogout();
+            testSuperUserLogin();
+            testSuperUserLogout();
             testGetForums();
             testCreateNewForum();
             testRegister();
@@ -83,7 +82,7 @@ namespace ConsoleApplication1
         const string DUMMY = "dummy";
 
 
-        private void testAdminLogin()
+        private void testSuperUserLogin()
         {
             testsLogger.logAction("testing superUserLogin...  ");
             bool passed = true;
@@ -140,7 +139,7 @@ namespace ConsoleApplication1
 
 
 
-        private void testAdminLogout()
+        private void testSuperUserLogout()
         {
             testsLogger.logAction("testing superUserLogout...  ");
             int testNum = 1;
