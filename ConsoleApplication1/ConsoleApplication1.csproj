@@ -60,19 +60,17 @@
   <ItemGroup>
     <Compile Include="AccTests\AccTest.cs" />
     <Compile Include="AccTests\AccTestsForumGenerator.cs" />
-    <Compile Include="AccTests\AccTestsServer.cs" />
-    <Compile Include="Bridge\Bridge.cs" />
+    <Compile Include="AccTests\AdminAccTests.cs" />
+    <Compile Include="AccTests\GuestAccTests.cs" />
+    <Compile Include="AccTests\MemberAccTests.cs" />
+    <Compile Include="AccTests\SuperUserAccTests.cs" />
     <Compile Include="Bridge\BridgeForumGenerator.cs" />
     <Compile Include="Bridge\ProxyForumGeneratorImpl.cs" />
     <Compile Include="Bridge\RealForumGeneratorImpl.cs" />
     <Compile Include="ServerRequestCreatror.cs" />
     <Compile Include="HttpHandler.cs" />
     <Compile Include="Run.cs" />
-    <Compile Include="AccTests\TestClient.cs" />
     <Compile Include="AccTests\TestForumGenerator.cs" />
-    <Compile Include="AccTests\TestServer.cs" />
-    <Compile Include="Bridge\Proxy.cs" />
-    <Compile Include="Bridge\Real.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestsLogger.cs" />
     <Compile Include="XmlHandler.cs" />

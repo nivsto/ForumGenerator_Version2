@@ -7,7 +7,6 @@ using System.IO;
 using System.Threading.Tasks;
 using ForumGenerator_Version2_Server;
 using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
@@ -24,7 +23,7 @@ namespace ConsoleApplication1
         {
        
             string logFileName = getPath() + "/TestForumGenerator.Log.txt";
-            AccTest tests = new TestForumGenerator(new ForumGenerator("admin", "admin"), logFileName);                                   
+            TestForumGenerator tests = new TestForumGenerator(new ForumGenerator("admin", "admin"), logFileName);                                   
             tests.runTests();
             Console.ReadKey();
 

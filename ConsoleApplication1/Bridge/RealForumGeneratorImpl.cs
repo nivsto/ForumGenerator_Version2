@@ -22,7 +22,7 @@ namespace ConsoleApplication1
         //const string ADMIN = ForumGenerator.ADMIN;
         const string ADMIN = "admin";
 
-        private ForumGenerator forumGen;
+        private IForumGenerator forumGen;
 
 
         public RealForumGeneratorImpl(ForumGenerator forumGen)
@@ -39,9 +39,9 @@ namespace ConsoleApplication1
             return this.forumGen.superUserLogin(usrName, usrPswd);
         }
 
-        public bool superUserLogout()
+        public bool superUserLogout(string usrName, string usrPswd)
         {
-            return this.forumGen.superUserlogout();
+            return this.forumGen.superUserLogout(usrName, usrPswd);
         }
 
         // Asa
@@ -80,22 +80,22 @@ namespace ConsoleApplication1
             return this.forumGen.createNewComment(userName, password, forumId, subForumId, discussionId, content);
         }
 
-        LinkedList<Forum> BridgeForumGenerator.getForums()
+        List<Forum> BridgeForumGenerator.getForums()
         {
             return this.forumGen.getForums();
         }
 
-        LinkedList<SubForum> BridgeForumGenerator.getSubForums(int forumId)
+        List<SubForum> BridgeForumGenerator.getSubForums(int forumId)
         {
             return this.forumGen.getSubForums(forumId);
         }
 
-        LinkedList<Discussion> BridgeForumGenerator.getDiscussions(int forumId, int subForumId)
+        List<Discussion> BridgeForumGenerator.getDiscussions(int forumId, int subForumId)
         {
             return this.forumGen.getDiscussions(forumId, subForumId);
         }
 
-        LinkedList<Comment> BridgeForumGenerator.getComments(int forumId, int subForumId, int discussionId)
+        List<Comment> BridgeForumGenerator.getComments(int forumId, int subForumId, int discussionId)
         {
             return this.forumGen.getComments(forumId, subForumId, discussionId);
         }

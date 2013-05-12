@@ -19,9 +19,9 @@ namespace ConsoleApplication1
     public abstract class AccTestsForumGenerator : AccTest
     {
         protected BridgeForumGenerator bridge;
+        protected string mode;
 
-
-        public bool isForumExist(LinkedList<Forum> forums, string forumName)
+        public bool isForumExist(List<Forum> forums, string forumName)
         {
             bool res = false;
             foreach (Forum f in forums)
