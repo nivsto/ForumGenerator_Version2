@@ -159,5 +159,30 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
             return mutuals;
         }
+
+
+        public int getUserType(int forumId, string userName)
+        {
+            User user = this.getUser(userName);
+            if (user == null)
+                throw new UserNotFoundException();
+            if (admin.userName == userName)
+                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.ADMIN;
+            else
+                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.MEMBER;
+        }
+
+
+        public int getUserType(int forumId, int subForumId, string userName)
+        {
+            User user = this.getUser(userName);
+            if (user == null)
+                throw new UserNotFoundException();
+            SubForum sf = getSubForum(subForumId);
+            if (sf == null)
+                throw new SubForumNotFoundException();
+
+            return sf.getUserType(userName);
+        }
     }
 }

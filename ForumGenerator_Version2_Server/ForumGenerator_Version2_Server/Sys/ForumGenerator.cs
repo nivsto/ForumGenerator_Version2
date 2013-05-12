@@ -12,6 +12,17 @@ namespace ForumGenerator_Version2_Server.Sys
 {
     public class ForumGenerator : IForumGenerator
     {
+        public static enum userTypes
+        {
+            GUEST,
+            MEMBER,
+            MODERATOR,
+            ADMIN,
+            SUPER_USER
+        };
+
+
+
         internal int nextForumId = 1;
 
         internal SuperUser superUser { get; private set; }
@@ -749,6 +760,20 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.logger.logError("getMutualUsers: unknown error");
                 throw e;
             }
+        }
+
+
+        public int getUserType(int forumId, string userName)
+        {
+            if (userName == this.superUser.userName)
+                return (int) userTypes.SUPER_USER;
+            
+        }
+
+
+        public int getUserType(int forumId, int subForumId, string userName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

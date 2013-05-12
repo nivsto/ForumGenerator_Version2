@@ -151,5 +151,15 @@ namespace ForumGenerator_Version2_Server.ForumData
             return result;
         }
 
+
+        // This method only checks if the user is a moderator. If not - it returns ForumGenerator.MEMBER
+        public int getUserType(string userName)
+        {
+            User user = getModerator(userName);
+            if (user != null)
+                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.MODERATOR;
+            else
+                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.MEMBER;
+        }
     }
 }
