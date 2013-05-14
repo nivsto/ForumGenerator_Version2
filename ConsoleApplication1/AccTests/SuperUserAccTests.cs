@@ -9,8 +9,6 @@ namespace ConsoleApplication1.AccTests
 {
     class SuperUserAccTests : AccTestsForumGenerator
     {
-        const string PROXY = "Proxy";
-        const string REAL = "Real";
 
         const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
         const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
@@ -23,18 +21,16 @@ namespace ConsoleApplication1.AccTests
 
         public override void runTests()
         {
-            testSuperUserLogin();
-            testSuperUserLogout();
-            testCreateNewForum();
-            testGetMutualUsers();
+            this.testsLogger.logTestsSection("SuperUser");
+            test(testSuperUserLogin);
+            test(testSuperUserLogout);
+            test(testCreateNewForum);
+            test(testGetMutualUsers);
         }
 
-        private void testSuperUserLogin()
+        private int testSuperUserLogin()
         {
-            testsLogger.logAction("testing superUserLogin...  ");
-            bool passed = true;
-            int testNum = 1;
-
+            int testNum = 0;
             SuperUser res;
 
             /* success tests */
@@ -45,10 +41,7 @@ namespace ConsoleApplication1.AccTests
                 AssertEquals(SU_PSWD, res.password);
                 testNum++;
             }
-            catch
-            {
-                failMsg(testNum++);
-            }
+            catch { failMsg(testNum); }
 
             this.bridge.reset();
 
@@ -57,8 +50,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 res = this.bridge.superUserLogin("wrong user name", SU_PSWD);
-                failMsg(testNum++);
-                passed = false;
+                failMsg(testNum);
             }
             catch { testNum++; }
 
@@ -67,8 +59,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 res = this.bridge.superUserLogin(SU_NAME, "wrong password");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(testNum);
             }
             catch { testNum++; }
 
@@ -77,24 +68,18 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 res = this.bridge.superUserLogin(SU_NAME, null);
-                failMsg(testNum++);
-                passed = false;
+                failMsg(testNum);
             }
             catch { testNum++; }
 
             this.bridge.reset();
 
-            // more tests here
-
-            if (passed)
-                testsLogger.logAction("superUserLogin tests PASSED\n");
+            return testNum;
         }
 
-        private void testSuperUserLogout()
+        private int testSuperUserLogout()
         {
-            testsLogger.logAction("testing superUserLogout...  ");
-            int testNum = 1;
-            bool passed = true;
+            int testNum = 0;
 
             bool res;
             SuperUser tmp;
@@ -109,7 +94,7 @@ namespace ConsoleApplication1.AccTests
             }
             catch
             {
-                failMsg(testNum++);
+                failMsg(testNum);
             }
 
             this.bridge.reset();
@@ -120,8 +105,7 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.superUserLogout("wrong username", SU_PSWD);
-                passed = false;
-                failMsg(testNum++);
+                failMsg(testNum);
             }
             catch { testNum++; }
 
@@ -131,8 +115,7 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.superUserLogout(SU_NAME, "wrong password");
-                passed = false;
-                failMsg(testNum++);
+                failMsg(testNum);
             }
             catch { testNum++; }
 
@@ -141,23 +124,18 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 res = this.bridge.superUserLogout(SU_NAME, "wrong password");
-                passed = false;
-                failMsg(testNum++);
+                failMsg(testNum);
             }
             catch { testNum++; }
 
-
-            if (passed)
-                testsLogger.logAction("superUserLogout tests PASSED\n");
-
             this.bridge.reset();
+
+            return testNum;
         }
 
-        private void testCreateNewForum()
+        private int testCreateNewForum()
         {
-            testsLogger.logAction("testing createNewForum...  ");
-            int testNum = 1;
-            bool passed = true;
+            int testNum = 0;
 
             Forum res;
             List<Forum> forums = this.bridge.getForums();
@@ -174,7 +152,7 @@ namespace ConsoleApplication1.AccTests
             }
             catch
             {
-                failMsg(testNum++);
+                failMsg(1);
             }
 
             /* failure tests */
@@ -185,8 +163,7 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.createNewForum("wrong user", SU_PSWD, "unique Forum", "forum mngr", "pswd");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(2);
             }
             catch { testNum++;}
 
@@ -197,8 +174,7 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.createNewForum(SU_NAME, "wrong pswd", "unique Forum", "forum mngr", "pswd");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(3);
             }
             catch { testNum++; }
 
@@ -208,8 +184,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(4);
             }
             catch { testNum++; }
 
@@ -221,8 +196,7 @@ namespace ConsoleApplication1.AccTests
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd");
                 res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "pswd2");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(5);
             }
             catch { testNum++; }
 
@@ -233,8 +207,7 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd~;forum", "mngr", "pswd");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(6);
             }
             catch { testNum++; }
 
@@ -245,8 +218,7 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr;*$#", "pswd");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(7);
             }
             catch { testNum++; }
 
@@ -257,20 +229,18 @@ namespace ConsoleApplication1.AccTests
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                 res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd;(*%^)");
-                failMsg(testNum++);
-                passed = false;
+                failMsg(8);
             }
             catch { testNum++; }
 
-            if (passed)
-                testsLogger.logAction("createNewForum tests PASSED\n");
+            this.bridge.reset();
+
+            return testNum;
         }
 
-        private void testGetMutualUsers()
+        private int testGetMutualUsers()
         {
-            testsLogger.logAction("testing getMutualUsers...  ");
-            int testNum = 1;
-            bool passed = true;
+            int testNum = 0;
 
             List<User> res;
 
@@ -294,7 +264,7 @@ namespace ConsoleApplication1.AccTests
             }
             catch
             {
-                failMsg(testNum++);
+                failMsg(1);
             }
 
             /* failure tests */
@@ -308,10 +278,11 @@ namespace ConsoleApplication1.AccTests
                 Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
 
                 res = this.bridge.getMutualUsers("wrong user", SU_PSWD, forum1.forumId, forum2.forumId);
-                failMsg(testNum++);
-                passed = false;
+                failMsg(2);
             }
             catch { testNum++; }
+
+            this.bridge.reset();
 
             //wrong superUserPassword
             try
@@ -321,10 +292,11 @@ namespace ConsoleApplication1.AccTests
                 Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
 
                 res = this.bridge.getMutualUsers(SU_NAME, "wrong pass", forum1.forumId, forum2.forumId);
-                failMsg(testNum++);
-                passed = false;
+                failMsg(3);
             }
             catch { testNum++; }
+
+            this.bridge.reset();
 
             //Invalid ForumId
             try
@@ -334,13 +306,13 @@ namespace ConsoleApplication1.AccTests
                 Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
 
                 res = this.bridge.getMutualUsers(SU_NAME, "wrong pass", -5, forum2.forumId);
-                failMsg(testNum++);
-                passed = false;
+                failMsg(4);
             }
             catch { testNum++; }
 
-            if (passed)
-                testsLogger.logAction("getMutualUsers tests PASSED\n");
+            this.bridge.reset();
+
+            return testNum;
         }
 
     }

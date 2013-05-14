@@ -9,11 +9,11 @@ namespace ConsoleApplication1.AccTests
 {
     class MemberAccTests : AccTestsForumGenerator
     {
-        const string PROXY = "Proxy";
-        const string REAL = "Real";
-
         const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
         const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
+        const string ADMIN_NAME = "mngr";
+        const string ADMIN_PSWD = "mngrPswd";
+
 
         public MemberAccTests(TestsLogger testsLogger, BridgeForumGenerator bridge)
         {
@@ -23,446 +23,752 @@ namespace ConsoleApplication1.AccTests
 
         public override void runTests()
         {
-            testLogin();
-            testLogout();
-            testCreateNewDiscussion();
-            testCreateNewComment();
-            testDeleteDiscussion();
-            testEditDiscussion();
-            testRegister();
+            this.testsLogger.logTestsSection("Member");
+            test(testLogin);
+            //test(testLogout);
+            test(testCreateNewDiscussion);
+            test(testCreateNewComment);
+            test(testDeleteDiscussion);
+            test(testEditDiscussion);
+            test(testRegister);
         }
 
-        private void testRegister()
+        private int testLogin()
         {
-            testsLogger.logAction("testing register...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            //try
-            //{
-            //    User res;
-            //    List<Forum> forums = this.bridge.getForums();
-            //    Forum forum;
-            //    int forumId;
-            //    LinkedList<User> members;
-            //    User member;
-
-            //    forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-            //    forumId = forum.forumId;
-            //    string memberName = getUniqueUserName(forum);
-
-            //    /* success tests */
-
-            //    AssertFalse(isUserNameExist(forum, memberName));
-            //    member = this.bridge.register(forumId, memberName, "newPSWD", "newMem@gmail.com", "The newMEM");
-            //    AssertTrue(isUserNameExist(forum, memberName));
-            //    testNum++;
-
-
-            //    /* failure tests */
-            //    memberName = getUniqueUserName(forum);
-
-            //    try
-            //    {
-            //        // illegal chars in password
-            //        res = this.bridge.register(forumId, memberName, "~pswd~", "newMEM@gmail.com", "The newMEM");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
-
-            //    try
-            //    {
-            //        res = this.bridge.register(forumId, null, "pswd", "newMEM@gmail.com", "The newMEM");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
-
-            //    try
-            //    {
-            //        // illegal char in userName
-            //        res = this.bridge.register(forumId, memberName + "~", "legalPSWD", "legal@gmail.com", "legal");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
-
-            //    try
-            //    {
-            //        // invalid forumId
-            //        res = this.bridge.register(-1, memberName, "pswd", "newMEM@gmail.com", "The newMEM");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
-
-            //    try
-            //    {
-            //        // invalid email form
-            //        res = this.bridge.register(forumId, memberName, "pswd", "newMEM.gmail.com", "The newMEM");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
-
-            //    try
-            //    {
-            //        // invalid signature
-            //        res = this.bridge.register(forumId, memberName, "pswd", "newMEM@gmail.com", "לא_חוקי");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
-
-            //    if (passed)
-            //        testsLogger.logAction("register tests PASSED\n");
-            //}
-            //catch
-            //{
-            //    failMsg(testNum++);
-            //}
-        }
-
-
-        private void testEditDiscussion()
-        {
-            //throw new NotImplementedException();
-        }
-
-        private void testDeleteDiscussion()
-        {
-            //throw new NotImplementedException();
-        }
-
-        private void testLogin()
-        {
-            testsLogger.logAction("testing login...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            try
             {
+                int testNum = 0;
+
                 User res;
-                List<Forum> forums = this.bridge.getForums();
-                Forum forum;
-                int forumId;
-                List<User> members;
-                User member;
-
-                forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                forumId = forum.forumId;
-                string memberName = getUniqueUserName(forum);
-                member = this.bridge.register(forumId, memberName, "newPSWD", "mem@gmail.com", "The MEM");
 
                 /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
 
-                res = this.bridge.login(forumId, member.userName, member.password);
-                AssertTrue(member.isLoggedIn);
-                testNum++;
+                    res = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    AssertTrue(res.isLoggedIn);
 
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    res = this.bridge.login(forum.forumId, user.userName, user.password);
+                    AssertTrue(res.isLoggedIn);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
 
                 /* failure tests */
 
-                // verify that member is not logged in. An error here will cause
-                // a failure in test no. 1 and exit from this test method
-                this.bridge.logout(forumId, member.memberID);
-
+                // wrong userName
                 try
                 {
-                    res = this.bridge.login(forumId, "", member.password);
-                    failMsg(testNum++);
-                    passed = false;
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+
+                    res = this.bridge.login(forum.forumId, "wrong user", ADMIN_PSWD);
+                    failMsg(testNum);
                 }
                 catch { testNum++; }
 
+                this.bridge.reset();
+
+                // wrong password
                 try
                 {
-                    res = this.bridge.login(forumId, member.userName, member.password + "a");
-                    failMsg(testNum++);
-                    passed = false;
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+
+                    res = this.bridge.login(forum.forumId, ADMIN_NAME, "wrong pass"); 
+                    failMsg(testNum);
                 }
                 catch { testNum++; }
 
+                this.bridge.reset();
+
+                // wrong forumId
                 try
                 {
-                    // password is "newPSWD" - checking case sensitive.
-                    res = this.bridge.login(forumId, member.userName, member.password.ToUpper());
-                    failMsg(testNum++);
-                    passed = false;
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+
+                    res = this.bridge.login(-2, ADMIN_NAME, ADMIN_PSWD); 
+                    failMsg(testNum);
                 }
                 catch { testNum++; }
 
-                try
-                {
-                    res = this.bridge.login(forumId, getUniqueUserName(forum), member.password);
-                    failMsg(testNum++);
-                    passed = false;
-                }
-                catch { testNum++; }
+                this.bridge.reset();
 
-                try
-                {
-                    // invalid forumID.
-                    res = this.bridge.login(-1, member.userName, member.password);
-                    failMsg(testNum++);
-                    passed = false;
-                }
-                catch { testNum++; }
-
-                if (passed)
-                    testsLogger.logAction("login tests PASSED\n");
-            }
-            catch
-            {
-                failMsg(testNum++);
+                return testNum;
             }
         }
 
-        private void testLogout()
+        private int testLogout()
         {
-            testsLogger.logAction("testing logout...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            try
             {
-                bool res;
-                List<Forum> forums = this.bridge.getForums();
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                // first member in forum
-                User member = this.bridge.register(forum.forumId, getUniqueUserName(forum), "pswd", "mem@gmail.com", "The MEM");
-                member = this.bridge.login(forum.forumId, member.userName, member.password);
+                int testNum = 0;
+
+                //Boolean res;
+
+                ///* success tests */
+                //try
+                //{
+                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                //    res = this.bridge.logout(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                //    AssertFalse(user.isLoggedIn);
+                //    AssertTrue(res);
+
+                //    user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                //    this.bridge.login(forum.forumId, user.userName, user.password);
+                //    res = this.bridge.logout(forum.forumId, user.userName, user.password);
+                //    AssertFalse(user.isLoggedIn);
+                //    AssertTrue(res);
+
+                //    testNum++;
+                //}
+                //catch { failMsg(testNum); }
+
+                //this.bridge.reset();
+
+                ///* failure tests */
+
+                //// wrong userName
+                //try
+                //{
+                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                //    res = this.bridge.logout(forum.forumId, "wrong name", ADMIN_PSWD);
+                //    failMsg(testNum);
+                //}
+                //catch { testNum++; }
+
+                //this.bridge.reset();
+
+                //// wrong password
+                //try
+                //{
+                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                //    res = this.bridge.logout(forum.forumId, ADMIN_NAME, "wrong pass");
+                //    failMsg(testNum);
+                //}
+                //catch { testNum++; }
+
+                //this.bridge.reset();
+
+                //// wrong forumId
+                //try
+                //{
+                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                //    res = this.bridge.logout(-2, ADMIN_NAME, ADMIN_PSWD);
+                //    failMsg(testNum);
+                //}
+                //catch { testNum++; }
+
+                //this.bridge.reset();
+
+                return testNum;
+            }
+        }
+
+        private int testCreateNewDiscussion()
+        {
+            {
+                int testNum = 0;
+
+                Discussion res;
 
                 /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
 
-                AssertTrue(member.isLoggedIn);
-                res = this.bridge.logout(forum.forumId, member.memberID);
-                AssertFalse(member.isLoggedIn);
-                testNum++;
+                    res = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    AssertTrue(subForum.discussions.Contains(res));
 
-                res = this.bridge.logout(forum.forumId, member.memberID); // already logged out
-                AssertFalse(res);
-                AssertFalse(member.isLoggedIn);
+                    res = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion2", "no content");
+                    AssertTrue(subForum.discussions.Contains(res));
+
+                    res = this.bridge.createNewDiscussion(user.userName, user.password, forum.forumId, subForum.subForumId, "discussion3", "no content");
+                    AssertTrue(subForum.discussions.Contains(res));
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
 
                 /* failure tests */
 
-                if (passed)
-                    testsLogger.logAction("logout tests PASSED\n");
+                // wrong userName
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+
+                    res = this.bridge.createNewDiscussion("wrong user", SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong password
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+
+                    res = this.bridge.createNewDiscussion(SU_NAME, "wrong pass", forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong forumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+
+                    res = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, -2, subForum.subForumId, "discussion1", "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong subForumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+
+                    res = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, -1, "discussion1", "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                return testNum;
             }
-            catch
+        }
+
+        private int testCreateNewComment()
+        {
             {
-                failMsg(testNum++);
+                int testNum = 0;
+
+                Comment res;
+
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    AssertTrue(discussion.comments.Contains(res));
+
+                    res = this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    AssertTrue(discussion.comments.Contains(res));
+
+                    res = this.bridge.createNewComment(user.userName, user.password, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    AssertTrue(discussion.comments.Contains(res));
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                /* failure tests */
+
+                // wrong userName
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.createNewComment("wrong user", SU_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong password
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.createNewComment(SU_NAME, "wrong pass", forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong forumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, -2, subForum.subForumId, discussion.discussionId, "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong subForumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, -1, discussion.discussionId, "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong discussionId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, -1, "no content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                return testNum;
             }
-
         }
 
-        private void testCreateNewDiscussion()
+        private int testDeleteDiscussion()
         {
-            //testsLogger.logAction("testing createNewDiscussion...  ");
-            //int testNum = 1;
-            //bool passed = true;
+            {
+                int testNum = 0;
 
-            //try
-            //{
-            //    Discussion res;
-            //    List<Forum> forums = this.bridge.getForums();
-            //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-            //    int forumId = forum.forumId;
-            //    SubForum sf = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, getUniqueSubForumTitle(forum));
-            //    int sfId = sf.subForumId;
-            //    int discCountPre;
+                Boolean res;
 
-            //    /* success tests */
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-            //    discCountPre = sf.discussions.Count;
-            //    string memberName = getUniqueUserName(forum);
-            //    User member = this.bridge.register(forumId, memberName, "pswd", "mem@gmail.com", "the Mem");
-            //    res = this.bridge.createNewDiscussion(memberName, "pswd", forumId,
-            //                                          sfId, "disc1", "This test should success!");
-            //    AssertEquals(discCountPre + 1, sf.discussions.Count);
-            //    testNum++;
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, SU_PSWD);
+                    AssertFalse(subForum.discussions.Contains(discussion));
+                    AssertTrue(res);
 
-            //    // test no title
-            //    discCountPre = sf.discussions.Count;
-            //    res = this.bridge.createNewDiscussion(memberName, "pswd", forumId,
-            //                                          sfId, "", "This test should also success!");
-            //    AssertEquals(discCountPre + 1, sf.discussions.Count);
-            //    AssertTrue(res.title.startWith("no subject", true));
-            //    testNum++;
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD);
+                    AssertFalse(subForum.discussions.Contains(discussion));
+                    AssertTrue(res);
 
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, user.userName, user.password);
+                    AssertFalse(subForum.discussions.Contains(discussion));
+                    AssertTrue(res);
 
-            //    /* failure tests */
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
 
-            //    try
-            //    {
-            //        // wrong password
-            //        res = this.bridge.createNewDiscussion(memberName, "wrongPSWD", forumId,
-            //                                          sfId, "disc1", "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                this.bridge.reset();
 
-            //    try
-            //    {
-            //        // wrong user name
-            //        res = this.bridge.createNewDiscussion(getUniqueUserName(forum), "pswd", forumId,
-            //                                          sfId, "disc1", "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                /* failure tests */
 
-            //    try
-            //    {
-            //        // invalid forumId
-            //        res = this.bridge.createNewDiscussion(memberName, "pswd", -1,
-            //                                          sfId, "disc1", "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                // wrong userName
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-            //    try
-            //    {
-            //        // invalid subForumId
-            //        res = this.bridge.createNewDiscussion(memberName, "pswd", forumId,
-            //                                          -1, "disc1", "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, "wrong user", SU_PSWD);
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-            //    try
-            //    {
-            //        // invalid title - ilegal chars
-            //        res = this.bridge.createNewDiscussion(memberName, "pswd", forumId,
-            //                                          sfId, "~disc1~", "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                this.bridge.reset();
 
-            //    try
-            //    {
-            //        // invalid title - too long
-            //        string title = "This title contains legal chars as described in User Stories doc," +
-            //                       "but is also too long - over 80 chars. Thus, this test should fail";
-            //        res = this.bridge.createNewDiscussion(memberName, "pswd", forumId,
-            //                                          sfId, title, "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                // wrong password
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, "wrong pass");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-            //    if (passed)
-            //        testsLogger.logAction("createNewDiscussion tests PASSED\n");
-            //}
-            //catch
-            //{
-            //    failMsg(testNum++);
-            //}
+                this.bridge.reset();
+
+                // wrong forumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.deleteDiscussion(forum.forumId, -2, discussion.discussionId, SU_NAME, SU_PSWD);
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong subForumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.deleteDiscussion(forum.forumId, -2, discussion.discussionId, SU_NAME, SU_PSWD);
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong discussionId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, -2, SU_NAME, SU_PSWD);
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                return testNum;
+            }
         }
 
-        private void testCreateNewComment()
+        private int testEditDiscussion()
         {
-            //testsLogger.logAction("testing createNewComment... ");
-            //int testNum = 1;
-            //bool passed = true;
+            {
+                int testNum = 0;
 
-            //try
-            //{
-            //    Comment res;
-            //    List<Forum> forums = this.bridge.getForums();
-            //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-            //    int forumId = forum.forumId;
-            //    SubForum sf = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, getUniqueSubForumTitle(forum));
-            //    int sfId = sf.subForumId;
-            //    Discussion disc = this.bridge.createNewDiscussion("mngr", "mngrPswd", forumId, sfId, "disc", "disc content");
-            //    int discId = disc.discussionId;
+                Boolean res;
 
-            //    string memberName = getUniqueUserName(forum);
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-            //    /* success tests */
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, SU_PSWD, "new content");
+                    AssertEquals(discussion.content, "new content");
+                    AssertTrue(res);
 
-            //    int commentCountPre = disc.comments.Count;
-            //    User member = this.bridge.register(forumId, memberName, "pswd", "mem@gmail.com", "the Mem");
-            //    res = this.bridge.createNewComment(memberName, "pswd", forumId,
-            //                                          sfId, discId, "This test should success!");
-            //    AssertEquals(commentCountPre + 1, disc.comments.Count);
-            //    testNum++;
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
+                    AssertEquals(discussion.content, "new content");
+                    AssertTrue(res);
 
-            //    /* unlimited content length - test on 8192 chars */
-            //    commentCountPre = disc.comments.Count;
-            //    res = this.bridge.createNewComment(memberName, "pswd", forumId,
-            //                                          sfId, discId, new String('a', 8192));
-            //    AssertEquals(commentCountPre + 1, disc.comments.Count);
-            //    testNum++;
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, user.userName, user.password, "new content");
+                    AssertEquals(discussion.content, "new content");
+                    AssertTrue(res);
 
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
 
-            //    /* failure tests */
+                this.bridge.reset();
 
-            //    try
-            //    {
-            //        // wrong password
-            //        res = this.bridge.createNewComment(memberName, "wrongPSWD", forumId,
-            //                                          sfId, discId, "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                /* failure tests */
 
-            //    try
-            //    {
-            //        // wrong user name (unregistered user)
-            //        res = this.bridge.createNewComment(getUniqueUserName(forum), "pswd", forumId,
-            //                                          sfId, discId, "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                // wrong userName
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-            //    try
-            //    {
-            //        // invalid forumId
-            //        res = this.bridge.createNewComment(memberName, "pswd", -1,
-            //                                          sfId, discId, "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, "wrong user", SU_PSWD, "new content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-            //    try
-            //    {
-            //        // invalid subForumId
-            //        res = this.bridge.createNewComment(memberName, "pswd", forumId,
-            //                                          -1, discId, "Content is ok");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                this.bridge.reset();
 
-            //    try
-            //    {
-            //        // invalid content - ilegal chars
-            //        res = this.bridge.createNewComment(memberName, "pswd", forumId,
-            //                                          sfId, discId, "Content is ~not~ valid מכיל עברית");
-            //        failMsg(testNum++);
-            //        passed = false;
-            //    }
-            //    catch { testNum++; }
+                // wrong password
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, "wrong pass", "new content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-            //    if (passed)
-            //        testsLogger.logAction("createNewComment tests PASSED\n");
-            //}
-            //catch
-            //{
-            //    failMsg(testNum++);
-            //}
+                this.bridge.reset();
 
+                // wrong forumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.editDiscussion(-1, subForum.subForumId, discussion.discussionId, SU_NAME, SU_PSWD, "new content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong subForumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.editDiscussion(forum.forumId, -1, discussion.discussionId, SU_NAME, SU_PSWD, "new content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong discussionId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
+                    User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, -1, SU_NAME, SU_PSWD, "new content");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                return testNum;
+            }
+        }
+
+        private int testRegister()
+        {
+            {
+                int testNum = 0;
+
+                User res;
+
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                    res = this.bridge.register(forum.forumId, "user1", "pswd1", "a@a.com", "");
+                    AssertTrue(forum.members.Contains(res));
+                    AssertTrue(res.userName == "user1");
+                    AssertTrue(res.email == "a@a.com");
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                /* failure tests */
+
+                // userName with wrong characters
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                    res = this.bridge.register(forum.forumId, "fs^&-!~", "pswd1", "a@a.com", "");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // password with wrong characters
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                    res = this.bridge.register(forum.forumId, "user1", "1~-#~!", "a@a.com", "");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // wrong forumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                    res = this.bridge.register(-1, "user1", "pswd1", "a@a.com", "");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                // userName already exists
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+
+                    res = this.bridge.register(forum.forumId, "user1", "pswd1", "a@a.com", "");
+                    res = this.bridge.register(forum.forumId, SU_NAME, "pswd1", "a2@a.com", "");
+                    res = this.bridge.register(forum.forumId, ADMIN_NAME, "pswd1", "a3@a.com", "");
+                    res = this.bridge.register(forum.forumId, "user1", "pswd1", "a4@a.com", "");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
+
+                this.bridge.reset();
+
+                return testNum;
+            }
         }
 
     }

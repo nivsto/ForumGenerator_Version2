@@ -24,10 +24,9 @@ namespace ConsoleApplication1
             string logFileName = getPath() + "/TestForumGenerator.Log.txt";
             TestForumGenerator tests = new TestForumGenerator(new ForumGenerator("admin", "admin"), logFileName);                                   
             tests.runTests();
-            Console.ReadKey();
+            //Console.ReadKey();
 
         }
-
 
          static string getPath()
          {

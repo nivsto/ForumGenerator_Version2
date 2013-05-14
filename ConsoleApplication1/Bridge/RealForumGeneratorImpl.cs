@@ -146,8 +146,7 @@ namespace ConsoleApplication1
 
         public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
         {
-            //return this.getMutualUsers(userName, password, forumId1, forumId2);
-            return null;
+            return this.forumGen.getMutualUsers(userName, password, forumId1, forumId2);
         }
 
         public void reset()

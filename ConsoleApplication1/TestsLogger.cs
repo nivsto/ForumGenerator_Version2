@@ -7,7 +7,7 @@ namespace ConsoleApplication1
 {
     public class TestsLogger
     {
-        System.IO.StreamWriter logFile;
+        StreamWriter logFile;
         
 
         public TestsLogger(string fileName)
@@ -16,8 +16,26 @@ namespace ConsoleApplication1
             {
                 File.Delete(fileName);
             }
-            this.logFile = new System.IO.StreamWriter(fileName);
+            this.logFile = new StreamWriter(fileName);
+            this.logFile.AutoFlush = true;
             this.logFile.WriteLine(" -- T E S T S   L O G G E R --");
+        }
+
+        public void logMethodTest(string methodName)
+        {
+            this.logFile.WriteLine("test method: " + methodName);
+        }
+
+        public void logMethodTestResults(string methodName, int numOfTestsPassed)
+        {
+            this.logFile.WriteLine("test summary for " + methodName + ": " + numOfTestsPassed + " tests passed");
+            this.logFile.WriteLine();
+        }
+
+        public void logTestsSection(string description)
+        {
+            this.logFile.WriteLine("*testing " + description + " functions*");
+            this.logFile.WriteLine();
         }
 
         public void logAction(string description)
@@ -27,7 +45,12 @@ namespace ConsoleApplication1
 
         public void logError(string description)
         {
-            logFile.WriteLine(description);
+            logFile.WriteLine("-- FAILED --  failed to " + description);
+        }
+
+        public void logError(int testNum)
+        {
+            logFile.WriteLine("-- FAILED --  failed test number " + testNum);
         }
 
         public void closeFile()

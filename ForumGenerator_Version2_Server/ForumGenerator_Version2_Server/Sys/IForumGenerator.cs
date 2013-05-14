@@ -50,8 +50,6 @@ namespace ForumGenerator_Version2_Server.Sys
 
         Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
 
-        List<User> getMutualForumMembers(string userName, string pswd);
-
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
 
         int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId);

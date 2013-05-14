@@ -34,21 +34,6 @@ namespace ConsoleApplication1
             return res;
         }
 
-
-        public string getUniqueForumName(List<Forum> forums)
-        {
-            Random random = new Random();
-            string res = "forum" + random.Next(0, 9);
-            
-            while (isForumExist(forums, res))
-            {
-                res += random.Next(0, 9);
-            }
-
-            return res;
-        }
-
-
         public bool isSubForumExist(Forum forum, string subForumTitle)
         {
             bool res = false;
@@ -64,18 +49,35 @@ namespace ConsoleApplication1
         }
 
 
-        public string getUniqueSubForumTitle(Forum forum)
-        {
-            Random random = new Random();
-            string res = "subForum" + random.Next(0, 9);
+        //public string getUniqueForumName(List<Forum> forums)
+        //{
+        //    Random random = new Random();
+        //    string res = "forum" + random.Next(0, 9);
+            
+        //    while (isForumExist(forums, res))
+        //    {
+        //        res += random.Next(0, 9);
+        //    }
 
-            while (isSubForumExist(forum, res))
-            {
-                res += random.Next(0, 9);
-            }
+        //    return res;
+        //}
 
-            return res;
-        }
+
+
+
+
+        //public string getUniqueSubForumTitle(Forum forum)
+        //{
+        //    Random random = new Random();
+        //    string res = "subForum" + random.Next(0, 9);
+
+        //    while (isSubForumExist(forum, res))
+        //    {
+        //        res += random.Next(0, 9);
+        //    }
+
+        //    return res;
+        //}
 
 
 
@@ -96,18 +98,18 @@ namespace ConsoleApplication1
         }
 
 
-        public string getUniqueUserName(Forum forum)
-        {
-            Random random = new Random();
-            string res = "user" + random.Next(0, 9);
+        //public string getUniqueUserName(Forum forum)
+        //{
+        //    Random random = new Random();
+        //    string res = "user" + random.Next(0, 9);
 
-            while (isUserNameExist(forum, res))
-            {
-                res += random.Next(0, 9);
-            }
+        //    while (isUserNameExist(forum, res))
+        //    {
+        //        res += random.Next(0, 9);
+        //    }
 
-            return res;
-        }
+        //    return res;
+        //}
 
        
     }

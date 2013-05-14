@@ -45,8 +45,19 @@ namespace ConsoleApplication1
 
         public void failMsg(int testNum)
         {
-            this.passed = false;
-            testsLogger.logError("-- FAILED --  failed test number " + testNum);
+            testsLogger.logError(testNum);
+        }
+
+        public void failMsg(string testDesc)
+        {
+            testsLogger.logError(testDesc);
+        }
+
+        public void test(Func<int> methodName)
+        {
+            testsLogger.logMethodTest(methodName.Method.Name);
+            int testNum = methodName();
+            testsLogger.logMethodTestResults(methodName.Method.Name, testNum);
         }
 
         /*

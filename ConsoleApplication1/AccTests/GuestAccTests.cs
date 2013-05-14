@@ -9,9 +9,6 @@ namespace ConsoleApplication1.AccTests
 {
     class GuestAccTests : AccTestsForumGenerator
     {
-        const string PROXY = "Proxy";
-        const string REAL = "Real";
-
         const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
         const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
 
@@ -23,154 +20,206 @@ namespace ConsoleApplication1.AccTests
 
         public override void runTests()
         {
-            testGetForums();
-            testGetsubForums();
-            testGetDiscussions();
-            testGetComments();
+            this.testsLogger.logTestsSection("Member");
+            test(testGetForums);
+            test(testGetsubForums);
+            test(testGetDiscussions);
+            test(testGetComments);
         }
 
-        private void testGetForums()
+        private int testGetForums()
         {
-            testsLogger.logAction("testing getForums...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            try
             {
+                int testNum = 0;
+
                 List<Forum> res;
-                Forum tmp;
 
                 /* success tests */
+                try
+                {
+                    res = this.bridge.getForums();
+                    AssertTrue(res.Count == 0);
 
-                // At this point there is no existing forums
-                res = this.bridge.getForums();
-                AssertTrue(res.Count == 0);
-                testNum++;
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
 
-                tmp = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st Forum", "mngr", "mngrPswd");
-                res = this.bridge.getForums();
-                AssertTrue(res.Count == 1);
-                testNum++;
+                this.bridge.reset();
+
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+
+                    res = this.bridge.getForums();
+                    AssertTrue(res.Count == 1);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    for (int i=0; i<100; i++)
+                        this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum"+i, "mngr"+i, "mngrPswd"+i);
+
+                    res = this.bridge.getForums();
+                    AssertTrue(res.Count == 100);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
 
                 /* failure tests */
 
-                // TODO add tests here
-
-                if (passed)
-                    testsLogger.logAction("getForums tests PASSED\n");
-            }
-            catch
-            {
-                failMsg(testNum++);
+                return testNum;
             }
         }
 
-        private void testGetDiscussions()
+        private int testGetsubForums()
         {
-            testsLogger.logAction("testing getDiscussions...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            try
             {
-                List<Discussion> res;
-                List<Forum> forums = this.bridge.getForums();
-                Forum f = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                int fid = f.forumId;
-                SubForum sf = this.bridge.createNewSubForum("mngr", "mngrPswd", f.forumId, "title");
-                int sfid = sf.subForumId;
+                int testNum = 0;
 
-                /* success tests */
-
-                Discussion d = this.bridge.createNewDiscussion("mngr", "mngrPswd", fid, sfid, "title", "content");
-                res = this.bridge.getDiscussions(fid, sfid);
-                AssertEquals(sf.discussions, res);
-                testNum++;
-
-
-                /* failure tests */
-
-                // TODO add tests here
-
-                if (passed)
-                    testsLogger.logAction("getDiscussions tests PASSED\n");
-            }
-            catch
-            {
-                failMsg(testNum++);
-            }
-        }
-
-        private void testGetComments()
-        {
-            testsLogger.logAction("testing getComments...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            try
-            {
-            //    List<Comment> res;
-            //    List<Forum> forums = this.bridge.getForums();
-            //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-            //    int forumId = forum.forumId;
-            //    SubForum sf = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, getUniqueSubForumTitle(forum));
-            //    int sfId = sf.subForumId;
-            //    Discussion disc = this.bridge.createNewDiscussion("mngr", "mngrPswd", forumId, sfId, "disc", "disc content");
-            //    int discId = disc.discussionId;
-
-
-            //    /* success tests */
-
-            //    res = this.bridge.getComments(forumId, sfId, discId);
-            //    AssertEquals(res, disc.comments);
-            //    testNum++;
-
-            //    /* failure tests */
-
-            //    // TODO add tests here
-
-            //    if (passed)
-            //        testsLogger.logAction("getComments tests PASSED\n");
-            }
-            catch
-            {
-                failMsg(testNum++);
-            }
-        }
-
-        private void testGetsubForums()
-        {
-            testsLogger.logAction("testing getSubForums...  ");
-            int testNum = 1;
-            bool passed = true;
-
-            try
-            {
                 List<SubForum> res;
-                List<Forum> forums = this.bridge.getForums();
-                Forum f = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                int fid = f.forumId;
 
                 /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    res = this.bridge.getSubForums(forum.forumId);
+                    AssertTrue(res.Count == 0);
 
-                res = this.bridge.getSubForums(fid);
-                AssertEquals(f.subForums, res);
-                testNum++;
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, "mngr", "mngrPswd");
+                    for(int i=0; i<100; i++)
+                        this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum" + i);
+
+                    res = this.bridge.getSubForums(forum.forumId);
+                    AssertTrue(res.Count == 100);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
 
                 /* failure tests */
 
-                // TODO add tests here
-
-
-                if (passed)
-                    testsLogger.logAction("getSubForums tests PASSED\n");
-            }
-            catch
-            {
-                failMsg(testNum++);
+                return testNum;
             }
         }
 
+        private int testGetDiscussions()
+        {
+            {
+                int testNum = 0;
 
+                List<Discussion> res;
+
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, "mngr", "mngrPswd");
+                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
+                    res = this.bridge.getDiscussions(forum.forumId, subForum.subForumId);
+                    AssertTrue(res.Count == 0);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, "mngr", "mngrPswd");
+                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
+                    for (int i = 0; i < 100; i++)
+                        this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion" + i, "no content");
+
+                    res = this.bridge.getDiscussions(forum.forumId, subForum.subForumId);
+                    AssertTrue(res.Count == 100);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                /* failure tests */
+
+                return testNum;
+            }
+        }
+
+        private int testGetComments()
+        {
+            {
+                int testNum = 0;
+
+                List<Comment> res;
+
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, "mngr", "mngrPswd");
+                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion", "no content");
+                    res = this.bridge.getComments(forum.forumId, subForum.subForumId, discussion.discussionId);
+                    AssertTrue(res.Count == 0);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    this.bridge.login(forum.forumId, "mngr", "mngrPswd");
+                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
+                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion", "no content");
+ 
+                    for (int i = 0; i < 100; i++)
+                        this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+
+                    res = this.bridge.getComments(forum.forumId, subForum.subForumId, discussion.discussionId);
+                    AssertTrue(res.Count == 100);
+
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
+
+                this.bridge.reset();
+
+                /* failure tests */
+
+                return testNum;
+            }
+        }
     }
 }

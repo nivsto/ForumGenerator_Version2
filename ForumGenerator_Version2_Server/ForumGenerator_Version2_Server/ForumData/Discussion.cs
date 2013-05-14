@@ -8,12 +8,12 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     public class Discussion
     {
-        internal int discussionId { get; private set; }
+        public int discussionId { get; private set; }
         internal String title { get; private set; }
         public String content;
         internal DateTime publishDate { get; private set; }
         internal User publisher { get; private set; }
-        internal List<Comment> comments { get; private set; }
+        public List<Comment> comments { get; private set; }
         internal SubForum parentSubForum { get; private set; }
         internal int nextCommentId = 1;
 

@@ -106,7 +106,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-  
         public bool superUserLogout(string userName, string password)
         {
             this.logger.logAction("performing superUserLogout");
@@ -245,7 +244,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-
         //returns an XML list of all the users in a specific forum
         public List<User> getUsers(int forumId)
         {
@@ -266,7 +264,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
-
 
         //creates a new forum and a new user which is the forum's administrator
         public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
@@ -292,7 +289,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 //throw new Exception();
             }
         }
-
 
         //creates a new sub-forum and a new user which is the forum's administrator
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
@@ -320,7 +316,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
-
 
         //creates a new discussion and a new user which is the forum's administrator
         public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
@@ -355,7 +350,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
-
 
         //creates a new comment and a new user which is the forum's administrator
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
@@ -397,7 +391,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-        
         // This method never returns false.
         // Throws Exceptions:
         // UnauthorizedUserException - in case user is not authorized to delete this discussion.
@@ -449,9 +442,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
         
-
-
-
         //creates a new comment and a new user which is the forum's administrator
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
@@ -496,13 +486,11 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-
         //get a forum by its forum name
         public Forum getForum(string forumName)
         {
             return this.forums.Find(delegate(Forum f) { return f.forumName == forumName; });
         }
-
 
         public SuperUser getSuperUser()
         {
@@ -513,8 +501,6 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             return this.forums.Count();
         }
-
-
 
         public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
@@ -634,13 +620,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
-        
-
-        public List<User> getMutualForumMembers(string userName, string password)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
         {
@@ -675,7 +654,6 @@ namespace ForumGenerator_Version2_Server.Sys
 
         }
 
-
         public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
         {
             this.logger.logAction("performing getResponsersForSingleUser: "); //TODO add content
@@ -708,8 +686,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-
-
         public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
         {
             this.logger.logAction("performing getNumOfCommentsSubForum: "); //TODO add content
@@ -741,7 +717,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-
         public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
         {
             this.logger.logAction("performing getMutualUsers: "); //TODO add content
@@ -769,7 +744,6 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-
         public int getUserType(int forumId, string userName)
         {
             if (userName == this.superUser.userName)
@@ -778,7 +752,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 return this.getForum(forumId).getUserType(userName);
             
         }
-
 
         public int getUserType(int forumId, int subForumId, string userName)
         {
