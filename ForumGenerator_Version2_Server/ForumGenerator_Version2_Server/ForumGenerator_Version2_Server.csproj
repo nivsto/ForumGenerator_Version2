@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ForumData\Comment.cs" />
     <Compile Include="ForumData\Discussion.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Sys\Exceptions\CommentNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\DiscussionNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\ForumNotFoundException.cs" />

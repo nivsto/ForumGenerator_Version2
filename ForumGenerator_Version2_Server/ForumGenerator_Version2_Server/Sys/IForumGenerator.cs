@@ -64,5 +64,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         int getUserType(int forumId, int subForumId, string userName);
 
+        void reset();
+
     }
 }

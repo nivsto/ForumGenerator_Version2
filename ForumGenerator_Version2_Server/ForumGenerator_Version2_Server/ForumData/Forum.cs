@@ -1,5 +1,4 @@
-﻿using ForumGenerator_Version2_Server.Communication;
-using ForumGenerator_Version2_Server.Users;
+﻿using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -11,11 +10,11 @@ namespace ForumGenerator_Version2_Server.ForumData
 {
     public class Forum
     {
-        internal int forumId { get; private set; }
-        internal User admin { get; private set; }
-        internal List<SubForum> subForums { get; private set; }
-        internal string forumName { get; private set; }
-        internal List<User> members { get; private set; }
+        public int forumId { get; private set; }
+        public User admin { get; private set; }
+        public List<SubForum> subForums { get; private set; }
+        public string forumName { get; private set; }
+        public List<User> members { get; private set; }
         internal int nextSubForumId = 1;
         internal int nextUserId = 1;
 
@@ -161,7 +160,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public int getUserType(int forumId, string userName)
+        public int getUserType(string userName)
         {
             User user = this.getUser(userName);
             if (user == null)
@@ -173,7 +172,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public int getUserType(int forumId, int subForumId, string userName)
+        public int getUserType(int subForumId, string userName)
         {
             User user = this.getUser(userName);
             if (user == null)

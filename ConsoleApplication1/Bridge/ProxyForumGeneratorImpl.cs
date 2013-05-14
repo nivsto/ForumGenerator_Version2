@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumGenerator_Version2_Server;
 using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
@@ -25,7 +24,7 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public bool superUserLogout()
+        public bool superUserLogout(string usrName, string usrPswd)
         {
             throw new NotImplementedException();
         }
@@ -81,6 +80,82 @@ namespace ConsoleApplication1
         }
 
         public LinkedList<Comment> getComments(int forumId, int subForumId, int discussionId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        List<Forum> BridgeForumGenerator.getForums()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<SubForum> BridgeForumGenerator.getSubForums(int forumId)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Discussion> BridgeForumGenerator.getDiscussions(int forumId, int subForumId)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Comment> BridgeForumGenerator.getComments(int forumId, int subForumId, int discussionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> getUsers(int forumId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void reset()
         {
             throw new NotImplementedException();
         }

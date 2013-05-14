@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumGenerator_Version2_Server;
 using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
@@ -26,7 +25,7 @@ namespace ConsoleApplication1
             bool res = false;
             foreach (Forum f in forums)
             {
-                if (f.forumName.equals(forumName))
+                if (f.forumName == forumName)
                 {
                     res = true;
                     break;
@@ -36,7 +35,7 @@ namespace ConsoleApplication1
         }
 
 
-        public string getUniqueForumName(LinkedList<Forum> forums)
+        public string getUniqueForumName(List<Forum> forums)
         {
             Random random = new Random();
             string res = "forum" + random.Next(0, 9);
@@ -55,7 +54,7 @@ namespace ConsoleApplication1
             bool res = false;
             foreach (SubForum sf in forum.subForums)
             {
-                if (sf.subForumTitle.equals(subForumTitle))
+                if (sf.subForumTitle == subForumTitle)
                 {
                     res = true;
                     break;

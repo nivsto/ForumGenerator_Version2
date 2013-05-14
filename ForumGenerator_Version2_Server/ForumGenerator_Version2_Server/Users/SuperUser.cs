@@ -10,9 +10,9 @@ namespace ForumGenerator_Version2_Server.Users
 {
     public class SuperUser
     {
-        internal String userName { get; private set; }
-        internal String password { get; private set; }
-        internal bool isLoggedIn { get; private set; }
+        public String userName { get; private set; }
+        public String password { get; private set; }
+        public bool isLoggedIn { get; private set; }
 
         public SuperUser(string superUserName, string superUserPass)
         {

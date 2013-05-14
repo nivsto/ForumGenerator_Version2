@@ -109,28 +109,28 @@ namespace ConsoleApplication1.AccTests
 
             try
             {
-                List<Comment> res;
-                List<Forum> forums = this.bridge.getForums();
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                int forumId = forum.forumId;
-                SubForum sf = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, getUniqueSubForumTitle(forum));
-                int sfId = sf.subForumId;
-                Discussion disc = this.bridge.createNewDiscussion("mngr", "mngrPswd", forumId, sfId, "disc", "disc content");
-                int discId = disc.discussionId;
+            //    List<Comment> res;
+            //    List<Forum> forums = this.bridge.getForums();
+            //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
+            //    int forumId = forum.forumId;
+            //    SubForum sf = this.bridge.createNewSubForum("mngr", "mngrPswd", forumId, getUniqueSubForumTitle(forum));
+            //    int sfId = sf.subForumId;
+            //    Discussion disc = this.bridge.createNewDiscussion("mngr", "mngrPswd", forumId, sfId, "disc", "disc content");
+            //    int discId = disc.discussionId;
 
 
-                /* success tests */
+            //    /* success tests */
 
-                res = this.bridge.getComments(forumId, sfId, discId);
-                AssertEquals(res, disc.comments);
-                testNum++;
+            //    res = this.bridge.getComments(forumId, sfId, discId);
+            //    AssertEquals(res, disc.comments);
+            //    testNum++;
 
-                /* failure tests */
+            //    /* failure tests */
 
-                // TODO add tests here
+            //    // TODO add tests here
 
-                if (passed)
-                    testsLogger.logAction("getComments tests PASSED\n");
+            //    if (passed)
+            //        testsLogger.logAction("getComments tests PASSED\n");
             }
             catch
             {

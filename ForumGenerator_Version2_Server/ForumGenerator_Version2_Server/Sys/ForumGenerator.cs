@@ -1,5 +1,4 @@
-﻿using ForumGenerator_Version2_Server.Communication;
-using ForumGenerator_Version2_Server.ForumData;
+﻿using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using ForumGenerator_Version2_Server.Users;
 using System;
@@ -12,7 +11,7 @@ namespace ForumGenerator_Version2_Server.Sys
 {
     public class ForumGenerator : IForumGenerator
     {
-        public static enum userTypes
+        public enum userTypes
         {
             GUEST,
             MEMBER,
@@ -33,6 +32,13 @@ namespace ForumGenerator_Version2_Server.Sys
         public ForumGenerator(string superUserName, string superUserPass)
         {
             this.superUser = new SuperUser(superUserName, superUserPass);
+            this.forums = new List<Forum>();
+            this.logger = new Logger();
+        }
+
+        public void reset()
+        {
+            this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
             this.forums = new List<Forum>();
             this.logger = new Logger();
         }
@@ -282,7 +288,8 @@ namespace ForumGenerator_Version2_Server.Sys
             catch (Exception)
             {
                 this.logger.logError("createNewForum: unknown error");
-                throw new Exception();
+                return null;
+                //throw new Exception();
             }
         }
 
@@ -766,14 +773,20 @@ namespace ForumGenerator_Version2_Server.Sys
         public int getUserType(int forumId, string userName)
         {
             if (userName == this.superUser.userName)
-                return (int) userTypes.SUPER_USER;
+                return (int)userTypes.SUPER_USER;
+            else
+                return this.getForum(forumId).getUserType(userName);
             
         }
 
 
         public int getUserType(int forumId, int subForumId, string userName)
         {
-            throw new NotImplementedException();
+            if (userName == this.superUser.userName)
+                return (int)userTypes.SUPER_USER;
+            else
+                return this.getForum(forumId).getUserType(subForumId,userName);
         }
+
     }
 }

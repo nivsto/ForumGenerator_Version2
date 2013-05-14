@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using ForumGenerator_Version2_Server.Sys;
 using System.Threading.Tasks;
 using ForumGenerator_Version2_Server;
-using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
@@ -98,6 +96,63 @@ namespace ConsoleApplication1
         List<Comment> BridgeForumGenerator.getComments(int forumId, int subForumId, int discussionId)
         {
             return this.forumGen.getComments(forumId, subForumId, discussionId);
+        }
+
+
+        public List<User> getUsers(int forumId)
+        {
+            return this.forumGen.getUsers(forumId);
+        }
+
+        public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
+        {
+            return this.forumGen.changeAdmin(userName, password, forumId, newAdminUserId);
+        }
+
+        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        {
+            return this.forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+        }
+
+        public bool removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        {
+            return this.forumGen.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+        }
+
+        public bool deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
+        {
+            return this.forumGen.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
+        }
+
+        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        {
+            return this.forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
+        }
+
+        public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
+        {
+            return this.forumGen.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, userName);
+        }
+
+        public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
+        {
+            return this.forumGen.getNumOfCommentsSubForum(userName, pswd, forumId, subForumId);
+        }
+
+        public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
+        {
+            return this.forumGen.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName);
+        }
+
+        public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
+        {
+            //return this.getMutualUsers(userName, password, forumId1, forumId2);
+            return null;
+        }
+
+        public void reset()
+        {
+            this.forumGen.reset();
         }
     }
 

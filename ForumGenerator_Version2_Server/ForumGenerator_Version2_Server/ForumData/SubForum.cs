@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Users;
-using ForumGenerator_Version2_Server.Communication;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
     public class SubForum
     {
-        internal int subForumId { get; private set; }
-        internal string subForumTitle { get; private set; }
-        internal List<User> moderators { get; private set; }
-        internal List<Discussion> discussions { get; private set; }
-        internal Forum parentForum { get; private set; }
-        internal int nextDiscussionId = 1;
+        public int subForumId { get; private set; }
+        public string subForumTitle { get; private set; }
+        public List<User> moderators { get; private set; }
+        public List<Discussion> discussions { get; private set; }
+        public Forum parentForum { get; private set; }
+        public int nextDiscussionId = 1;
 
 
         public SubForum(int subForumId, string subForumTitle, Forum parentForun)

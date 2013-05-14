@@ -44,7 +44,7 @@ namespace ConsoleApplication1
 
 
         // main function
-        public override void runTests()
+        public void runTests()
         {
             this.testsLogger.logAction("\n** ForumGenerator Tests **\n" +
                                         "Testing on " + this.mode + " mode\n");

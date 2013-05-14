@@ -12,7 +12,6 @@ using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
 using System.Net;
 using System.Xml;
-using System.IO;
 
 namespace ConsoleApplication1
 {
