@@ -42,7 +42,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                return discussions.ElementAt(discussionId);
+                return discussions.Find(delegate (Discussion d) { return d.discussionId == discussionId; });
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -147,7 +147,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
             foreach (Discussion d in discussions)
             {
-                result += d.getNumOfComments();
+                result += d.getNumOfComments() + 1;  // a discussion's content is considered as a comment
             }
             return result;
         }

@@ -59,10 +59,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.logger.logError("login: " + e.Message);
                 throw e;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 this.logger.logError("login: Unknown Error");
-                return null;
+                throw e;
             }
         }
 
@@ -331,7 +331,13 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logError("createNewDiscussion: unauthrized member");
                     throw new UnauthorizedUserException();
                 }
-                User user = forum.getUser(userName);  // user must be found since security check passed
+                User user;
+                if (forum.admin.userName == userName && forum.admin.password == password)
+                {
+                    user = forum.admin;
+                }
+                else
+                    user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser
                 SubForum sf = forum.getSubForum(subForumId);
                 return sf.createNewDiscussion(title, content, user);
             }
@@ -365,7 +371,13 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logAction("createNewComment: unauthorized user");
                     throw new UnauthorizedUserException();
                 }
-                User user = forum.getUser(userName); // user must be found since security check passed
+                User user;
+                if (forum.admin.userName == userName && forum.admin.password == password)
+                {
+                    user = forum.admin;
+                }
+                else
+                    user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser
                 SubForum sf = forum.getSubForum(subForumId);
                 Discussion d = sf.getDiscussion(discussionId);
                 return d.createNewComment(content, user);
@@ -510,8 +522,8 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 Forum f = this.getForum(forumId);
                 SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) &&
-                    !Security.checkAdminAuthorization(f, adderUsrName, adderUsrName))
+                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderPswd) &&
+                    !Security.checkAdminAuthorization(f, adderUsrName, adderPswd))
                 {
                     this.logger.logError("addModerator: unauthorized user");
                     throw new UnauthorizedUserException();
@@ -547,8 +559,8 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 Forum f = this.getForum(forumId);
                 SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) &&
-                    !Security.checkAdminAuthorization(f, adderUsrName, adderUsrName))
+                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderPswd) &&
+                    !Security.checkAdminAuthorization(f, adderUsrName, adderPswd))
                 {
                     this.logger.logError("removeModerator: unauthorized user");
                     throw new UnauthorizedUserException();

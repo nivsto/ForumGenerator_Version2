@@ -17,14 +17,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal SubForum parentSubForum { get; private set; }
         internal int nextCommentId = 1;
 
-        public Discussion(int discussionId, string title, string content, User user, SubForum parentSubForum)
+        public Discussion(int discussionId, string title, string content, User publisher, SubForum parentSubForum)
         {
             // TODO: Complete member initialization
             this.discussionId = discussionId;
             this.title = title;
             this.content = content;
             this.publishDate = DateTime.Now;
-            this.publisher = user;
+            this.publisher = publisher;
             this.comments = new List<Comment>();
             this.parentSubForum = parentSubForum;
         }
