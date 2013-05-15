@@ -15,7 +15,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         public List<User> moderators { get; private set; }
         public List<Discussion> discussions { get; private set; }
         public Forum parentForum { get; private set; }
-        public int nextDiscussionId = 1;
+        public int nextDiscussionId;
 
 
         public SubForum(int subForumId, string subForumTitle, Forum parentForun)
@@ -23,8 +23,10 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.subForumId = subForumId;
             this.subForumTitle = subForumTitle;
             this.moderators = new List<User>();
-            moderators.Add(parentForum.admin);          // forum admin is auto moderator.
+            User u = parentForum.admin;                 // problem
+            this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
+            this.nextDiscussionId = 1;
             this.parentForum = parentForun;
         }
 

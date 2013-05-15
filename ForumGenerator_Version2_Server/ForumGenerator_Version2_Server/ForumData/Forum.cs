@@ -65,7 +65,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                return subForums.ElementAt(subForumId);
+                return this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumId == subForumId; });
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -85,7 +85,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public User getUser(int userId)
         {
-            return this.members.ElementAt(userId);
+            return this.members.Find(delegate(User mem) { return mem.memberID == userId; });
         }
 
         public User getUser(string userName)
@@ -151,7 +151,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             // if he is a member in this forum.
             foreach (User user in other.members)
             {
-                if (this.getUser(user.memberID) != null)
+                if (this.getUser(user.userName) != null)
                 {
                     mutuals.Add(user);
                 }

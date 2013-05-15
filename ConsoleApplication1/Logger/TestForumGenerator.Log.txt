@@ -12,91 +12,14 @@ test method: testSuperUserLogout
 test summary for testSuperUserLogout: 4 tests passed
 
 test method: testCreateNewForum
--- FAILED --  failed test number 2
--- FAILED --  failed test number 3
--- FAILED --  failed test number 4
--- FAILED --  failed test number 5
 -- FAILED --  failed test number 6
 -- FAILED --  failed test number 7
 -- FAILED --  failed test number 8
-test summary for testCreateNewForum: 1 tests passed
+test summary for testCreateNewForum: 5 tests passed
 
 test method: testGetMutualUsers
--- FAILED --  failed test number 1
-test summary for testGetMutualUsers: 3 tests passed
+test summary for testGetMutualUsers: 4 tests passed
 
 *testing Admin functions*
 
 test method: testCreateNewSubForum
--- FAILED --  failed test number 0
-test summary for testCreateNewSubForum: 5 tests passed
-
-test method: testAddModerator
--- FAILED --  failed test number 0
-test summary for testAddModerator: 5 tests passed
-
-test method: testRemoveModerator
--- FAILED --  failed test number 0
-test summary for testRemoveModerator: 5 tests passed
-
-test method: testGetNumOfCommentsSubForum
--- FAILED --  failed test number 0
-test summary for testGetNumOfCommentsSubForum: 4 tests passed
-
-test method: testGetNumOfCommentsSingleUser
--- FAILED --  failed test number 0
-test summary for testGetNumOfCommentsSingleUser: 4 tests passed
-
-test method: testGetResponsersForSingleUser
--- FAILED --  failed test number 0
-test summary for testGetResponsersForSingleUser: 4 tests passed
-
-*testing Member functions*
-
-test method: testLogin
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
-test summary for testLogin: 0 tests passed
-
-test method: testCreateNewDiscussion
--- FAILED --  failed test number 0
-test summary for testCreateNewDiscussion: 4 tests passed
-
-test method: testCreateNewComment
--- FAILED --  failed test number 0
-test summary for testCreateNewComment: 5 tests passed
-
-test method: testDeleteDiscussion
--- FAILED --  failed test number 0
-test summary for testDeleteDiscussion: 5 tests passed
-
-test method: testEditDiscussion
--- FAILED --  failed test number 0
-test summary for testEditDiscussion: 5 tests passed
-
-test method: testRegister
--- FAILED --  failed test number 0
-test summary for testRegister: 4 tests passed
-
-*testing Member functions*
-
-test method: testGetForums
-test summary for testGetForums: 3 tests passed
-
-test method: testGetsubForums
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
-test summary for testGetsubForums: 0 tests passed
-
-test method: testGetDiscussions
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
-test summary for testGetDiscussions: 0 tests passed
-
-test method: testGetComments
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
-test summary for testGetComments: 0 tests passed
-

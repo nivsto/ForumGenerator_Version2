@@ -57,6 +57,7 @@ namespace ConsoleApplication1
             adminAccTests.runTests();
             memberAccTests.runTests();
             guestAccTests.runTests();
+       
 
             //sumTests();
         }

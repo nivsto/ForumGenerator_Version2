@@ -254,8 +254,8 @@ namespace ConsoleApplication1.AccTests
                 res = this.bridge.getMutualUsers(SU_NAME, SU_PSWD, forum1.forumId, forum2.forumId);
                 AssertTrue(res.Count() == 0);
 
-                this.bridge.register(forum1.forumId, "usr1", "pswd1", "", "");
-                this.bridge.register(forum2.forumId, "usr1", "pswd2", "", "");
+                this.bridge.register(forum1.forumId, "usr1", "pswd1", "a@a", "tmp");
+                this.bridge.register(forum2.forumId, "usr1", "pswd2", "b@b", "tmp2");
 
                 res = this.bridge.getMutualUsers(SU_NAME, SU_PSWD, forum1.forumId, forum2.forumId);
                 AssertTrue(res.Count() == 1);

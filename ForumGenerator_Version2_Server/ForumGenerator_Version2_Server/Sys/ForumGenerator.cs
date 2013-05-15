@@ -43,6 +43,8 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger = new Logger();
         }
 
+
+
         // returns userid
         public User login(int forumId, string userName, string password)
         {
@@ -282,11 +284,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.forums.Add(newForum);
                 return newForum;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 this.logger.logError("createNewForum: unknown error");
-                return null;
-                //throw new Exception();
+                throw e;
             }
         }
 
@@ -297,7 +298,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum forum = getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
+                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkAdminAuthorization(forum, userName, password))
                 {
                     this.logger.logError("createNewSubForum: unauthorized admin");
@@ -324,7 +325,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum forum = getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
+                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
                     this.logger.logError("createNewDiscussion: unauthrized member");
@@ -358,7 +359,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum forum = getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
+                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
                     this.logger.logAction("createNewComment: unauthorized user");
@@ -407,9 +408,9 @@ namespace ForumGenerator_Version2_Server.Sys
                 SubForum sf = f.getSubForum(subForumId);
                 Discussion d = sf.getDiscussion(discussionId);
                 // check authorization
-                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
-                    !Security.checkAdminAuthorization(f, userName, password) ||
-                    !Security.checkModeratorAuthorization(sf, userName, password) ||
+                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                    !Security.checkAdminAuthorization(f, userName, password) &&
+                    !Security.checkModeratorAuthorization(sf, userName, password) &&
                     !Security.checkPublisherAuthorization(d, userName, password))
                 {
                     this.logger.logError("deleteDiscussion: unauthorized user");
@@ -478,7 +479,7 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             try
             {
-                return forums.ElementAt(forumId);
+                return this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -509,7 +510,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 Forum f = this.getForum(forumId);
                 SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) ||
+                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) &&
                     !Security.checkAdminAuthorization(f, adderUsrName, adderUsrName))
                 {
                     this.logger.logError("addModerator: unauthorized user");
@@ -546,7 +547,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 Forum f = this.getForum(forumId);
                 SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) ||
+                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderUsrName) &&
                     !Security.checkAdminAuthorization(f, adderUsrName, adderUsrName))
                 {
                     this.logger.logError("removeModerator: unauthorized user");
@@ -588,9 +589,9 @@ namespace ForumGenerator_Version2_Server.Sys
                 SubForum sf = f.getSubForum(subForumId);
                 Discussion d = sf.getDiscussion(discussionId);
                 // check authorization
-                if (!Security.checkSuperUserAuthorization(this, userName, password) ||
-                    !Security.checkAdminAuthorization(f, userName, password) ||
-                    !Security.checkModeratorAuthorization(sf, userName, password) ||
+                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                    !Security.checkAdminAuthorization(f, userName, password) &&
+                    !Security.checkModeratorAuthorization(sf, userName, password) &&
                     !Security.checkPublisherAuthorization(d, userName, password))
                 {
                     this.logger.logError("editDiscussion: unauthorized user");
@@ -627,7 +628,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum forum = this.getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) ||
+                if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) &&
                     !Security.checkAdminAuthorization(forum, reqUserName, reqPswd))
                 {
                     this.logger.logError("getNumOfCommentsSingleUser: unauthorized user");
@@ -660,7 +661,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum forum = this.getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) ||
+                if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) &&
                     !Security.checkAdminAuthorization(forum, reqUserName, reqPswd))
                 {
                     this.logger.logError("getResponsersForSingleUser: unauthorized user");
