@@ -23,3 +23,12 @@ test summary for testGetMutualUsers: 4 tests passed
 *testing Admin functions*
 
 test method: testCreateNewSubForum
+-- FAILED --  failed test number 6
+test summary for testCreateNewSubForum: 6 tests passed
+
+test method: testAddModerator
+-- FAILED --  failed test number 0
+test summary for testAddModerator: 5 tests passed
+
+test method: testRemoveModerator
+-- FAILED --  failed test number 0

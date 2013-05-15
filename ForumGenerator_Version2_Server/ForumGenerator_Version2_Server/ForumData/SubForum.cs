@@ -23,11 +23,11 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.subForumId = subForumId;
             this.subForumTitle = subForumTitle;
             this.moderators = new List<User>();
-            User u = parentForum.admin;                 // problem
+            this.parentForum = parentForun;
+            User u = this.parentForum.admin;                 // problem
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
             this.nextDiscussionId = 1;
-            this.parentForum = parentForun;
         }
 
         internal Discussion createNewDiscussion(string title, string content, User user)
@@ -124,7 +124,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             int result = 0;
             foreach (Discussion d in discussions)
             {
-                result += getNumOfCommentsSingleUser(user);
+                result += d.getNumOfCommentsSingleUser(user);
             }
             return result;
         }
