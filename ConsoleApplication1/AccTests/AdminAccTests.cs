@@ -49,7 +49,7 @@ namespace ConsoleApplication1.AccTests
                 testNum++;
 
                 int subForumsCountPre = forum.subForums.Count;
-                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, null);
+                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "");
                 AssertEquals(subForumsCountPre + 1, forum.subForums.Count);
                 testNum++;
 

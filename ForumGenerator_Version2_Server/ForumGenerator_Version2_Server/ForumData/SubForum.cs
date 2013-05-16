@@ -24,7 +24,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.subForumTitle = subForumTitle;
             this.moderators = new List<User>();
             this.parentForum = parentForun;
-            User u = this.parentForum.admin;                 // problem
+            User u = this.parentForum.admin;
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
             this.nextDiscussionId = 1;
@@ -46,7 +46,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new ArgumentOutOfRangeException("Discussion" + discussionId);
+                return null;
             }
         }
 
@@ -72,10 +72,27 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
+        internal Boolean removeDiscussion(int discussionId)
+        {
+            Discussion d = this.getDiscussion(discussionId);
+            if (d == null)
+                throw new DiscussionNotFoundException();
+            else
+                return this.discussions.Remove(d);
+        }
+
+
         public User getModerator(string userName)
         {
-            return this.moderators.Find(
-                delegate(User mem) { return mem.userName == userName; });
+            try
+            {
+                return this.moderators.Find(
+                    delegate(User mem) { return mem.userName == userName; });
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return null;
+            }
         }
 
 

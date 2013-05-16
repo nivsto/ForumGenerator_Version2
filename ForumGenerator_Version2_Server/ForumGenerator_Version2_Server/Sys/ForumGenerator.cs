@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ForumGenerator_Version2_Server.Sys
 {
     public class ForumGenerator : IForumGenerator
@@ -44,6 +45,12 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
 
+        private bool isSuperUser(string userName, string password)
+        {
+            return (userName == this.superUser.userName && password == this.superUser.password);
+        }
+
+       
 
         // returns userid
         public User login(int forumId, string userName, string password)
@@ -125,6 +132,14 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns 1 for success or 0 for failure
         public User register(int forumId, string userName, string password, string email, string signature)
         {
+            if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
+                !ContentPolicy.isLegalEmailFormat(email) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature) )
+            {
+                throw new IllegalContentException();
+            }
+
             this.logger.logAction("performing register: "); // TODO add content
             try
             {
@@ -273,6 +288,15 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("performing createNewForum: "); // TODO add content
             try
             {
+                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
+                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
+                    !ContentPolicy.isLegalContent(ContentPolicy.cType.FORUM_NAME, forumName) ||
+                    !ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, adminUserName) ||
+                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, adminPassword) )
+                {
+                    throw new IllegalContentException();
+                }
+
                 if (this.getForum(forumName) != null)   // in case there is already such a forum
                     throw new UnauthorizedOperationException("forum name already exists");
                 if (!Security.checkSuperUserAuthorization(this, userName, password)) {
@@ -294,6 +318,13 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new sub-forum and a new user which is the forum's administrator
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
+            if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.SUBFORUM_TITLE, subForumTitle) )
+            {
+                throw new IllegalContentException();
+            }
+
             this.logger.logAction("performing createNewSubForum: "); // TODO add content
             try
             {
@@ -321,10 +352,19 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new discussion and a new user which is the forum's administrator
         public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
+            if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.DISCUSSION_TITLE, title) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.DISCUSSION_CONTENT, content) )
+            {
+                throw new IllegalContentException();
+            }
+
             this.logger.logAction("performing createNewDiscussion: "); // TODO add content
             try
             {
                 Forum forum = getForum(forumId);
+                SubForum sf = forum.getSubForum(subForumId);
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
@@ -332,13 +372,10 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException();
                 }
                 User user;
-                if (forum.admin.userName == userName && forum.admin.password == password)
-                {
-                    user = forum.admin;
-                }
-                else
+                // if(isSuperUser(userName, password)
+                //    currently not supported.
                     user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser
-                SubForum sf = forum.getSubForum(subForumId);
+                
                 return sf.createNewDiscussion(title, content, user);
             }
             catch (ForumNotFoundException e)
@@ -361,10 +398,19 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new comment and a new user which is the forum's administrator
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
+            if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
+               !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
+               !ContentPolicy.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content) )
+            {
+                throw new IllegalContentException();
+            }
+
             this.logger.logAction("performing createNewComment: "); // TODO add content
             try
             {
                 Forum forum = getForum(forumId);
+                SubForum sf = forum.getSubForum(subForumId);
+                Discussion d = sf.getDiscussion(discussionId);
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
@@ -372,14 +418,11 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException();
                 }
                 User user;
-                if (forum.admin.userName == userName && forum.admin.password == password)
-                {
-                    user = forum.admin;
-                }
-                else
-                    user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser
-                SubForum sf = forum.getSubForum(subForumId);
-                Discussion d = sf.getDiscussion(discussionId);
+                // if(isSuperUser(userName, password)
+                //    currently not supported.
+                
+                user = forum.getUser(userName); // user must be found since security check passed, or being a superUser
+                
                 return d.createNewComment(content, user);
             }
             catch (ForumNotFoundException e)
@@ -429,7 +472,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException();
                 } // if
 
-                if (!sf.discussions.Remove(d))
+                if (!sf.removeDiscussion(discussionId))
                     throw new Exception("remove Discussion from vector failed");
                 return true;
             }

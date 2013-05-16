@@ -12,10 +12,7 @@ test method: testSuperUserLogout
 test summary for testSuperUserLogout: 4 tests passed
 
 test method: testCreateNewForum
--- FAILED --  failed test number 6
--- FAILED --  failed test number 7
--- FAILED --  failed test number 8
-test summary for testCreateNewForum: 5 tests passed
+test summary for testCreateNewForum: 8 tests passed
 
 test method: testGetMutualUsers
 test summary for testGetMutualUsers: 4 tests passed
@@ -23,8 +20,7 @@ test summary for testGetMutualUsers: 4 tests passed
 *testing Admin functions*
 
 test method: testCreateNewSubForum
--- FAILED --  failed test number 6
-test summary for testCreateNewSubForum: 6 tests passed
+test summary for testCreateNewSubForum: 7 tests passed
 
 test method: testAddModerator
 test summary for testAddModerator: 6 tests passed
@@ -59,12 +55,9 @@ test method: testDeleteDiscussion
 test summary for testDeleteDiscussion: 6 tests passed
 
 test method: testEditDiscussion
--- FAILED --  failed test number 0
-test summary for testEditDiscussion: 5 tests passed
+test summary for testEditDiscussion: 6 tests passed
 
 test method: testRegister
--- FAILED --  failed test number 1
--- FAILED --  failed test number 2
 test summary for testRegister: 5 tests passed
 
 *testing Member functions*
