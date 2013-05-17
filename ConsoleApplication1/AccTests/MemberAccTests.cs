@@ -54,6 +54,11 @@ namespace ConsoleApplication1.AccTests
                     AssertTrue(res.isLoggedIn);
 
                     testNum++;
+
+                    res = this.bridge.login(forum.forumId, "mngr", "mngrPswd");
+                    AssertTrue(res.isLoggedIn);
+                    testNum++;
+
                 }
                 catch { failMsg(testNum); }
 
