@@ -14,8 +14,8 @@ namespace ForumService
         static void Main(string[] args)
         {
             //this is the base address for communicating with the server
-            //Uri[] baseAddresses = new Uri[_numOfBaseAddress]{ new Uri("http://localhost:8888") };
-            Uri[] baseAddresses = new Uri[_numOfBaseAddress] { new Uri("http://10.0.0.7:8888") };
+            Uri[] baseAddresses = new Uri[_numOfBaseAddress]{ new Uri("http://localhost:8888") };
+            //Uri[] baseAddresses = new Uri[_numOfBaseAddress] { new Uri("http://10.0.0.7:8888") };
 
             using (ServiceHost host = new ServiceHost(typeof(HttpServer), baseAddresses))
             {

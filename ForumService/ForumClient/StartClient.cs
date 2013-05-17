@@ -13,7 +13,7 @@ namespace ForumClient
         {
             //this channel creates basic http binding with http://localhost:8888/methods/
             //ChannelFactory<IForumService> httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
-            ChannelFactory<IForumService> httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://10.0.0.7:8888/methods"));
+            ChannelFactory<IForumService> httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
 
             IForumService httpProxy = httpFactory.CreateChannel();
 
