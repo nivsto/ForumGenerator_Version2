@@ -3,15 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
+    [DataContract(IsReference = true)]
     public class Comment
     {
+        [DataMember]
         internal int commentId;
+        [DataMember]
         internal string content;
+        [DataMember]
         internal DateTime publishDate;
+        [DataMember]
         internal User publisher;
+        [DataMember]
         internal Discussion parentDiscussion;
 
         public Comment(int commentId, string content, User user, Discussion parentDiscussion)

@@ -5,16 +5,24 @@ using System.Text;
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
+using System.Runtime.Serialization;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
+    [DataContract(IsReference = true)]
     public class SubForum
     {
+        [DataMember]
         public int subForumId { get; private set; }
+        [DataMember]
         public string subForumTitle { get; private set; }
+        [DataMember]
         public List<User> moderators { get; private set; }
+        [DataMember]
         public List<Discussion> discussions { get; private set; }
+        [DataMember]
         public Forum parentForum { get; private set; }
+        [DataMember]
         public int nextDiscussionId;
 
 

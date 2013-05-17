@@ -3,15 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ServiceModel;
+using System.Runtime.Serialization;
 
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 
 namespace ForumGenerator_Version2_Server.Users
 {
+    [DataContract(IsReference = true)]
     public class SuperUser
     {
+        [DataMember]
         public String userName { get; private set; }
+        [DataMember]
         public String password { get; private set; }
+        [DataMember]
         public bool isLoggedIn { get; private set; }
 
         public SuperUser(string superUserName, string superUserPass)

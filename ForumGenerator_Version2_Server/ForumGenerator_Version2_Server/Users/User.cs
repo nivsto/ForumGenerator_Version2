@@ -3,18 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace ForumGenerator_Version2_Server.Users
 {
+    [DataContract(IsReference = true)]
     public class User
     {
+        [DataMember]
         public int memberID { get; private set; }
+        [DataMember]
         public string userName { get; private set; }
+        [DataMember]
         public string password { get; private set; }
+        [DataMember]
         public string email { get; private set; }
+        [DataMember]
         public List<User> friends { get; private set; }
+        [DataMember]
         public string signature { get; private set; }
+        [DataMember]
         public bool isLoggedIn { get; private set; }
+        [DataMember]
         public Forum forum { get; private set; }
 
         internal User(int memberId, string userName, string password, string email, string signature, Forum forum)

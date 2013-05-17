@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="HttpServer" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://10.0.0.7:8888/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://10.0.0.7:8888/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://10.0.0.7:8888/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" />
+      <xsd:import schemaLocation="http://10.0.0.7:8888/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IForumService_login_InputMessage">
+    <wsdl:part name="parameters" element="tns:login" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:loginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_logout_InputMessage">
+    <wsdl:part name="parameters" element="tns:logout" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_logout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:logoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_superUserLogin_InputMessage">
+    <wsdl:part name="parameters" element="tns:superUserLogin" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_superUserLogin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:superUserLoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_superUserLogout_InputMessage">
+    <wsdl:part name="parameters" element="tns:superUserLogout" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_superUserLogout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:superUserLogoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_register_InputMessage">
+    <wsdl:part name="parameters" element="tns:register" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_register_OutputMessage">
+    <wsdl:part name="parameters" element="tns:registerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getForums_InputMessage">
+    <wsdl:part name="parameters" element="tns:getForums" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getForums_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getForumsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getSubForums_InputMessage">
+    <wsdl:part name="parameters" element="tns:getSubForums" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getSubForums_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getSubForumsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getDiscussions_InputMessage">
+    <wsdl:part name="parameters" element="tns:getDiscussions" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getDiscussions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getDiscussionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getComments_InputMessage">
+    <wsdl:part name="parameters" element="tns:getComments" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getComments_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getCommentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUsers" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:createNewForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createNewForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewSubForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:createNewSubForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewSubForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createNewSubForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewDiscussion_InputMessage">
+    <wsdl:part name="parameters" element="tns:createNewDiscussion" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewDiscussion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createNewDiscussionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewComment_InputMessage">
+    <wsdl:part name="parameters" element="tns:createNewComment" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_createNewComment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:createNewCommentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_changeAdmin_InputMessage">
+    <wsdl:part name="parameters" element="tns:changeAdmin" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_changeAdmin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:changeAdminResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_addModerator_InputMessage">
+    <wsdl:part name="parameters" element="tns:addModerator" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_addModerator_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addModeratorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_removeModerator_InputMessage">
+    <wsdl:part name="parameters" element="tns:removeModerator" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_removeModerator_OutputMessage">
+    <wsdl:part name="parameters" element="tns:removeModeratorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_deleteDiscussion_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteDiscussion" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_deleteDiscussion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteDiscussionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_editDiscussion_InputMessage">
+    <wsdl:part name="parameters" element="tns:editDiscussion" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_editDiscussion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:editDiscussionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getNumOfCommentsSingleUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:getNumOfCommentsSingleUser" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getNumOfCommentsSingleUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getNumOfCommentsSingleUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getNumOfCommentsSubForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:getNumOfCommentsSubForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getNumOfCommentsSubForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getNumOfCommentsSubForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getResponsersForSingleUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:getResponsersForSingleUser" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getResponsersForSingleUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getResponsersForSingleUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getMutualUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:getMutualUsers" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getMutualUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getMutualUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUserType_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUserType" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUserType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUserTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUserTypeSubForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUserTypeSubForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUserTypeSubForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUserTypeSubForumResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IForumService">
+    <wsdl:operation name="login">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/login" message="tns:IForumService_login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/loginResponse" message="tns:IForumService_login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="logout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/logout" message="tns:IForumService_logout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/logoutResponse" message="tns:IForumService_logout_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="superUserLogin">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/superUserLogin" message="tns:IForumService_superUserLogin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/superUserLoginResponse" message="tns:IForumService_superUserLogin_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="superUserLogout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/superUserLogout" message="tns:IForumService_superUserLogout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/superUserLogoutResponse" message="tns:IForumService_superUserLogout_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="register">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/register" message="tns:IForumService_register_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/registerResponse" message="tns:IForumService_register_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getForums">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getForums" message="tns:IForumService_getForums_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getForumsResponse" message="tns:IForumService_getForums_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubForums">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getSubForums" message="tns:IForumService_getSubForums_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getSubForumsResponse" message="tns:IForumService_getSubForums_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getDiscussions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getDiscussions" message="tns:IForumService_getDiscussions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getDiscussionsResponse" message="tns:IForumService_getDiscussions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getComments">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getComments" message="tns:IForumService_getComments_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getCommentsResponse" message="tns:IForumService_getComments_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getUsers" message="tns:IForumService_getUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getUsersResponse" message="tns:IForumService_getUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createNewForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/createNewForum" message="tns:IForumService_createNewForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/createNewForumResponse" message="tns:IForumService_createNewForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createNewSubForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/createNewSubForum" message="tns:IForumService_createNewSubForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/createNewSubForumResponse" message="tns:IForumService_createNewSubForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createNewDiscussion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/createNewDiscussion" message="tns:IForumService_createNewDiscussion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/createNewDiscussionResponse" message="tns:IForumService_createNewDiscussion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="createNewComment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/createNewComment" message="tns:IForumService_createNewComment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/createNewCommentResponse" message="tns:IForumService_createNewComment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="changeAdmin">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/changeAdmin" message="tns:IForumService_changeAdmin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/changeAdminResponse" message="tns:IForumService_changeAdmin_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addModerator">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/addModerator" message="tns:IForumService_addModerator_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/addModeratorResponse" message="tns:IForumService_addModerator_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="removeModerator">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/removeModerator" message="tns:IForumService_removeModerator_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/removeModeratorResponse" message="tns:IForumService_removeModerator_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteDiscussion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/deleteDiscussion" message="tns:IForumService_deleteDiscussion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/deleteDiscussionResponse" message="tns:IForumService_deleteDiscussion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="editDiscussion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/editDiscussion" message="tns:IForumService_editDiscussion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/editDiscussionResponse" message="tns:IForumService_editDiscussion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getNumOfCommentsSingleUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getNumOfCommentsSingleUser" message="tns:IForumService_getNumOfCommentsSingleUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getNumOfCommentsSingleUserResponse" message="tns:IForumService_getNumOfCommentsSingleUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getNumOfCommentsSubForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getNumOfCommentsSubForum" message="tns:IForumService_getNumOfCommentsSubForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getNumOfCommentsSubForumResponse" message="tns:IForumService_getNumOfCommentsSubForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getResponsersForSingleUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getResponsersForSingleUser" message="tns:IForumService_getResponsersForSingleUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getResponsersForSingleUserResponse" message="tns:IForumService_getResponsersForSingleUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMutualUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getMutualUsers" message="tns:IForumService_getMutualUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getMutualUsersResponse" message="tns:IForumService_getMutualUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUserType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getUserType" message="tns:IForumService_getUserType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getUserTypeResponse" message="tns:IForumService_getUserType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUserTypeSubForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getUserTypeSubForum" message="tns:IForumService_getUserTypeSubForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getUserTypeSubForumResponse" message="tns:IForumService_getUserTypeSubForum_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IForumService" type="tns:IForumService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="login">
+      <soap:operation soapAction="http://tempuri.org/IForumService/login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="logout">
+      <soap:operation soapAction="http://tempuri.org/IForumService/logout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="superUserLogin">
+      <soap:operation soapAction="http://tempuri.org/IForumService/superUserLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="superUserLogout">
+      <soap:operation soapAction="http://tempuri.org/IForumService/superUserLogout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="register">
+      <soap:operation soapAction="http://tempuri.org/IForumService/register" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getForums">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getForums" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubForums">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getSubForums" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDiscussions">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getDiscussions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getComments">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getComments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUsers">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createNewForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/createNewForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createNewSubForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/createNewSubForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createNewDiscussion">
+      <soap:operation soapAction="http://tempuri.org/IForumService/createNewDiscussion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createNewComment">
+      <soap:operation soapAction="http://tempuri.org/IForumService/createNewComment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeAdmin">
+      <soap:operation soapAction="http://tempuri.org/IForumService/changeAdmin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addModerator">
+      <soap:operation soapAction="http://tempuri.org/IForumService/addModerator" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removeModerator">
+      <soap:operation soapAction="http://tempuri.org/IForumService/removeModerator" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteDiscussion">
+      <soap:operation soapAction="http://tempuri.org/IForumService/deleteDiscussion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="editDiscussion">
+      <soap:operation soapAction="http://tempuri.org/IForumService/editDiscussion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNumOfCommentsSingleUser">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getNumOfCommentsSingleUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNumOfCommentsSubForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getNumOfCommentsSubForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getResponsersForSingleUser">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getResponsersForSingleUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMutualUsers">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getMutualUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserType">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getUserType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserTypeSubForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getUserTypeSubForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HttpServer">
+    <wsdl:port name="BasicHttpBinding_IForumService" binding="tns:BasicHttpBinding_IForumService">
+      <soap:address location="http://10.0.0.7:8888/methods" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

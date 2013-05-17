@@ -5,18 +5,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
+    [DataContract(IsReference = true)]
     public class Forum
     {
+        [DataMember]
         public int forumId { get; private set; }
+        [DataMember]
         public User admin { get; private set; }
+        //[DataMember]
+        [IgnoreDataMember]
         public List<SubForum> subForums { get; private set; }
+        [DataMember]
         public string forumName { get; private set; }
+        //[DataMember]
+        [IgnoreDataMember]
         public List<User> members { get; private set; }
-        internal int nextSubForumId = 1;
-        internal int nextUserId = 1;
+        [DataMember]
+        //internal int nextSubForumId = 1;
+        public int nextSubForumId = 1;
+        [DataMember]
+        //internal int nextUserId = 1;
+        public int nextUserId = 1;
 
         public Forum(int forumId, string forumName, string adminUserName, string adminPassword)
         {
