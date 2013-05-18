@@ -5,9 +5,11 @@ using System.Text;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Sys;
+using System.ServiceModel;
 
 namespace ForumService
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     class HttpServer : IForumService
     {
         private ForumGenerator _forumGen;

@@ -17,7 +17,9 @@ namespace ForumService
             Uri[] baseAddresses = new Uri[_numOfBaseAddress]{ new Uri("http://localhost:8888") };
             //Uri[] baseAddresses = new Uri[_numOfBaseAddress] { new Uri("http://10.0.0.7:8888") };
 
-            using (ServiceHost host = new ServiceHost(typeof(HttpServer), baseAddresses))
+            HttpServer server = new HttpServer();
+
+            using (ServiceHost host = new ServiceHost(server, baseAddresses))
             {
                 //adding endpoint for all methods without endpoints
                 host.AddServiceEndpoint(typeof(IForumService), new BasicHttpBinding(), "methods");
