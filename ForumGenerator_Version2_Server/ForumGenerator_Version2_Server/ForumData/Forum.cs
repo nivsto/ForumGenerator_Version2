@@ -49,14 +49,19 @@ namespace ForumGenerator_Version2_Server.ForumData
                             delegate(User mem)
                             { return mem.userName == userName; });
             if (user == null)
-                throw new NullReferenceException("no user named " + userName);
+                throw new UserNotFoundException();
             else
                 return user.login(password);
         }
 
         internal bool logout(int userId)
         {
-            return this.members.ElementAt(userId).logout();
+            try
+            {
+                return this.members.ElementAt(userId).logout();
+            }
+            catch (ArgumentNullException) { throw new UserNotFoundException(); }
+            catch (IndexOutOfRangeException) { throw new UserNotFoundException(); }
         }
 
         internal User register(string userName, string password, string email, string signature)

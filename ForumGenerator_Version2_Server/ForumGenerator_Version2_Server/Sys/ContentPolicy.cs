@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
@@ -39,6 +40,12 @@ namespace ForumGenerator_Version2_Server.Sys
         };
 
 
+        // Regular expr of contents
+        const string LETTERS_ONLY = "a-zA-Z";
+        const string LETTERS_NUMS = "a-zA-Z0-9";
+        const string LETTERS_NUMS_SIGNS = "a-zA-Z0-9,: /&|"; // not checking '-'
+        
+
 
 
         // Checks if the given data contains only legal chars and if its length is in the
@@ -60,14 +67,14 @@ namespace ForumGenerator_Version2_Server.Sys
 
         private static bool isLegalContent(string content, int minLen)
         {
-            Regex RgxUrl = new Regex("[^a-zA-Z0-9,: /&|]");             // not checking '-'
+            Regex RgxUrl = new Regex("[^"+LETTERS_NUMS_SIGNS+"]");             
             return (!RgxUrl.IsMatch(content) && content.Length >= minLen);
         }
 
 
         private static bool isLegalContent(string content, int minLen, int maxLen)
         {
-            Regex RgxUrl = new Regex("[^a-zA-Z0-9,: /&|]");
+            Regex RgxUrl = new Regex("[^" + LETTERS_NUMS_SIGNS + "]");
             return (!RgxUrl.IsMatch(content) && content.Length >= minLen && content.Length <= maxLen);
         }
 
@@ -79,10 +86,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
             try
             {
-                // TODO check email format using regex.match
+                MailAddress m = new MailAddress(email);
                 return true;
             }
-            catch
+            catch(Exception)
             {
                 return false;
             }

@@ -7,5 +7,19 @@ namespace ForumGenerator_Version2_Server.Sys.Exceptions
 {
     class SubForumNotFoundException : Exception
     {
+
+        public SubForumNotFoundException()
+            : base()
+        {
+
+        }
+
+
+        public SubForumNotFoundException(string msg)
+            : base(msg)
+        {
+
+        }
+
     }
 }

@@ -7,5 +7,24 @@ namespace ForumGenerator_Version2_Server.Sys.Exceptions
 {
     class CommentNotFoundException :Exception
     {
+
+        public CommentNotFoundException() 
+            : base()
+        {
+            
+        }
+
+
+        public CommentNotFoundException(string msg)
+            : base(msg)
+        {
+
+        }
+
+
+
+        
+
+
     }
 }
