@@ -29,9 +29,7 @@
         private void InitializeComponent()
         {
             this.txyBoxMsg = new System.Windows.Forms.RichTextBox();
-            this.txtBoxSubject = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -39,36 +37,20 @@
             // 
             // txyBoxMsg
             // 
-            this.txyBoxMsg.Location = new System.Drawing.Point(81, 82);
+            this.txyBoxMsg.Location = new System.Drawing.Point(88, 53);
             this.txyBoxMsg.Name = "txyBoxMsg";
             this.txyBoxMsg.Size = new System.Drawing.Size(287, 133);
             this.txyBoxMsg.TabIndex = 14;
             this.txyBoxMsg.Text = "";
             // 
-            // txtBoxSubject
-            // 
-            this.txtBoxSubject.Location = new System.Drawing.Point(81, 52);
-            this.txtBoxSubject.Name = "txtBoxSubject";
-            this.txtBoxSubject.Size = new System.Drawing.Size(287, 20);
-            this.txtBoxSubject.TabIndex = 13;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 82);
+            this.label3.Location = new System.Drawing.Point(29, 56);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 12;
             this.label3.Text = "Message:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 55);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 13);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Subject:";
             // 
             // label1
             // 
@@ -81,16 +63,17 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(228, 232);
+            this.btnCancel.Location = new System.Drawing.Point(244, 214);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 23);
             this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(107, 232);
+            this.btnAdd.Location = new System.Drawing.Point(132, 214);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(86, 23);
             this.btnAdd.TabIndex = 8;
@@ -104,9 +87,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(405, 279);
             this.Controls.Add(this.txyBoxMsg);
-            this.Controls.Add(this.txtBoxSubject);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAdd);
@@ -120,9 +101,7 @@
         #endregion
 
         private System.Windows.Forms.RichTextBox txyBoxMsg;
-        private System.Windows.Forms.TextBox txtBoxSubject;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnAdd;

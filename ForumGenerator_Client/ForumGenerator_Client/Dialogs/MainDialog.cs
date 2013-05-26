@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.Dialogs;
+using ForumGenerator_Client.Objects;
 
 namespace ForumGenerator_Client
 {
@@ -17,6 +18,7 @@ namespace ForumGenerator_Client
         {
             GUEST,
             MEMBER,
+            MODERATOR,
             ADMIN,
             SUPER
         };
@@ -39,11 +41,20 @@ namespace ForumGenerator_Client
         int currSubForumId = 0;
         int currThreadId = 0;
 
-        LinkedList<Tuple<string, string>> list;
+        User currUser;
+
+        newCommunicator communicator;
+
+        List<Forum> forumsList;
+        List<SubForum> subforumsList;
+        List<Comment> commentsList;
+        List<Discussion> discussionList;
+
 
         public MainDialog()
         {
             InitializeComponent();
+            this.communicator = new newCommunicator();
             updateVisibilty();
         }
 
@@ -62,10 +73,11 @@ namespace ForumGenerator_Client
             userLog.ShowDialog(this);
             if (userLog.isOkClicked())
             {
-                    loginLevel = userLog.getLoginLevel();
-                    userName = userLog.getUserName();
-                    password = userLog.getPassword();
-                    updateVisibilty();               
+                currUser = userLog.getUser();
+                loginLevel = userLog.getLoginLevel();
+                userName = userLog.getUserName();
+                password = userLog.getPassword();
+                updateVisibilty();               
 
             }
         }
@@ -147,11 +159,11 @@ namespace ForumGenerator_Client
         {
             if (MessageBox.Show("Are You Sure?", "Logout", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                Communicator com = new Communicator();
                 if (loginLevel != (int)loginLevels.SUPER)
-                    com.sendLogoutReq(currForumId, userName);
+                    communicator.logout(currForumId, currUser.memberID);
+
                 else
-                    com.sendAdminLogoutReq(userName);
+                    communicator.superUserLogout(userName, password);
 
                 loginLevel = 0;
                 userName = null;
@@ -303,6 +315,8 @@ namespace ForumGenerator_Client
                 btnView.Visible = true;
                 newToolStripMenuItem1.Visible = false;
                 lblTitle.Text = "Choose a Sub-Forum";
+                if (loginLevel == (int)loginLevels.MODERATOR)
+                    loginLevel = (int)loginLevels.MEMBER;
                 initSubForumsList();
             }
           
@@ -315,6 +329,9 @@ namespace ForumGenerator_Client
                 publishNewMessageToolStripMenuItem.Visible = true;
                 addACommentToolStripMenuItem.Visible = false;
                 lblTitle.Text = "Choose a Thread";
+                //check if the user is moderator
+                loginLevel = this.communicator.getUserType(currForumId, currSubForumId, userName);
+
                 initThreadList();
             }
           
@@ -350,22 +367,20 @@ namespace ForumGenerator_Client
 
         private void initForumsList()
         {
-            Communicator com = new Communicator();
-            list = com.sendGetForumsReq();
+            forumsList = this.communicator.getForums();
             listBox1.Items.Clear();
-            for (int i = 0; i < list.Count; i++)
-                listBox1.Items.Add(list.ElementAt(i).Item2);
+            for (int i = 0; i < forumsList.Count; i++)
+                listBox1.Items.Add(forumsList.ElementAt(i).forumName);
 
                        
         }
 
         private void initSubForumsList()
         {
-            Communicator com = new Communicator();
-            list = com.sendGetSubForumsReq(currForumId);
+            subforumsList = this.communicator.getSubForums(currForumId);
             listBox1.Items.Clear();
-            for (int i = 0; i < list.Count; i++)
-                listBox1.Items.Add(list.ElementAt(i).Item2);
+            for (int i = 0; i < subforumsList.Count; i++)
+                listBox1.Items.Add(subforumsList.ElementAt(i).subForumTitle);
 
             
         }
@@ -373,22 +388,20 @@ namespace ForumGenerator_Client
 
         private void initThreadList()
         {
-            Communicator com = new Communicator();
-            list = com.sendGetDiscussionsReq(currForumId, currSubForumId);
+            discussionList = this.communicator.getDiscussions(currForumId, currSubForumId);
             listBox1.Items.Clear();
-            for (int i = 0; i < list.Count; i++)
-                listBox1.Items.Add(list.ElementAt(i).Item2);
+            for (int i = 0; i < discussionList.Count; i++)
+                listBox1.Items.Add(discussionList.ElementAt(i).title);
 
     
         }
 
         private void initMsgList()
         {
-            Communicator com = new Communicator();
-            list = com.sendGetCommentsReq(currForumId, currSubForumId, currThreadId);
+            commentsList = this.communicator.getComments(currForumId, currSubForumId, currThreadId);
             listBox1.Items.Clear();
-            for (int i = 0; i < list.Count; i++)
-                listBox1.Items.Add(list.ElementAt(i).Item2);
+            for (int i = 0; i < commentsList.Count; i++)
+                listBox1.Items.Add(commentsList.ElementAt(i).content);
 
    
         }
@@ -396,27 +409,70 @@ namespace ForumGenerator_Client
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = listBox1.SelectedIndex;
-            int id = Convert.ToInt16(list.ElementAt(index).Item1);
-
+            
             if (currentView == (int)view.MAIN)
-                currForumId = id;
+            {
+                currForumId = forumsList.ElementAt(index).forumId;
+            }
 
             if (currentView == (int)view.FORUM)
-                currSubForumId = id;
+            {
+                currSubForumId = subforumsList.ElementAt(index).subForumId;
+            }
 
             if (currentView == (int)view.SUB)
-                currThreadId = id;
+            {
+                currThreadId = discussionList.ElementAt(index).discussionId;
+            }
 
 
         }
 
+
+
         /*************************************/
-        /*   Edit Message                    */
+        /*   View Number Of Sub-Forums       */
         /*************************************/
-        private void editMessageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void numberOfSubForumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EditMsgDialog edit = new EditMsgDialog();
-            edit.ShowDialog();
+            int num = (this.communicator.getSubForums(currForumId)).Count;
+            string msg = "Number of Sub-Forums:" + num;
+
+            MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
+        }
+
+
+
+
+        /*************************************/
+        /*   View Num Of Forums              */
+        /*************************************/
+        private void numberOfForumsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int num = (this.communicator.getForums()).Count;
+            string msg = "Number of Forums:" + num;
+
+            MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
+        }
+
+
+        /*************************************/
+        /*   Add New Moderator               */
+        /*************************************/
+        private void newModrtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddModeratorDialog mod = new AddModeratorDialog(currForumId, currSubForumId, userName, password);
+            mod.ShowDialog();
+        }
+
+
+        /*************************************/
+        /*   Delete Moderator                */
+        /*************************************/
+        private void DeleteModrtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteModeratorDialog del = new DeleteModeratorDialog(currForumId, currSubForumId, userName, password);
+            del.ShowDialog();
         }
 
         /*************************************/
@@ -424,16 +480,20 @@ namespace ForumGenerator_Client
         /*************************************/
         private void deleteMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //show message - "are u sure?"
+            if (MessageBox.Show("You Are About To Delete The Message. Are You Sure?", "Delete", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                this.communicator.deleteDiscussion(currForumId, currSubForumId, currThreadId, userName, password);
+            }
         }
 
+
         /*************************************/
-        /*   View Number Of Posts Per User   */
+        /*   Edit Message                    */
         /*************************************/
-        private void userMessagesNumberToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MsgPerUserDialog mpu = new MsgPerUserDialog();
-            mpu.ShowDialog();
+            EditMsgDialog edit = new EditMsgDialog(currForumId, currSubForumId, currThreadId, userName, password);
+            edit.ShowDialog();
         }
 
         /*************************************/
@@ -441,50 +501,18 @@ namespace ForumGenerator_Client
         /*************************************/
         private void repliersPerUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RepliersPerUserDialog rep = new RepliersPerUserDialog();
+            RepliersPerUserDialog rep = new RepliersPerUserDialog(userName, password, currForumId);
             rep.ShowDialog();
         }
 
-        /*************************************/
-        /*   View Number Of Sub-Forums       */
-        /*************************************/
-        private void numberOfSubForumsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //show msg = "number of subs = 123"
-        }
 
         /*************************************/
-        /*   Add New Moderator               */
+        /*   View Number Of Posts Per User   */
         /*************************************/
-        private void newModrtToolStripMenuItem_Click(object sender, EventArgs e)
+        private void userMessagesNumberToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddModeratorDialog mod = new AddModeratorDialog();
-            mod.ShowDialog();
-        }
-
-        /*************************************/
-        /*   Delete Moderator                */
-        /*************************************/
-        private void DeleteModrtToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DeleteModeratorDialog del = new DeleteModeratorDialog();
-            del.ShowDialog();
-        }
-
-        /*************************************/
-        /*   Delete Sub Forum                */
-        /*************************************/
-        private void deleteSubForumToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //show msg - "are u sure?"
-        }
-
-        /*************************************/
-        /*   View Num Of Forums              */
-        /*************************************/
-        private void numberOfForumsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //show msg - "num of forum: 345"
+            MsgPerUserDialog mpu = new MsgPerUserDialog(userName, password, currForumId);
+            mpu.ShowDialog();
         }
 
         /*************************************/
@@ -492,9 +520,29 @@ namespace ForumGenerator_Client
         /*************************************/
         private void mutualMembersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MutualMembersDialog mut = new MutualMembersDialog();
+            MutualMembersDialog mut = new MutualMembersDialog(userName, password);
             mut.ShowDialog();
         }
+
+        /*****************************************/
+        /* Not Implemented Yet!                  */                                                                              
+        /*****************************************/
+        /*************************************/
+        /*   Delete Sub Forum                */
+        /*************************************/
+        private void deleteSubForumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("You Are About To Delete The Sub-Forum. Are You Sure?", "Delete", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+              
+            }
+        }
+
+
+
+
+
+
 
 
 

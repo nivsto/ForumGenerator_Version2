@@ -6,14 +6,48 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ForumGenerator_Client.Objects;
+using ForumGenerator_Client.Communication;
 
 namespace ForumGenerator_Client.Dialogs
 {
     public partial class DeleteModeratorDialog : Form
     {
-        public DeleteModeratorDialog()
+        newCommunicator communicator = new newCommunicator();
+        int forumId;
+        int subForumId;
+        string adderUsrName; 
+        string adderPswd;
+        List<User> users = null;
+
+        public DeleteModeratorDialog(int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
             InitializeComponent();
+            this.forumId = forumId;
+            this.subForumId = subForumId;
+            this.adderUsrName = adderUsrName;
+            this.adderPswd = adderPswd;
+
+                    
+            //init users combo box list
+            this.comboBox1.Items.Clear();
+            users = communicator.getUsers(forumId);
+
+            for (int i = 0; i < users.Count; i++)
+                comboBox1.Items.Add(users.ElementAt(i).userName);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int index = comboBox1.SelectedIndex;
+            string name = users.ElementAt(index).userName;
+
+            communicator.removeModerator(name, forumId, subForumId, adderUsrName, adderPswd);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

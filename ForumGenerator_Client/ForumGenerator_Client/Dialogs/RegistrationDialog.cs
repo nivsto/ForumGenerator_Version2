@@ -15,6 +15,7 @@ namespace ForumGenerator_Client
         string userName = null;
         string password = null;
         int forumId = 0;
+        newCommunicator communicator = new newCommunicator();
 
         public RegistrationDialog(int forumId)
         {
@@ -34,8 +35,7 @@ namespace ForumGenerator_Client
 
                 userName = txtBoxUsername.Text;
                 password = txtBoxPassword.Text;
-                Communicator com = new Communicator();
-                Tuple<int, String> result = com.sendRegisterReq(forumId, userName, password, txtBoxEmail.Text, txtBoxSignature.Text);
+                communicator.register(forumId, userName, password, txtBoxEmail.Text, txtBoxSignature.Text);
 
                 Close();
             }

@@ -73,6 +73,8 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Communication\Communicator.cs" />
+    <Compile Include="Communication\IForumGenerator.cs" />
+    <Compile Include="Communication\newCommunicator.cs" />
     <Compile Include="Communication\XmlHandler.cs" />
     <Compile Include="Dialogs\AddModeratorDialog.cs">
       <SubType>Form</SubType>
@@ -146,6 +148,12 @@
     <Compile Include="Dialogs\RepliersPerUserDialog.Designer.cs">
       <DependentUpon>RepliersPerUserDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Objects\Comment.cs" />
+    <Compile Include="Objects\Discussion.cs" />
+    <Compile Include="Objects\Forum.cs" />
+    <Compile Include="Objects\SubForum.cs" />
+    <Compile Include="Objects\SuperUser.cs" />
+    <Compile Include="Objects\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Dialogs\addModeratorDialog.resx">
       <DependentUpon>AddModeratorDialog.cs</DependentUpon>
@@ -203,6 +211,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

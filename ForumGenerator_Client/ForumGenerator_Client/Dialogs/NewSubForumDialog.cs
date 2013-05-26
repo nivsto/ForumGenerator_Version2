@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.Objects;
 
 namespace ForumGenerator_Client
 {
     public partial class NewSubForumDialog : Form
     {
         string name = null;
-        string[] admins = null;
         int forumId = 0;
         string currUser = null;
         string userPassword = null;
+        newCommunicator communicator = new newCommunicator();
 
 
         int subForumId = 0; 
@@ -34,16 +35,12 @@ namespace ForumGenerator_Client
                 MessageBox.Show("Please Enter Sub-Forum Name!", "Error");
             else
             {
-                //if (checkedListBox1.Items.Count <= 0)
-                 //   MessageBox.Show("Please Select Sub-Forum Admins!", "Error");
-                //else
                 {
                     name = txtBoxName.Text;
-                   // admins = checkedListBox1.CheckedItems;
-                    Communicator com = new Communicator();
-                    Tuple<int, String> result = com.sendCreateNewSubForumReq(currUser, userPassword, forumId, name);
-                  
-                    subForumId = Convert.ToInt16(result.Item2);
+
+                    SubForum sub  = communicator.createNewSubForum(currUser, userPassword, forumId, name);
+
+                    subForumId = sub.subForumId;
 
                     Close();
                 }

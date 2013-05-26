@@ -32,9 +32,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtBoxName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -71,14 +71,6 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Admins:";
             // 
-            // checkedListBox1
-            // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(87, 82);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(164, 124);
-            this.checkedListBox1.TabIndex = 4;
-            // 
             // btnAdd
             // 
             this.btnAdd.Location = new System.Drawing.Point(66, 227);
@@ -98,6 +90,14 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Location = new System.Drawing.Point(87, 82);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(164, 124);
+            this.checkedListBox1.TabIndex = 4;
             // 
             // NewSubForumDialog
             // 
@@ -125,8 +125,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtBoxName;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

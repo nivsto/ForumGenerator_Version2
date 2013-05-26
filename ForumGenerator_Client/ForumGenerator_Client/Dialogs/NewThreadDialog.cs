@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.Objects;
 
 namespace ForumGenerator_Client
 {
@@ -19,6 +20,7 @@ namespace ForumGenerator_Client
         int forumId;
         int subForumId;
         int threadId;
+        newCommunicator communicator = new newCommunicator();
 
         public NewThreadDialog(string userName,  string password,  int forumId,  int subForumId)
         {
@@ -38,11 +40,9 @@ namespace ForumGenerator_Client
             {
                 subject = txtBoxSubject.Text;
                 text = txyBoxMsg.Text;
+                Discussion dis = communicator.createNewDiscussion(userName, password, forumId, subForumId, subject, text);
 
-                Communicator com = new Communicator();
-                Tuple<int, String> result = com.sendCreateNewDiscussionReq(userName, password, forumId, subForumId, subject, text);
-
-                threadId = Convert.ToInt16(result.Item2);
+                threadId = dis.discussionId;
 
 
                 Close();

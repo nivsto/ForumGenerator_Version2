@@ -7,18 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.Objects;
 
 namespace ForumGenerator_Client
 {
     public partial class UserLoginDialog : Form
     {
+        enum loginLevels
+        {
+            GUEST,
+            MEMBER,
+            MODERATOR,
+            ADMIN,
+            SUPER
+        };
+
         int loginLevel = 0;
         bool okClicked = false;
         string userName = null;
         int forumId = 0;
         string password = null;
         bool superUser = false;
-
+        User user;
+        newCommunicator communicator = new newCommunicator();
 
         public UserLoginDialog(int forumId, bool superUser)
         {
@@ -44,26 +55,20 @@ namespace ForumGenerator_Client
                 okClicked = true;
                 userName = txtBoxUserName.Text;
                 password = txtBoxPassword.Text;
-                Communicator com = new Communicator();
-                Tuple<int, String> result;
-
+         
                 if (superUser)
-                    result = com.sendAdminLoginReq(userName, password);
-                else
-                    result = com.sendLoginReq(forumId, userName, password);
-
-                if (result.Item1 == 1)
                 {
-                    string tmp = result.Item2;
-                    if (tmp == "Member")
-                        loginLevel = 1;
-                    if (tmp == "Administrator")
-                        loginLevel = 2;
-                    if (tmp == "SuperUser")
-                        loginLevel = 3;
+                    this.communicator.superUserLogin(userName, password);
+                    loginLevel = (int) loginLevels.SUPER;
                 }
+
                 else
-                    MessageBox.Show("Incorrect Username Or Password. Try Again!", "Error", MessageBoxButtons.OK);
+                {
+                    user = this.communicator.login(forumId, userName, password);
+                    loginLevel = this.communicator.getUserType(forumId, userName);
+                }
+
+               //       MessageBox.Show("Incorrect Username Or Password. Try Again!", "Error", MessageBoxButtons.OK);
 
                 Hide();
             }
@@ -89,6 +94,11 @@ namespace ForumGenerator_Client
         public string getPassword()
         {
             return password;
+        }
+
+        public User getUser()
+        {
+            return user;
         }
 
     }

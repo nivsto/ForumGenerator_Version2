@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
-
+using ForumGenerator_Client.Objects;
 
 namespace ForumGenerator_Client
 {
@@ -19,6 +19,7 @@ namespace ForumGenerator_Client
         string forumName = null;
         string admin = null;
         string adminPassword = null;
+        newCommunicator communicator = new newCommunicator();
 
         int forumId = 0;
 
@@ -40,9 +41,8 @@ namespace ForumGenerator_Client
                 forumName = txtBoxName.Text;
                 admin = txtBoxAdmin.Text;
                 adminPassword = txtBoxPassword.Text;
-                Communicator com = new Communicator();
-                Tuple<int, String> result = com.sendCreateNewForumReq(currUser, userPassword, forumName, admin, adminPassword);
-                forumId = Convert.ToInt16(result.Item2);
+                Forum forum = communicator.createNewForum(currUser, userPassword, forumName, admin, adminPassword);
+                forumId = forum.forumId;
                 Close();
             }
         }
