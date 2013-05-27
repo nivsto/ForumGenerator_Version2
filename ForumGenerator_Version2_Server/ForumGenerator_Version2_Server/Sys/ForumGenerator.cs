@@ -829,5 +829,12 @@ namespace ForumGenerator_Version2_Server.Sys
                 return this.getForum(forumId).getUserType(subForumId,userName);
         }
 
+
+        public bool collectLogs(string logFileName)
+        {
+            // throw exception on error
+            this.logger.collectLogs(logFileName);
+            return true;
+        }
     }
 }

@@ -5,10 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Net;
 using System.Xml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 
@@ -16,42 +12,41 @@ namespace ForumGenerator_Version2_Server.Sys
 {
     public class Logger
     {
-        public List<LogItem> actionLog;
-        public List<LogItem> errorLog;
+ 
+        public List<LogItem> events;
         StreamWriter outFile;
 
         public Logger()
         {
-            this.actionLog = new List<LogItem>();
-            this.errorLog = new List<LogItem>();
-            this.actionLog.Add(new LogItem(0, "Forum Generator has been started"));
+            this.events = new List<LogItem>();
+            this.events.Add(new LogItem(LogItem.ACTION, 0, "Forum Generator has been started"));
             outFile = null;
         }
 
 
         public Logger(string outFile)
         {
-            this.actionLog = new List<LogItem>();
-            this.errorLog = new List<LogItem>();
-            this.actionLog.Add(new LogItem(0, "Forum Generator has been started"));
+            this.events = new List<LogItem>();
+            this.events.Add(new LogItem(LogItem.ACTION, 0, "Forum Generator has been started"));
             this.setOutputFileStream(outFile);
         }
 
 
         public void logAction(string description)
         {
-            this.actionLog.Add(new LogItem(this.actionLog.Count(), description));
+            this.events.Add(new LogItem(LogItem.ACTION, this.events.Count(), description));
         }
+
 
         public void logError(string description)
         {
-            this.errorLog.Add(new LogItem(this.errorLog.Count(), description));
+            this.events.Add(new LogItem(LogItem.ERROR, this.events.Count(), description));
         }
-
+      
 
         public void setOutputFileStream(string fileName)
         {
-            string path = this.getPath() + "/" + fileName;
+            
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
@@ -67,10 +62,37 @@ namespace ForumGenerator_Version2_Server.Sys
             string currentDir = Environment.CurrentDirectory;
             DirectoryInfo directory = new DirectoryInfo(currentDir);
             string fullDirectory = directory.FullName;
-            fullDirectory = fullDirectory.Substring(0, fullDirectory.Length - 10); // remove "/bin/Debug"
-            string path = fullDirectory + "\\Logger";
-            path = path.Replace('\\', '/');
-            return path;
+          //  fullDirectory = fullDirectory.Substring(0, fullDirectory.Length - 10); // remove "/bin/Debug"
+          //  string path = fullDirectory + "\\Logger";
+            fullDirectory = fullDirectory.Replace('\\', '/');
+            return fullDirectory;
         }
+
+
+        public void collectLogs()
+        {
+            String logFileName = "LogEvents.txt";
+            // TODO get unique file name instead, to prevent override
+            collectLogs(logFileName);
+        }
+
+
+        public void collectLogs(string logFileName)
+        {
+            this.setOutputFileStream(logFileName);
+
+            for (int i = 0; i < events.Count(); i++)
+            {
+                LogItem ev = events.ElementAt(i);
+                this.outFile.WriteLine(ev.toString());
+            }
+
+            string path = this.getPath() + "/" + logFileName;
+            Console.WriteLine("Log file created successfully as " + path);
+            this.outFile.Close();
+
+            this.events.Clear();
+        }
+
     }
 }

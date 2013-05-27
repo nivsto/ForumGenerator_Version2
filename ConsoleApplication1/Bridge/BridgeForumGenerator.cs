@@ -43,5 +43,6 @@ namespace ConsoleApplication1
         List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
         void reset();
+        bool collectLogs(string logFileName);
     }
 }

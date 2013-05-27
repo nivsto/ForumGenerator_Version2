@@ -64,5 +64,14 @@ namespace ForumGenerator_Version2_Server.Sys
 
         void reset();
 
+        /**
+         * Creates a file with the name logFileName, which contains all log activities saved by the logger.
+         * Clears all existing log events after file is created. If an error occured during
+         * file creation, log events are not cleared from logger.
+         * Returns true on success.
+         * Throws exceptions.
+         **/
+         Boolean collectLogs(string logFileName);
+
     }
 }

@@ -23,10 +23,12 @@ test method: testCreateNewSubForum
 test summary for testCreateNewSubForum: 7 tests passed
 
 test method: testAddModerator
-test summary for testAddModerator: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testAddModerator: 5 tests passed
 
 test method: testRemoveModerator
-test summary for testRemoveModerator: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testRemoveModerator: 5 tests passed
 
 test method: testGetNumOfCommentsSubForum
 -- FAILED --  failed test number 0
@@ -43,19 +45,24 @@ test summary for testGetResponsersForSingleUser: 4 tests passed
 *testing Member functions*
 
 test method: testLogin
-test summary for testLogin: 4 tests passed
+-- FAILED --  failed test number 0
+test summary for testLogin: 3 tests passed
 
 test method: testCreateNewDiscussion
-test summary for testCreateNewDiscussion: 5 tests passed
+-- FAILED --  failed test number 0
+test summary for testCreateNewDiscussion: 4 tests passed
 
 test method: testCreateNewComment
-test summary for testCreateNewComment: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testCreateNewComment: 5 tests passed
 
 test method: testDeleteDiscussion
-test summary for testDeleteDiscussion: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testDeleteDiscussion: 5 tests passed
 
 test method: testEditDiscussion
-test summary for testEditDiscussion: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testEditDiscussion: 5 tests passed
 
 test method: testRegister
 test summary for testRegister: 5 tests passed
