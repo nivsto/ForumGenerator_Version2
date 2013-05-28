@@ -71,7 +71,9 @@ namespace ForumGenerator_Version2_Server.Sys
          * Returns true on success.
          * Throws exceptions.
          **/
-         Boolean collectLogs(string logFileName);
+         bool collectLogs(string logFileName);
+
+         bool collectLogs();
 
     }
 }

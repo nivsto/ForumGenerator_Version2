@@ -83,9 +83,12 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                return this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumId == subForumId; });
+                SubForum sf = this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumId == subForumId; });
+                if (sf == null)
+                    throw new SubForumNotFoundException();
+                return sf;
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentNullException)
             {
                 throw new SubForumNotFoundException();
             }

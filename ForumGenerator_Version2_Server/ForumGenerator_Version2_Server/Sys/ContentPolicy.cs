@@ -83,7 +83,8 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             if (email == null)
                 return false;
-
+            if (email == "")
+                return true; // TODO remove
             try
             {
                 MailAddress m = new MailAddress(email);

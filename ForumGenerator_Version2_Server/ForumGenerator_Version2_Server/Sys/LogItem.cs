@@ -27,8 +27,16 @@ namespace ForumGenerator_Version2_Server.Sys
         virtual public string toString()
         {
             string l_type = type == ERROR ? ERROR+":" : "";
-            string res = logDate + "\t" + l_type + " " + description;
+            string res = logItemDateFormat() + "\t" + l_type + " " + description;
             return res;
+        }
+
+        private string logItemDateFormat()
+        {
+            int month = logDate.Month,      day = logDate.Day;
+            int h = logDate.Hour,   m = logDate.Minute,     s = logDate.Second;
+
+            return day + "-" + month + "|" + h + ":" + m + ":" + s;
         }
     }
 }

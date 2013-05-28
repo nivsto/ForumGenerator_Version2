@@ -55,8 +55,9 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns userid
         public User login(int forumId, string userName, string password)
         {
-            this.logger.logAction("performing login: forumId: " + forumId + " userName: " + userName + 
-                                                                " password: " + password);
+            this.logger.logAction("performing login: forumId: " + forumId + 
+                                                  "\tuserName: " + userName + 
+                                                  "\tpassword: " + password);
             try
             {
                 return getForum(forumId).login(userName, password);
@@ -82,7 +83,7 @@ namespace ForumGenerator_Version2_Server.Sys
         public bool logout(int forumId, int userId)
         {
             this.logger.logAction("performing logout: forumId: " + forumId + 
-                                         " userId: " + userId);
+                                                    "\tuserId: " + userId);
             try
             {
                 return getForum(forumId).logout(userId);
@@ -108,7 +109,7 @@ namespace ForumGenerator_Version2_Server.Sys
         public SuperUser superUserLogin(string userName, string password)
         {
             this.logger.logAction("performing superUserLogin: userName: " + userName +
-                                                  " password: " + password);
+                                                           "\tpassword: " + password);
             try
             {
                 return this.superUser.login(userName, password);
@@ -150,7 +151,11 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw new IllegalContentException();
             }
 
-            this.logger.logAction("performing register: "); // TODO add content
+            this.logger.logAction("performing register: forumId: " + forumId +
+                                                        "\tuserName: " + userName +
+                                                        "\tpassword: " + password +
+                                                        "\temail: " + email +
+                                                        "\tsignature: " + signature);
             try
             {
                 Forum f = this.getForum(forumId);
@@ -296,7 +301,10 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new forum and a new user which is the forum's administrator
         public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
-            this.logger.logAction("performing createNewForum: "); // TODO add content
+            this.logger.logAction("performing createNewForum:  userName: " + userName +
+                                                              "\tpassword: " + password +
+                                                              "\tadminUserName: " + adminUserName +
+                                                              "\tadminPassword: " + adminPassword);
             try
             {
                 if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
@@ -336,7 +344,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw new IllegalContentException();
             }
 
-            this.logger.logAction("performing createNewSubForum: "); // TODO add content
+            this.logger.logAction("performing createNewSubForum: userName: " + userName +
+                                                              "\tpassword: " + password +
+                                                              "\tforumId: " + forumId +
+                                                              "\tsubForumTitle: " + subForumTitle);
             try
             {
                 Forum forum = getForum(forumId);
@@ -371,7 +382,12 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw new IllegalContentException();
             }
 
-            this.logger.logAction("performing createNewDiscussion: "); // TODO add content
+            this.logger.logAction("performing createNewDiscussion: userName: " + userName +
+                                                                 "\tpassword: " + password +
+                                                                 "\tforumId: " + forumId +
+                                                                 "\tsubForumId: " + subForumId +
+                                                                 "\ttitle: " + title +
+                                                                 "\tcontent: " + content);
             try
             {
                 Forum forum = getForum(forumId);
@@ -467,7 +483,11 @@ namespace ForumGenerator_Version2_Server.Sys
         public bool deleteDiscussion(int forumId, int subForumId, int discussionId,
                      string userName, string password)
         {
-            this.logger.logAction("performing deleteDiscussion: "); // TODO add content
+            this.logger.logAction("performing deleteDiscussion: userName: " + userName +
+                                                              "\tpassword: " + password +
+                                                              "\tforumId: " + forumId +
+                                                              "\tsubForumId: " + subForumId +
+                                                              "\tdiscussionId: " + discussionId);
             try
             {
                 Forum f = this.getForum(forumId);
@@ -513,7 +533,10 @@ namespace ForumGenerator_Version2_Server.Sys
         //creates a new comment and a new user which is the forum's administrator
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
-            this.logger.logAction("performing changeAdmin: "); // TODO add content
+            this.logger.logAction("performing changeAdmin: userName: " + userName +
+                                                        "\tpassword: " + password +
+                                                        "\tforumId: " + forumId +
+                                                        "\tnewAdminUserId: " + newAdminUserId);
             try
             {
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
@@ -572,7 +595,11 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
-            this.logger.logAction("performing addModerator: "); // TODO add content
+            this.logger.logAction("performing addModerator: modUserName: " + modUserName +
+                                                         "\tforumId: " + forumId +
+                                                         "\tsubForumId: " + subForumId +
+                                                         "\tadderUserName: " + adderUsrName +
+                                                         "\tadderPswd: " + adderPswd);
             try
             {
                 Forum f = this.getForum(forumId);
@@ -607,15 +634,19 @@ namespace ForumGenerator_Version2_Server.Sys
                     
         }
 
-        public bool removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public bool removeModerator(string modUserName, int forumId, int subForumId, string rmverUsrName, string rmverPswd)
         {
-            this.logger.logAction("performing removeModerator: "); // TODO add content
+            this.logger.logAction("performing removeModerator: modUserName: " + modUserName +
+                                                            "\tforumId: " + forumId +
+                                                            "\tsubForumId: " + subForumId +
+                                                            "\trmverUserName: " + rmverUsrName +
+                                                            "\trmverPswd: " + rmverPswd);
             try
             {
                 Forum f = this.getForum(forumId);
                 SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderPswd) &&
-                    !Security.checkAdminAuthorization(f, adderUsrName, adderPswd))
+                if (!Security.checkSuperUserAuthorization(this, rmverUsrName, rmverPswd) &&
+                    !Security.checkAdminAuthorization(f, rmverUsrName, rmverPswd))
                 {
                     this.logger.logError("removeModerator: unauthorized user");
                     throw new UnauthorizedUserException();
@@ -649,7 +680,11 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string password, string newContent)
         {
-            this.logger.logAction("editDiscussion: "); // TODO add content
+            this.logger.logAction("editDiscussion: userName: " + userName +
+                                                "\tpassword: " + password +
+                                                "\tforumId: " + forumId +
+                                                "\tsubForumId: " + subForumId +
+                                                "\tnew content: <not detailed in log>");
             try
             {
                 Forum f = this.getForum(forumId);
@@ -691,7 +726,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
         {
-            this.logger.logAction("performing getNumOfCommentsSingleUser: "); //TODO add content
+            this.logger.logAction("performing getNumOfCommentsSingleUser: reqUserName: " + reqUserName +
+                                                        "\treqPswd: " + reqPswd +
+                                                        "\tforumId: " + forumId +
+                                                        "\tuserName: " + userName);
             try
             {
                 Forum forum = this.getForum(forumId);
@@ -724,7 +762,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
         {
-            this.logger.logAction("performing getResponsersForSingleUser: "); //TODO add content
+            this.logger.logAction("performing getResponsersForSingleUser: reqUserName: " + reqUserName +
+                                                        "\treqPswd: " + reqPswd +
+                                                        "\tforumId: " + forumId +
+                                                        "\tmemberUserName: " + memberUserName);
             try
             {
                 Forum forum = this.getForum(forumId);
@@ -756,7 +797,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
         {
-            this.logger.logAction("performing getNumOfCommentsSubForum: "); //TODO add content
+            this.logger.logAction("performing getNumOfCommentsSubForum: userName: " + userName +
+                                                                     "\tpswd: " + pswd +
+                                                                     "\tforumId: " + forumId +
+                                                                     "\tsubForumId: " + subForumId);
             try
             {
                 Forum forum = this.getForum(forumId);
@@ -787,7 +831,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
         {
-            this.logger.logAction("performing getMutualUsers: "); //TODO add content
+            this.logger.logAction("performing getMutualUsers: userName: " + userName +
+                                                           "\tpassword: " + password +
+                                                           "\tforumId1: " + forumId1 +
+                                                           "\tforumId2: " + forumId2);
             try
             {
                 Forum forum1 = this.getForum(forumId1);
@@ -823,10 +870,40 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public int getUserType(int forumId, int subForumId, string userName)
         {
-            if (userName == this.superUser.userName)
-                return (int)userTypes.SUPER_USER;
-            else
-                return this.getForum(forumId).getUserType(subForumId,userName);
+            this.logger.logAction("getUserType: userName: " + userName +
+                                              "\tforumId: " + forumId +
+                                              "\tsubForumId: " + subForumId);
+                                    
+            try
+            {
+                if (userName == this.superUser.userName)
+                    return (int)userTypes.SUPER_USER;
+                else
+                    return this.getForum(forumId).getUserType(subForumId, userName);
+            }
+            catch (UserNotFoundException)
+            {
+                this.logger.logError("getUserType: User " + userName + " not found");
+                throw new UserNotFoundException("User not found");
+            }
+            catch (ForumNotFoundException)
+            {
+                this.logger.logError("getUserType: forum not found");
+                throw new ForumNotFoundException("forum not found");
+            }
+            catch (SubForumNotFoundException)
+            {
+                this.logger.logError("getUserType: subForum not found");
+                throw new SubForumNotFoundException("SubForum not found");
+            }
+        }
+
+
+        public bool collectLogs()
+        {
+            // throw exception on error
+            this.logger.collectLogs();
+            return true;
         }
 
 

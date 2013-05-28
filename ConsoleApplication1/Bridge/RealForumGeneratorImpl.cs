@@ -158,6 +158,12 @@ namespace ConsoleApplication1
         {
             return this.forumGen.collectLogs(logFileName);
         }
+
+
+        public bool collectLogs()
+        {
+            return this.forumGen.collectLogs();
+        }
     }
 
 }

@@ -165,5 +165,11 @@ namespace ConsoleApplication1
         {
             throw new NotImplementedException();
         }
+
+
+        public bool collectLogs()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

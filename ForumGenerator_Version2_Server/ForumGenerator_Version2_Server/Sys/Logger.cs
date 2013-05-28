@@ -15,6 +15,7 @@ namespace ForumGenerator_Version2_Server.Sys
  
         public List<LogItem> events;
         StreamWriter outFile;
+        internal int logFileID = 0;     // Used when creating a logFile name
 
         public Logger()
         {
@@ -71,14 +72,19 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public void collectLogs()
         {
-            String logFileName = "LogEvents.txt";
-            // TODO get unique file name instead, to prevent override
+            String logFileName = "LogEvents_" + logFileID + ".txt";
+            ++logFileID;
+            if (logFileID > 100)
+            {
+                logFileID = 0;
+            }
             collectLogs(logFileName);
         }
 
 
         public void collectLogs(string logFileName)
         {
+            Console.WriteLine("Creating a log file...");
             this.setOutputFileStream(logFileName);
 
             for (int i = 0; i < events.Count(); i++)
