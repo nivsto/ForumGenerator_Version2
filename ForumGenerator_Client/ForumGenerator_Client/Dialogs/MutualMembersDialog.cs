@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
-using ForumGenerator_Client.Objects;
+using ForumGenerator_Client.ServiceReference1;
 
 namespace ForumGenerator_Client.Dialogs
 {
@@ -16,7 +16,7 @@ namespace ForumGenerator_Client.Dialogs
         newCommunicator communicator = new newCommunicator();
         string userName;
         string password;
-        List<Forum> forumsList;
+        Forum[] forumsList;
 
         public MutualMembersDialog(string userName, string password)
         {
@@ -28,7 +28,7 @@ namespace ForumGenerator_Client.Dialogs
             this.comboBox1.Items.Clear();
             this.comboBox2.Items.Clear();
 
-            for (int i = 0; i < forumsList.Count; i++)
+            for (int i = 0; i < forumsList.Length; i++)
             {
                 this.comboBox1.Items.Add(forumsList.ElementAt(i).forumName);
                 this.comboBox2.Items.Add(forumsList.ElementAt(i).forumName); 
@@ -47,10 +47,10 @@ namespace ForumGenerator_Client.Dialogs
             int index1 = comboBox1.SelectedIndex;
             int index2 = comboBox2.SelectedIndex;
 
-            List<User> users = communicator.getMutualUsers(userName, password, forumsList.ElementAt(index1).forumId, forumsList.ElementAt(index2).forumId);
+            User[] users = communicator.getMutualUsers(userName, password, forumsList.ElementAt(index1).forumId, forumsList.ElementAt(index2).forumId);
             listBox1.Items.Clear();
 
-            for (int i = 0; i < users.Count; i++)
+            for (int i = 0; i < users.Length; i++)
             {
                 listBox1.Items.Add(users.ElementAt(i).userName);
             }

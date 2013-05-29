@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using ForumGenerator_Client.Objects;
 using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.ServiceReference1;
 
 namespace ForumGenerator_Client.Dialogs
 {
@@ -18,7 +18,7 @@ namespace ForumGenerator_Client.Dialogs
         int subForumId;
         string adderUsrName; 
         string adderPswd;
-        List<User> users = null;
+        User[] users = null;
 
         public DeleteModeratorDialog(int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
@@ -33,7 +33,7 @@ namespace ForumGenerator_Client.Dialogs
             this.comboBox1.Items.Clear();
             users = communicator.getUsers(forumId);
 
-            for (int i = 0; i < users.Count; i++)
+            for (int i = 0; i < users.Length; i++)
                 comboBox1.Items.Add(users.ElementAt(i).userName);
         }
 

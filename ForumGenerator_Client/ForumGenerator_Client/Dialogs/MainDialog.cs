@@ -8,7 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.Dialogs;
-using ForumGenerator_Client.Objects;
+using ForumGenerator_Client.ServiceReference1;
+
 
 namespace ForumGenerator_Client
 {
@@ -45,10 +46,10 @@ namespace ForumGenerator_Client
 
         newCommunicator communicator;
 
-        List<Forum> forumsList;
-        List<SubForum> subforumsList;
-        List<Comment> commentsList;
-        List<Discussion> discussionList;
+        Forum[] forumsList;
+        SubForum[] subforumsList;
+        Comment[] commentsList;
+        Discussion[] discussionList;
 
 
         public MainDialog()
@@ -369,7 +370,7 @@ namespace ForumGenerator_Client
         {
             forumsList = this.communicator.getForums();
             listBox1.Items.Clear();
-            for (int i = 0; i < forumsList.Count; i++)
+            for (int i = 0; i < forumsList.Length; i++)
                 listBox1.Items.Add(forumsList.ElementAt(i).forumName);
 
                        
@@ -379,7 +380,7 @@ namespace ForumGenerator_Client
         {
             subforumsList = this.communicator.getSubForums(currForumId);
             listBox1.Items.Clear();
-            for (int i = 0; i < subforumsList.Count; i++)
+            for (int i = 0; i < subforumsList.Length; i++)
                 listBox1.Items.Add(subforumsList.ElementAt(i).subForumTitle);
 
             
@@ -390,7 +391,7 @@ namespace ForumGenerator_Client
         {
             discussionList = this.communicator.getDiscussions(currForumId, currSubForumId);
             listBox1.Items.Clear();
-            for (int i = 0; i < discussionList.Count; i++)
+            for (int i = 0; i < discussionList.Length; i++)
                 listBox1.Items.Add(discussionList.ElementAt(i).title);
 
     
@@ -400,7 +401,7 @@ namespace ForumGenerator_Client
         {
             commentsList = this.communicator.getComments(currForumId, currSubForumId, currThreadId);
             listBox1.Items.Clear();
-            for (int i = 0; i < commentsList.Count; i++)
+            for (int i = 0; i < commentsList.Length; i++)
                 listBox1.Items.Add(commentsList.ElementAt(i).content);
 
    
@@ -435,7 +436,7 @@ namespace ForumGenerator_Client
         /*************************************/
         private void numberOfSubForumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int num = (this.communicator.getSubForums(currForumId)).Count;
+            int num = (this.communicator.getSubForums(currForumId)).Length;
             string msg = "Number of Sub-Forums:" + num;
 
             MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
@@ -449,7 +450,7 @@ namespace ForumGenerator_Client
         /*************************************/
         private void numberOfForumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int num = (this.communicator.getForums()).Count;
+            int num = (this.communicator.getForums()).Length;
             string msg = "Number of Forums:" + num;
 
             MessageBox.Show(msg, "Info", MessageBoxButtons.OK);

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
-using ForumGenerator_Client.Objects;
+using ForumGenerator_Client.ServiceReference1;
 
 namespace ForumGenerator_Client.Dialogs
 {
@@ -29,9 +29,9 @@ namespace ForumGenerator_Client.Dialogs
 
             comboBox1.Items.Clear();
 
-            List<User> users = communicator.getUsers(forumId);
+            User[] users = communicator.getUsers(forumId);
 
-            for (int i = 0; i < users.Count; i++)
+            for (int i = 0; i < users.Length; i++)
                 comboBox1.Items.Add(users.ElementAt(i).userName);
 
             comboBox1.SelectedIndex = -1;

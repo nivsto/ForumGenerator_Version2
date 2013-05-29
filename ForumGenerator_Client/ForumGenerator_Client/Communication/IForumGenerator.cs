@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ForumGenerator_Client.Objects;
+using ForumGenerator_Client.ServiceReference1;
 
 namespace ForumGenerator_Client.Communication
 {

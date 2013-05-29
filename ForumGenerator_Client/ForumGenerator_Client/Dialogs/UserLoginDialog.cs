@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
-using ForumGenerator_Client.Objects;
+using ForumGenerator_Client.ServiceReference1;
 
 namespace ForumGenerator_Client
 {
