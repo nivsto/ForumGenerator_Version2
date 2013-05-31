@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
@@ -11,15 +12,16 @@ namespace ForumGenerator_Version2_Server.ForumData
     public class Comment
     {
         [DataMember]
-        internal int commentId;
+        [Key]
+        public int commentId { get; private set; }
         [DataMember]
-        internal string content;
+        public string content { get; private set; }
         [DataMember]
-        internal DateTime publishDate;
+        public DateTime publishDate { get; private set; }
         [DataMember]
-        internal User publisher;
+        public virtual User publisher { get; private set; }
         [DataMember]
-        internal Discussion parentDiscussion;
+        public virtual Discussion parentDiscussion { get; private set; }
 
         public Comment(int commentId, string content, User user, Discussion parentDiscussion)
         {

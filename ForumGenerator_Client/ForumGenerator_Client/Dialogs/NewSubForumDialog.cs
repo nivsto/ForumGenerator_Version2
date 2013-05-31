@@ -26,6 +26,7 @@ namespace ForumGenerator_Client
         {
             this.currUser = currUser;
             this.userPassword = userPassword;
+            this.forumId = forumId;
             InitializeComponent();
         }
 

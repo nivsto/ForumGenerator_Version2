@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
+using ForumGenerator_Version2_Server.DataLayer;
+
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
@@ -13,17 +16,18 @@ namespace ForumGenerator_Version2_Server.ForumData
     public class Forum
     {
         [DataMember]
+        [Key]
         public int forumId { get; private set; }
         [DataMember]
-        public User admin { get; private set; }
+        public virtual User admin { get; private set; }
         //[DataMember]
         [IgnoreDataMember]
-        public List<SubForum> subForums { get; private set; }
+        public virtual List<SubForum> subForums { get; private set; }
         [DataMember]
         public string forumName { get; private set; }
         //[DataMember]
         [IgnoreDataMember]
-        public List<User> members { get; private set; }
+        public virtual List<User> members { get; private set; }
         [DataMember]
         //internal int nextSubForumId = 1;
         public int nextSubForumId = 1;
@@ -31,7 +35,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         //internal int nextUserId = 1;
         public int nextUserId = 1;
 
-        public Forum(int forumId, string forumName, string adminUserName, string adminPassword)
+        public Forum(int forumId, string forumName, string adminUserName, string adminPassword, ForumGeneratorContext db)
         {
             // TODO: Complete member initialization
             this.forumId = forumId;
@@ -39,6 +43,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.members = new List<User>();
             int userId = nextUserId++;
             this.admin = new User(userId, adminUserName, adminPassword, "", "", this);
+            db.Users.Add(this.admin);
+            db.SaveChanges();
             this.members.Add(this.admin);
             this.subForums = new List<SubForum>();
         }

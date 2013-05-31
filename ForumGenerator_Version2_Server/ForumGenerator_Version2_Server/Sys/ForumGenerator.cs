@@ -1,4 +1,5 @@
-﻿using ForumGenerator_Version2_Server.ForumData;
+﻿using ForumGenerator_Version2_Server.DataLayer;
+using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using ForumGenerator_Version2_Server.Users;
 using System;
@@ -28,6 +29,7 @@ namespace ForumGenerator_Version2_Server.Sys
         internal SuperUser superUser { get; private set; }
         internal List<Forum> forums { get; private set; }
         public Logger logger { get; private set; }
+        public ForumGeneratorContext db { get; set; }
 
 
         public ForumGenerator(string superUserName, string superUserPass)
@@ -35,6 +37,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
+            this.db =  new ForumGeneratorContext();
         }
 
         public void reset()
@@ -60,7 +63,9 @@ namespace ForumGenerator_Version2_Server.Sys
                                                   "\tpassword: " + password);
             try
             {
-                return getForum(forumId).login(userName, password);
+                User loggedUser = getForum(forumId).login(userName, password);
+                this.db.Entry(this.db.Users.Find(loggedUser.memberID)).CurrentValues.SetValues(loggedUser);
+                return loggedUser;
             }
             catch (ForumNotFoundException)
             {
@@ -159,7 +164,11 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum f = this.getForum(forumId);
-                return f.register(userName, password, email, signature);
+
+                User newUser = f.register(userName, password, email, signature);
+                this.db.Users.Add(newUser);
+                this.db.SaveChanges();
+                return newUser;
             }
             catch (ForumNotFoundException)
             {
@@ -323,8 +332,10 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException("unauthorized superUser");
                 }
                 int forumId = nextForumId++;
-                Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword);
+                Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword, this.db);
                 this.forums.Add(newForum);
+                this.db.Forums.Add(newForum);
+                this.db.SaveChanges();
                 return newForum;
             }
             catch (Exception)
@@ -357,7 +368,10 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logError("createNewSubForum: unauthorized admin");
                     throw new UnauthorizedUserException();
                 }
-                return forum.createNewSubForum(subForumTitle);
+                SubForum newSubForum = forum.createNewSubForum(subForumTitle);
+                this.db.SubForums.Add(newSubForum);
+                this.db.SaveChanges();
+                return newSubForum;
             }
             catch (ForumNotFoundException)
             {
@@ -402,8 +416,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
                     user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser
-                
-                return sf.createNewDiscussion(title, content, user);
+                Discussion newDiscussion = sf.createNewDiscussion(title, content, user);
+                this.db.Discussions.Add(newDiscussion);
+                this.db.SaveChanges();
+                return newDiscussion;
             }
             catch (ForumNotFoundException)
             {
@@ -449,8 +465,11 @@ namespace ForumGenerator_Version2_Server.Sys
                 //    currently not supported.
                 
                 user = forum.getUser(userName); // user must be found since security check passed, or being a superUser
-                
-                return d.createNewComment(content, user);
+
+                Comment newComment = d.createNewComment(content, user);
+                this.db.Comments.Add(newComment);
+                this.db.SaveChanges();
+                return newComment;
             }
             catch (ForumNotFoundException)
             {

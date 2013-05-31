@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ForumGenerator_Version2_Server.Users
 {
@@ -11,6 +13,7 @@ namespace ForumGenerator_Version2_Server.Users
     public class User
     {
         [DataMember]
+        [Key]
         public int memberID { get; private set; }
         [DataMember]
         public string userName { get; private set; }
@@ -19,13 +22,13 @@ namespace ForumGenerator_Version2_Server.Users
         [DataMember]
         public string email { get; private set; }
         [DataMember]
-        public List<User> friends { get; private set; }
+        public virtual List<User> friends { get; private set; }
         [DataMember]
         public string signature { get; private set; }
         [DataMember]
         public bool isLoggedIn { get; private set; }
-        [DataMember]
-        public Forum forum { get; private set; }
+        //[DataMember]
+        //public virtual Forum parentForum { get; private set; }
 
         internal User(int memberId, string userName, string password, string email, string signature, Forum forum)
         {
@@ -36,7 +39,7 @@ namespace ForumGenerator_Version2_Server.Users
             this.friends = new List<User>();
             this.signature = signature;
             this.isLoggedIn = false;
-            this.forum = forum;
+            //this.parentForum = forum;
         }
 
         internal User login(string password)

@@ -6,6 +6,7 @@ using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
@@ -13,15 +14,16 @@ namespace ForumGenerator_Version2_Server.ForumData
     public class SubForum
     {
         [DataMember]
+        [Key]
         public int subForumId { get; private set; }
         [DataMember]
         public string subForumTitle { get; private set; }
         [DataMember]
-        public List<User> moderators { get; private set; }
+        public virtual List<User> moderators { get; private set; }
         [DataMember]
-        public List<Discussion> discussions { get; private set; }
+        public virtual List<Discussion> discussions { get; private set; }
         [DataMember]
-        public Forum parentForum { get; private set; }
+        public virtual Forum parentForum { get; private set; }
         [DataMember]
         public int nextDiscussionId;
 

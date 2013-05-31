@@ -33,8 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -44,10 +49,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayer\ForumGeneratorContext.cs" />
     <Compile Include="ForumData\Comment.cs" />
     <Compile Include="ForumData\Discussion.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="IForumService.cs" />
+    <Compile Include="Migrations\201305311940349_InitialCreate.cs" />
+    <Compile Include="Migrations\201305311940349_InitialCreate.Designer.cs">
+      <DependentUpon>201305311940349_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312020401_addUserSelfRefferenceConstraint3.cs" />
+    <Compile Include="Migrations\201305312020401_addUserSelfRefferenceConstraint3.Designer.cs">
+      <DependentUpon>201305312020401_addUserSelfRefferenceConstraint3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312026419_addUserSelfRefferenceConstraint4.cs" />
+    <Compile Include="Migrations\201305312026419_addUserSelfRefferenceConstraint4.Designer.cs">
+      <DependentUpon>201305312026419_addUserSelfRefferenceConstraint4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312030493_addSubForumModeratorsTable.cs" />
+    <Compile Include="Migrations\201305312030493_addSubForumModeratorsTable.Designer.cs">
+      <DependentUpon>201305312030493_addSubForumModeratorsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312044463_changeAdminCreation.cs" />
+    <Compile Include="Migrations\201305312044463_changeAdminCreation.Designer.cs">
+      <DependentUpon>201305312044463_changeAdminCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312125030_changeAdminCreation3.cs" />
+    <Compile Include="Migrations\201305312125030_changeAdminCreation3.Designer.cs">
+      <DependentUpon>201305312125030_changeAdminCreation3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312154550_changeAdminCreation4.cs" />
+    <Compile Include="Migrations\201305312154550_changeAdminCreation4.Designer.cs">
+      <DependentUpon>201305312154550_changeAdminCreation4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201305312203184_changeAdminCreation5.cs" />
+    <Compile Include="Migrations\201305312203184_changeAdminCreation5.Designer.cs">
+      <DependentUpon>201305312203184_changeAdminCreation5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="StartHttpServer.cs" />
     <Compile Include="Sys\ContentPolicy.cs" />
     <Compile Include="Sys\Exceptions\CommentNotFoundException.cs" />
@@ -71,9 +110,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201305311940349_InitialCreate.resx">
+      <DependentUpon>201305311940349_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312020401_addUserSelfRefferenceConstraint3.resx">
+      <DependentUpon>201305312020401_addUserSelfRefferenceConstraint3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312026419_addUserSelfRefferenceConstraint4.resx">
+      <DependentUpon>201305312026419_addUserSelfRefferenceConstraint4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312030493_addSubForumModeratorsTable.resx">
+      <DependentUpon>201305312030493_addSubForumModeratorsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312044463_changeAdminCreation.resx">
+      <DependentUpon>201305312044463_changeAdminCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312125030_changeAdminCreation3.resx">
+      <DependentUpon>201305312125030_changeAdminCreation3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312154550_changeAdminCreation4.resx">
+      <DependentUpon>201305312154550_changeAdminCreation4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305312203184_changeAdminCreation5.resx">
+      <DependentUpon>201305312203184_changeAdminCreation5.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
