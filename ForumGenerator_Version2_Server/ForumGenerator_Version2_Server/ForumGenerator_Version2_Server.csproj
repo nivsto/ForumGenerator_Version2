@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="ForumData\Comment.cs" />
     <Compile Include="ForumData\Discussion.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="HttpServer.cs" />
+    <Compile Include="IForumService.cs" />
+    <Compile Include="StartHttpServer.cs" />
     <Compile Include="Sys\ContentPolicy.cs" />
     <Compile Include="Sys\Exceptions\CommentNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\DiscussionNotFoundException.cs" />
