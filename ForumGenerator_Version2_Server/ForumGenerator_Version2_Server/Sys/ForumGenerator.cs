@@ -60,6 +60,13 @@ namespace ForumGenerator_Version2_Server.Sys
             this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
             this.forums = new List<Forum>();
             this.logger = new Logger();
+            this.db.Forums.SqlQuery("DELETE * FROM Fora");
+            this.db.Forums.SqlQuery("DELETE * FROM Comments");
+            this.db.Forums.SqlQuery("DELETE * FROM Discussions");
+            this.db.Forums.SqlQuery("DELETE * FROM SubForumModerators");
+            this.db.Forums.SqlQuery("DELETE * FROM SubForums");
+            this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
+            this.db.Forums.SqlQuery("DELETE * FROM Users");
         }
 
 
