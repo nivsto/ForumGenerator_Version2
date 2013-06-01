@@ -58,19 +58,22 @@ namespace ForumGenerator_Client
          
                 if (superUser)
                 {
-                    this.communicator.superUserLogin(userName, password);
-                    loginLevel = (int) loginLevels.SUPER;
+                    if (this.communicator.superUserLogin(userName, password) != null)
+                    {
+                        loginLevel = (int)loginLevels.SUPER;
+                        Hide();
+                    }
                 }
 
                 else
                 {
                     user = this.communicator.login(forumId, userName, password);
-                    loginLevel = this.communicator.getUserType(forumId, userName);
+                    if(user != null)
+                    {
+                        loginLevel = this.communicator.getUserType(forumId, user.userName);
+                        Hide();
+                    }
                 }
-
-               //       MessageBox.Show("Incorrect Username Or Password. Try Again!", "Error", MessageBoxButtons.OK);
-
-                Hide();
             }
             else
                 MessageBox.Show("Please Fill All Fields!", "Error", MessageBoxButtons.OK);

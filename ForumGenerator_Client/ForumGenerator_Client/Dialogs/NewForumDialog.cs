@@ -38,12 +38,17 @@ namespace ForumGenerator_Client
                 MessageBox.Show("Please Enter All Fields!", "Error");
             else
             {
+                
                 forumName = txtBoxName.Text;
                 admin = txtBoxAdmin.Text;
                 adminPassword = txtBoxPassword.Text;
-                Forum forum = communicator.createNewForum(currUser, userPassword, forumName, admin, adminPassword);
-                forumId = forum.forumId;
-                Close();
+                try
+                {
+                    Forum forum = communicator.createNewForum(currUser, userPassword, forumName, admin, adminPassword);
+                    forumId = forum.forumId;
+                    Close();
+                }
+                catch{}
             }
         }
 

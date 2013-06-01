@@ -30,9 +30,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.login(forumId, userName, password);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -44,9 +44,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.logout(forumId, userId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -58,10 +58,11 @@ namespace ForumGenerator_Client.Communication
             {
                 suser = httpProxy.superUserLogin(userName, password);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.Message, "Error", MessageBoxButtons.OK);
             }
+
             return suser;
         }
 
@@ -72,9 +73,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.superUserLogout(userName, password);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             
             return ans;
@@ -87,9 +88,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.register(forumId, userName, password, email, signature);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -101,9 +102,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getForums();
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -115,9 +116,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getSubForums(forumId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             } 
             return ans;
         }
@@ -129,9 +130,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getDiscussions(forumId, subForumId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -143,9 +144,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getComments(forumId, subForumId, discussionId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -157,9 +158,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getUsers(forumId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -171,9 +172,10 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.createNewForum(userName, password, forumName, adminUserName, adminPassword);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw fe;
             }
             return ans;
         }
@@ -185,9 +187,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.createNewSubForum(userName, password, forumId, subForumTitle);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -199,9 +201,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.createNewDiscussion(userName, password, forumId, subForumId, title, content);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             } 
             return ans;
         }
@@ -213,9 +215,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.createNewComment(userName, password, forumId, subForumId, discussionId, content);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -227,9 +229,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = changeAdmin(userName, password, forumId, newAdminUserId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -243,9 +245,10 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw fe;
             }
             return ans;
         }
@@ -257,9 +260,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -271,9 +274,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -285,23 +288,23 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
 
-        public User[] getMutualForumMembers(int forumId1, int forumId2)
+        public User[] getMutualForumMembers(string userName, string password, int forumId1, int forumId2)
         {
             User[] ans = null;
             try
             {
-               // ans = httpProxy.getMutualForumMembers(forumId1, forumId2;
+                ans = httpProxy.getMutualUsers(userName, password, forumId1, forumId2);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -313,9 +316,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getNumOfCommentsSingleUser( reqUserName, reqPswd, forumId, userName);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -327,9 +330,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getNumOfCommentsSubForum(userName, pswd, forumId, subForumId);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -341,9 +344,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -355,9 +358,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy.getMutualUsers(userName, password, forumId1, forumId2);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -369,9 +372,9 @@ namespace ForumGenerator_Client.Communication
             {
                 ans = httpProxy. getUserType(forumId, userName);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }
@@ -381,11 +384,11 @@ namespace ForumGenerator_Client.Communication
             int ans = 0;
             try
             {
-           //     ans = httpProxy.getUserType(forumId, subForumId, userName);
+                ans = httpProxy.getUserType(forumId, userName);
             }
-            catch (Exception e)
+            catch (FaultException fe)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK);
+                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
             }
             return ans;
         }

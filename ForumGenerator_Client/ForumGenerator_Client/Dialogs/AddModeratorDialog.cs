@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.ServiceReference1;
 
+
 namespace ForumGenerator_Client.Dialogs
 {
     public partial class AddModeratorDialog : Form
@@ -43,7 +44,13 @@ namespace ForumGenerator_Client.Dialogs
         {
             int index = comboBox1.SelectedIndex;
             string name = users.ElementAt(index).userName;
-            communicator.addModerator(name, forumId, subForumId, adderUsrName, adderPswd);
+            try
+            {
+                communicator.addModerator(name, forumId, subForumId, adderUsrName, adderPswd);
+                Hide();
+            }
+            catch (Exception) { }
+
         }
 
         private void button1_Click(object sender, EventArgs e)

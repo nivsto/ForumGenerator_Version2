@@ -21,26 +21,54 @@ namespace ForumService
 
         public User login(int forumId, string userName, string password)
         {
-            User res = _forumGen.login(forumId, userName, password);
-            return res;
+            try
+            {
+                User res = _forumGen.login(forumId, userName, password);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
         public bool logout(int forumId, int userId)
         {
-            bool res = _forumGen.logout(forumId, userId);
-            return res;
+            try
+            {
+                bool res = _forumGen.logout(forumId, userId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
         public SuperUser superUserLogin(string userName, string password)
         {
-            SuperUser res = _forumGen.superUserLogin(userName, password);
-            return res;
+            try
+            {
+                SuperUser res = _forumGen.superUserLogin(userName, password);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
         public bool superUserLogout(string userName, string password)
         {
-            bool res = _forumGen.superUserLogout(userName, password);
-            return res;
+            try
+            {
+                bool res = _forumGen.superUserLogout(userName, password);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
         public User register(int forumId, string userName, string password, string email, string signature)
