@@ -32,7 +32,14 @@ namespace ForumGenerator_Client.Dialogs
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            communicator.editDiscussion(forumId, subForumId, discussionId, userName, pswd, txyBoxMsg.Text);
+            try
+            {
+                communicator.editDiscussion(forumId, subForumId, discussionId, userName, pswd, txyBoxMsg.Text);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

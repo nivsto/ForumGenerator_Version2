@@ -36,10 +36,17 @@ namespace ForumGenerator_Client
                 MessageBox.Show("Please Enter Your Comment!", "Error");
             else
             {
-                text = txtBoxTxt.Text;
-                newCommunicator com = new newCommunicator();
-                com.createNewComment(userName, password, forumId, subForumId, discussionId, text);
-                Close();
+                try
+                {
+                    text = txtBoxTxt.Text;
+                    newCommunicator com = new newCommunicator();
+                    com.createNewComment(userName, password, forumId, subForumId, discussionId, text);
+                    Close();
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                }
             }
         }
 

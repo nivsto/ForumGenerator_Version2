@@ -38,14 +38,18 @@ namespace ForumGenerator_Client
                 MessageBox.Show("One of the fields is missing!", "Error");
             else
             {
-                subject = txtBoxSubject.Text;
-                text = txyBoxMsg.Text;
-                Discussion dis = communicator.createNewDiscussion(userName, password, forumId, subForumId, subject, text);
-
-                threadId = dis.discussionId;
-
-
-                Close();
+                try
+                {
+                    subject = txtBoxSubject.Text;
+                    text = txyBoxMsg.Text;
+                    Discussion dis = communicator.createNewDiscussion(userName, password, forumId, subForumId, subject, text);
+                    threadId = dis.discussionId;
+                    Close();
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                }
             }
         }
 

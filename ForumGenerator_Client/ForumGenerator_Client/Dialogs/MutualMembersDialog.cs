@@ -46,13 +46,19 @@ namespace ForumGenerator_Client.Dialogs
         {
             int index1 = comboBox1.SelectedIndex;
             int index2 = comboBox2.SelectedIndex;
-
-            User[] users = communicator.getMutualUsers(userName, password, forumsList.ElementAt(index1).forumId, forumsList.ElementAt(index2).forumId);
-            listBox1.Items.Clear();
-
-            for (int i = 0; i < users.Length; i++)
+            try
             {
-                listBox1.Items.Add(users.ElementAt(i).userName);
+                User[] users = communicator.getMutualUsers(userName, password, forumsList.ElementAt(index1).forumId, forumsList.ElementAt(index2).forumId);
+                listBox1.Items.Clear();
+
+                for (int i = 0; i < users.Length; i++)
+                {
+                    listBox1.Items.Add(users.ElementAt(i).userName);
+                }
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
         }
 

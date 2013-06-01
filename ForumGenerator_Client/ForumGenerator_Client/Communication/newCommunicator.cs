@@ -29,12 +29,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.login(forumId, userName, password);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public bool logout(int forumId, string userName, string password)
@@ -43,12 +43,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.logout(forumId, userName, password);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public SuperUser superUserLogin(string userName, string password)
@@ -57,13 +57,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 suser = httpProxy.superUserLogin(userName, password);
+                return suser;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.Message, "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-
-            return suser;
         }
 
         public bool superUserLogout(string userName, string password)
@@ -72,13 +71,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.superUserLogout(userName, password);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            
-            return ans;
         }
 
         public User register(int forumId, string userName, string password, string email, string signature)
@@ -87,12 +85,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.register(forumId, userName, password, email, signature);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public Forum[] getForums()
@@ -101,12 +99,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getForums();
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public SubForum[] getSubForums(int forumId)
@@ -115,12 +113,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getSubForums(forumId);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             } 
-            return ans;
         }
 
         public Discussion[] getDiscussions(int forumId, int subForumId)
@@ -129,12 +127,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getDiscussions(forumId, subForumId);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public Comment[] getComments(int forumId, int subForumId, int discussionId)
@@ -143,12 +141,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getComments(forumId, subForumId, discussionId);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public User[] getUsers(int forumId)
@@ -157,12 +155,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getUsers(forumId);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
@@ -171,13 +169,13 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.createNewForum(userName, password, forumName, adminUserName, adminPassword);
+                return ans;
             }
             catch (FaultException fe)
             {
                // TODO Identify error type and throw exception according to type.
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
@@ -186,12 +184,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.createNewSubForum(userName, password, forumId, subForumTitle);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
@@ -200,12 +198,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.createNewDiscussion(userName, password, forumId, subForumId, title, content);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             } 
-            return ans;
         }
 
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
@@ -214,12 +212,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.createNewComment(userName, password, forumId, subForumId, discussionId, content);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
@@ -228,12 +226,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = changeAdmin(userName, password, forumId, newAdminUserId);
+                return ans;
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         // added in version 3:
@@ -247,7 +245,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
                 throw fe;
             }
             return ans;
@@ -262,7 +260,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -276,7 +274,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -290,7 +288,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -304,7 +302,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -318,7 +316,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -332,7 +330,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -346,7 +344,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -360,7 +358,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -374,7 +372,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }
@@ -388,7 +386,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
+                throw new Exception(fe.Message);
             }
             return ans;
         }

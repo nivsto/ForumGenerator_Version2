@@ -31,13 +31,18 @@ namespace ForumGenerator_Client
         {
             if (!String.IsNullOrEmpty(txtBoxUsername.Text.Trim()) && !String.IsNullOrEmpty(txtBoxPassword.Text.Trim()))
             {
+                try
+                {
+                    userName = txtBoxUsername.Text;
+                    password = txtBoxPassword.Text;
+                    communicator.register(forumId, userName, password, txtBoxEmail.Text, txtBoxSignature.Text);
 
-
-                userName = txtBoxUsername.Text;
-                password = txtBoxPassword.Text;
-                communicator.register(forumId, userName, password, txtBoxEmail.Text, txtBoxSignature.Text);
-
-                Close();
+                    Close();
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                }
             }
             else
                 MessageBox.Show("Please Fill All Fields!", "Error");

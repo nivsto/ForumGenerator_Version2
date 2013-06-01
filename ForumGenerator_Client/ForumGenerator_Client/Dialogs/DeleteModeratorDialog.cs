@@ -39,10 +39,16 @@ namespace ForumGenerator_Client.Dialogs
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int index = comboBox1.SelectedIndex;
-            string name = users.ElementAt(index).userName;
-
-            communicator.removeModerator(name, forumId, subForumId, adderUsrName, adderPswd);
+            try
+            {
+                int index = comboBox1.SelectedIndex;
+                string name = users.ElementAt(index).userName;
+                communicator.removeModerator(name, forumId, subForumId, adderUsrName, adderPswd);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

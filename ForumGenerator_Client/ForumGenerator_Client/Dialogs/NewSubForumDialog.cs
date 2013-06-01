@@ -36,14 +36,16 @@ namespace ForumGenerator_Client
                 MessageBox.Show("Please Enter Sub-Forum Name!", "Error");
             else
             {
+                name = txtBoxName.Text;
+                try
                 {
-                    name = txtBoxName.Text;
-
-                    SubForum sub  = communicator.createNewSubForum(currUser, userPassword, forumId, name);
-
+                    SubForum sub = communicator.createNewSubForum(currUser, userPassword, forumId, name);
                     subForumId = sub.subForumId;
-
                     Close();
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
                 }
             }
         }

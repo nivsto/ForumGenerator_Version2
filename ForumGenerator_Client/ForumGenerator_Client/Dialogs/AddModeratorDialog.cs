@@ -49,7 +49,10 @@ namespace ForumGenerator_Client.Dialogs
                 communicator.addModerator(name, forumId, subForumId, adderUsrName, adderPswd);
                 Hide();
             }
-            catch (Exception) { }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
 
         }
 
