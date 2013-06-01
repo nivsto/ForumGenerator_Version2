@@ -242,13 +242,13 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
                 throw fe;
             }
-            return ans;
         }
 
         public Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
@@ -257,12 +257,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
@@ -271,12 +271,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
@@ -285,12 +285,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public User[] getMutualForumMembers(string userName, string password, int forumId1, int forumId2)
@@ -299,12 +299,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getMutualUsers(userName, password, forumId1, forumId2);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
@@ -313,12 +313,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getNumOfCommentsSingleUser( reqUserName, reqPswd, forumId, userName);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
@@ -327,12 +327,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getNumOfCommentsSubForum(userName, pswd, forumId, subForumId);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public User[] getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
@@ -341,12 +341,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public User[] getMutualUsers(string userName, string password, int forumId1, int forumId2)
@@ -355,12 +355,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getMutualUsers(userName, password, forumId1, forumId2);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public int getUserType(int forumId, string userName)
@@ -369,12 +369,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy. getUserType(forumId, userName);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
         public int getUserType(int forumId, int subForumId, string userName)
@@ -383,12 +383,12 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.getUserType(forumId, userName);
+                return ans;
             }
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
             }
-            return ans;
         }
 
     }
