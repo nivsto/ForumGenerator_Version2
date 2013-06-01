@@ -48,7 +48,11 @@ namespace ForumGenerator_Client
                     forumId = forum.forumId;
                     Close();
                 }
-                catch{}
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.ToString(), "Error", MessageBoxButtons.OK);
+                }
+                
             }
         }
 

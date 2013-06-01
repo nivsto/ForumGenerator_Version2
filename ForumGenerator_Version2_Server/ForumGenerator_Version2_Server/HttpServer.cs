@@ -73,45 +73,100 @@ namespace ForumService
 
         public User register(int forumId, string userName, string password, string email, string signature)
         {
-            User res = _forumGen.register(forumId, userName, password, email, signature);
-            return res;
+            try
+            {
+                User res = _forumGen.register(forumId, userName, password, email, signature);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
         public List<Forum> getForums()
         {
-            List<Forum> resList = _forumGen.getForums();
-            return resList;
+            try
+            {
+                List<Forum> resList = _forumGen.getForums();
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+  
 
         public List<SubForum> getSubForums(int forumId)
         {
-            List<SubForum> resList = _forumGen.getSubForums(forumId);
-            return resList;
+            try
+            {
+                List<SubForum> resList = _forumGen.getSubForums(forumId);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public List<Discussion> getDiscussions(int forumId, int subForumId)
         {
-            List<Discussion> resList = _forumGen.getDiscussions(forumId, subForumId);
-            return resList;
+            try
+            {
+                List<Discussion> resList = _forumGen.getDiscussions(forumId, subForumId);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public List<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
-            List<Comment> resList = _forumGen.getComments(forumId, subForumId, discussionId);
-            return resList;
+            try
+            {
+                List<Comment> resList = _forumGen.getComments(forumId, subForumId, discussionId);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public List<User> getUsers(int forumId)
         {
-            List<User> resList = _forumGen.getUsers(forumId);
-            return resList;
+            try
+            {
+                List<User> resList = _forumGen.getUsers(forumId);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
-            Forum res = _forumGen.createNewForum(userName, password, forumName, adminUserName, adminPassword);
-            return res;
+            try
+            {
+                Forum res = _forumGen.createNewForum(userName, password, forumName, adminUserName, adminPassword);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
@@ -119,84 +174,187 @@ namespace ForumService
             return res;
         }
 
+
         public Discussion createNewDiscussion(string userName, string password, int forumId, int subForumId, string title, string content)
         {
-            Discussion res = _forumGen.createNewDiscussion(userName, password, forumId, subForumId, title, content);
-            return res;
+            try
+            {
+                Discussion res = _forumGen.createNewDiscussion(userName, password, forumId, subForumId, title, content);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
-            Comment res = _forumGen.createNewComment(userName, password, forumId, subForumId, discussionId, content);
-            return res;
+            try
+            {
+                Comment res = _forumGen.createNewComment(userName, password, forumId, subForumId, discussionId, content);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
-            User res = _forumGen.changeAdmin(userName, password, forumId, newAdminUserId);
-            return res;
+            try
+            {
+                User res = _forumGen.changeAdmin(userName, password, forumId, newAdminUserId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
         // added in version 3:
 
         public Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
-            Boolean res = _forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
-            return res;
+            try
+            {
+                Boolean res = _forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
-            Boolean res = _forumGen.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
-            return res;
+            try
+            {
+                Boolean res = _forumGen.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
         {
-            Boolean res = _forumGen.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
-            return res;
+            try
+            {
+                Boolean res = _forumGen.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
-            Boolean res = _forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
-            return res;
+            try
+            {
+                Boolean res = _forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
         {
-            int res = _forumGen.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, userName);
-            return res;
+            try
+            {
+                int res = _forumGen.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, userName);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId)
         {
-            int res = _forumGen.getNumOfCommentsSubForum(userName, pswd, forumId, subForumId);
-            return res;
+            try
+            {
+                int res = _forumGen.getNumOfCommentsSubForum(userName, pswd, forumId, subForumId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
         {
-            List<User> resList = _forumGen.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName);
-            return resList;
+            try
+            {
+                List<User> resList = _forumGen.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
         {
-            List<User> resList = _forumGen.getMutualUsers(userName, password, forumId1, forumId2);
-            return resList;
+            try
+            {
+                List<User> resList = _forumGen.getMutualUsers(userName, password, forumId1, forumId2);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public int getUserType(int forumId, string userName)
         {
-            int res = _forumGen.getUserType(forumId, userName);
-            return res;
+            try
+            {
+                int res = _forumGen.getUserType(forumId, userName);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
+
 
         public int getUserTypeSubForum(int forumId, int subForumId, string userName)
         {
-            int res = _forumGen.getUserType(forumId, subForumId, userName);
-            return res;
+            try
+            {
+                int res = _forumGen.getUserType(forumId, subForumId, userName);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
 

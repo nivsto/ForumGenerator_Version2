@@ -174,8 +174,8 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-                MessageBox.Show(fe.ToString(), "Error", MessageBoxButtons.OK);
-                throw fe;
+               // TODO Identify error type and throw exception according to type.
+                throw new Exception(fe.Message);
             }
             return ans;
         }
