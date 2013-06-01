@@ -118,9 +118,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201305311940349_InitialCreate.resx">
       <DependentUpon>201305311940349_InitialCreate.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201305312020401_addUserSelfRefferenceConstraint3.resx">
       <DependentUpon>201305312020401_addUserSelfRefferenceConstraint3.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201305312026419_addUserSelfRefferenceConstraint4.resx">
       <DependentUpon>201305312026419_addUserSelfRefferenceConstraint4.cs</DependentUpon>

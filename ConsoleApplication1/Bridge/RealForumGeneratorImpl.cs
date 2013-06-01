@@ -47,10 +47,10 @@ namespace ConsoleApplication1
         {
             return this.forumGen.login(forumID, usrName, usrPswd);
         }
-
-        bool BridgeForumGenerator.logout(int forumID, int usrID)
+ 
+        bool BridgeForumGenerator.logout(int forumId, string userName, string password)
         {
-            return this.forumGen.logout(forumID, usrID);
+            return this.forumGen.logout(forumId, userName, password);
         }
 
         User BridgeForumGenerator.register(int forumId, string userName, string password, string email, string signature)

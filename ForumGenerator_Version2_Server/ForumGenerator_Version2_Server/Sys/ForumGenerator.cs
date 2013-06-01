@@ -832,7 +832,8 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum forum = this.getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, pswd))
+                if (!Security.checkSuperUserAuthorization(this, userName, pswd) &&
+                    !Security.checkAdminAuthorization(forum, userName, pswd)) 
                 {
                     this.logger.logError("getNumOfCommentsSubForum: unauthorized user");
                     throw new UnauthorizedUserException();

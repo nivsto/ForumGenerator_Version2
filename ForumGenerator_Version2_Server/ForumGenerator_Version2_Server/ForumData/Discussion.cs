@@ -63,6 +63,10 @@ namespace ForumGenerator_Version2_Server.ForumData
                 if (c.publisher == user)
                     result++;
             }
+            /* count the first coment, which is a discussion */
+            if (this.publisher == user)
+                result++;
+
             return result;
         }
 

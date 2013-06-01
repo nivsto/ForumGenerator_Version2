@@ -166,7 +166,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
             foreach (SubForum sf in this.subForums)
             {
-                responsers.Concat(sf.getResponsersForSingleUser(user));
+                responsers.AddRange(sf.getResponsersForSingleUser(user));
             }
             return responsers;
         }

@@ -18,7 +18,7 @@ namespace ConsoleApplication1
     public interface BridgeForumGenerator
     {
         User login(int forumId, string userName, string password);
-        bool logout(int forumId, int userId);
+        bool logout(int forumId, string userName, string password);
         SuperUser superUserLogin(string userName, string password);
         bool superUserLogout(string userName, string password);
         User register(int forumId, string userName, string password, string email, string signature);

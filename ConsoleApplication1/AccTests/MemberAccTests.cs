@@ -25,7 +25,7 @@ namespace ConsoleApplication1.AccTests
         {
             this.testsLogger.logTestsSection("Member");
             test(testLogin);
-            //test(testLogout);
+            test(testLogout);
             test(testCreateNewDiscussion);
             test(testCreateNewComment);
             test(testDeleteDiscussion);
@@ -114,74 +114,74 @@ namespace ConsoleApplication1.AccTests
             {
                 int testNum = 0;
 
-                //Boolean res;
+                Boolean res;
 
-                ///* success tests */
-                //try
-                //{
-                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
-                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                /* success tests */
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
-                //    res = this.bridge.logout(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
-                //    AssertFalse(user.isLoggedIn);
-                //    AssertTrue(res);
+                    res = this.bridge.logout(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                    AssertFalse(user.isLoggedIn);
+                    AssertTrue(res);
 
-                //    user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                //    this.bridge.login(forum.forumId, user.userName, user.password);
-                //    res = this.bridge.logout(forum.forumId, user.userName, user.password);
-                //    AssertFalse(user.isLoggedIn);
-                //    AssertTrue(res);
+                    user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
+                    this.bridge.login(forum.forumId, user.userName, user.password);
+                    res = this.bridge.logout(forum.forumId, user.userName, user.password);
+                    AssertFalse(user.isLoggedIn);
+                    AssertTrue(res);
 
-                //    testNum++;
-                //}
-                //catch { failMsg(testNum); }
+                    testNum++;
+                }
+                catch { failMsg(testNum); }
 
-                //this.bridge.reset();
+                this.bridge.reset();
 
-                ///* failure tests */
+                /* failure tests */
 
-                //// wrong userName
-                //try
-                //{
-                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
-                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                // wrong userName
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
-                //    res = this.bridge.logout(forum.forumId, "wrong name", ADMIN_PSWD);
-                //    failMsg(testNum);
-                //}
-                //catch { testNum++; }
+                    res = this.bridge.logout(forum.forumId, "wrong name", ADMIN_PSWD);
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-                //this.bridge.reset();
+                this.bridge.reset();
 
-                //// wrong password
-                //try
-                //{
-                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
-                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                // wrong password
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
-                //    res = this.bridge.logout(forum.forumId, ADMIN_NAME, "wrong pass");
-                //    failMsg(testNum);
-                //}
-                //catch { testNum++; }
+                    res = this.bridge.logout(forum.forumId, ADMIN_NAME, "wrong pass");
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-                //this.bridge.reset();
+                this.bridge.reset();
 
-                //// wrong forumId
-                //try
-                //{
-                //    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                //    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
-                //    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
+                // wrong forumId
+                try
+                {
+                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
-                //    res = this.bridge.logout(-2, ADMIN_NAME, ADMIN_PSWD);
-                //    failMsg(testNum);
-                //}
-                //catch { testNum++; }
+                    res = this.bridge.logout(-2, ADMIN_NAME, ADMIN_PSWD);
+                    failMsg(testNum);
+                }
+                catch { testNum++; }
 
-                //this.bridge.reset();
+                this.bridge.reset();
 
                 return testNum;
             }

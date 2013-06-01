@@ -163,7 +163,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             List<User> responsers = new List<User>();
             foreach (Discussion d in discussions)
             {
-                responsers.Concat(d.getResponsersForSingleUser(user));
+                responsers.AddRange(d.getResponsersForSingleUser(user));
             }
             return responsers;
         }

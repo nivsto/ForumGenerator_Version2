@@ -382,7 +382,7 @@ namespace ConsoleApplication1.AccTests
                     user1 = this.bridge.login(forum.forumId, "user1", "pswd1");
                     user2 = this.bridge.login(forum.forumId, "user2", "pswd2");
                     Discussion[] discussions = new Discussion[100];
-                    for (int i=1; i<=100; i++)
+                    for (int i=0; i<100; i++)
                         discussions[i] = this.bridge.createNewDiscussion("user1", "pswd1", forum.forumId, subForum.subForumId, "discussion" + i, "no content");
                     res = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                     AssertTrue(res == 100);
@@ -635,8 +635,8 @@ namespace ConsoleApplication1.AccTests
 
 
                     res = this.bridge.getResponsersForSingleUser(ADMIN_NAME, ADMIN_PSWD, forum.forumId, users[0].userName);
-                    AssertTrue(res.Count == 10);
-                    for(int i=0; i<10; i++)
+                    AssertTrue(res.Count == 9); // 9- because it doesn't include user[0] (publisher)
+                    for (int i = 1; i < 10; i++) //starts from 1 because it doesn't include user[0] (publisher)
                         AssertTrue(res.Contains(users[i]));
 
                     testNum++;

@@ -34,7 +34,7 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public bool logout(int forumID, int usrID)
+        public bool logout(int forumId, string userName, string password)
         {
             throw new NotImplementedException();
         }
