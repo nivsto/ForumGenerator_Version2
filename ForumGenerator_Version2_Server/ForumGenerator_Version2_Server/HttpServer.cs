@@ -32,11 +32,11 @@ namespace ForumService
             }
         }
 
-        public bool logout(int forumId, int userId)
+        public bool logout(int forumId, string userName, string password)
         {
             try
             {
-                bool res = _forumGen.logout(forumId, userId);
+                bool res = _forumGen.logout(forumId, userName, password);
                 return res;
             }
             catch (Exception e)

@@ -41,10 +41,7 @@ namespace ForumGenerator_Client
         private void btnCancel_Click(object sender, EventArgs e)
         {
             okClicked = false;
-
-
             Hide();
-
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -58,20 +55,28 @@ namespace ForumGenerator_Client
          
                 if (superUser)
                 {
-                    if (this.communicator.superUserLogin(userName, password) != null)
+                    try
                     {
+                        this.communicator.superUserLogin(userName, password);
                         loginLevel = (int)loginLevels.SUPER;
                         Hide();
+                    }
+                    catch (Exception err)
+                    {
+                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
                     }
                 }
 
                 else
                 {
+                    try{
                     user = this.communicator.login(forumId, userName, password);
-                    if(user != null)
+                    loginLevel = this.communicator.getUserType(forumId, user.userName);
+                    Hide();
+                    }
+                    catch (Exception err)
                     {
-                        loginLevel = this.communicator.getUserType(forumId, user.userName);
-                        Hide();
+                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
                     }
                 }
             }
