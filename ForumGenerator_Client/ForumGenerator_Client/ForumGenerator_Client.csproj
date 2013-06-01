@@ -74,10 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Communication\Communicator.cs" />
     <Compile Include="Communication\IForumGenerator.cs" />
     <Compile Include="Communication\newCommunicator.cs" />
-    <Compile Include="Communication\XmlHandler.cs" />
     <Compile Include="Dialogs\AddModeratorDialog.cs">
       <SubType>Form</SubType>
     </Compile>

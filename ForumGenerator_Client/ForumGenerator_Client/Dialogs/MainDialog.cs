@@ -410,23 +410,24 @@ namespace ForumGenerator_Client
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = listBox1.SelectedIndex;
-            
-            if (currentView == (int)view.MAIN)
+            if (index >= 0)
             {
-                currForumId = forumsList.ElementAt(index).forumId;
+                if (currentView == (int)view.MAIN)
+                {
+                    currForumId = forumsList.ElementAt(index).forumId;
+                }
+
+                if (currentView == (int)view.FORUM)
+                {
+                    currSubForumId = subforumsList.ElementAt(index).subForumId;
+                }
+
+                if (currentView == (int)view.SUB)
+                {
+                    currThreadId = discussionList.ElementAt(index).discussionId;
+                }
+
             }
-
-            if (currentView == (int)view.FORUM)
-            {
-                currSubForumId = subforumsList.ElementAt(index).subForumId;
-            }
-
-            if (currentView == (int)view.SUB)
-            {
-                currThreadId = discussionList.ElementAt(index).discussionId;
-            }
-
-
         }
 
 
@@ -474,6 +475,7 @@ namespace ForumGenerator_Client
         {
             DeleteModeratorDialog del = new DeleteModeratorDialog(currForumId, currSubForumId, userName, password);
             del.ShowDialog();
+
         }
 
         /*************************************/
@@ -484,6 +486,7 @@ namespace ForumGenerator_Client
             if (MessageBox.Show("You Are About To Delete The Message. Are You Sure?", "Delete", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 this.communicator.deleteDiscussion(currForumId, currSubForumId, currThreadId, userName, password);
+                updateVisibilty();
             }
         }
 
@@ -495,6 +498,7 @@ namespace ForumGenerator_Client
         {
             EditMsgDialog edit = new EditMsgDialog(currForumId, currSubForumId, currThreadId, userName, password);
             edit.ShowDialog();
+            updateVisibilty();
         }
 
         /*************************************/

@@ -37,8 +37,8 @@ namespace ForumGenerator_Client
             else
             {
                 text = txtBoxTxt.Text;
-                Communicator com = new Communicator();
-                com.sendCreateNewCommentReq(userName, password, forumId, subForumId, discussionId, text);
+                newCommunicator com = new newCommunicator();
+                com.createNewComment(userName, password, forumId, subForumId, discussionId, text);
                 Close();
             }
         }
