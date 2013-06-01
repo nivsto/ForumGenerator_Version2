@@ -10,8 +10,8 @@ namespace ForumGenerator_Version2_Server.DataLayer
 {
     public class ForumGeneratorContext : DbContext
     {
-        public ForumGeneratorContext()
-            : base("ForumGenerator_DB1")
+        public ForumGeneratorContext(string dbName) // "ForumGenerator_DB1" for the real, "ForumGenerator_DB1_TEST" for the tests
+            : base(dbName)
         {
         }
 

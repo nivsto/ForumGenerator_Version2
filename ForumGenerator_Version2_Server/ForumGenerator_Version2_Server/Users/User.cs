@@ -21,7 +21,7 @@ namespace ForumGenerator_Version2_Server.Users
         public string password { get; private set; }
         [DataMember]
         public string email { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public virtual List<User> friends { get; private set; }
         [DataMember]
         public string signature { get; private set; }

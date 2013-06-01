@@ -18,11 +18,11 @@ namespace ForumGenerator_Version2_Server.ForumData
         public int subForumId { get; private set; }
         [DataMember]
         public string subForumTitle { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public virtual List<User> moderators { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public virtual List<Discussion> discussions { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
         [DataMember]
         public int nextDiscussionId;
@@ -41,6 +41,13 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
         public SubForum() { }
+
+        public SubForum(int subForumId, string subForumTitle)
+        {
+            this.subForumId = subForumId;
+            this.subForumTitle = subForumTitle;
+            this.nextDiscussionId = 1;
+        }
 
         internal Discussion createNewDiscussion(string title, string content, User user)
         {

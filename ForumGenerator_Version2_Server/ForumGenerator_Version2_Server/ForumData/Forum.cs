@@ -17,14 +17,14 @@ namespace ForumGenerator_Version2_Server.ForumData
     {
         [DataMember]
         [Key]
-        public int forumId { get; private set; }
+        public int forumId { get; set; }
         [DataMember]
         public virtual User admin { get; private set; }
         //[DataMember]
         [IgnoreDataMember]
         public virtual List<SubForum> subForums { get; private set; }
         [DataMember]
-        public string forumName { get; private set; }
+        public string forumName { get; set; }
         //[DataMember]
         [IgnoreDataMember]
         public virtual List<User> members { get; private set; }
@@ -47,6 +47,14 @@ namespace ForumGenerator_Version2_Server.ForumData
             db.SaveChanges();
             this.members.Add(this.admin);
             this.subForums = new List<SubForum>();
+        }
+
+        //Temporaray constructor
+        public Forum(int forumId, string forumName, User admin)
+        {
+            this.forumId = forumId;
+            this.forumName = forumName;
+            this.admin = admin;
         }
 
         public Forum() { }
@@ -195,7 +203,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             User user = this.getUser(userName);
             if (user == null)
-                throw new UserNotFoundException();
+                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.GUEST;
             if (admin.userName == userName)
                 return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.ADMIN;
             else
@@ -214,5 +222,6 @@ namespace ForumGenerator_Version2_Server.ForumData
 
             return sf.getUserType(userName);
         }
+
     }
 }

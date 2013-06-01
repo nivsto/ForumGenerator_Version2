@@ -34,10 +34,25 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
-            this.db = new ForumGeneratorContext();
+            this.db = new ForumGeneratorContext("ForumGenerator_DB1");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
+        }
+
+        public ForumGenerator(string superUserName, string superUserPass, bool test)
+        {
+            this.db = new ForumGeneratorContext("ForumGenerator_DB1_TEST");
+            this.superUser = new SuperUser(superUserName, superUserPass);
+            this.forums = new List<Forum>();
+            this.logger = new Logger();
+            this.db.Forums.SqlQuery("DELETE * FROM Fora");
+            this.db.Forums.SqlQuery("DELETE * FROM Comments");
+            this.db.Forums.SqlQuery("DELETE * FROM Discussions");
+            this.db.Forums.SqlQuery("DELETE * FROM SubForumModerators");
+            this.db.Forums.SqlQuery("DELETE * FROM SubForums");
+            this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
+            this.db.Forums.SqlQuery("DELETE * FROM Users");
         }
 
         public void reset()
@@ -131,8 +146,8 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (UnauthorizedUserException e)
             {
-                this.logger.logError("superUserLogin: wrong userName or password");
-                throw e;
+                this.logger.logError("superUserLogin: Wrong userName or password");
+                throw new UnauthorizedAccessException("Wrong userName or password");
             }
             catch (Exception)
             {
@@ -143,7 +158,8 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public bool superUserLogout(string userName, string password)
         {
-            this.logger.logAction("performing superUserLogout");
+            this.logger.logAction("performing superUserLogout: userName: " + userName +
+                                                            "\tpassword: " + password);
             try
             {
                 return this.superUser.logout(userName, password);
@@ -151,7 +167,7 @@ namespace ForumGenerator_Version2_Server.Sys
             catch (UnauthorizedAccessException)
             {
                 this.logger.logError("superUserLogout: Wrong userName or password");
-                throw new Exception("Wrong userName or password");
+                throw new UnauthorizedAccessException("Wrong userName or password");
             }
             catch (Exception e)
             {
@@ -163,19 +179,20 @@ namespace ForumGenerator_Version2_Server.Sys
         // returns 1 for success or 0 for failure
         public User register(int forumId, string userName, string password, string email, string signature)
         {
-            if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
-                !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
-                !ContentPolicy.isLegalEmailFormat(email) ||
-                !ContentPolicy.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature) )
-            {
-                throw new IllegalContentException();
-            }
-
             this.logger.logAction("performing register: forumId: " + forumId +
                                                         "\tuserName: " + userName +
                                                         "\tpassword: " + password +
                                                         "\temail: " + email +
                                                         "\tsignature: " + signature);
+
+            if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
+                !ContentPolicy.isLegalEmailFormat(email) ||
+                !ContentPolicy.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature) )
+            {
+                throw new IllegalContentException("Illegal content");
+            }
+
             try
             {
                 Forum f = this.getForum(forumId);
@@ -208,11 +225,15 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("performing getForums");
             try
             {
-                //Forum f = db.Forums.First();
-                //var u = this.db.Users.Find(3);
-                //List<Forum> f = this.db.Forums.ToList();
-                //return f;
-                return this.forums;
+                List<Forum> fl = this.db.Forums.ToList();
+                List<Forum> returnedList = new List<Forum>();
+                foreach (Forum f in fl)
+                {
+                    User forumAdmin = new User(f.admin.memberID, f.admin.userName, f.admin.password, f.admin.email, f.admin.signature, null);
+                    returnedList.Add(new Forum(f.forumId, f.forumName, forumAdmin));
+                }
+                return returnedList;
+                //return this.forums;
 
             }
             catch (Exception)
@@ -229,12 +250,21 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum parentForum = this.getForum(forumId);
-                return parentForum.subForums;
+                //return parentForum.subForums;
+                List<SubForum> sfl = (from b in this.db.SubForums
+                                      where b.parentForum.forumId == forumId
+                                      select b).ToList();
+                List<SubForum> returnedList = new List<SubForum>();
+                foreach (SubForum sf in sfl)
+                {
+                    returnedList.Add(new SubForum(sf.subForumId, sf.subForumTitle));
+                }
+                return returnedList;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("getSubForums: No such " + e.Message);
-                throw new ForumNotFoundException();
+                throw new ForumNotFoundException("Forum not found");
             }
             catch (Exception)
             {
@@ -251,13 +281,24 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 Forum f = this.getForum(forumId);
-                SubForum parentSubForum = f.getSubForum(subForumId);
-                return parentSubForum.discussions;
+                //SubForum parentSubForum = f.getSubForum(subForumId);
+                SubForum parentSubForum = this.db.SubForums.Find(subForumId);
+                //return parentSubForum.discussions;
+                List<Discussion> dl = (from b in this.db.Discussions
+                                       where b.parentSubForum.subForumId == subForumId
+                                      select b).ToList();
+                List<Discussion> returnedList = new List<Discussion>();
+                foreach (Discussion d in dl)
+                {
+                    User publisher = new User(d.publisher.memberID, d.publisher.userName, d.publisher.password, d.publisher.email, d.publisher.signature, null);
+                    returnedList.Add(new Discussion(d.discussionId, d.title, d.content, publisher, null));
+                }
+                return returnedList;
             }
             catch (ForumNotFoundException)
             {
                 this.logger.logError("getDiscussions: forum not found");
-                throw new ForumNotFoundException();
+                throw new ForumNotFoundException("Forum not found");
             }
             catch (SubForumNotFoundException)
             {
@@ -282,7 +323,17 @@ namespace ForumGenerator_Version2_Server.Sys
                 Forum f = this.getForum(forumId);
                 SubForum sf = f.getSubForum(subForumId);
                 Discussion parentDiscussion = sf.getDiscussion(discussionId);
-                return parentDiscussion.comments;
+                //return parentDiscussion.comments;
+                List<Comment> cl = (from b in this.db.Comments
+                                    where b.parentDiscussion.discussionId == discussionId
+                                       select b).ToList();
+                List<Comment> returnedList = new List<Comment>();
+                foreach (Comment c in cl)
+                {
+                    User publisher = new User(c.publisher.memberID, c.publisher.userName, c.publisher.password, c.publisher.email, c.publisher.signature, null);
+                    returnedList.Add(new Comment(c.commentId, c.content, publisher, null));
+                }
+                return returnedList;
             }
             catch (ForumNotFoundException e)
             {
@@ -610,7 +661,8 @@ namespace ForumGenerator_Version2_Server.Sys
         //get a forum by its forumId
         public Forum getForum(int forumId)
         {
-            Forum forum = this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
+            //Forum forum = this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
+            Forum forum = this.db.Forums.Find(forumId);
             if(forum == null)
                 throw new ForumNotFoundException("forum not found");
 
@@ -955,5 +1007,6 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.collectLogs(logFileName);
             return true;
         }
+
     }
 }

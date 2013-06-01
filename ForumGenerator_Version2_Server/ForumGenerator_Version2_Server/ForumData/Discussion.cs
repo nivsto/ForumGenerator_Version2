@@ -22,9 +22,9 @@ namespace ForumGenerator_Version2_Server.ForumData
         public DateTime publishDate { get; private set; }
         [DataMember]
         public virtual User publisher { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public virtual List<Comment> comments { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public virtual SubForum parentSubForum { get; private set; }
         [DataMember]
         public int nextCommentId = 1;
