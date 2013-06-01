@@ -21,10 +21,21 @@ namespace ConsoleApplication1.AccTests
         public override void runTests()
         {
             this.testsLogger.logTestsSection("Member");
+            Console.WriteLine("testing GetForums:");
             test(testGetForums);
+            Console.WriteLine("Done \n");
+
+            Console.WriteLine("testing GetsubForums:");
             test(testGetsubForums);
+            Console.WriteLine("Done \n");
+
+            Console.WriteLine("testing GetDiscussions:");
             test(testGetDiscussions);
+            Console.WriteLine("Done\n");
+            
+            Console.WriteLine("testing GetComments:");
             test(testGetComments);
+            Console.WriteLine("Done \n");
         }
 
         private int testGetForums()

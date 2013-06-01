@@ -24,13 +24,33 @@ namespace ConsoleApplication1.AccTests
         public override void runTests()
         {
             this.testsLogger.logTestsSection("Member");
+            Console.WriteLine("testing Login:");
             test(testLogin);
+            Console.WriteLine("Done \n");
+
+            Console.WriteLine("testing Logout:");
             test(testLogout);
+            Console.WriteLine("Done \n");
+
+            Console.WriteLine("testing CreateNewDiscussion:");
             test(testCreateNewDiscussion);
+            Console.WriteLine("Done \n");
+
+            Console.WriteLine("testing CreateNewComment:");
             test(testCreateNewComment);
+            Console.WriteLine("Done\n");
+
+            Console.WriteLine("testing DeleteDiscussion:");
             test(testDeleteDiscussion);
+            Console.WriteLine("Done\n");
+
+            Console.WriteLine("testing EditDiscussion:");
             test(testEditDiscussion);
+            Console.WriteLine("Done \n");
+
+            Console.WriteLine("testing Register:");
             test(testRegister);
+            Console.WriteLine("Done \n");
         }
 
         private int testLogin()
@@ -712,6 +732,7 @@ namespace ConsoleApplication1.AccTests
                 catch { failMsg(testNum++); }
 
                 this.bridge.reset();
+
 
                 /* failure tests */
 

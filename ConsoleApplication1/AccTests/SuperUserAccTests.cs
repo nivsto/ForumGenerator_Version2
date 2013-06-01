@@ -22,10 +22,18 @@ namespace ConsoleApplication1.AccTests
         public override void runTests()
         {
             this.testsLogger.logTestsSection("SuperUser");
+            Console.WriteLine("testing SuperUserLogin:");
             test(testSuperUserLogin);
+            Console.WriteLine("Done \n");
+            Console.WriteLine("testing SuperUserLogout:");
             test(testSuperUserLogout);
+            Console.WriteLine("Done \n");
+            Console.WriteLine("testing CreateNewForum:");
             test(testCreateNewForum);
+            Console.WriteLine("Done \n");
+            Console.WriteLine("testing GetMutualUsers:");
             test(testGetMutualUsers);
+            Console.WriteLine("Done \n");
         }
 
         private int testSuperUserLogin()

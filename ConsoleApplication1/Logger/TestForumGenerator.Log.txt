@@ -63,14 +63,27 @@ test summary for testRegister: 5 tests passed
 *testing Member functions*
 
 test method: testGetForums
-test summary for testGetForums: 3 tests passed
+-- FAILED --  failed test number 0
+-- FAILED --  failed test number 0
+-- FAILED --  failed test number 0
+test summary for testGetForums: 0 tests passed
 
 test method: testGetsubForums
 test summary for testGetsubForums: 2 tests passed
 
 test method: testGetDiscussions
-test summary for testGetDiscussions: 2 tests passed
+-- FAILED --  failed test number 1
+test summary for testGetDiscussions: 1 tests passed
 
 test method: testGetComments
-test summary for testGetComments: 2 tests passed
+-- FAILED --  failed test number 1
+test summary for testGetComments: 1 tests passed
+
+*testing Advanced Tests functions*
+
+test method: advancedTest1
+test summary for advancedTest1: 1 tests passed
+
+test method: advancedTest2
+test summary for advancedTest2: 2 tests passed
 
