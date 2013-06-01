@@ -60,7 +60,7 @@
             this.txtBoxName.Location = new System.Drawing.Point(87, 53);
             this.txtBoxName.Name = "txtBoxName";
             this.txtBoxName.Size = new System.Drawing.Size(164, 20);
-            this.txtBoxName.TabIndex = 2;
+            this.txtBoxName.TabIndex = 1;
             // 
             // label3
             // 
@@ -76,7 +76,7 @@
             this.btnAdd.Location = new System.Drawing.Point(66, 227);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 5;
+            this.btnAdd.TabIndex = 3;
             this.btnAdd.Text = "Create";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -86,7 +86,7 @@
             this.btnCancel.Location = new System.Drawing.Point(176, 227);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 6;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -97,7 +97,7 @@
             this.checkedListBox1.Location = new System.Drawing.Point(87, 82);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(164, 124);
-            this.checkedListBox1.TabIndex = 4;
+            this.checkedListBox1.TabIndex = 2;
             // 
             // NewSubForumDialog
             // 

@@ -42,7 +42,7 @@
             this.btnAdd.Location = new System.Drawing.Point(121, 227);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(86, 23);
-            this.btnAdd.TabIndex = 0;
+            this.btnAdd.TabIndex = 3;
             this.btnAdd.Text = "Add Message";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -52,7 +52,7 @@
             this.btnCancel.Location = new System.Drawing.Point(242, 227);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 23);
-            this.btnCancel.TabIndex = 1;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -89,14 +89,14 @@
             this.txtBoxSubject.Location = new System.Drawing.Point(95, 47);
             this.txtBoxSubject.Name = "txtBoxSubject";
             this.txtBoxSubject.Size = new System.Drawing.Size(287, 20);
-            this.txtBoxSubject.TabIndex = 5;
+            this.txtBoxSubject.TabIndex = 1;
             // 
             // txyBoxMsg
             // 
             this.txyBoxMsg.Location = new System.Drawing.Point(95, 77);
             this.txyBoxMsg.Name = "txyBoxMsg";
             this.txyBoxMsg.Size = new System.Drawing.Size(287, 133);
-            this.txyBoxMsg.TabIndex = 7;
+            this.txyBoxMsg.TabIndex = 2;
             this.txyBoxMsg.Text = "";
             // 
             // NewThreadDialog

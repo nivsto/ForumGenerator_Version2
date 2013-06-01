@@ -40,7 +40,7 @@
             this.txyBoxMsg.Location = new System.Drawing.Point(88, 53);
             this.txyBoxMsg.Name = "txyBoxMsg";
             this.txyBoxMsg.Size = new System.Drawing.Size(287, 133);
-            this.txyBoxMsg.TabIndex = 14;
+            this.txyBoxMsg.TabIndex = 1;
             this.txyBoxMsg.Text = "";
             // 
             // label3
@@ -66,7 +66,7 @@
             this.btnCancel.Location = new System.Drawing.Point(244, 214);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 23);
-            this.btnCancel.TabIndex = 9;
+            this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -76,7 +76,7 @@
             this.btnAdd.Location = new System.Drawing.Point(132, 214);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(86, 23);
-            this.btnAdd.TabIndex = 8;
+            this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "Edit Message";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);

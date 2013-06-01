@@ -62,7 +62,7 @@
             this.txtBoxName.Location = new System.Drawing.Point(132, 59);
             this.txtBoxName.Name = "txtBoxName";
             this.txtBoxName.Size = new System.Drawing.Size(144, 20);
-            this.txtBoxName.TabIndex = 2;
+            this.txtBoxName.TabIndex = 1;
             // 
             // label3
             // 
@@ -78,7 +78,7 @@
             this.btnCreate.Location = new System.Drawing.Point(53, 169);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
-            this.btnCreate.TabIndex = 6;
+            this.btnCreate.TabIndex = 4;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
             this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
@@ -88,7 +88,7 @@
             this.btnCancel.Location = new System.Drawing.Point(169, 169);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 7;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -108,14 +108,14 @@
             this.txtBoxPassword.Name = "txtBoxPassword";
             this.txtBoxPassword.PasswordChar = '*';
             this.txtBoxPassword.Size = new System.Drawing.Size(144, 20);
-            this.txtBoxPassword.TabIndex = 9;
+            this.txtBoxPassword.TabIndex = 3;
             // 
             // txtBoxAdmin
             // 
             this.txtBoxAdmin.Location = new System.Drawing.Point(132, 96);
             this.txtBoxAdmin.Name = "txtBoxAdmin";
             this.txtBoxAdmin.Size = new System.Drawing.Size(144, 20);
-            this.txtBoxAdmin.TabIndex = 10;
+            this.txtBoxAdmin.TabIndex = 2;
             // 
             // NewForumDialog
             // 

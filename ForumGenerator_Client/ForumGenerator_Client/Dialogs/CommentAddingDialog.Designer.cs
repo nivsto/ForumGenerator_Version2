@@ -50,6 +50,7 @@
             this.txtBoxTxt.Size = new System.Drawing.Size(220, 143);
             this.txtBoxTxt.TabIndex = 1;
             this.txtBoxTxt.Text = "";
+            this.txtBoxTxt.TextChanged += new System.EventHandler(this.txtBoxTxt_TextChanged);
             // 
             // btnAdd
             // 

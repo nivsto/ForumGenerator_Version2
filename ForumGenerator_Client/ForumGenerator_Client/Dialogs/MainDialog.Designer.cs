@@ -119,7 +119,7 @@
             this.listBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(341, 272);
-            this.listBox1.TabIndex = 3;
+            this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // btnView
@@ -128,7 +128,7 @@
             this.btnView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnView.Name = "btnView";
             this.btnView.Size = new System.Drawing.Size(109, 22);
-            this.btnView.TabIndex = 4;
+            this.btnView.TabIndex = 3;
             this.btnView.Text = "Go To Forum";
             this.btnView.UseVisualStyleBackColor = true;
             this.btnView.Click += new System.EventHandler(this.btnView_Click);
@@ -139,7 +139,7 @@
             this.btnGoBack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnGoBack.Name = "btnGoBack";
             this.btnGoBack.Size = new System.Drawing.Size(105, 22);
-            this.btnGoBack.TabIndex = 5;
+            this.btnGoBack.TabIndex = 2;
             this.btnGoBack.Text = "Go Back";
             this.btnGoBack.UseVisualStyleBackColor = true;
             this.btnGoBack.Click += new System.EventHandler(this.btnGoBack_Click);
@@ -299,14 +299,14 @@
             // newModrtToolStripMenuItem
             // 
             this.newModrtToolStripMenuItem.Name = "newModrtToolStripMenuItem";
-            this.newModrtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newModrtToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.newModrtToolStripMenuItem.Text = "New";
             this.newModrtToolStripMenuItem.Click += new System.EventHandler(this.newModrtToolStripMenuItem_Click);
             // 
             // DeleteModrtToolStripMenuItem
             // 
             this.DeleteModrtToolStripMenuItem.Name = "DeleteModrtToolStripMenuItem";
-            this.DeleteModrtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DeleteModrtToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.DeleteModrtToolStripMenuItem.Text = "Delete";
             this.DeleteModrtToolStripMenuItem.Click += new System.EventHandler(this.DeleteModrtToolStripMenuItem_Click);
             // 
@@ -400,7 +400,7 @@
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.menuStrip1.Size = new System.Drawing.Size(368, 24);
-            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // toolStripMenuItem1

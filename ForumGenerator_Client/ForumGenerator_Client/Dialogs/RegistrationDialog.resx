@@ -126,7 +126,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnRegister.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="btnRegister.Text" xml:space="preserve">
     <value>Register</value>
@@ -150,7 +150,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -228,7 +228,7 @@
     <value>117, 20</value>
   </data>
   <data name="txtBoxUsername.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;txtBoxUsername.Name" xml:space="preserve">
     <value>txtBoxUsername</value>
@@ -279,7 +279,7 @@
     <value>117, 20</value>
   </data>
   <data name="txtBoxPassword.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;txtBoxPassword.Name" xml:space="preserve">
     <value>txtBoxPassword</value>
@@ -354,7 +354,7 @@
     <value>117, 20</value>
   </data>
   <data name="txtBoxEmail.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;txtBoxEmail.Name" xml:space="preserve">
     <value>txtBoxEmail</value>
@@ -375,7 +375,7 @@
     <value>117, 20</value>
   </data>
   <data name="txtBoxSignature.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;txtBoxSignature.Name" xml:space="preserve">
     <value>txtBoxSignature</value>

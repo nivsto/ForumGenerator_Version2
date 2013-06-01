@@ -54,6 +54,11 @@ namespace ForumGenerator_Client
         {
            Close();
         }
+
+        private void txtBoxTxt_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
