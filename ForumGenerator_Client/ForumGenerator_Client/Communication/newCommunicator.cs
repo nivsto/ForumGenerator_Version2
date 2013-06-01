@@ -17,7 +17,7 @@ namespace ForumGenerator_Client.Communication
 
         public newCommunicator()
         {
-            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
+            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.104:8888/methods"));
             httpProxy = httpFactory.CreateChannel();
 
         }
@@ -37,12 +37,12 @@ namespace ForumGenerator_Client.Communication
             return ans;
         }
 
-        public bool logout(int forumId, int userId)
+        public bool logout(int forumId, string userName, string password)
         {
             bool ans = false;
             try
             {
-                ans = httpProxy.logout(forumId, userId);
+                ans = httpProxy.logout(forumId, userName, password);
             }
             catch (FaultException fe)
             {

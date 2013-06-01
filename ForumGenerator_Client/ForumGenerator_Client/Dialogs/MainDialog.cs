@@ -161,7 +161,7 @@ namespace ForumGenerator_Client
             if (MessageBox.Show("Are You Sure?", "Logout", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 if (loginLevel != (int)loginLevels.SUPER)
-                    communicator.logout(currForumId, currUser.memberID);
+                    communicator.logout(currForumId, currUser.userName, currUser.password);
 
                 else
                     communicator.superUserLogout(userName, password);
