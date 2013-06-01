@@ -40,6 +40,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.nextDiscussionId = 1;
         }
 
+        public SubForum() { }
+
         internal Discussion createNewDiscussion(string title, string content, User user)
         {
             int discussionId = this.nextDiscussionId++;

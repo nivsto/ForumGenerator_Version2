@@ -42,6 +42,8 @@ namespace ForumGenerator_Version2_Server.Users
             //this.parentForum = forum;
         }
 
+        public User() { }
+
         internal User login(string password)
         {
             if (this.password == password)

@@ -32,6 +32,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.parentDiscussion = parentDiscussion;
         }
 
+        public Comment() { }
+
         internal int getCommentId()
         {
             return this.commentId;

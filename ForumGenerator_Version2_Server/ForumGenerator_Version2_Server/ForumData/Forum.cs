@@ -49,6 +49,9 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.subForums = new List<SubForum>();
         }
 
+        public Forum() { }
+        
+
         internal User login(string userName, string password)
         {
             User user = this.members.Find(

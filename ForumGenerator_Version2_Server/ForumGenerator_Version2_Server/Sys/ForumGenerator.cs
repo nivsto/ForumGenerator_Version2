@@ -208,6 +208,10 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("performing getForums");
             try
             {
+                //Forum f = db.Forums.First();
+                //var u = this.db.Users.Find(3);
+                //List<Forum> f = this.db.Forums.ToList();
+                //return f;
                 return this.forums;
 
             }

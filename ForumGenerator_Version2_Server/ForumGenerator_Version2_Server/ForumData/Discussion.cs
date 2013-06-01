@@ -41,6 +41,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.parentSubForum = parentSubForum;
         }
 
+        public Discussion() { }
+
         internal string getPublishDate()
         {
             return this.publishDate.ToShortDateString();
