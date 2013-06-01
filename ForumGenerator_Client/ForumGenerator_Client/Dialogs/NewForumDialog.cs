@@ -50,7 +50,7 @@ namespace ForumGenerator_Client
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show(err.ToString(), "Error", MessageBoxButtons.OK);
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
                 }
                 
             }
