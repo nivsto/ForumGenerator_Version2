@@ -13,7 +13,7 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             if (fg.getSuperUser().userName == userName && fg.getSuperUser().password == password && fg.getSuperUser().isLogged())
                 return true;
-            fg.logger.logError("incorrect password");
+
             return false;
         }
 

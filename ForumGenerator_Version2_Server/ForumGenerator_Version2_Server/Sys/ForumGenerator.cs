@@ -89,7 +89,8 @@ namespace ForumGenerator_Version2_Server.Sys
         public bool logout(int forumId, string userName, string password)
         {
             this.logger.logAction("performing logout: forumId: " + forumId + 
-                                                    " userName: " + userName);
+                                                    "\tuserName: " + userName + 
+                                                    "\tpassword: " + password);
             try
             {
                 User loggedOutUser = getForum(forumId).logout(userName, password);
@@ -106,6 +107,11 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logError("logout: userName " + userName + " not found");
                 throw new UserNotFoundException("User not found");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                this.logger.logError("logout: Wrong userName or password");
+                throw new UserNotFoundException("Wrong userName or password");
             }
             catch (Exception)
             {
@@ -141,6 +147,11 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 return this.superUser.logout(userName, password);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                this.logger.logError("superUserLogout: Wrong userName or password");
+                throw new Exception("Wrong userName or password");
             }
             catch (Exception e)
             {
@@ -595,15 +606,13 @@ namespace ForumGenerator_Version2_Server.Sys
         //get a forum by its forumId
         public Forum getForum(int forumId)
         {
-            try
-            {
-                return this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
-            }
-            catch (ArgumentOutOfRangeException)
-            {
+            Forum forum = this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
+            if(forum == null)
                 throw new ForumNotFoundException("forum not found");
-            }
+
+            return forum;
         }
+
 
         //get a forum by its forum name
         public Forum getForum(string forumName)
