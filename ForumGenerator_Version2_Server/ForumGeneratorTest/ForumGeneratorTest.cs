@@ -14,7 +14,7 @@ namespace ForumGeneratorTest
             ForumGenerator fg = new ForumGenerator("admin", "admin");
 
             // act
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
 
             // assert
             Assert.IsTrue(fg.getSuperUser().isLogged());
@@ -28,8 +28,8 @@ namespace ForumGeneratorTest
 
 
             // act
-            fg.adminLogin("admin", "admin");
-            fg.adminLogout();
+            fg.superUserLogin("admin", "admin");
+            fg.superUserLogout("admin", "admin");
 
             // assert
             Assert.IsFalse(fg.getSuperUser().isLogged());
@@ -40,7 +40,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
 
             // act
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
@@ -55,7 +55,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
 
             // act
@@ -70,7 +70,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
 
             // act
@@ -85,7 +85,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
             fg.login(0, "admin1", "admin1");
 
@@ -103,7 +103,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
             fg.login(0, "admin1", "admin1");
 
@@ -119,7 +119,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
             fg.login(0, "admin1", "admin1");
             fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
@@ -138,7 +138,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
             fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
 
@@ -154,7 +154,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
             fg.createNewSubForum("admin1", "admin1", 0, "subforum1");
             fg.login(0, "admin1", "admin1");
@@ -172,7 +172,7 @@ namespace ForumGeneratorTest
         {
             // arrange
             ForumGenerator fg = new ForumGenerator("admin", "admin");
-            fg.adminLogin("admin", "admin");
+            fg.superUserLogin("admin", "admin");
             fg.createNewForum("admin", "admin", "first forum", "admin1", "admin1");
             fg.login(0, "admin1", "admin1");
             fg.createNewSubForum("admin1", "admin1", 0, "subforum1");

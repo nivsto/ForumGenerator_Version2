@@ -12,7 +12,7 @@ namespace ForumGenerator_Version2_Server.Sys
         
         User login(int forumId, string userName, string password);
 
-        bool logout(int forumId, int userId);
+        bool logout(int forumId, string userName, string password);
 
         SuperUser superUserLogin(string userName, string password);
 

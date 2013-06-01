@@ -34,10 +34,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
+            this.db = new ForumGeneratorContext();
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
-            this.db =  new ForumGeneratorContext();
         }
 
         public void reset()
@@ -65,6 +65,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 User loggedUser = getForum(forumId).login(userName, password);
                 this.db.Entry(this.db.Users.Find(loggedUser.memberID)).CurrentValues.SetValues(loggedUser);
+                this.db.SaveChanges();
                 return loggedUser;
             }
             catch (ForumNotFoundException)
@@ -85,13 +86,16 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         // returns 1 for success or 0 for failure
-        public bool logout(int forumId, int userId)
+        public bool logout(int forumId, string userName, string password)
         {
             this.logger.logAction("performing logout: forumId: " + forumId + 
-                                                    "\tuserId: " + userId);
+                                                    " userName: " + userName);
             try
             {
-                return getForum(forumId).logout(userId);
+                User loggedOutUser = getForum(forumId).logout(userName, password);
+                this.db.Entry(this.db.Users.Find(loggedOutUser.memberID)).CurrentValues.SetValues(loggedOutUser);
+                this.db.SaveChanges();
+                return true;
             }
             catch (ForumNotFoundException)
             {
@@ -100,7 +104,7 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (UserNotFoundException)
             {
-                this.logger.logError("logout: userID " + userId + " not found");
+                this.logger.logError("logout: userName " + userName + " not found");
                 throw new UserNotFoundException("User not found");
             }
             catch (Exception)
@@ -194,6 +198,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 return this.forums;
+
             }
             catch (Exception)
             {
@@ -522,8 +527,9 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException("No permission to delete this discussion");
                 } // if
 
-                if (!sf.removeDiscussion(discussionId))
-                    throw new Exception("remove Discussion from vector failed");
+                Discussion removedDoscussion = sf.removeDiscussion(discussionId);
+                this.db.Discussions.Remove(removedDoscussion);
+                this.db.SaveChanges();
                 return true;
             }
             catch (ForumNotFoundException)
@@ -564,7 +570,10 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException("No permission to change admin");
                 }
                 Forum forum = this.getForum(forumId);
-                return forum.changeAdmin(newAdminUserId);
+                User newAdmin = forum.changeAdmin(newAdminUserId);
+                this.db.Entry(this.db.Forums.Find(forum)).CurrentValues.SetValues(forum);
+                this.db.SaveChanges();
+                return newAdmin;
             }
             catch (ForumNotFoundException e)
             {

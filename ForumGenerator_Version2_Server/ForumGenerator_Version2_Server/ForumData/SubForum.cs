@@ -82,13 +82,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        internal Boolean removeDiscussion(int discussionId)
+        internal Discussion removeDiscussion(int discussionId)
         {
             Discussion d = this.getDiscussion(discussionId);
             if (d == null)
                 throw new DiscussionNotFoundException();
             else
-                return this.discussions.Remove(d);
+                this.discussions.Remove(d);
+            return d;
         }
 
 

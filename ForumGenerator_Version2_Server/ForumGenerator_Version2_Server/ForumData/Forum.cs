@@ -60,14 +60,15 @@ namespace ForumGenerator_Version2_Server.ForumData
                 return user.login(password);
         }
 
-        internal bool logout(int userId)
+        internal User logout(string userName, string password)
         {
-            try
-            {
-                return this.members.ElementAt(userId).logout();
-            }
-            catch (ArgumentNullException) { throw new UserNotFoundException(); }
-            catch (IndexOutOfRangeException) { throw new UserNotFoundException(); }
+            User user = this.members.Find(
+                delegate(User mem)
+                { return mem.userName == userName; });
+            if (user == null)
+                throw new UserNotFoundException();
+            else
+                return user.logout(password);
         }
 
         internal User register(string userName, string password, string email, string signature)

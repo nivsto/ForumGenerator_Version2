@@ -53,15 +53,15 @@ namespace ForumGenerator_Version2_Server.Users
                 throw new UnauthorizedAccessException("incorrect password");
         }
 
-        internal bool logout()
+        internal User logout(string password)
         {
-            if (this.isLoggedIn)
+            if (this.password == password && this.isLoggedIn)
             {
                 this.isLoggedIn = false;
-                return true; ;
+                return this;
             }
             else
-                return false;
+                throw new UnauthorizedAccessException("incorrect password");
         }
 
 
