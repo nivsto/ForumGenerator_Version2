@@ -47,7 +47,7 @@ namespace ForumService
             }
         }
 
-        public SuperUser superUserLogin(string userName, string password)
+        public SuperUser superUserLogin(string userName, string password) 
         {
             try
             {
@@ -56,7 +56,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+       //         _forumGen.collectLogs("doron.txt");
                 throw new FaultException(e.Message);
             }
         }
