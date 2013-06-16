@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using ForumGenerator_Version2_Server.DataLayer;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace ForumGenerator_Version2_Server.ForumData
@@ -28,28 +29,21 @@ namespace ForumGenerator_Version2_Server.ForumData
         //[DataMember]
         [IgnoreDataMember]
         public virtual List<User> members { get; private set; }
-        [DataMember]
-        //internal int nextSubForumId = 1;
-        public int nextSubForumId = 1;
-        [DataMember]
-        //internal int nextUserId = 1;
-        public int nextUserId = 1;
 
-        public Forum(int forumId, string forumName, string adminUserName, string adminPassword, ForumGeneratorContext db)
+
+        public Forum(string forumName, string adminUserName, string adminPassword, ForumGeneratorContext db)
         {
             // TODO: Complete member initialization
-            this.forumId = forumId;
             this.forumName = forumName;
             this.members = new List<User>();
-            int userId = nextUserId++;
-            this.admin = new User(userId, adminUserName, adminPassword, "", "", this);
+            this.admin = new User(adminUserName, adminPassword, "", "", this);
             db.Users.Add(this.admin);
             db.SaveChanges();
             this.members.Add(this.admin);
             this.subForums = new List<SubForum>();
         }
 
-        //Temporaray constructor
+        //Temporaray constructor - POCO
         public Forum(int forumId, string forumName, User admin)
         {
             this.forumId = forumId;
@@ -58,9 +52,9 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
         public Forum() { }
-        
 
-        internal User login(string userName, string password)
+
+        internal User login(string userName, string password, ForumGeneratorContext db)
         {
             User user = this.members.Find(
                             delegate(User mem)
@@ -68,10 +62,14 @@ namespace ForumGenerator_Version2_Server.ForumData
             if (user == null)
                 throw new UserNotFoundException();
             else
+            {
+                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+                db.SaveChanges();
                 return user.login(password);
+            }
         }
 
-        internal User logout(string userName, string password)
+        internal User logout(string userName, string password, ForumGeneratorContext db)
         {
             User user = this.members.Find(
                 delegate(User mem)
@@ -79,16 +77,21 @@ namespace ForumGenerator_Version2_Server.ForumData
             if (user == null)
                 throw new UserNotFoundException();
             else
+            {
+                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+                db.SaveChanges();
                 return user.logout(password);
+            }
         }
 
-        internal User register(string userName, string password, string email, string signature)
+        internal User register(string userName, string password, string email, string signature, ForumGeneratorContext db)
         {
             if (this.members.Find(delegate(User mem) { return mem.userName == userName; }) != null)
                 throw new UnauthorizedAccessException("username already exists");
-            int userId = this.nextUserId++;
-            User newUser = new User(userId, userName, password, email, signature, this);
+            User newUser = new User(userName, password, email, signature, this);
             this.members.Add(newUser);
+            db.Users.Add(newUser);
+            db.SaveChanges();
             return newUser;
         }
 
@@ -112,13 +115,14 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
         }
 
-        internal SubForum createNewSubForum(string subForumTitle)
+        internal SubForum createNewSubForum(string subForumTitle, ForumGeneratorContext db)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
                 throw new Exception();///////// change!
-            int subForumId = this.nextSubForumId++;
-            SubForum newSubForum = new SubForum(subForumId, subForumTitle, this);
+            SubForum newSubForum = new SubForum(subForumTitle, this);
             this.subForums.Add(newSubForum);
+            db.SubForums.Add(newSubForum);
+            db.SaveChanges();
             return newSubForum;
         }
 
@@ -132,14 +136,14 @@ namespace ForumGenerator_Version2_Server.ForumData
             return this.members.Find(delegate(User mem) { return mem.userName == userName; });
         }
 
-        internal User changeAdmin(int newAdminUserId)
+        internal User changeAdmin(int newAdminUserId, ForumGeneratorContext db)
         {
             User currentMember = getUser(newAdminUserId);
             if (currentMember == null)
                 throw new UserNotFoundException();
-            this.admin = new User(currentMember.memberID, currentMember.userName, currentMember.password, "", "", this);
-            this.members.Insert(this.members.IndexOf(currentMember), this.admin);
-            this.members.Remove(currentMember);
+            this.admin = currentMember;
+            db.Entry(db.Forums.Find(this)).CurrentValues.SetValues(this);
+            db.SaveChanges();
             return this.admin;
         }
 

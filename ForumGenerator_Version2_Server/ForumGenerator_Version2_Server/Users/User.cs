@@ -27,19 +27,27 @@ namespace ForumGenerator_Version2_Server.Users
         public string signature { get; private set; }
         [DataMember]
         public bool isLoggedIn { get; private set; }
-        //[DataMember]
-        //public virtual Forum parentForum { get; private set; }
 
-        internal User(int memberId, string userName, string password, string email, string signature, Forum forum)
+
+        internal User(string userName, string password, string email, string signature, Forum forum)
         {
-            this.memberID = memberId;
             this.userName = userName;
             this.password = password;
             this.email = email;
             this.friends = new List<User>();
             this.signature = signature;
             this.isLoggedIn = false;
-            //this.parentForum = forum;
+        }
+
+        public User(User oldUser) 
+        {
+            this.memberID = oldUser.memberID;
+            this.userName = oldUser.userName;
+            this.password = oldUser.password;
+            this.email = oldUser.email;
+            this.friends = null;
+            this.signature = oldUser.signature;
+            this.isLoggedIn = oldUser.isLoggedIn;
         }
 
         public User() { }

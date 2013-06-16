@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
+using ForumGenerator_Version2_Server.DataLayer;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
@@ -26,10 +27,9 @@ namespace ForumGenerator_Version2_Server.ForumData
         public virtual List<Comment> comments { get; private set; }
         [IgnoreDataMember]
         public virtual SubForum parentSubForum { get; private set; }
-        [DataMember]
-        public int nextCommentId = 1;
 
-        public Discussion(int discussionId, string title, string content, User publisher, SubForum parentSubForum)
+
+        public Discussion(string title, string content, User publisher, SubForum parentSubForum)
         {
             // TODO: Complete member initialization
             this.discussionId = discussionId;
@@ -41,18 +41,32 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.parentSubForum = parentSubForum;
         }
 
+        // POCO constructor
+        public Discussion(Discussion d)
+        {
+            this.discussionId = d.discussionId;
+            this.title = d.title;
+            this.content = d.content;
+            this.publishDate = d.publishDate;
+            this.publisher = new User(d.publisher);
+            this.comments = null;
+            this.parentSubForum = null;
+        }
+
         public Discussion() { }
+
 
         internal string getPublishDate()
         {
             return this.publishDate.ToShortDateString();
         }
 
-        internal Comment createNewComment(string content, User user)
+        internal Comment createNewComment(string content, User user, ForumGeneratorContext db)
         {
-            int commentId = this.nextCommentId++;
-            Comment newComment = new Comment(commentId, content, user, this);
+            Comment newComment = new Comment(content, user, this);
             this.comments.Add(newComment);
+            db.Comments.Add(newComment);
+            db.SaveChanges();
             return newComment;
         }
 
@@ -88,6 +102,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal int getNumOfComments()
         {
             return comments.Count;
+        }
+
+        internal bool editDiscussion(string newContent, ForumGeneratorContext db)
+        {
+            this.content = newContent;
+            db.Entry(db.Discussions.Find(this)).CurrentValues.SetValues(this);
+            db.SaveChanges();
+            return true;
         }
     }
 }

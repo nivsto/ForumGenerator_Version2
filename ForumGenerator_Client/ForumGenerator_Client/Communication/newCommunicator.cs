@@ -17,7 +17,7 @@ namespace ForumGenerator_Client.Communication
 
         public newCommunicator()
         {
-            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.104:8888/methods"));
+            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
             httpProxy = httpFactory.CreateChannel();
 
         }

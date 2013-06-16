@@ -7,6 +7,7 @@ using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
+using ForumGenerator_Version2_Server.DataLayer;
 
 namespace ForumGenerator_Version2_Server.ForumData
 {
@@ -24,20 +25,16 @@ namespace ForumGenerator_Version2_Server.ForumData
         public virtual List<Discussion> discussions { get; private set; }
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
-        [DataMember]
-        public int nextDiscussionId;
 
 
-        public SubForum(int subForumId, string subForumTitle, Forum parentForun)
+        public SubForum(string subForumTitle, Forum parentForun)
         {
-            this.subForumId = subForumId;
             this.subForumTitle = subForumTitle;
             this.moderators = new List<User>();
             this.parentForum = parentForun;
             User u = this.parentForum.admin;
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
-            this.nextDiscussionId = 1;
         }
 
         public SubForum() { }
@@ -46,14 +43,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             this.subForumId = subForumId;
             this.subForumTitle = subForumTitle;
-            this.nextDiscussionId = 1;
         }
 
-        internal Discussion createNewDiscussion(string title, string content, User user)
+        internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db)
         {
-            int discussionId = this.nextDiscussionId++;
-            Discussion newDiscussion = new Discussion(discussionId, title, content, user, this);
+            Discussion newDiscussion = new Discussion(title, content, user, this);
             this.discussions.Add(newDiscussion);
+            db.Discussions.Add(newDiscussion);
+            db.SaveChanges();
             return newDiscussion;
         }
 
@@ -70,34 +67,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        internal Boolean editDiscussion(int discussionId, string newContent)
-        {
-            try
-            {
-                Discussion d = getDiscussion(discussionId);
-                if (discussions.Remove(d))    // remove old
-                {
-                    d.content = newContent;
-                    discussions.Add(d);      // add edited discussion.
-                    return true;
-                }
-                else
-                    throw new Exception("unknown error");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                throw new DiscussionNotFoundException();
-            }
-        }
-
-
-        internal Discussion removeDiscussion(int discussionId)
+        internal Discussion removeDiscussion(int discussionId, ForumGeneratorContext db)
         {
             Discussion d = this.getDiscussion(discussionId);
             if (d == null)
                 throw new DiscussionNotFoundException();
-            else
-                this.discussions.Remove(d);
+            this.discussions.Remove(d);
+            db.Discussions.Remove(d);
+            db.SaveChanges();
             return d;
         }
 
@@ -116,7 +93,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public Boolean addModerator(string modUserName)
+        public Boolean addModerator(string modUserName, ForumGeneratorContext db)
         {
             User newModerator = parentForum.getUser(modUserName);
             // check if user is registered to the forum
@@ -125,21 +102,16 @@ namespace ForumGenerator_Version2_Server.ForumData
                 throw new UserNotFoundException();
             }
             // check if user is already a moderator of this subforum
-            try
-            {
-                this.getModerator(modUserName);
-                // if found - means that this user is already a moderator
+            if (this.getModerator(modUserName) != null)
                 throw new UnauthorizedOperationException("user is already a moderator");
-            }
-            catch (Exception)
-            {
-                this.moderators.Add(newModerator);
-                return true;
-            }
+            this.moderators.Add(newModerator);
+            db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
+            db.SaveChanges();
+            return true;
         }
 
 
-        internal Boolean removeModerator(string modUserName)
+        internal Boolean removeModerator(string modUserName, ForumGeneratorContext db)
         {
             if (parentForum.admin.userName == modUserName)            // not allowed
             {
@@ -151,8 +123,10 @@ namespace ForumGenerator_Version2_Server.ForumData
             {
                 throw new UserNotFoundException();
             }
-
-            return moderators.Remove(moderator);
+            bool ans = moderators.Remove(moderator);
+            db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
+            db.SaveChanges();
+            return ans;
         }
 
 

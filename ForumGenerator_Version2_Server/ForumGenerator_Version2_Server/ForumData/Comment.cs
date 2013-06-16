@@ -23,13 +23,22 @@ namespace ForumGenerator_Version2_Server.ForumData
         [DataMember]
         public virtual Discussion parentDiscussion { get; private set; }
 
-        public Comment(int commentId, string content, User user, Discussion parentDiscussion)
+        public Comment(string content, User user, Discussion parentDiscussion)
         {
-            this.commentId = commentId;
             this.content = content;
             this.publishDate = DateTime.Now;
             this.publisher = user;
             this.parentDiscussion = parentDiscussion;
+        }
+
+        // POCO constructor
+        public Comment(Comment c)
+        {
+            this.commentId = c.commentId;
+            this.content = c.content;
+            this.publishDate = c.publishDate;
+            this.publisher = new User(c.publisher);
+            this.parentDiscussion = null;
         }
 
         public Comment() { }

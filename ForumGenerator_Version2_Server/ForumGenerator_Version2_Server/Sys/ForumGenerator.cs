@@ -22,10 +22,6 @@ namespace ForumGenerator_Version2_Server.Sys
             SUPER_USER
         };
 
-
-
-        internal int nextForumId = 1;
-
         internal SuperUser superUser { get; private set; }
         internal List<Forum> forums { get; private set; }
         public Logger logger { get; private set; }
@@ -38,6 +34,8 @@ namespace ForumGenerator_Version2_Server.Sys
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
+            this.db.Forums.SqlQuery("UPDATE Users SET isLoggedIn = 0 WHERE 1=1");
+            this.db.SaveChanges();
         }
 
         public ForumGenerator(string superUserName, string superUserPass, bool test)
@@ -53,6 +51,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.Forums.SqlQuery("DELETE * FROM SubForums");
             this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
             this.db.Forums.SqlQuery("DELETE * FROM Users");
+            this.db.SaveChanges();
         }
 
         public void reset()
@@ -85,10 +84,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                   "\tpassword: " + password);
             try
             {
-                User loggedUser = getForum(forumId).login(userName, password);
-                this.db.Entry(this.db.Users.Find(loggedUser.memberID)).CurrentValues.SetValues(loggedUser);
-                this.db.SaveChanges();
-                return loggedUser;
+                return getForum(forumId).login(userName, password, db);
             }
             catch (ForumNotFoundException)
             {
@@ -115,9 +111,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                     "\tpassword: " + password);
             try
             {
-                User loggedOutUser = getForum(forumId).logout(userName, password);
-                this.db.Entry(this.db.Users.Find(loggedOutUser.memberID)).CurrentValues.SetValues(loggedOutUser);
-                this.db.SaveChanges();
+                User loggedOutUser = getForum(forumId).logout(userName, password, db);
                 return true;
             }
             catch (ForumNotFoundException)
@@ -202,12 +196,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
             try
             {
-                Forum f = this.getForum(forumId);
-
-                User newUser = f.register(userName, password, email, signature);
-                this.db.Users.Add(newUser);
-                this.db.SaveChanges();
-                return newUser;
+                return this.getForum(forumId).register(userName, password, email, signature, db);
             }
             catch (ForumNotFoundException)
             {
@@ -236,7 +225,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 List<Forum> returnedList = new List<Forum>();
                 foreach (Forum f in fl)
                 {
-                    User forumAdmin = new User(f.admin.memberID, f.admin.userName, f.admin.password, f.admin.email, f.admin.signature, null);
+                    User forumAdmin = new User(f.admin);
                     returnedList.Add(new Forum(f.forumId, f.forumName, forumAdmin));
                 }
                 return returnedList;
@@ -256,18 +245,15 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("performing getSubForums: forunId: " + forumId);
             try
             {
-                Forum parentForum = this.getForum(forumId);
-                //return parentForum.subForums;
-                List<SubForum> sfl = (from b in this.db.SubForums
-                                      where b.parentForum.forumId == forumId
-                                      select b).ToList();
+                Forum f = getForum(forumId);
+                List<SubForum> sfl = f.subForums;
                 List<SubForum> returnedList = new List<SubForum>();
                 foreach (SubForum sf in sfl)
                 {
                     returnedList.Add(new SubForum(sf.subForumId, sf.subForumTitle));
                 }
                 return returnedList;
-            }
+             }
             catch (ArgumentOutOfRangeException e)
             {
                 this.logger.logError("getSubForums: No such " + e.Message);
@@ -287,18 +273,11 @@ namespace ForumGenerator_Version2_Server.Sys
                                                   "subForumId: " + subForumId);
             try
             {
-                Forum f = this.getForum(forumId);
-                //SubForum parentSubForum = f.getSubForum(subForumId);
-                SubForum parentSubForum = this.db.SubForums.Find(subForumId);
-                //return parentSubForum.discussions;
-                List<Discussion> dl = (from b in this.db.Discussions
-                                       where b.parentSubForum.subForumId == subForumId
-                                      select b).ToList();
+                List<Discussion> dl = this.getForum(forumId).getSubForum(subForumId).discussions;
                 List<Discussion> returnedList = new List<Discussion>();
                 foreach (Discussion d in dl)
                 {
-                    User publisher = new User(d.publisher.memberID, d.publisher.userName, d.publisher.password, d.publisher.email, d.publisher.signature, null);
-                    returnedList.Add(new Discussion(d.discussionId, d.title, d.content, publisher, null));
+                    returnedList.Add(new Discussion(d));
                 }
                 return returnedList;
             }
@@ -327,18 +306,11 @@ namespace ForumGenerator_Version2_Server.Sys
                                                 " discussionId: " + discussionId);
             try
             {
-                Forum f = this.getForum(forumId);
-                SubForum sf = f.getSubForum(subForumId);
-                Discussion parentDiscussion = sf.getDiscussion(discussionId);
-                //return parentDiscussion.comments;
-                List<Comment> cl = (from b in this.db.Comments
-                                    where b.parentDiscussion.discussionId == discussionId
-                                       select b).ToList();
+                List<Comment> cl = this.getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).comments;
                 List<Comment> returnedList = new List<Comment>();
                 foreach (Comment c in cl)
                 {
-                    User publisher = new User(c.publisher.memberID, c.publisher.userName, c.publisher.password, c.publisher.email, c.publisher.signature, null);
-                    returnedList.Add(new Comment(c.commentId, c.content, publisher, null));
+                    returnedList.Add(new Comment(c));
                 }
                 return returnedList;
             }
@@ -370,8 +342,13 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("performing getUsers: forumId: " + forumId);
             try
             {
-                Forum parentForum = this.getForum(forumId);
-                return parentForum.members;
+                List<User> ul = this.getForum(forumId).members;
+                List<User> returnedList = new List<User>();
+                foreach (User u in ul)
+                {
+                    returnedList.Add(new User(u));
+                }
+                return returnedList;
             }
             catch (ForumNotFoundException)
             {
@@ -411,8 +388,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logError("createNewForum: unauthorized superUser");
                     throw new UnauthorizedUserException("unauthorized superUser");
                 }
-                int forumId = nextForumId++;
-                Forum newForum = new Forum(forumId, forumName, adminUserName, adminPassword, this.db);
+                Forum newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
                 this.forums.Add(newForum);
                 this.db.Forums.Add(newForum);
                 this.db.SaveChanges();
@@ -454,10 +430,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logError("createNewSubForum: unauthorized admin");
                     throw new UnauthorizedUserException();
                 }
-                SubForum newSubForum = forum.createNewSubForum(subForumTitle);
-                this.db.SubForums.Add(newSubForum);
-                this.db.SaveChanges();
-                return newSubForum;
+                return forum.createNewSubForum(subForumTitle, db);
             }
             catch (ForumNotFoundException)
             {
@@ -507,11 +480,8 @@ namespace ForumGenerator_Version2_Server.Sys
                 User user;
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
-                    user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser
-                Discussion newDiscussion = sf.createNewDiscussion(title, content, user);
-                this.db.Discussions.Add(newDiscussion);
-                this.db.SaveChanges();
-                return newDiscussion;
+                    user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser 
+                return sf.createNewDiscussion(title, content, user, db);
             }
             catch (IllegalContentException)
             {
@@ -557,16 +527,12 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logAction("createNewComment: unauthorized user");
                     throw new UnauthorizedUserException();
                 }
-                User user;
+
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
-                
-                user = forum.getUser(userName); // user must be found since security check passed, or being a superUser
 
-                Comment newComment = d.createNewComment(content, user);
-                this.db.Comments.Add(newComment);
-                this.db.SaveChanges();
-                return newComment;
+                User user = forum.getUser(userName); // user must be found since security check passed, or being a superUser
+                return d.createNewComment(content, user, db);
             }
             catch (IllegalContentException)
             {
@@ -624,9 +590,8 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException("No permission to delete this discussion");
                 } // if
 
-                Discussion removedDoscussion = sf.removeDiscussion(discussionId);
-                this.db.Discussions.Remove(removedDoscussion);
-                this.db.SaveChanges();
+                sf.removeDiscussion(discussionId, db);
+
                 return true;
             }
             catch (ForumNotFoundException)
@@ -666,11 +631,8 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logError("changeAdmin: unauthrozied user");
                     throw new UnauthorizedUserException("No permission to change admin");
                 }
-                Forum forum = this.getForum(forumId);
-                User newAdmin = forum.changeAdmin(newAdminUserId);
-                this.db.Entry(this.db.Forums.Find(forum)).CurrentValues.SetValues(forum);
-                this.db.SaveChanges();
-                return newAdmin;
+
+                return this.getForum(forumId).changeAdmin(newAdminUserId, db);
             }
             catch (ForumNotFoundException e)
             {
@@ -696,7 +658,6 @@ namespace ForumGenerator_Version2_Server.Sys
             Forum forum = this.db.Forums.Find(forumId);
             if(forum == null)
                 throw new ForumNotFoundException("forum not found");
-
             return forum;
         }
 
@@ -735,7 +696,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException("No permission to add a moderator");
                 }
                
-                if (! sf.addModerator(modUserName))
+                if (! sf.addModerator(modUserName, db))
                     throw new Exception("unknown error");
                 return true;
             }
@@ -776,7 +737,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException();
                 }
                 
-                if( !sf.removeModerator(modUserName))
+                if( !sf.removeModerator(modUserName, db))
                     throw new Exception("unknown error");
                 return true;
             }
@@ -831,7 +792,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException();
                 } // if
 
-                return sf.editDiscussion(d.discussionId, newContent);
+                return d.editDiscussion(newContent, db);
             }
             catch (ForumNotFoundException e)
             {
@@ -976,8 +937,13 @@ namespace ForumGenerator_Version2_Server.Sys
                     this.logger.logError("getMutualUsers: unauthorized user");
                     throw new UnauthorizedUserException();
                 }
-
-                return forum1.getMutualUsers(forum2);
+                List<User> ul = forum1.getMutualUsers(forum2);
+                List<User> returnedList = new List<User>();
+                foreach (User u in ul)
+                {
+                    returnedList.Add(new User(u));
+                }
+                return returnedList;
             }
             catch (ForumNotFoundException e)
             {
