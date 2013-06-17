@@ -126,6 +126,7 @@
     <Compile Include="Sys\Exceptions\UserNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\UnauthorizedUserException.cs" />
     <Compile Include="Sys\ForumGenerator.cs" />
+    <Compile Include="Sys\ForumGeneratorDefs.cs" />
     <Compile Include="Sys\IForumGenerator.cs" />
     <Compile Include="Sys\Logger.cs" />
     <Compile Include="Sys\LogItem.cs" />

@@ -25,9 +25,9 @@ namespace ForumService
             return res;
         }
 
-        public bool logout(int forumId, int userId)
+        public bool logout(int forumId, string userName, string password)
         {
-            bool res = _forumGen.logout(forumId, userId);
+            bool res = _forumGen.logout(forumId, userName, password);
             return res;
         }
 

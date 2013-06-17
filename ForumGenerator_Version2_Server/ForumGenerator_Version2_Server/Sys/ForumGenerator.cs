@@ -75,8 +75,6 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
        
-
-        // returns userid
         public User login(int forumId, string userName, string password)
         {
             this.logger.logAction("performing login: forumId: " + forumId + 
@@ -86,24 +84,14 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 return getForum(forumId).login(userName, password, db);
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("login: forum " + forumId + " not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (UserNotFoundException)
-            {
-                this.logger.logError("login: user " + userName + " not found");
-                throw new UserNotFoundException("User not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("login: Unknown Error");
-                throw new Exception("Unknown error in login operation");
+                this.logger.logError("login: " + e.Message);
+                throw e;
             }
         }
 
-        // returns 1 for success or 0 for failure
+
         public bool logout(int forumId, string userName, string password)
         {
             this.logger.logAction("performing logout: forumId: " + forumId + 
@@ -114,29 +102,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 User loggedOutUser = getForum(forumId).logout(userName, password, db);
                 return true;
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("logout: forum " + forumId + " not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (UserNotFoundException)
-            {
-                this.logger.logError("logout: userName " + userName + " not found");
-                throw new UserNotFoundException("User not found");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                this.logger.logError("logout: Wrong userName or password");
-                throw new UserNotFoundException("Wrong userName or password");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("logout: Unknown Error");
-                throw new Exception("Unknown error in logout");
+                this.logger.logError("logout: " + e.Message);
+                throw e;
             }
         }
 
-        // returns userid
+
         public SuperUser superUserLogin(string userName, string password)
         {
             this.logger.logAction("performing superUserLogin: userName: " + userName +
@@ -145,15 +118,10 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 return this.superUser.login(userName, password);
             }
-            catch (UnauthorizedUserException e)
+            catch (Exception e)
             {
-                this.logger.logError("superUserLogin: Wrong userName or password");
-                throw new UnauthorizedAccessException("Wrong userName or password");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("superUserLogin: Unknown Error");
-                throw new Exception("Unknown error");
+                this.logger.logError("superUserLogin: " + e.Message);
+                throw e;
             }
         }
 
@@ -165,19 +133,14 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 return this.superUser.logout(userName, password);
             }
-            catch (UnauthorizedAccessException)
-            {
-                this.logger.logError("superUserLogout: Wrong userName or password");
-                throw new UnauthorizedAccessException("Wrong userName or password");
-            }
             catch (Exception e)
             {
                 this.logger.logError("superUserLogout: " + e.Message);
-                throw new Exception("Unknown error");
+                throw e;
             }
         }
 
-        // returns 1 for success or 0 for failure
+
         public User register(int forumId, string userName, string password, string email, string signature)
         {
             this.logger.logAction("performing register: forumId: " + forumId +
@@ -191,31 +154,21 @@ namespace ForumGenerator_Version2_Server.Sys
                 !ContentPolicy.isLegalEmailFormat(email) ||
                 !ContentPolicy.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature) )
             {
-                throw new IllegalContentException("Illegal content");
+                throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
             }
 
             try
             {
                 return this.getForum(forumId).register(userName, password, email, signature, db);
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("register: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch(UnauthorizedAccessException e)
-            {
-                this.logger.logError("register: registration to forum " + forumId + " failed");
+                this.logger.logError("register: " + e.Message);
                 throw e;
-            }
-            catch (Exception)
-            {
-                this.logger.logError("register: Unknown Error");
-                throw new Exception();
             }
         }
 
-        //returns an XML list of all the forums in the system
+
         public List<Forum> getForums()
         {
             this.logger.logAction("performing getForums");
@@ -232,14 +185,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 //return this.forums;
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                this.logger.logError("getForums: Unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getForums: " + e.Message);
+                throw e;
             }
         }
 
-        //returns an XML list of all the sub-forums in the system
+
         public List<SubForum> getSubForums(int forumId)
         {
             this.logger.logAction("performing getSubForums: forunId: " + forumId);
@@ -254,19 +207,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
                 return returnedList;
              }
-            catch (ArgumentOutOfRangeException e)
+            catch (Exception e)
             {
-                this.logger.logError("getSubForums: No such " + e.Message);
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("getSubForums: Unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getSubForums: " + e.Message);
+                throw e;
             }
         }
 
-        //returns an XML list of all the discussions in a specific sub-forum
+
         public List<Discussion> getDiscussions(int forumId, int subForumId)
         {
             this.logger.logAction("performing getDiscussions: forumId: " + forumId +
@@ -281,24 +229,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
                 return returnedList;
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("getDiscussions: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (SubForumNotFoundException)
-            {
-                this.logger.logError("getDiscussions: subForum not found");
-                throw new SubForumNotFoundException();
-            }
-            catch (Exception)
-            {
-                this.logger.logError("getDiscussions: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getDiscussions: " + e.Message);
+                throw e;
             }
         }
 
-        //returns an XML list of all the comments of a specific discussion
+
         public List<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
             this.logger.logAction("performing getComments: forumId: " + forumId +
@@ -314,29 +252,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
                 return returnedList;
             }
-            catch (ForumNotFoundException e)
+            catch (Exception e)
             {
-                this.logger.logError("getComments: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (SubForumNotFoundException e)
-            {
-                this.logger.logError("getComments: subForum not found");
-                throw new SubForumNotFoundException("subForum not found");
-            }
-            catch (DiscussionNotFoundException e)
-            {
-                this.logger.logError("getComments: discussion not found");
-                throw new DiscussionNotFoundException("discussion not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("getComments: Unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getComments: " + e.Message);
+                throw e;
             }
         }
 
-        //returns an XML list of all the users in a specific forum
+
         public List<User> getUsers(int forumId)
         {
             this.logger.logAction("performing getUsers: forumId: " + forumId);
@@ -350,15 +273,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
                 return returnedList;
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("getUsers: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("getUsers: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getUsers: " + e.Message);
+                throw e;
             }
         }
 
@@ -378,15 +296,14 @@ namespace ForumGenerator_Version2_Server.Sys
                     !ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, adminUserName) ||
                     !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, adminPassword))
                 {
-                    throw new IllegalContentException("Illegal content");
+                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
                 if (this.getForum(forumName) != null)   // in case there is already such a forum
-                    throw new UnauthorizedOperationException("forum name already exists");
+                    throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_FNAME);
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
                 {
-                    this.logger.logError("createNewForum: unauthorized superUser");
-                    throw new UnauthorizedUserException("unauthorized superUser");
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
                 }
                 Forum newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
                 this.forums.Add(newForum);
@@ -394,15 +311,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.db.SaveChanges();
                 return newForum;
             }
-            catch (IllegalContentException)
+            catch (Exception e)
             {
-                this.logger.logError("createNewForum: Illegal content");
-                throw new IllegalContentException("Illegal content");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("createNewForum: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("createNewForum: " + e.Message);
+                throw e;
             }
         }
 
@@ -418,7 +330,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
                 !ContentPolicy.isLegalContent(ContentPolicy.cType.SUBFORUM_TITLE, subForumTitle) )
             {
-                throw new IllegalContentException("Illegal content");
+                throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
             }
 
             try
@@ -427,25 +339,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkAdminAuthorization(forum, userName, password))
                 {
-                    this.logger.logError("createNewSubForum: unauthorized admin");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
                 return forum.createNewSubForum(subForumTitle, db);
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("createNewSubForum: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (IllegalContentException)
-            {
-                this.logger.logError("createNewSubForum: Illegal content");
-                throw new IllegalContentException("Illegal content");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("createNewSubForum: unknown error");
-                throw new Exception("Unknwon error");
+                this.logger.logError("createNewSubForum: " + e.Message);
+                throw e;
             }
         }
 
@@ -464,7 +365,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 !ContentPolicy.isLegalContent(ContentPolicy.cType.DISCUSSION_TITLE, title) ||
                 !ContentPolicy.isLegalContent(ContentPolicy.cType.DISCUSSION_CONTENT, content) )
             {
-                throw new IllegalContentException("Illegal content");
+                throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
             }
             
             try
@@ -474,8 +375,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
-                    this.logger.logError("createNewDiscussion: unauthrized member");
-                    throw new UnauthorizedUserException("Unauthorized member");
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
                 User user;
                 // if(isSuperUser(userName, password)
@@ -483,25 +383,10 @@ namespace ForumGenerator_Version2_Server.Sys
                     user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser 
                 return sf.createNewDiscussion(title, content, user, db);
             }
-            catch (IllegalContentException)
+            catch (Exception e)
             {
-                this.logger.logError("createNewDiscussion: Illegal content");
-                throw new IllegalContentException("Illegal content");
-            }
-            catch (ForumNotFoundException)
-            {
-                this.logger.logError("createNewDiscussion: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (SubForumNotFoundException)
-            {
-                this.logger.logError("createNewDiscussion: subForum not found");
-                throw new SubForumNotFoundException("SubForum not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("createNewDiscussion: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("createNewDiscussion: " + e.Message);
+                throw e;
             }
         }
 
@@ -512,7 +397,7 @@ namespace ForumGenerator_Version2_Server.Sys
                !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
                !ContentPolicy.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content) )
             {
-                throw new IllegalContentException();
+                throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
             }
 
             this.logger.logAction("performing createNewComment: "); // TODO add content
@@ -524,49 +409,22 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
-                    this.logger.logAction("createNewComment: unauthorized user");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
-
-                User user = forum.getUser(userName); // user must be found since security check passed, or being a superUser
+                User user = forum.getUser(userName);
                 return d.createNewComment(content, user, db);
             }
-            catch (IllegalContentException)
+            catch (Exception e)
             {
-                this.logger.logError("createNewComment: Illegal content");
-                throw new IllegalContentException("Illegal content");
-            }
-            catch (ForumNotFoundException)
-            {
-                this.logger.logError("createNewComment: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (SubForumNotFoundException)
-            {
-                this.logger.logError("createNewComment: subForum not found");
-                throw new SubForumNotFoundException("SubForum not found");
-            }
-            catch (DiscussionNotFoundException)
-            {
-                this.logger.logError("createNewComment: discussion not found");
-                throw new DiscussionNotFoundException("Discussion not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("createNewComment: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("createNewComment: " + e.Message);
+                throw e;
             }
         }
 
-        // This method never returns false.
-        // Throws Exceptions:
-        // UnauthorizedUserException - in case user is not authorized to delete this discussion.
-        // ForumNotFoundException - forum not found
-        // SubForumNotFoundException, DiscussionNotFoundException - same reason
-        // Exception - unknown error.
+        // This method never returns false, but throws Exceptions instead.
         public bool deleteDiscussion(int forumId, int subForumId, int discussionId,
                      string userName, string password)
         {
@@ -586,38 +444,20 @@ namespace ForumGenerator_Version2_Server.Sys
                     !Security.checkModeratorAuthorization(sf, userName, password) &&
                     !Security.checkPublisherAuthorization(d, userName, password))
                 {
-                    this.logger.logError("deleteDiscussion: unauthorized user");
-                    throw new UnauthorizedUserException("No permission to delete this discussion");
-                } // if
-
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                }
                 sf.removeDiscussion(discussionId, db);
-
                 return true;
             }
-            catch (ForumNotFoundException)
+            catch (Exception e)
             {
-                this.logger.logError("deleteDiscussion: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (SubForumNotFoundException)
-            {
-                this.logger.logError("deleteDiscussion: subForum not found");
-                throw new SubForumNotFoundException("SubForum not found");
-            }
-            catch (DiscussionNotFoundException)
-            {
-                this.logger.logError("deleteDiscussion: discussion not found");
-                throw new DiscussionNotFoundException("Discussion not found");
-            }
-            catch (Exception)
-            {
-                this.logger.logError("deleteDiscussion: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("deleteDiscussion: " + e.Message);
+                throw e;
             }
             
         }
         
-        //creates a new comment and a new user which is the forum's administrator
+
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
         {
             this.logger.logAction("performing changeAdmin: userName: " + userName +
@@ -628,30 +468,20 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
                 {
-                    this.logger.logError("changeAdmin: unauthrozied user");
-                    throw new UnauthorizedUserException("No permission to change admin");
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
                 return this.getForum(forumId).changeAdmin(newAdminUserId, db);
             }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("changeAdmin: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (UserNotFoundException e)
-            {
-                this.logger.logError("changeAdmin: userId " + newAdminUserId + " not found");
-                throw new UserNotFoundException("User not found");
-            }
             catch (Exception e)
             {
-                this.logger.logError("changeAdmin: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("changeAdmin: " + e.Message);
+                throw e;
             }
         }
 
-        //get a forum by its forumId
+        //get a forum by its forumId 
+        // #Asa how to throw exception
         public Forum getForum(int forumId)
         {
             //Forum forum = this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
@@ -665,7 +495,14 @@ namespace ForumGenerator_Version2_Server.Sys
         //get a forum by its forum name
         public Forum getForum(string forumName)
         {
-            return this.forums.Find(delegate(Forum f) { return f.forumName == forumName; });
+            try
+            {
+                return this.forums.Find(delegate(Forum f) { return f.forumName == forumName; });
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ForumNotFoundException(ForumGeneratorDefs.FORUM_NF);
+            }
         }
 
         public SuperUser getSuperUser()
@@ -692,31 +529,16 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderPswd) &&
                     !Security.checkAdminAuthorization(f, adderUsrName, adderPswd))
                 {
-                    this.logger.logError("addModerator: unauthorized user");
-                    throw new UnauthorizedUserException("No permission to add a moderator");
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
-               
-                if (! sf.addModerator(modUserName, db))
-                    throw new Exception("unknown error");
+                sf.addModerator(modUserName, db);
                 return true;
-            }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("addModerator: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (SubForumNotFoundException e)
-            {
-                this.logger.logError("addModerator: subForum not found");
-                throw new SubForumNotFoundException("SubForum not found");
             }
             catch (Exception e)
             {
-                this.logger.logError("addModerator: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("addModerator: " + e.Message);
+                throw e;
             }
-
-                    
         }
 
         public bool removeModerator(string modUserName, int forumId, int subForumId, string rmverUsrName, string rmverPswd)
@@ -733,33 +555,16 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, rmverUsrName, rmverPswd) &&
                     !Security.checkAdminAuthorization(f, rmverUsrName, rmverPswd))
                 {
-                    this.logger.logError("removeModerator: unauthorized user");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
-                
-                if( !sf.removeModerator(modUserName, db))
-                    throw new Exception("unknown error");
+
+                sf.removeModerator(modUserName, db);
                 return true;
-            }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("removeModerator: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (SubForumNotFoundException e)
-            {
-                this.logger.logError("removeModerator: subForum not found");
-                throw new SubForumNotFoundException("SubForumNotFound");
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                this.logger.logError("removeModerator: Unauthorized operation");
-                throw new UnauthorizedOperationException("Unauthorized operation!");
             }
             catch (Exception e)
             {
-                this.logger.logError("removeModerator: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("removeModerator: " + e.Message);
+                throw e;
             }
         }
 
@@ -773,8 +578,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
             if (!ContentPolicy.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, newContent))
             {
-                this.logger.logError("EditDiscussion: Illegal content");
-                throw new IllegalContentException("Illegal content");
+                throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
             }
 
             try
@@ -788,31 +592,15 @@ namespace ForumGenerator_Version2_Server.Sys
                     !Security.checkModeratorAuthorization(sf, userName, password) &&
                     !Security.checkPublisherAuthorization(d, userName, password))
                 {
-                    this.logger.logError("editDiscussion: unauthorized user");
-                    throw new UnauthorizedUserException();
-                } // if
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                }
 
                 return d.editDiscussion(newContent, db);
             }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("editDiscussion: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (SubForumNotFoundException e)
-            {
-                this.logger.logError("editDiscussion: subForum not found");
-                throw new SubForumNotFoundException("SubForumNotFound");
-            }
-            catch (DiscussionNotFoundException e)
-            {
-                this.logger.logError("editDiscussion: discussion not found");
-                throw new DiscussionNotFoundException("Discussion not found");
-            }
             catch (Exception e)
             {
-                this.logger.logError("editDiscussion: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("EditDiscussion: " + e.Message);
+                throw e;
             }
         }
 
@@ -828,26 +616,15 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) &&
                     !Security.checkAdminAuthorization(forum, reqUserName, reqPswd))
                 {
-                    this.logger.logError("getNumOfCommentsSingleUser: unauthorized user");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
                 return forum.getNumOfCommentsSingleUser(userName);
             }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("getNumOfCommentsSingleUser: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (UserNotFoundException e)
-            {
-                this.logger.logError("getNumOfCommentsSingleUser: user not found");
-                throw new UserNotFoundException("User not found");
-            }
             catch (Exception e)
             {
-                this.logger.logError("getNumOfCommentsSingleUser: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getNumOfCommentsSingleUser: " + e.Message);
+                throw e;
             }
 
         }
@@ -864,26 +641,15 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, reqUserName, reqPswd) &&
                     !Security.checkAdminAuthorization(forum, reqUserName, reqPswd))
                 {
-                    this.logger.logError("getResponsersForSingleUser: unauthorized user");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
                 return forum.getResponsersForSingleUser(memberUserName);
             }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("getResponsersForSingleUser: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (UserNotFoundException e)
-            {
-                this.logger.logError("getResponsersForSingleUser: user not found");
-                throw new UserNotFoundException("User not found");
-            }
             catch (Exception e)
             {
-                this.logger.logError("getResponsersForSingleUser: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getResponsersForSingleUser: " + e.Message);
+                throw e;
             }
         }
 
@@ -899,26 +665,15 @@ namespace ForumGenerator_Version2_Server.Sys
                 if (!Security.checkSuperUserAuthorization(this, userName, pswd) &&
                     !Security.checkAdminAuthorization(forum, userName, pswd)) 
                 {
-                    this.logger.logError("getNumOfCommentsSubForum: unauthorized user");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
                 return forum.getNumOfCommentsSubForum(subForumId);
             }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("getNumOfCommentsSubForum: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
-            catch (SubForumNotFoundException e)
-            {
-                this.logger.logError("getNumOfCommentsSubForum: subForum not found");
-                throw new SubForumNotFoundException("SubForumNotFound");
-            }
             catch (Exception e)
             {
-                this.logger.logError("getNumOfCommentsSubForum: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getNumOfCommentsSubForum: " + e.Message);
+                throw e;
             }
         }
 
@@ -934,9 +689,9 @@ namespace ForumGenerator_Version2_Server.Sys
                 Forum forum2 = this.getForum(forumId2);
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
                 {
-                    this.logger.logError("getMutualUsers: unauthorized user");
-                    throw new UnauthorizedUserException();
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
+                // #Asa what is returnedList for ? deep copy ?
                 List<User> ul = forum1.getMutualUsers(forum2);
                 List<User> returnedList = new List<User>();
                 foreach (User u in ul)
@@ -945,15 +700,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
                 return returnedList;
             }
-            catch (ForumNotFoundException e)
-            {
-                this.logger.logError("getMutualUsers: forum not found");
-                throw new ForumNotFoundException("Forum not found");
-            }
             catch (Exception e)
             {
-                this.logger.logError("getMutualUsers: unknown error");
-                throw new Exception("Unknown error");
+                this.logger.logError("getMutualUsers: " + e.Message);
+                throw e;
             }
         }
 
@@ -962,8 +712,7 @@ namespace ForumGenerator_Version2_Server.Sys
             if (userName == this.superUser.userName)
                 return (int)userTypes.SUPER_USER;
             else
-                return this.getForum(forumId).getUserType(userName);
-            
+                return this.getForum(forumId).getUserType(userName); 
         }
 
         public int getUserType(int forumId, int subForumId, string userName)
@@ -971,45 +720,42 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger.logAction("getUserType: userName: " + userName +
                                               "\tforumId: " + forumId +
                                               "\tsubForumId: " + subForumId);
-                                    
-            try
-            {
-                if (userName == this.superUser.userName)
-                    return (int)userTypes.SUPER_USER;
-                else
-                    return this.getForum(forumId).getUserType(subForumId, userName);
-            }
-            catch (UserNotFoundException)
-            {
-                this.logger.logError("getUserType: User " + userName + " not found");
-                throw new UserNotFoundException("User not found");
-            }
-            catch (ForumNotFoundException)
-            {
-                this.logger.logError("getUserType: forum not found");
-                throw new ForumNotFoundException("forum not found");
-            }
-            catch (SubForumNotFoundException)
-            {
-                this.logger.logError("getUserType: subForum not found");
-                throw new SubForumNotFoundException("SubForum not found");
-            }
+            if (userName == this.superUser.userName)
+                return (int)userTypes.SUPER_USER;
+            else
+                return this.getForum(forumId).getUserType(subForumId, userName);
         }
 
 
         public bool collectLogs()
         {
-            // throw exception on error
-            this.logger.collectLogs();
-            return true;
+            try
+            {
+                this.logger.collectLogs();
+                return true;
+            }
+            catch (Exception)
+            {
+                // Logger got an error - so there is no point to write it into logger
+                Console.WriteLine("Error during collectLogs");
+                return false;
+            }
         }
 
 
         public bool collectLogs(string logFileName)
         {
-            // throw exception on error
-            this.logger.collectLogs(logFileName);
-            return true;
+            try
+            {
+                this.logger.collectLogs(logFileName);
+                return true;
+            }
+            catch (Exception)
+            {
+                // Logger got an error - so there is no point to write it into logger
+                Console.WriteLine("Error during collectLogs");
+                return false;
+            }
         }
 
     }

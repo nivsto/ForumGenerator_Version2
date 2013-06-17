@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using ForumGenerator_Version2_Server.DataLayer;
 
+
 namespace ForumGenerator_Version2_Server.ForumData
 {
     [DataContract(IsReference = true)]
@@ -79,7 +80,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 if (c.publisher == user)
                     result++;
             }
-            /* count the first coment, which is a discussion */
+            /* count the first comment, which is a discussion */
             if (this.publisher == user)
                 result++;
 

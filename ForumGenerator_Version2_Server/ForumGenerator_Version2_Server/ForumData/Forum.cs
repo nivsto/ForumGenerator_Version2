@@ -1,5 +1,6 @@
 ﻿using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
+using ForumGenerator_Version2_Server.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,43 +57,37 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal User login(string userName, string password, ForumGeneratorContext db)
         {
-            User user = this.members.Find(
-                            delegate(User mem)
-                            { return mem.userName == userName; });
-            if (user == null)
-                throw new UserNotFoundException();
-            else
-            {
-                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
-                db.SaveChanges();
-                return user.login(password);
-            }
+            User user = getUser(userName);
+            db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+            db.SaveChanges();
+            return user.login(password);
         }
 
         internal User logout(string userName, string password, ForumGeneratorContext db)
         {
-            User user = this.members.Find(
-                delegate(User mem)
-                { return mem.userName == userName; });
-            if (user == null)
-                throw new UserNotFoundException();
-            else
-            {
-                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
-                db.SaveChanges();
-                return user.logout(password);
-            }
+            User user = getUser(userName);
+            db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+            db.SaveChanges();
+            return user.logout(password);
         }
 
         internal User register(string userName, string password, string email, string signature, ForumGeneratorContext db)
         {
-            if (this.members.Find(delegate(User mem) { return mem.userName == userName; }) != null)
-                throw new UnauthorizedAccessException("username already exists");
-            User newUser = new User(userName, password, email, signature, this);
-            this.members.Add(newUser);
-            db.Users.Add(newUser);
-            db.SaveChanges();
-            return newUser;
+            try
+            {
+                // Check if userName is already exist
+                getUser(userName);
+                throw new UnauthorizedAccessException(ForumGeneratorDefs.EXIST_USERNAME);
+            }
+            catch (UserNotFoundException)
+            {
+                // userName does not exist - create new User
+                User newUser = new User(userName, password, email, signature, this);
+                this.members.Add(newUser);
+                db.Users.Add(newUser);
+                db.SaveChanges();
+                return newUser;
+            }
         }
 
         internal int getSize()
@@ -105,20 +100,18 @@ namespace ForumGenerator_Version2_Server.ForumData
             try
             {
                 SubForum sf = this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumId == subForumId; });
-                if (sf == null)
-                    throw new SubForumNotFoundException();
                 return sf;
             }
             catch (ArgumentNullException)
             {
-                throw new SubForumNotFoundException();
+                throw new SubForumNotFoundException(ForumGeneratorDefs.SUBFORUM_NF);
             }
         }
 
         internal SubForum createNewSubForum(string subForumTitle, ForumGeneratorContext db)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
-                throw new Exception();///////// change!
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_TITLE);
             SubForum newSubForum = new SubForum(subForumTitle, this);
             this.subForums.Add(newSubForum);
             db.SubForums.Add(newSubForum);
@@ -128,19 +121,33 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public User getUser(int userId)
         {
-            return this.members.Find(delegate(User mem) { return mem.memberID == userId; });
+            try
+            {
+                User u = this.members.Find(delegate(User mem) { return mem.memberID == userId; });
+                return u;
+            }
+            catch (ArgumentNullException)
+            {
+                throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
+            }
         }
 
         public User getUser(string userName)
         {
-            return this.members.Find(delegate(User mem) { return mem.userName == userName; });
+            try
+            {
+                User u = this.members.Find(delegate(User mem) { return mem.userName == userName; });
+                return u;
+            }
+            catch (ArgumentNullException)
+            {
+                throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
+            }
         }
 
         internal User changeAdmin(int newAdminUserId, ForumGeneratorContext db)
         {
             User currentMember = getUser(newAdminUserId);
-            if (currentMember == null)
-                throw new UserNotFoundException();
             this.admin = currentMember;
             db.Entry(db.Forums.Find(this)).CurrentValues.SetValues(this);
             db.SaveChanges();
@@ -152,9 +159,6 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             int result = 0;
             User user = getUser(userName);
-            if (user == null)
-                throw new UserNotFoundException();
-
             foreach (SubForum sf in this.subForums)
             {
                 result += sf.getNumOfCommentsSingleUser(user);
@@ -162,13 +166,10 @@ namespace ForumGenerator_Version2_Server.ForumData
             return result;
         }
 
-
+        
         internal int getNumOfCommentsSubForum(int subForumId)
         {
             SubForum sf = getSubForum(subForumId);
-
-            if (sf == null)
-                throw new UserNotFoundException();
             return sf.getNumOfComments();
         }
 
@@ -176,9 +177,6 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             List<User> responsers = new List<User>();
             User user = getUser(userName);
-            if (user == null)
-                throw new UserNotFoundException();
-
             foreach (SubForum sf in this.subForums)
             {
                 responsers.AddRange(sf.getResponsersForSingleUser(user));
@@ -194,10 +192,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             // if he is a member in this forum.
             foreach (User user in other.members)
             {
-                if (this.getUser(user.userName) != null)
+                try
                 {
+                    getUser(user.userName);
                     mutuals.Add(user);
                 }
+                catch (UserNotFoundException) { }
             }
             return mutuals;
         }
@@ -205,27 +205,24 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public int getUserType(string userName)
         {
-            User user = this.getUser(userName);
-            if (user == null)
-                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.GUEST;
+            try
+            {
+                User user = this.getUser(userName);
+            }
+            catch (UserNotFoundException) { return (int)ForumGenerator.userTypes.GUEST; }
+
             if (admin.userName == userName)
-                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.ADMIN;
+                return (int)ForumGenerator.userTypes.ADMIN;
             else
-                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.MEMBER;
+                return (int)ForumGenerator.userTypes.MEMBER;
         }
 
 
         public int getUserType(int subForumId, string userName)
         {
             User user = this.getUser(userName);
-            if (user == null)
-                throw new UserNotFoundException();
             SubForum sf = getSubForum(subForumId);
-            if (sf == null)
-                throw new SubForumNotFoundException();
-
             return sf.getUserType(userName);
         }
-
     }
 }
