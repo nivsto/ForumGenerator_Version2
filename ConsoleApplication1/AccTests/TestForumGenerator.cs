@@ -53,13 +53,15 @@ namespace ConsoleApplication1
             AdminAccTests adminAccTests = new AdminAccTests(this.testsLogger, this.bridge);
             MemberAccTests memberAccTests = new MemberAccTests(this.testsLogger, this.bridge);
             GuestAccTests guestAccTests = new GuestAccTests(this.testsLogger, this.bridge);
-            advancedTest advancedTest = new advancedTest(this.testsLogger, this.bridge);
-            superUserAccTests.runTests();
-            adminAccTests.runTests();
-            memberAccTests.runTests();
-            guestAccTests.runTests();
-            advancedTest.runTests();
+            AdvancedTest advancedTest = new AdvancedTest(this.testsLogger, this.bridge);
+            ThreadTest threadTest = new ThreadTest(this.testsLogger, this.bridge);
 
+            //superUserAccTests.runTests();
+            //adminAccTests.runTests();
+            //memberAccTests.runTests();
+            //guestAccTests.runTests();
+            //advancedTest.runTests();
+            threadTest.runTests();
             //sumTests();
         }
 

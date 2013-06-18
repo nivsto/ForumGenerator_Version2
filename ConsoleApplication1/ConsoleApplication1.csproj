@@ -61,10 +61,11 @@
     <Compile Include="AccTests\AccTest.cs" />
     <Compile Include="AccTests\AccTestsForumGenerator.cs" />
     <Compile Include="AccTests\AdminAccTests.cs" />
-    <Compile Include="AccTests\advancedTest.cs" />
+    <Compile Include="AccTests\AdvancedTest.cs" />
     <Compile Include="AccTests\GuestAccTests.cs" />
     <Compile Include="AccTests\MemberAccTests.cs" />
     <Compile Include="AccTests\SuperUserAccTests.cs" />
+    <Compile Include="AccTests\ThreadTest.cs" />
     <Compile Include="Bridge\BridgeForumGenerator.cs" />
     <Compile Include="Bridge\ProxyForumGeneratorImpl.cs" />
     <Compile Include="Bridge\RealForumGeneratorImpl.cs" />
