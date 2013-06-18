@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Users;
+using ForumGenerator_Version2_Server.Sys;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
@@ -60,9 +61,9 @@ namespace ForumGenerator_Version2_Server.ForumData
             {
                 return discussions.Find(delegate (Discussion d) { return d.discussionId == discussionId; });
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentNullException)
             {
-                return null;
+                throw new DiscussionNotFoundException(ForumGeneratorDefs.DISCUSSION_NF);
             }
         }
 
@@ -70,8 +71,6 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Discussion removeDiscussion(int discussionId, ForumGeneratorContext db)
         {
             Discussion d = this.getDiscussion(discussionId);
-            if (d == null)
-                throw new DiscussionNotFoundException();
             this.discussions.Remove(d);
             db.Discussions.Remove(d);
             db.SaveChanges();
@@ -86,43 +85,42 @@ namespace ForumGenerator_Version2_Server.ForumData
                 return this.moderators.Find(
                     delegate(User mem) { return mem.userName == userName; });
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentNullException)
             {
-                return null;
+                throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
             }
         }
 
 
         public Boolean addModerator(string modUserName, ForumGeneratorContext db)
         {
-            User newModerator = parentForum.getUser(modUserName);
             // check if user is registered to the forum
-            if (newModerator == null)
+            User newModerator = parentForum.getUser(modUserName);
+   
+            try
             {
-                throw new UserNotFoundException();
+                // check if user is already a moderator of this subforum
+                this.getModerator(modUserName);
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_MODERATOR);
             }
-            // check if user is already a moderator of this subforum
-            if (this.getModerator(modUserName) != null)
-                throw new UnauthorizedOperationException("user is already a moderator");
-            this.moderators.Add(newModerator);
-            db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
-            db.SaveChanges();
-            return true;
+            catch (UserNotFoundException)
+            {
+                this.moderators.Add(newModerator);
+                db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
+                db.SaveChanges();
+                return true;
+            }
         }
 
 
         internal Boolean removeModerator(string modUserName, ForumGeneratorContext db)
         {
-            if (parentForum.admin.userName == modUserName)            // not allowed
+            if (parentForum.admin.userName == modUserName)     // not allowed
             {
-                throw new UnauthorizedOperationException("can not remove forum admin from being a moderator");
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.F_ADMIN_S_MOD);
             }
 
             User moderator = parentForum.getUser(modUserName);
-            if (moderator == null)
-            {
-                throw new UserNotFoundException();
-            }
             bool ans = moderators.Remove(moderator);
             db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
             db.SaveChanges();
@@ -158,20 +156,29 @@ namespace ForumGenerator_Version2_Server.ForumData
 
             foreach (Discussion d in discussions)
             {
-                result += d.getNumOfComments() + 1;  // a discussion's content is considered as a comment
+                // a discussion's content is considered as a comment
+                result += d.getNumOfComments() + 1;
             }
             return result;
         }
 
 
-        // This method only checks if the user is a moderator. If not - it returns ForumGenerator.MEMBER
+        /**
+         * This method only checks if the user is a moderator. 
+         * If not - it returns ForumGenerator.MEMBER
+         */ 
         public int getUserType(string userName)
         {
-            User user = getModerator(userName);
-            if (user != null)
-                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.MODERATOR;
-            else
-                return (int)ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes.MEMBER;
+            try
+            {
+                User user = getModerator(userName);
+                return (int)ForumGenerator.userTypes.MODERATOR;
+            }
+            catch (UserNotFoundException)
+            {
+                return (int)ForumGenerator.userTypes.MEMBER;
+            }              
         }
+
     }
 }

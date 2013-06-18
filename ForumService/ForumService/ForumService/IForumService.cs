@@ -15,7 +15,7 @@ namespace ForumService
         User login(int forumId, string userName, string password);
 
         [OperationContract]
-        bool logout(int forumId, int userId);
+        bool logout(int forumId, string userName, string password);
 
         [OperationContract]
         SuperUser superUserLogin(string userName, string password);
