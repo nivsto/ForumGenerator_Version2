@@ -58,6 +58,7 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
             this.forums = new List<Forum>();
+            this.logger.closeFile();
             this.logger = new Logger();
             this.db.Forums.SqlQuery("DELETE * FROM Fora");
             this.db.Forums.SqlQuery("DELETE * FROM Comments");
@@ -299,7 +300,8 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
-                if (this.getForum(forumName) != null)   // in case there is already such a forum
+                // Check if forum name already exist
+                if (this.isForumNameExist(forumName))
                     throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_FNAME);
                 if (!Security.checkSuperUserAuthorization(this, userName, password))
                 {
@@ -380,7 +382,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 User user;
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
-                    user = forum.getUser(userName); // user must be found since security check passed, or being mngr / superUser 
+                    user = forum.getUser(userName);
                 return sf.createNewDiscussion(title, content, user, db);
             }
             catch (Exception e)
@@ -484,25 +486,21 @@ namespace ForumGenerator_Version2_Server.Sys
         // #Asa how to throw exception
         public Forum getForum(int forumId)
         {
-            //Forum forum = this.forums.Find(delegate(Forum f) { return f.forumId == forumId; });
             Forum forum = this.db.Forums.Find(forumId);
             if(forum == null)
-                throw new ForumNotFoundException("forum not found");
+                throw new ForumNotFoundException(ForumGeneratorDefs.FORUM_NF);
             return forum;
         }
 
 
-        //get a forum by its forum name
-        public Forum getForum(string forumName)
+        public bool isForumNameExist(string forumName)
         {
             try
             {
-                return this.forums.Find(delegate(Forum f) { return f.forumName == forumName; });
+                Forum forum = this.forums.Find(delegate(Forum f) { return f.forumName == forumName; });
+                return (forum != null);
             }
-            catch (ArgumentNullException)
-            {
-                throw new ForumNotFoundException(ForumGeneratorDefs.FORUM_NF);
-            }
+            catch (Exception) { return false; }
         }
 
         public SuperUser getSuperUser()
@@ -726,37 +724,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 return this.getForum(forumId).getUserType(subForumId, userName);
         }
 
-
-        public bool collectLogs()
-        {
-            try
-            {
-                this.logger.collectLogs();
-                return true;
-            }
-            catch (Exception)
-            {
-                // Logger got an error - so there is no point to write it into logger
-                Console.WriteLine("Error during collectLogs");
-                return false;
-            }
-        }
-
-
-        public bool collectLogs(string logFileName)
-        {
-            try
-            {
-                this.logger.collectLogs(logFileName);
-                return true;
-            }
-            catch (Exception)
-            {
-                // Logger got an error - so there is no point to write it into logger
-                Console.WriteLine("Error during collectLogs");
-                return false;
-            }
-        }
 
     }
 }

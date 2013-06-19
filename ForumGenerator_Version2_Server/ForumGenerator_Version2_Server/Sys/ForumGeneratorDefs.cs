@@ -15,12 +15,13 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string SUBFORUM_NF = "SubFurom not found";
         public const string DISCUSSION_NF = "Discussion not found";
         public const string COMMENT_NF = "Comment not found";
-        public const string USER_NF = "User not found";
+        public const string USER_NF = "Wrong user name or password";
 
         public const string UNAUTH_SUPERUSER = "Unauthorized superUser";
         public const string UNAUTH_USER = "Unauthorized user";
         public const string UNAUTH_OP = "Unauthorized operation";
 
+        public const string WRONG_USR_PSWD = "Wrong user name or password";
         public const string ILL_CONTENT = "Illegal content";
         public const string INVALID_EMAIL = "Invalid Email address";
 

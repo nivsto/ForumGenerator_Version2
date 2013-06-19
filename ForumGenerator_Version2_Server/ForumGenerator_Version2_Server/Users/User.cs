@@ -1,4 +1,5 @@
 ﻿using ForumGenerator_Version2_Server.ForumData;
+using ForumGenerator_Version2_Server.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace ForumGenerator_Version2_Server.Users
                 return this;
             }
             else
-                throw new UnauthorizedAccessException("incorrect password");
+                throw new UnauthorizedAccessException(ForumGeneratorDefs.WRONG_USR_PSWD);
         }
 
         internal User logout(string password)
@@ -71,7 +72,7 @@ namespace ForumGenerator_Version2_Server.Users
                 return this;
             }
             else
-                throw new UnauthorizedAccessException("incorrect password");
+                throw new UnauthorizedAccessException(ForumGeneratorDefs.WRONG_USR_PSWD);
         }
 
 

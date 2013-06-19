@@ -59,7 +59,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                return discussions.Find(delegate (Discussion d) { return d.discussionId == discussionId; });
+                Discussion dis = discussions.Find(delegate (Discussion d) { return d.discussionId == discussionId; });
+                if(dis == null)
+                    throw new DiscussionNotFoundException(ForumGeneratorDefs.DISCUSSION_NF);
+                return dis;
             }
             catch (ArgumentNullException)
             {
@@ -82,8 +85,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                return this.moderators.Find(
-                    delegate(User mem) { return mem.userName == userName; });
+                User u = this.moderators.Find(delegate(User mem) { return mem.userName == userName; });
+                if (u == null)
+                    throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
+                return u;
             }
             catch (ArgumentNullException)
             {
@@ -105,6 +110,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
             catch (UserNotFoundException)
             {
+                // OK, moderator is not exist
                 this.moderators.Add(newModerator);
                 db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
                 db.SaveChanges();

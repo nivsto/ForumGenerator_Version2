@@ -153,17 +153,7 @@ namespace ConsoleApplication1
         {
             this.forumGen.reset();
         }
-
-        public bool collectLogs(string logFileName)
-        {
-            return this.forumGen.collectLogs(logFileName);
-        }
-
-
-        public bool collectLogs()
-        {
-            return this.forumGen.collectLogs();
-        }
+      
     }
 
 }

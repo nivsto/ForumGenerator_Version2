@@ -100,6 +100,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             try
             {
                 SubForum sf = this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumId == subForumId; });
+                if (sf == null)
+                    throw new SubForumNotFoundException(ForumGeneratorDefs.SUBFORUM_NF);
                 return sf;
             }
             catch (ArgumentNullException)
@@ -108,6 +110,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
         }
 
+        // #Asa check if delegatre might throw exception
         internal SubForum createNewSubForum(string subForumTitle, ForumGeneratorContext db)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
@@ -124,6 +127,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             try
             {
                 User u = this.members.Find(delegate(User mem) { return mem.memberID == userId; });
+                if (u == null)
+                    throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
                 return u;
             }
             catch (ArgumentNullException)
@@ -137,6 +142,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             try
             {
                 User u = this.members.Find(delegate(User mem) { return mem.userName == userName; });
+                if(u == null)
+                    throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
                 return u;
             }
             catch (ArgumentNullException)

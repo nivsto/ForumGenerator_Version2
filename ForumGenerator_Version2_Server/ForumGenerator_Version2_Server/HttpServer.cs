@@ -28,7 +28,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -42,7 +42,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -70,7 +70,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -84,7 +84,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -98,7 +98,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -113,7 +113,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -128,7 +128,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -143,7 +143,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -158,7 +158,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -173,7 +173,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -195,7 +195,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -210,7 +210,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }
@@ -225,7 +225,7 @@ namespace ForumService
             }
             catch (Exception e)
             {
-                _forumGen.collectLogs();
+               
                 throw new FaultException(e.Message);
             }
         }

@@ -160,16 +160,5 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-
-        public bool collectLogs(string logFileName)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public bool collectLogs()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
