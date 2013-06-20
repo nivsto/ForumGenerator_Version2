@@ -65,9 +65,12 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Comment createNewComment(string content, User user, ForumGeneratorContext db)
         {
             Comment newComment = new Comment(content, user, this);
-            this.comments.Add(newComment);
-            db.Comments.Add(newComment);
-            db.SaveChanges();
+            lock (db)
+            {
+                this.comments.Add(newComment);
+                db.Comments.Add(newComment);
+                db.SaveChanges();
+            }
             return newComment;
         }
 
@@ -108,8 +111,11 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal bool editDiscussion(string newContent, ForumGeneratorContext db)
         {
             this.content = newContent;
-            db.Entry(db.Discussions.Find(this)).CurrentValues.SetValues(this);
-            db.SaveChanges();
+            lock (db)
+            {
+                db.Entry(db.Discussions.Find(this)).CurrentValues.SetValues(this);
+                db.SaveChanges();
+            }
             return true;
         }
     }

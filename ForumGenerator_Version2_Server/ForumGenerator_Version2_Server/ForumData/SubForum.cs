@@ -58,9 +58,12 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db)
         {
             Discussion newDiscussion = new Discussion(title, content, user, this);
-            this.discussions.Add(newDiscussion);
-            db.Discussions.Add(newDiscussion);
-            db.SaveChanges();
+            lock (db)
+            {
+                this.discussions.Add(newDiscussion);
+                db.Discussions.Add(newDiscussion);
+                db.SaveChanges();
+            }
             return newDiscussion;
         }
 
@@ -83,9 +86,12 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Discussion removeDiscussion(int discussionId, ForumGeneratorContext db)
         {
             Discussion d = this.getDiscussion(discussionId);
-            this.discussions.Remove(d);
-            db.Discussions.Remove(d);
-            db.SaveChanges();
+            lock (db)
+            {
+                this.discussions.Remove(d);
+                db.Discussions.Remove(d);
+                db.SaveChanges();
+            }
             return d;
         }
 
@@ -131,8 +137,11 @@ namespace ForumGenerator_Version2_Server.ForumData
             {
                 // OK, moderator is not exist
                 this.moderators.Add(newModerator);
-                db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
-                db.SaveChanges();
+                lock (db)
+                {
+                    db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
+                    db.SaveChanges();
+                }
                 return true;
             }
         }
@@ -147,8 +156,11 @@ namespace ForumGenerator_Version2_Server.ForumData
 
             User moderator = parentForum.getUser(modUserName);
             bool ans = moderators.Remove(moderator);
-            db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
-            db.SaveChanges();
+            lock (db)
+            {
+                db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
+                db.SaveChanges();
+            }
             return ans;
         }
 

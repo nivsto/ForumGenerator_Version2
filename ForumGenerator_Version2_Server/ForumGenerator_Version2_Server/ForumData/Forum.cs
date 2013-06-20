@@ -81,9 +81,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             {
                 // userName does not exist - create new User
                 User newUser = new User(userName, password, email, signature, this);
-                this.members.Add(newUser);
-                db.Users.Add(newUser);
-                db.SaveChanges();
+                lock (db)
+                {
+                    this.members.Add(newUser);
+                    db.Users.Add(newUser);
+                    db.SaveChanges();
+                }
                 return newUser;
             }
         }
@@ -114,9 +117,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_TITLE);
             SubForum newSubForum = new SubForum(subForumTitle, this);
-            this.subForums.Add(newSubForum);
-            db.SubForums.Add(newSubForum);
-            db.SaveChanges();
+            lock (db)
+            {
+                this.subForums.Add(newSubForum);
+                db.SubForums.Add(newSubForum);
+                db.SaveChanges();
+            }
             return newSubForum;
         }
 
@@ -170,8 +176,11 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             User currentMember = getUser(newAdminUserId);
             this.admin = currentMember;
-            db.Entry(db.Forums.Find(this.forumId)).CurrentValues.SetValues(this);
-            db.SaveChanges();
+            lock (db)
+            {
+                db.Entry(db.Forums.Find(this.forumId)).CurrentValues.SetValues(this);
+                db.SaveChanges();
+            }
             return this.admin;
         }
 
@@ -223,7 +232,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             return mutuals;
         }
 
-
+        // #Asa remove also from DB
         public void removeSubForum(int subForumId)
         {
             SubForum sf = this.getSubForum(subForumId);

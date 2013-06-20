@@ -188,7 +188,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
                 return returnedList;
                 //return this.forums;
-
             }
             catch (Exception e)
             {
@@ -316,10 +315,13 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
                 }
-                Forum newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
-                this.forums.Add(newForum);
-                this.db.Forums.Add(newForum);
-                this.db.SaveChanges();
+                lock (db)
+                {
+                    Forum newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
+                    this.forums.Add(newForum);
+                    this.db.Forums.Add(newForum);
+                    this.db.SaveChanges();
+                }
                 return new Forum(newForum);
             }
             catch (Exception e)
@@ -495,8 +497,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logError("deleteDiscussion: " + e.Message);
                 throw e;
-            }
-            
+            }     
         }
         
 
