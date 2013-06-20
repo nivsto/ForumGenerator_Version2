@@ -20,7 +20,7 @@ namespace ForumGenerator_Client
         newCommunicator communicator = new newCommunicator();
 
 
-        int subForumId = 0; 
+        int subForumId = -1; 
 
         public NewSubForumDialog(string currUser, string userPassword, int forumId)
         {

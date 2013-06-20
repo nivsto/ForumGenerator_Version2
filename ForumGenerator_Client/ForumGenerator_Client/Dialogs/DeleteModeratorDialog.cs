@@ -19,22 +19,27 @@ namespace ForumGenerator_Client.Dialogs
         string adderUsrName; 
         string adderPswd;
         User[] users = null;
+        SubForum[] subForums = null;
 
-        public DeleteModeratorDialog(int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public DeleteModeratorDialog(int forumId, string adderUsrName, string adderPswd)
         {
             InitializeComponent();
             this.forumId = forumId;
-            this.subForumId = subForumId;
+            
             this.adderUsrName = adderUsrName;
             this.adderPswd = adderPswd;
 
                     
             //init users combo box list
             this.comboBox1.Items.Clear();
-            users = communicator.getUsers(forumId);
+            this.comboBox2.Items.Clear();
 
-            for (int i = 0; i < users.Length; i++)
-                comboBox1.Items.Add(users.ElementAt(i).userName);
+            //init sub forums list
+            subForums = communicator.getSubForums(forumId);
+
+            for (int i = 0; i < subForums.Length; i++)
+                comboBox2.Items.Add(subForums.ElementAt(i).subForumTitle);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -54,6 +59,17 @@ namespace ForumGenerator_Client.Dialogs
         private void button2_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = this.comboBox2.SelectedIndex;
+            this.subForumId = subForums[index].subForumId;
+
+            users = communicator.getModerators(forumId, subForumId);
+
+            for (int i = 0; i < users.Length; i++)
+                comboBox1.Items.Add(users.ElementAt(i).userName);
         }
     }
 }

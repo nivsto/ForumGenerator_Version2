@@ -324,14 +324,14 @@
             // userMessagesNumberToolStripMenuItem
             // 
             this.userMessagesNumberToolStripMenuItem.Name = "userMessagesNumberToolStripMenuItem";
-            this.userMessagesNumberToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.userMessagesNumberToolStripMenuItem.Size = new System.Drawing.Size(279, 22);
             this.userMessagesNumberToolStripMenuItem.Text = "User Messages Number";
             this.userMessagesNumberToolStripMenuItem.Click += new System.EventHandler(this.userMessagesNumberToolStripMenuItem_Click);
             // 
             // repliersPerUserToolStripMenuItem
             // 
             this.repliersPerUserToolStripMenuItem.Name = "repliersPerUserToolStripMenuItem";
-            this.repliersPerUserToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.repliersPerUserToolStripMenuItem.Size = new System.Drawing.Size(279, 22);
             this.repliersPerUserToolStripMenuItem.Text = "Repliers Per User";
             this.repliersPerUserToolStripMenuItem.Click += new System.EventHandler(this.repliersPerUserToolStripMenuItem_Click);
             // 
@@ -385,7 +385,7 @@
             // 
             this.deleteMessageToolStripMenuItem.Name = "deleteMessageToolStripMenuItem";
             this.deleteMessageToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.deleteMessageToolStripMenuItem.Text = "Delete Message";
+            this.deleteMessageToolStripMenuItem.Text = "Delete Discussion";
             this.deleteMessageToolStripMenuItem.Click += new System.EventHandler(this.deleteMessageToolStripMenuItem_Click);
             // 
             // menuStrip1

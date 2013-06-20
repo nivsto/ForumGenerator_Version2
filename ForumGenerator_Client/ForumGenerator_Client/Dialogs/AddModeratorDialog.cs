@@ -20,18 +20,26 @@ namespace ForumGenerator_Client.Dialogs
         string adderUsrName;
         string adderPswd;
         User[] users = null;
+        SubForum[] subForums = null;
 
-        public AddModeratorDialog(int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public AddModeratorDialog(int forumId, string adderUsrName, string adderPswd)
         {
             InitializeComponent();
             this.forumId = forumId;
-            this.subForumId = subForumId;
             this.adderPswd = adderPswd;
             this.adderUsrName = adderUsrName;
 
-            
+
             //init users combo box list
             this.comboBox1.Items.Clear();
+            this.comboBox2.Items.Clear();
+
+            //init sub forums list
+            subForums = communicator.getSubForums(forumId);
+
+            for (int i = 0; i < subForums.Length; i++)
+                comboBox2.Items.Add(subForums.ElementAt(i).subForumTitle);
+
             users = communicator.getUsers(forumId);
 
             for (int i = 0; i < users.Length; i++)
@@ -59,6 +67,18 @@ namespace ForumGenerator_Client.Dialogs
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = this.comboBox2.SelectedIndex;
+            this.subForumId = subForums[index].subForumId;
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
 
 

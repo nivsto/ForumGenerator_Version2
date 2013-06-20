@@ -13,8 +13,6 @@
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="admin" nillable="true" type="q1:User" />
       <xs:element minOccurs="0" name="forumId" type="xs:int" />
       <xs:element minOccurs="0" name="forumName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="nextSubForumId" type="xs:int" />
-      <xs:element minOccurs="0" name="nextUserId" type="xs:int" />
     </xs:sequence>
     <xs:attribute ref="ser:Id" />
     <xs:attribute ref="ser:Ref" />
@@ -28,10 +26,6 @@
   <xs:element name="ArrayOfSubForum" nillable="true" type="tns:ArrayOfSubForum" />
   <xs:complexType name="SubForum">
     <xs:sequence>
-      <xs:element minOccurs="0" name="discussions" nillable="true" type="tns:ArrayOfDiscussion" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="moderators" nillable="true" type="q2:ArrayOfUser" />
-      <xs:element minOccurs="0" name="nextDiscussionId" type="xs:int" />
-      <xs:element minOccurs="0" name="parentForum" nillable="true" type="tns:Forum" />
       <xs:element minOccurs="0" name="subForumId" type="xs:int" />
       <xs:element minOccurs="0" name="subForumTitle" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -47,13 +41,10 @@
   <xs:element name="ArrayOfDiscussion" nillable="true" type="tns:ArrayOfDiscussion" />
   <xs:complexType name="Discussion">
     <xs:sequence>
-      <xs:element minOccurs="0" name="comments" nillable="true" type="tns:ArrayOfComment" />
       <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="discussionId" type="xs:int" />
-      <xs:element minOccurs="0" name="nextCommentId" type="xs:int" />
-      <xs:element minOccurs="0" name="parentSubForum" nillable="true" type="tns:SubForum" />
       <xs:element minOccurs="0" name="publishDate" type="xs:dateTime" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="publisher" nillable="true" type="q3:User" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="publisher" nillable="true" type="q2:User" />
       <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
     </xs:sequence>
     <xs:attribute ref="ser:Id" />
@@ -72,7 +63,7 @@
       <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="parentDiscussion" nillable="true" type="tns:Discussion" />
       <xs:element minOccurs="0" name="publishDate" type="xs:dateTime" />
-      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="publisher" nillable="true" type="q4:User" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="publisher" nillable="true" type="q3:User" />
     </xs:sequence>
     <xs:attribute ref="ser:Id" />
     <xs:attribute ref="ser:Ref" />

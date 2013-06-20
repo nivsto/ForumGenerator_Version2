@@ -63,6 +63,9 @@ namespace ForumService
 
         [OperationContract]
         Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
+        
+        [OperationContract]
+        void removeSubForum(int forumId, int subForumId, string userName, string password);
 
         [OperationContract]
         Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);

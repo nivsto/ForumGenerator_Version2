@@ -64,5 +64,9 @@ namespace ForumGenerator_Client.Communication
 
         int getUserType(int forumId, int subForumId, string userName);
 
+        List<User> getModerators(int forumId, int subForumId);
+
+        void removeSubForum(int forumId, int subForumId, string userName, string password);
+
     }
 }

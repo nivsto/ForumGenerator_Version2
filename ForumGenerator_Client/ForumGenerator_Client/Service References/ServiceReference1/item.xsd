@@ -4,7 +4,6 @@
   <xs:complexType name="User">
     <xs:sequence>
       <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="friends" nillable="true" type="tns:ArrayOfUser" />
       <xs:element minOccurs="0" name="isLoggedIn" type="xs:boolean" />
       <xs:element minOccurs="0" name="memberID" type="xs:int" />
       <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
@@ -15,12 +14,6 @@
     <xs:attribute ref="ser:Ref" />
   </xs:complexType>
   <xs:element name="User" nillable="true" type="tns:User" />
-  <xs:complexType name="ArrayOfUser">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
   <xs:complexType name="SuperUser">
     <xs:sequence>
       <xs:element minOccurs="0" name="isLoggedIn" type="xs:boolean" />
@@ -31,4 +24,10 @@
     <xs:attribute ref="ser:Ref" />
   </xs:complexType>
   <xs:element name="SuperUser" nillable="true" type="tns:SuperUser" />
+  <xs:complexType name="ArrayOfUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
 </xs:schema>

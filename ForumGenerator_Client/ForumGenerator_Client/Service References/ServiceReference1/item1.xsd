@@ -279,6 +279,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="removeSubForum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="subForumId" type="xs:int" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="removeSubForumResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="deleteDiscussion">
     <xs:complexType>
       <xs:sequence>
@@ -381,6 +396,21 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getMutualUsersResult" nillable="true" type="q15:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getModerators">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="subForumId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getModeratorsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getModeratorsResult" nillable="true" type="q16:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

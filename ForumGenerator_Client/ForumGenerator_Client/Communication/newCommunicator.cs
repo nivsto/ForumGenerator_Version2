@@ -163,6 +163,21 @@ namespace ForumGenerator_Client.Communication
             }
         }
 
+        public User[] getModerators(int forumId, int subForumId)
+        {
+            User[] ans = null;
+            try
+            {
+                ans = httpProxy.getModerators(forumId, subForumId);
+                return ans;
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
+
+
         public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
         {
             Forum ans = null;
@@ -391,5 +406,17 @@ namespace ForumGenerator_Client.Communication
             }
         }
 
+
+        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        {
+            try
+            {
+                httpProxy.removeSubForum(forumId, subForumId, userName, password);    
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
     }
 }
