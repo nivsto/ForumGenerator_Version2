@@ -142,6 +142,12 @@
     <Compile Include="Dialogs\NewThreadDialog.Designer.cs">
       <DependentUpon>NewThreadDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\NumOfCommentsPerSub.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NumOfCommentsPerSub.Designer.cs">
+      <DependentUpon>NumOfCommentsPerSub.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\RepliersPerUserDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\NotificationsDialog.resx">
       <DependentUpon>NotificationsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\NumOfCommentsPerSub.resx">
+      <DependentUpon>NumOfCommentsPerSub.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\RepliersPerUserDialog.resx">
       <DependentUpon>RepliersPerUserDialog.cs</DependentUpon>

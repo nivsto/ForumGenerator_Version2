@@ -11,15 +11,16 @@ using ForumGenerator_Client.ServiceReference1;
 
 namespace ForumGenerator_Client.Dialogs
 {
-    public partial class MsgPerUserDialog : Form
+    public partial class NumOfCommentsPerSub : Form
     {
 
         newCommunicator communicator = new newCommunicator();
         string reqUserName;
         string reqPswd;
         int forumId;
+        SubForum[] subForums = null;
 
-        public MsgPerUserDialog(string reqUserName, string reqPswd, int forumId)
+        public NumOfCommentsPerSub(string reqUserName, string reqPswd, int forumId)
         {
             InitializeComponent();
 
@@ -29,10 +30,10 @@ namespace ForumGenerator_Client.Dialogs
 
             comboBox1.Items.Clear();
 
-            User[] users = communicator.getUsers(forumId);
+            subForums = communicator.getSubForums(forumId);
 
-            for (int i = 0; i < users.Length; i++)
-                comboBox1.Items.Add(users.ElementAt(i).userName);
+            for (int i = 0; i < subForums.Length; i++)
+                comboBox1.Items.Add(subForums.ElementAt(i).subForumTitle);
 
             comboBox1.SelectedIndex = -1;
 
@@ -45,8 +46,10 @@ namespace ForumGenerator_Client.Dialogs
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int num = communicator.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, comboBox1.Text);
+            int index = comboBox1.SelectedIndex;
+            int num = communicator.getNumOfCommentsSubForum(reqUserName, reqPswd, forumId, subForums[index].subForumId);
             lblNum.Text = num.ToString();
         }
+
     }
 }

@@ -92,7 +92,8 @@
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label1);
             this.Name = "MsgPerUserDialog";
-            this.Text = "ד";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Messages Per User";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -184,9 +184,8 @@ namespace ForumGenerator_Client
             reg.ShowDialog();
             if (reg.getUserName() != null)
             {
-                userName = reg.getUserName();
-                password = reg.getPassword();
-                loginLevel = 1;
+                
+                loginLevel = 0;
                 updateVisibilty();
             }
 
@@ -290,6 +289,7 @@ namespace ForumGenerator_Client
             btnGoBack.Visible = true;
             logoutToolStripMenuItem.Visible = true;
             logoutToolStripMenuItem1.Visible = true;
+            lblPosTitle.Text = "";
 
             toolStripStatusLabel1.Text = "Hello " + userName +"!";
 
@@ -302,7 +302,6 @@ namespace ForumGenerator_Client
                 btnGoBack.Visible = false;
                 btnView.Visible = true;
                 newToolStripMenuItem1.Visible = false;
-
                 lblTitle.Text = "Choose a Forum or Login as a Super-user ";
                 btnView.Text = "View Forum";
                 initForumsList();
@@ -312,6 +311,15 @@ namespace ForumGenerator_Client
             if (currentView == (int)view.FORUM)
             {
                 btnView.Text = "View Sub-Forum";
+
+                for (int i = 0; i < forumsList.Length; i++)
+                {
+                    if (forumsList[i].forumId == currForumId)
+                    {
+                        lblPosTitle.Text = forumsList[i].forumName;
+                    }
+                }
+
                 btnGoBack.Visible = true;
                 btnView.Visible = true;
                 newToolStripMenuItem1.Visible = false;
@@ -324,6 +332,26 @@ namespace ForumGenerator_Client
             if (currentView == (int)view.SUB)
             {
                 btnView.Text = "View Thread";
+                
+                //set the forum name
+                for (int i = 0; i < forumsList.Length; i++)
+                {
+                    if (forumsList[i].forumId == currForumId)
+                    {
+                        lblPosTitle.Text = forumsList[i].forumName;
+                    }
+                }
+                lblPosTitle.Text += "->";
+                //set the subforum name
+                for (int i = 0; i < subforumsList.Length; i++)
+                {
+                    if (subforumsList[i].subForumId == currSubForumId)
+                    {
+                        lblPosTitle.Text += subforumsList[i].subForumTitle;
+                    }
+                }
+
+
                 btnGoBack.Visible = true;
                 btnView.Visible = true;
                 newToolStripMenuItem1.Visible = true;
@@ -338,6 +366,33 @@ namespace ForumGenerator_Client
           
             if (currentView == (int)view.THREAD)
             {
+                //set the forum name
+                for (int i = 0; i < forumsList.Length; i++)
+                {
+                    if (forumsList[i].forumId == currForumId)
+                    {
+                        lblPosTitle.Text = forumsList[i].forumName;
+                    }
+                }
+                lblPosTitle.Text += "->";
+                //set the subforum name
+                for (int i = 0; i < subforumsList.Length; i++)
+                {
+                    if (subforumsList[i].subForumId == currSubForumId)
+                    {
+                        lblPosTitle.Text += subforumsList[i].subForumTitle;
+                    }
+                }
+                lblPosTitle.Text += "->";
+                //set the discussion
+                for (int i = 0; i < discussionList.Length; i++)
+                {
+                    if (discussionList[i].discussionId == currThreadId)
+                    {
+                        lblPosTitle.Text += discussionList[i].title;
+                    }
+                }
+
                 btnView.Visible = false;
                 btnGoBack.Visible = true;
                 newToolStripMenuItem1.Visible = true;
@@ -348,6 +403,9 @@ namespace ForumGenerator_Client
                 initMsgList();
                 
             }
+
+            loginToolStripMenuItem1.Visible = false;
+            registerToolStripMenuItem.Visible = false;
 
             if (loginLevel == (int)loginLevels.ADMIN)
                 adminToolStripMenuItem.Visible = true;
@@ -361,6 +419,9 @@ namespace ForumGenerator_Client
                 logoutToolStripMenuItem.Visible = false;
                 logoutToolStripMenuItem1.Visible = false;
                 toolStripStatusLabel1.Text = "Hello Guest!";
+                loginToolStripMenuItem1.Visible = true;
+                registerToolStripMenuItem.Visible = true;
+
             }
 
         }
@@ -432,15 +493,14 @@ namespace ForumGenerator_Client
 
 
 
-        /*************************************/
-        /*   View Number Of Sub-Forums       */
-        /*************************************/
+        /**************************************************/
+        /*   View Number Of comments per Sub-Forums       */
+        /**************************************************/
         private void numberOfSubForumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int num = (this.communicator.getSubForums(currForumId)).Length;
-            string msg = "Number of Sub-Forums:" + num;
+            NumOfCommentsPerSub num = new NumOfCommentsPerSub(userName, password, currForumId);
+            num.ShowDialog();
 
-            MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
         }
 
 
