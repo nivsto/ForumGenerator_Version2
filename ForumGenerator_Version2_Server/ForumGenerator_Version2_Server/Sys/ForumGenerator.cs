@@ -427,6 +427,33 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
+
+        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        {
+            this.logger.logAction("removeSubForum: userName: " + userName +
+                                                "\tpassword: " + password +
+                                                "\tforumId: " + forumId +
+                                                "\tsubForumId: " + subForumId);
+            try
+            {
+                Forum f = this.getForum(forumId);
+                // check authorization
+                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                    !Security.checkAdminAuthorization(f, userName, password))
+                {
+                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                }
+
+                f.removeSubForum(subForumId);
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("removeSubForum: " + e.Message);
+                throw e;
+            }
+        }
+
+
         // This method never returns false, but throws Exceptions instead.
         public bool deleteDiscussion(int forumId, int subForumId, int discussionId,
                      string userName, string password)

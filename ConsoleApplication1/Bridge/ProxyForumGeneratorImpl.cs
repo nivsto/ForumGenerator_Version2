@@ -125,6 +125,11 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
+        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
         {
             throw new NotImplementedException();

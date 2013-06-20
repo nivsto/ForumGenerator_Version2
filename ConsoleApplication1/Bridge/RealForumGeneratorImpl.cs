@@ -119,6 +119,12 @@ namespace ConsoleApplication1
             return this.forumGen.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
         }
 
+        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        {
+            this.removeSubForum(forumId, subForumId, userName, password);
+        }
+
+
         public bool deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
         {
             return this.forumGen.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);

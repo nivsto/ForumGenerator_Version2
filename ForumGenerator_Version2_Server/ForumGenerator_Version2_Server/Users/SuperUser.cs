@@ -5,6 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 
+using ForumGenerator_Version2_Server.Sys;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 
 namespace ForumGenerator_Version2_Server.Users
@@ -35,9 +36,9 @@ namespace ForumGenerator_Version2_Server.Users
                 return this;
             }
             else if (this.userName != userName || this.password != password)
-                throw new UnauthorizedUserException();
+                throw new UnauthorizedUserException(ForumGeneratorDefs.WRONG_USR_PSWD);
             else
-                throw new Exception();
+                throw new Exception(ForumGeneratorDefs.UNKNOWN_ERR);
         }
 
         internal bool logout(string userName, string password)
@@ -47,10 +48,16 @@ namespace ForumGenerator_Version2_Server.Users
                 this.isLoggedIn = false;
                 return true;
             }
-            else if (this.userName != userName || this.password != password || !this.isLoggedIn)
-                throw new UnauthorizedUserException();
+            else if (this.userName != userName || this.password != password)
+            {
+                throw new UnauthorizedUserException(ForumGeneratorDefs.WRONG_USR_PSWD);
+            }
+            else if (!this.isLoggedIn)
+            {
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.ALREADY_OUT);
+            }
             else
-                throw new Exception("unknown error");
+                throw new Exception(ForumGeneratorDefs.UNKNOWN_ERR);
         }
 
         public bool isLogged()

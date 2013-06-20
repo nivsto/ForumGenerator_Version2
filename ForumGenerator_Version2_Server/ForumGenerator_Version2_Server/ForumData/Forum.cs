@@ -210,6 +210,13 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
+        public void removeSubForum(int subForumId)
+        {
+            SubForum sf = this.getSubForum(subForumId);
+            this.subForums.Remove(sf);
+        }
+
+
         public int getUserType(string userName)
         {
             try

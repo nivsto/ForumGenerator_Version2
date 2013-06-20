@@ -260,6 +260,19 @@ namespace ForumService
         }
 
 
+        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        {
+            try
+            {
+                _forumGen.removeSubForum(forumId, subForumId, userName, password);
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+
         public Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd)
         {
             try

@@ -25,6 +25,8 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string ILL_CONTENT = "Illegal content";
         public const string INVALID_EMAIL = "Invalid Email address";
 
+        public const string ALREADY_IN = "User is already logged in";
+        public const string ALREADY_OUT = "User is already logged out";
         public const string EXIST_FNAME = "Forum name is already exist";
         public const string EXIST_TITLE = "Title is already exist";
         public const string EXIST_USERNAME = "UserName is already exist";

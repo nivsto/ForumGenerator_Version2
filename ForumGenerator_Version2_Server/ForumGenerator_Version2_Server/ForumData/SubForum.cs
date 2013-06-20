@@ -150,7 +150,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             List<User> responsers = new List<User>();
             foreach (Discussion d in discussions)
             {
-                responsers.AddRange(d.getResponsersForSingleUser(user));
+                if(d.publisher.userName == user.userName)
+                    responsers.AddRange(d.getResponsersForSingleUser(user));
             }
             return responsers;
         }
