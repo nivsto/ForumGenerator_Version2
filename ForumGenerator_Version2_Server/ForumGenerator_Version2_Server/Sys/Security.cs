@@ -11,7 +11,7 @@ namespace ForumGenerator_Version2_Server.Sys
     {
         public static bool checkSuperUserAuthorization(ForumGenerator fg, string userName, string password)
         {
-            if (fg.getSuperUser().userName == userName && fg.getSuperUser().password == password && fg.getSuperUser().isLogged())
+            if (fg.superUser.userName == userName && fg.superUser.password == password && fg.superUser.isLogged())
                 return true;
 
             return false;

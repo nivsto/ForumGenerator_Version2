@@ -44,12 +44,13 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.subForums = new List<SubForum>();
         }
 
-        //Temporaray constructor - POCO
-        public Forum(int forumId, string forumName, User admin)
+        public Forum(Forum f)
         {
-            this.forumId = forumId;
-            this.forumName = forumName;
-            this.admin = admin;
+            this.forumId = f.forumId;
+            this.admin = new User(f.admin);
+            this.subForums = null;
+            this.forumName = f.forumName;
+            this.members = null;
         }
 
         public Forum() { }
@@ -73,13 +74,10 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal User register(string userName, string password, string email, string signature, ForumGeneratorContext db)
         {
-            try
-            {
-                // Check if userName is already exist
-                getUser(userName);
+            // Check if userName is already exist
+            if (userExists(userName))
                 throw new UnauthorizedAccessException(ForumGeneratorDefs.EXIST_USERNAME);
-            }
-            catch (UserNotFoundException)
+            else
             {
                 // userName does not exist - create new User
                 User newUser = new User(userName, password, email, signature, this);
@@ -137,6 +135,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
         }
 
+
         public User getUser(string userName)
         {
             try
@@ -152,11 +151,26 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
         }
 
+
+        public bool userExists(string userName)
+        {
+            try
+            {
+                if (this.members.Find(delegate(User mem) { return mem.userName == userName; }) == null)
+                    return false;
+                return true;
+            }
+            catch (ArgumentNullException)
+            {
+                throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
+            }
+        }
+
         internal User changeAdmin(int newAdminUserId, ForumGeneratorContext db)
         {
             User currentMember = getUser(newAdminUserId);
             this.admin = currentMember;
-            db.Entry(db.Forums.Find(this)).CurrentValues.SetValues(this);
+            db.Entry(db.Forums.Find(this.forumId)).CurrentValues.SetValues(this);
             db.SaveChanges();
             return this.admin;
         }

@@ -40,10 +40,19 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public SubForum() { }
 
-        public SubForum(int subForumId, string subForumTitle)
+        //public SubForum(int subForumId, string subForumTitle)
+        //{
+        //    this.subForumId = subForumId;
+        //    this.subForumTitle = subForumTitle;
+        //}
+
+        public SubForum (SubForum sf)
         {
-            this.subForumId = subForumId;
-            this.subForumTitle = subForumTitle;
+            this.subForumId = sf.subForumId;
+            this.subForumTitle = sf.subForumTitle;
+            this.moderators = null;
+            this.discussions = null;
+            this.parentForum = null;
         }
 
         internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db)
@@ -97,22 +106,32 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
+        public bool moderatorExists(string userName)
+        {
+            try
+            {
+                if (this.moderators.Find(delegate(User mem) { return mem.userName == userName; }) == null)
+                    return false;
+                return true;
+            }
+            catch (ArgumentNullException)
+            {
+                throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
+            }
+        }
+
+
         public Boolean addModerator(string modUserName, ForumGeneratorContext db)
         {
             // check if user is registered to the forum
             User newModerator = parentForum.getUser(modUserName);
-   
-            try
-            {
-                // check if user is already a moderator of this subforum
-                this.getModerator(modUserName);
+            if (moderatorExists(modUserName))
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_MODERATOR);
-            }
-            catch (UserNotFoundException)
+            else
             {
                 // OK, moderator is not exist
                 this.moderators.Add(newModerator);
-                db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
+                db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
                 db.SaveChanges();
                 return true;
             }
@@ -128,7 +147,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
             User moderator = parentForum.getUser(modUserName);
             bool ans = moderators.Remove(moderator);
-            db.Entry(db.SubForums.Find(this)).CurrentValues.SetValues(this);
+            db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
             db.SaveChanges();
             return ans;
         }
