@@ -23,19 +23,23 @@ test method: testCreateNewSubForum
 test summary for testCreateNewSubForum: 7 tests passed
 
 test method: testAddModerator
-test summary for testAddModerator: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testAddModerator: 5 tests passed
 
 test method: testRemoveModerator
-test summary for testRemoveModerator: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testRemoveModerator: 5 tests passed
 
 test method: testGetNumOfCommentsSubForum
-test summary for testGetNumOfCommentsSubForum: 5 tests passed
+-- FAILED --  failed test number 0
+test summary for testGetNumOfCommentsSubForum: 4 tests passed
 
 test method: testGetNumOfCommentsSingleUser
 test summary for testGetNumOfCommentsSingleUser: 5 tests passed
 
 test method: testGetResponsersForSingleUser
-test summary for testGetResponsersForSingleUser: 5 tests passed
+-- FAILED --  failed test number 0
+test summary for testGetResponsersForSingleUser: 4 tests passed
 
 *testing Member functions*
 
@@ -46,44 +50,21 @@ test method: testLogout
 test summary for testLogout: 4 tests passed
 
 test method: testCreateNewDiscussion
-test summary for testCreateNewDiscussion: 5 tests passed
+-- FAILED --  failed test number 0
+test summary for testCreateNewDiscussion: 4 tests passed
 
 test method: testCreateNewComment
-test summary for testCreateNewComment: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testCreateNewComment: 5 tests passed
 
 test method: testDeleteDiscussion
-test summary for testDeleteDiscussion: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testDeleteDiscussion: 5 tests passed
 
 test method: testEditDiscussion
-test summary for testEditDiscussion: 6 tests passed
+-- FAILED --  failed test number 0
+test summary for testEditDiscussion: 5 tests passed
 
 test method: testRegister
 test summary for testRegister: 5 tests passed
-
-*testing Member functions*
-
-test method: testGetForums
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
--- FAILED --  failed test number 0
-test summary for testGetForums: 0 tests passed
-
-test method: testGetsubForums
-test summary for testGetsubForums: 2 tests passed
-
-test method: testGetDiscussions
--- FAILED --  failed test number 1
-test summary for testGetDiscussions: 1 tests passed
-
-test method: testGetComments
--- FAILED --  failed test number 1
-test summary for testGetComments: 1 tests passed
-
-*testing Advanced Tests functions*
-
-test method: advancedTest1
-test summary for advancedTest1: 1 tests passed
-
-test method: advancedTest2
-test summary for advancedTest2: 2 tests passed
 

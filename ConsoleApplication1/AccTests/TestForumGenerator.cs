@@ -56,12 +56,12 @@ namespace ConsoleApplication1
             AdvancedTest advancedTest = new AdvancedTest(this.testsLogger, this.bridge);
             ThreadTest threadTest = new ThreadTest(this.testsLogger, this.bridge);
 
-            //superUserAccTests.runTests();
-            //adminAccTests.runTests();
-            //memberAccTests.runTests();
+            superUserAccTests.runTests();
+            adminAccTests.runTests();
+            memberAccTests.runTests();
             //guestAccTests.runTests();
             //advancedTest.runTests();
-            threadTest.runTests();
+            //threadTest.runTests();
             //sumTests();
         }
 

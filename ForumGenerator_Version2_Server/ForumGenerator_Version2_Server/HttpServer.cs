@@ -344,6 +344,20 @@ namespace ForumService
         }
 
 
+        public List<User> getModerators(int forumId, int subForumId)
+        {
+            try
+            {
+                List<User> resList = _forumGen.getModerators(forumId, subForumId);
+                return resList;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+
         public int getUserType(int forumId, string userName)
         {
             try

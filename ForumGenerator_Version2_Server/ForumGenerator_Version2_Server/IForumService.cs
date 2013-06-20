@@ -83,6 +83,9 @@ namespace ForumService
         List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
         [OperationContract]
+        List<User> getModerators(int forumId, int subForumId);
+
+        [OperationContract]
         int getUserType(int forumId, string userName);
 
         [OperationContract]

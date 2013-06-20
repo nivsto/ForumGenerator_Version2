@@ -409,6 +409,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 SubForum sf = forum.getSubForum(subForumId);
                 Discussion d = sf.getDiscussion(discussionId);
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                    !Security.checkAdminAuthorization(forum, userName, password) &&
                     !Security.checkMemberAuthorization(forum, userName, password))
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
@@ -704,6 +705,15 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
+
+
+        public List<User> getModerators(int forumId, int subForumId)
+        {
+            Forum f = getForum(forumId);
+            SubForum sf = f.getSubForum(subForumId);
+            return sf.moderators;
+        }
+
 
         public int getUserType(int forumId, string userName)
         {

@@ -58,6 +58,8 @@ namespace ForumGenerator_Version2_Server.Sys
 
         List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
+        List<User> getModerators(int forumId, int subForumId);
+
         int getUserType(int forumId, string userName);
 
         int getUserType(int forumId, int subForumId, string userName);
