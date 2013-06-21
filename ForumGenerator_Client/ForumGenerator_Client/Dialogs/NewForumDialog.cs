@@ -19,7 +19,7 @@ namespace ForumGenerator_Client
         string forumName = null;
         string admin = null;
         string adminPassword = null;
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
 
         int forumId = 0;
 

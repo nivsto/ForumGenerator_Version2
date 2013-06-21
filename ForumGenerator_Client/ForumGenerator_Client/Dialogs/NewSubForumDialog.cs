@@ -17,7 +17,7 @@ namespace ForumGenerator_Client
         int forumId = 0;
         string currUser = null;
         string userPassword = null;
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
 
 
         int subForumId = -1; 

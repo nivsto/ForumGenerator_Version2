@@ -13,7 +13,7 @@ namespace ForumGenerator_Client.Dialogs
 {
     public partial class DeleteModeratorDialog : Form
     {
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
         int forumId;
         int subForumId;
         string adderUsrName; 

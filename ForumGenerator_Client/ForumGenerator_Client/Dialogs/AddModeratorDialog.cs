@@ -14,7 +14,7 @@ namespace ForumGenerator_Client.Dialogs
 {
     public partial class AddModeratorDialog : Form
     {
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
         int forumId;
         int subForumId;
         string adderUsrName;

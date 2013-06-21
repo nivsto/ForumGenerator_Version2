@@ -13,7 +13,7 @@ namespace ForumGenerator_Client.Dialogs
 {
     public partial class RepliersPerUserDialog : Form
     {
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
         string reqUserName;
         string reqPswd;
         int forumId;

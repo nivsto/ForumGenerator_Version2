@@ -29,7 +29,7 @@ namespace ForumGenerator_Client
         string password = null;
         bool superUser = false;
         User user;
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
 
         public UserLoginDialog(int forumId, bool superUser)
         {

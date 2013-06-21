@@ -627,13 +627,13 @@ namespace ForumGenerator_Client.ServiceReference1 {
         bool removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IForumService/removeSubForum", ReplyAction="http://tempuri.org/IForumService/removeSubForumResponse")]
-        void removeSubForum(int forumId, int subForumId, string userName, string password);
+        bool removeSubForum(int forumId, int subForumId, string userName, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IForumService/deleteDiscussion", ReplyAction="http://tempuri.org/IForumService/deleteDiscussionResponse")]
         bool deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IForumService/editDiscussion", ReplyAction="http://tempuri.org/IForumService/editDiscussionResponse")]
-        bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+        ForumGenerator_Client.ServiceReference1.Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IForumService/getNumOfCommentsSingleUser", ReplyAction="http://tempuri.org/IForumService/getNumOfCommentsSingleUserResponse")]
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
@@ -752,15 +752,15 @@ namespace ForumGenerator_Client.ServiceReference1 {
             return base.Channel.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
         }
         
-        public void removeSubForum(int forumId, int subForumId, string userName, string password) {
-            base.Channel.removeSubForum(forumId, subForumId, userName, password);
+        public bool removeSubForum(int forumId, int subForumId, string userName, string password) {
+            return base.Channel.removeSubForum(forumId, subForumId, userName, password);
         }
         
         public bool deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd) {
             return base.Channel.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
         }
         
-        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent) {
+        public ForumGenerator_Client.ServiceReference1.Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent) {
             return base.Channel.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
         }
         

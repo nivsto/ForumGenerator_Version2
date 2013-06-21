@@ -12,7 +12,7 @@ namespace ForumGenerator_Client.Dialogs
 {
     public partial class EditMsgDialog : Form
     {
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
         int forumId;
         int subForumId;
         int discussionId;
@@ -35,6 +35,7 @@ namespace ForumGenerator_Client.Dialogs
             try
             {
                 communicator.editDiscussion(forumId, subForumId, discussionId, userName, pswd, txyBoxMsg.Text);
+                Hide();
             }
             catch (Exception err)
             {

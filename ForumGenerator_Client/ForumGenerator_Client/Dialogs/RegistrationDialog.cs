@@ -15,7 +15,7 @@ namespace ForumGenerator_Client
         string userName = null;
         string password = null;
         int forumId = 0;
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
 
         public RegistrationDialog(int forumId)
         {

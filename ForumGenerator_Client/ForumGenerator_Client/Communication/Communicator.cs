@@ -9,15 +9,16 @@ using System.Windows.Forms;
 namespace ForumGenerator_Client.Communication
 {
 
-    class newCommunicator
+    class Communicator
     {
 
         ChannelFactory<IForumService> httpFactory;
         IForumService httpProxy;
 
-        public newCommunicator()
+        public Communicator()
         {
-            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
+            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+//            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
             httpProxy = httpFactory.CreateChannel();
 
         }
@@ -294,13 +295,11 @@ namespace ForumGenerator_Client.Communication
             }
         }
 
-        public Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        public void editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
-            Boolean ans = false;
             try
             {
-                ans = httpProxy.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
-                return ans;
+                httpProxy.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
             }
             catch (FaultException fe)
             {

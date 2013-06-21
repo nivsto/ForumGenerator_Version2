@@ -13,7 +13,7 @@ namespace ForumGenerator_Client.Dialogs
 {
     public partial class MutualMembersDialog : Form
     {
-        newCommunicator communicator = new newCommunicator();
+        Communicator communicator = new Communicator();
         string userName;
         string password;
         Forum[] forumsList;

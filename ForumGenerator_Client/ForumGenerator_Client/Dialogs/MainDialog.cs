@@ -44,7 +44,7 @@ namespace ForumGenerator_Client
 
         User currUser;
 
-        newCommunicator communicator;
+        Communicator communicator;
 
         Forum[] forumsList;
         SubForum[] subforumsList;
@@ -54,8 +54,9 @@ namespace ForumGenerator_Client
 
         public MainDialog()
         {
+
             InitializeComponent();
-            this.communicator = new newCommunicator();
+            this.communicator = new Communicator();
             updateVisibilty();
         }
 

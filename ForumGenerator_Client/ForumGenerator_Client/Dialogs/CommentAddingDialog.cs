@@ -39,7 +39,7 @@ namespace ForumGenerator_Client
                 try
                 {
                     text = txtBoxTxt.Text;
-                    newCommunicator com = new newCommunicator();
+                    Communicator com = new Communicator();
                     com.createNewComment(userName, password, forumId, subForumId, discussionId, text);
                     Close();
                 }
