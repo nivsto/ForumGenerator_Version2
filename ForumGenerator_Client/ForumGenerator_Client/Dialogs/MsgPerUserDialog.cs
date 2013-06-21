@@ -28,9 +28,15 @@ namespace ForumGenerator_Client.Dialogs
             this.forumId = forumId;
 
             comboBox1.Items.Clear();
+            try
+            {
 
-            User[] users = communicator.getUsers(forumId);
-
+                User[] users = communicator.getUsers(forumId);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             for (int i = 0; i < users.Length; i++)
                 comboBox1.Items.Add(users.ElementAt(i).userName);
 
@@ -45,7 +51,14 @@ namespace ForumGenerator_Client.Dialogs
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int num = communicator.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, comboBox1.Text);
+            try
+            {
+                int num = communicator.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, comboBox1.Text);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             lblNum.Text = num.ToString();
         }
     }

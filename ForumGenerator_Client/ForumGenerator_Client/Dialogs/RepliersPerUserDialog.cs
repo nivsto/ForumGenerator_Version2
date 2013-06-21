@@ -26,7 +26,14 @@ namespace ForumGenerator_Client.Dialogs
             this.forumId = forumId;
 
             this.comboBox1.Items.Clear();
-            User[] users = communicator.getUsers(forumId);
+            try
+            {
+                User[] users = communicator.getUsers(forumId);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             for (int i = 0; i < users.Length ; i++)
                 comboBox1.Items.Add(users.ElementAt(i).userName);
 
@@ -37,8 +44,14 @@ namespace ForumGenerator_Client.Dialogs
         {
             string userName = this.comboBox1.Text;
             listBox1.Items.Clear();
-
-            User[] users =  communicator.getResponsersForSingleUser(reqUserName, reqPswd, forumId, userName);
+            try
+            {
+                User[] users =  communicator.getResponsersForSingleUser(reqUserName, reqPswd, forumId, userName);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             for (int i = 0; i < users.Length; i++)
                 listBox1.Items.Add(users.ElementAt(i).userName);
 

@@ -160,12 +160,18 @@ namespace ForumGenerator_Client
         {
             if (MessageBox.Show("Are You Sure?", "Logout", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                if (loginLevel != (int)loginLevels.SUPER)
-                    communicator.logout(currForumId, currUser.userName, currUser.password);
+                try
+                {
+                    if (loginLevel != (int)loginLevels.SUPER)
+                        communicator.logout(currForumId, currUser.userName, currUser.password);
 
-                else
-                    communicator.superUserLogout(userName, password);
-
+                    else
+                        communicator.superUserLogout(userName, password);
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                }
                 loginLevel = 0;
                 userName = null;
                 password = null;
@@ -219,10 +225,17 @@ namespace ForumGenerator_Client
             {
                 if (MessageBox.Show("You Are About To Leave The Forum. Are You Sure?", "Logout", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
+                    try
+                    {
+                        communicator.logout(currForumId, userName, password);
+                    }
+                    catch (Exception err)
+                    {
+                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                    }
+
                     loginLevel = 0;
                     userName = null;
-                    updateVisibilty();
-
                     currentView--;
                     updateVisibilty();
                 }
@@ -364,7 +377,14 @@ namespace ForumGenerator_Client
                 addACommentToolStripMenuItem.Visible = false;
                 lblTitle.Text = "Choose a Thread";
                 //check if the user is moderator
-                loginLevel = this.communicator.getUserType(currForumId, currSubForumId, userName);
+                try
+                {
+                    loginLevel = this.communicator.getUserType(currForumId, currSubForumId, userName);
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                }
 
                 initThreadList();
             }
@@ -446,7 +466,14 @@ namespace ForumGenerator_Client
 
         private void initForumsList()
         {
-            forumsList = this.communicator.getForums();
+            try
+            {
+                forumsList = this.communicator.getForums();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             listBox1.Items.Clear();
             for (int i = 0; i < forumsList.Length; i++)
                 listBox1.Items.Add(forumsList.ElementAt(i).forumName);
@@ -456,7 +483,14 @@ namespace ForumGenerator_Client
 
         private void initSubForumsList()
         {
-            subforumsList = this.communicator.getSubForums(currForumId);
+            try
+            {
+                subforumsList = this.communicator.getSubForums(currForumId);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             listBox1.Items.Clear();
             for (int i = 0; i < subforumsList.Length; i++)
                 listBox1.Items.Add(subforumsList.ElementAt(i).subForumTitle);
@@ -467,7 +501,14 @@ namespace ForumGenerator_Client
 
         private void initThreadList()
         {
-            discussionList = this.communicator.getDiscussions(currForumId, currSubForumId);
+            try
+            {
+                discussionList = this.communicator.getDiscussions(currForumId, currSubForumId);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             listBox1.Items.Clear();
             for (int i = 0; i < discussionList.Length; i++)
                 listBox1.Items.Add(discussionList.ElementAt(i).title);
@@ -477,7 +518,14 @@ namespace ForumGenerator_Client
 
         private void initMsgList()
         {
-            commentsList = this.communicator.getComments(currForumId, currSubForumId, currThreadId);
+            try
+            {
+                commentsList = this.communicator.getComments(currForumId, currSubForumId, currThreadId);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            } 
             listBox1.Items.Clear();
             for (int i = 0; i < commentsList.Length; i++)
                 listBox1.Items.Add(commentsList.ElementAt(i).content);
@@ -528,7 +576,14 @@ namespace ForumGenerator_Client
         /*************************************/
         private void numberOfForumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int num = (this.communicator.getForums()).Length;
+            try
+            {
+                int num = (this.communicator.getForums()).Length;
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             string msg = "Number of Forums:" + num;
 
             MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
@@ -653,7 +708,14 @@ namespace ForumGenerator_Client
 
                 if (MessageBox.Show("You Are About To Delete The Sub-Forum. Are You Sure?", "Delete", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    communicator.removeSubForum(currForumId, currSubForumId, userName, password);
+                    try
+                    {
+                        communicator.removeSubForum(currForumId, currSubForumId, userName, password);
+                    }
+                    catch (Exception err)
+                    {
+                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                    }
                     updateVisibilty();
                 }
             }

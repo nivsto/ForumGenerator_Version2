@@ -23,8 +23,15 @@ namespace ForumGenerator_Client.Dialogs
             InitializeComponent();
             this.userName = userName;
             this.password = password;
-            forumsList = communicator.getForums();
-
+            try
+            {
+                forumsList = communicator.getForums();
+            }
+            
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
             this.comboBox1.Items.Clear();
             this.comboBox2.Items.Clear();
 
