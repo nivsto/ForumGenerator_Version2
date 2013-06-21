@@ -65,13 +65,13 @@ namespace ForumService
         Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
         
         [OperationContract]
-        void removeSubForum(int forumId, int subForumId, string userName, string password);
+        bool removeSubForum(int forumId, int subForumId, string userName, string password);
 
         [OperationContract]
         Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
 
         [OperationContract]
-        Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+        Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
 
         [OperationContract]
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);

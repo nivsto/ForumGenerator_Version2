@@ -260,11 +260,11 @@ namespace ForumService
         }
 
 
-        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        public bool removeSubForum(int forumId, int subForumId, string userName, string password)
         {
             try
             {
-                _forumGen.removeSubForum(forumId, subForumId, userName, password);
+                return _forumGen.removeSubForum(forumId, subForumId, userName, password);
             }
             catch (Exception e)
             {
@@ -287,11 +287,11 @@ namespace ForumService
         }
 
 
-        public Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        public Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
             try
             {
-                Boolean res = _forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
+                Discussion res = _forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
                 return res;
             }
             catch (Exception e)

@@ -48,7 +48,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
 
-        Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+        Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
 
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
 
@@ -63,6 +63,8 @@ namespace ForumGenerator_Version2_Server.Sys
         int getUserType(int forumId, string userName);
 
         int getUserType(int forumId, int subForumId, string userName);
+
+        bool removeSubForum(int forumId, int subForumId, string userName, string password);
 
         void reset();       
 
