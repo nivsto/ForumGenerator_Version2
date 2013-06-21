@@ -597,9 +597,9 @@ namespace ConsoleApplication1.AccTests
               //    AssertEquals(discussion.content, "new content");
               //    AssertTrue(res);
 
-                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
+                    discussion = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
                     AssertEquals(discussion.content, "brand new content");
-                    AssertTrue(res);
+                   
 
                     // (Asa) This test should not pass since publisher is ADMIN. A regular member is not authorized to edit this discussion.
                  //res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, user.userName, user.password, "new content");
@@ -625,7 +625,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, "wrong user", SU_PSWD, "new content");
+                    discussion = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, "wrong user", SU_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -643,7 +643,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, "wrong pass", "new content");
+                    discussion = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, "wrong pass", "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -661,7 +661,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(-1, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
+                    discussion = this.bridge.editDiscussion(-1, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -679,7 +679,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(forum.forumId, -1, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
+                    discussion = this.bridge.editDiscussion(forum.forumId, -1, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -697,7 +697,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, -1, ADMIN_NAME, ADMIN_PSWD, "new content");
+                    discussion = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, -1, ADMIN_NAME, ADMIN_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }

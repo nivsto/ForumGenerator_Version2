@@ -61,7 +61,7 @@ namespace ConsoleApplication1.AccTests
                 AssertTrue(logoutAns);
 
                 int num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-                AssertTrue(num_of_comments == 10);
+                AssertTrue(num_of_comments == 11);
 
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 User user2 = this.bridge.register(forum.forumId, "user2", "pswd2", "", "");
@@ -72,14 +72,14 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, d.discussionId, "no content");
                 }
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-                AssertTrue(num_of_comments == 110);
+                AssertTrue(num_of_comments == 111);
 
-                Boolean editAns = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
+                d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
                 AssertEquals(d.content, "brand new content");
-                AssertTrue(editAns);
+                
 
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-                AssertTrue(num_of_comments == 110);
+                AssertTrue(num_of_comments == 111);
 
                 Discussion[] discussions = new Discussion[100];
                 for (int i = 1; i <= 100; i++)
@@ -88,7 +88,7 @@ namespace ConsoleApplication1.AccTests
                 AssertTrue(num_of_comments == 210);
 
                 for (int i = 1; i <= 10; i++)
-                    editAns = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, "user2", "pswd2", "brand new content" + i);
+                    d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, "user2", "pswd2", "brand new content" + i);
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                 AssertTrue(num_of_comments == 210);
 

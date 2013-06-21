@@ -121,10 +121,9 @@ namespace ConsoleApplication1.AccTests
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                 //AssertTrue(num_of_comments == 110);
 
-                Boolean editAns = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
+                d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
                 AssertEquals(d.content, "brand new content");
-                AssertTrue(editAns);
-
+               
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                // AssertTrue(num_of_comments == 110);
 
@@ -135,7 +134,7 @@ namespace ConsoleApplication1.AccTests
                // AssertTrue(num_of_comments == 210);
 
                 for (int i = 1; i <= 10; i++)
-                    editAns = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, USER_2, PASSWORD_2, "brand new content" + i);
+                    d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, USER_2, PASSWORD_2, "brand new content" + i);
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                 //AssertTrue(num_of_comments == 210);
 
@@ -223,7 +222,7 @@ namespace ConsoleApplication1.AccTests
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                 // AssertTrue(num_of_comments == 110);
 
-                Boolean editAns = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
+                d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
                 AssertEquals(d.content, "brand new content");
                 // AssertTrue(editAns);
 
@@ -237,7 +236,7 @@ namespace ConsoleApplication1.AccTests
                 //AssertTrue(num_of_comments == 210);
 
                 for (int i = 1; i <= 10; i++)
-                    editAns = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, USER_2, PASSWORD_2, "brand new content" + i);
+                    d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, USER_2, PASSWORD_2, "brand new content" + i);
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                 // AssertTrue(num_of_comments == 210);
 
