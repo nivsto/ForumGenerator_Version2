@@ -6,11 +6,13 @@ using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Sys;
 using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.IO;
 
 namespace ForumService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    class HttpServer : IForumService
+    class HttpServer : IForumService, BrowserService
     {
         private ForumGenerator _forumGen;
 
@@ -403,6 +405,17 @@ namespace ForumService
             {
                 throw new FaultException(e.Message);
             }
+        }
+
+        public Stream index()
+        {
+            string html = "<H1>Hello World!</H1>";
+
+            if (WebOperationContext.Current != null)
+                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+
+            byte[] htmlBytes = Encoding.UTF8.GetBytes(html);
+            return new MemoryStream(htmlBytes);
         }
     }
 }
