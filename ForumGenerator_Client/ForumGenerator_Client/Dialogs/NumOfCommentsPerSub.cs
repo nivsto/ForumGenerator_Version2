@@ -55,12 +55,13 @@ namespace ForumGenerator_Client.Dialogs
             try
             {
                 int num = communicator.getNumOfCommentsSubForum(reqUserName, reqPswd, forumId, subForums[index].subForumId);
+                lblNum.Text = num.ToString();
+         
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
-                lblNum.Text = num.ToString();
         }
 
     }

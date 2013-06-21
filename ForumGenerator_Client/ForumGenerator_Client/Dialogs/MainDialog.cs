@@ -579,14 +579,15 @@ namespace ForumGenerator_Client
             try
             {
                 int num = (this.communicator.getForums()).Length;
+                string msg = "Number of Forums:" + num;
+                MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
+            
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
-            string msg = "Number of Forums:" + num;
 
-            MessageBox.Show(msg, "Info", MessageBoxButtons.OK);
         }
 
 

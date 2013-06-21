@@ -32,13 +32,14 @@ namespace ForumGenerator_Client.Dialogs
             {
 
                 User[] users = communicator.getUsers(forumId);
+                for (int i = 0; i < users.Length; i++)
+                    comboBox1.Items.Add(users.ElementAt(i).userName);
+
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
-            for (int i = 0; i < users.Length; i++)
-                comboBox1.Items.Add(users.ElementAt(i).userName);
 
             comboBox1.SelectedIndex = -1;
 
@@ -54,12 +55,13 @@ namespace ForumGenerator_Client.Dialogs
             try
             {
                 int num = communicator.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, comboBox1.Text);
+                lblNum.Text = num.ToString();
+         
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
-            lblNum.Text = num.ToString();
         }
     }
 }

@@ -28,14 +28,15 @@ namespace ForumGenerator_Client.Dialogs
             this.comboBox1.Items.Clear();
             try
             {
-                User[] users = communicator.getUsers(forumId);
+                User[] users = communicator.getUsers(forumId);  
+                for (int i = 0; i < users.Length ; i++)
+                comboBox1.Items.Add(users.ElementAt(i).userName);
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
-            for (int i = 0; i < users.Length ; i++)
-                comboBox1.Items.Add(users.ElementAt(i).userName);
+     
 
             comboBox1.SelectedIndex = -1;
         }
@@ -47,14 +48,15 @@ namespace ForumGenerator_Client.Dialogs
             try
             {
                 User[] users =  communicator.getResponsersForSingleUser(reqUserName, reqPswd, forumId, userName);
+                for (int i = 0; i < users.Length; i++)
+                    listBox1.Items.Add(users.ElementAt(i).userName);
+
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
             }
-            for (int i = 0; i < users.Length; i++)
-                listBox1.Items.Add(users.ElementAt(i).userName);
-
+      
         }
 
         private void button1_Click(object sender, EventArgs e)
