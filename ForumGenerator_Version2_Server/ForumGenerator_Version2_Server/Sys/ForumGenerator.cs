@@ -441,7 +441,7 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
 
-        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        public bool removeSubForum(int forumId, int subForumId, string userName, string password)
         {
             try
             {
@@ -459,6 +459,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 }
 
                 f.removeSubForum(subForumId);
+                return true;
             }
             catch (Exception e)
             {
@@ -607,7 +608,7 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string password, string newContent)
+        public Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string password, string newContent)
         {
             try
             {
@@ -634,7 +635,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
-                return d.editDiscussion(newContent, db);
+                return new Discussion(d.editDiscussion(newContent, db));
             }
             catch (Exception e)
             {

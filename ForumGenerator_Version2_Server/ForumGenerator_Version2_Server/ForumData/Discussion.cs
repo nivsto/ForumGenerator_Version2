@@ -108,7 +108,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             return comments.Count;
         }
 
-        internal bool editDiscussion(string newContent, ForumGeneratorContext db)
+        internal Discussion editDiscussion(string newContent, ForumGeneratorContext db)
         {
             this.content = newContent;
             lock (db)
@@ -116,7 +116,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 db.Entry(db.Discussions.Find(this.discussionId)).CurrentValues.SetValues(this);
                 db.SaveChanges();
             }
-            return true;
+            return this;
         }
     }
 }
