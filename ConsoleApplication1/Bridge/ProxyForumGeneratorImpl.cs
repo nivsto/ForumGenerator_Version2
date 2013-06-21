@@ -125,7 +125,7 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        public bool removeSubForum(int forumId, int subForumId, string userName, string password)
         {
             throw new NotImplementedException();
         }
@@ -135,7 +135,7 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        public Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
             throw new NotImplementedException();
         }

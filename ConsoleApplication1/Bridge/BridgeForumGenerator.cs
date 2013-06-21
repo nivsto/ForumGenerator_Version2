@@ -35,9 +35,9 @@ namespace ConsoleApplication1
         // added in version 3:
         Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
         Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
-        void removeSubForum(int forumId, int subForumId, string userName, string password);
+        bool removeSubForum(int forumId, int subForumId, string userName, string password);
         Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
-        Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+        Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
         int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId);
         List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName);

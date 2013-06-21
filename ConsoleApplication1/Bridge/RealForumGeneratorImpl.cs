@@ -119,9 +119,9 @@ namespace ConsoleApplication1
             return this.forumGen.removeModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
         }
 
-        public void removeSubForum(int forumId, int subForumId, string userName, string password)
+        public bool removeSubForum(int forumId, int subForumId, string userName, string password)
         {
-            this.removeSubForum(forumId, subForumId, userName, password);
+            return this.removeSubForum(forumId, subForumId, userName, password);
         }
 
 
@@ -130,7 +130,7 @@ namespace ConsoleApplication1
             return this.forumGen.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
         }
 
-        public bool editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        public Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
             return this.forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
         }

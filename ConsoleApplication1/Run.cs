@@ -12,6 +12,8 @@ using ForumGenerator_Version2_Server.ForumData;
 using System.Threading;
 using System.Net;
 using System.Xml;
+using ConsoleApplication1.AccTests;
+using System.Windows.Forms;
 
 namespace ConsoleApplication1
 {
@@ -23,7 +25,10 @@ namespace ConsoleApplication1
        
             string logFileName = getPath() + "/TestForumGenerator.Log.txt";
             TestForumGenerator tests = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);                                   
-            tests.runTests();
+            //tests.runTests();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new testGui());
             //Console.ReadKey();
 
         }
