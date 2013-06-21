@@ -119,7 +119,7 @@ namespace ConsoleApplication1.AccTests
                     Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
                     for(int i=0; i<100; i++)
-                        this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum" + i);
+                        this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum" + i);
 
                     res = this.bridge.getSubForums(forum.forumId);
                     AssertTrue(res.Count == 100);
@@ -149,7 +149,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                     Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
-                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
+                    SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
                     res = this.bridge.getDiscussions(forum.forumId, subForum.subForumId);
                     AssertTrue(res.Count == 0);
 
@@ -164,9 +164,9 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                     Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
-                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
+                    SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
                     for (int i = 0; i < 100; i++)
-                        this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion" + i, "no content");
+                        this.bridge.createNewDiscussion("mngr", "mngrPswd", forum.forumId, subForum.subForumId, "discussion" + i, "no content");
 
                     res = this.bridge.getDiscussions(forum.forumId, subForum.subForumId);
                     AssertTrue(res.Count == 100);
@@ -196,8 +196,8 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                     Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
-                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion", "no content");
+                    SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
+                    Discussion discussion = this.bridge.createNewDiscussion("mngr", "mngrPswd", forum.forumId, subForum.subForumId, "discussion", "no content");
                     res = this.bridge.getComments(forum.forumId, subForum.subForumId, discussion.discussionId);
                     AssertTrue(res.Count == 0);
 
@@ -212,11 +212,11 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                     Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
-                    SubForum subForum = this.bridge.createNewSubForum(SU_NAME, SU_PSWD, forum.forumId, "subForum");
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion", "no content");
+                    SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
+                    Discussion discussion = this.bridge.createNewDiscussion("mngr", "mngrPswd", forum.forumId, subForum.subForumId, "discussion", "no content");
  
                     for (int i = 0; i < 100; i++)
-                        this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                        this.bridge.createNewComment("mngr", "mngrPswd", forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
 
                     res = this.bridge.getComments(forum.forumId, subForum.subForumId, discussion.discussionId);
                     AssertTrue(res.Count == 100);

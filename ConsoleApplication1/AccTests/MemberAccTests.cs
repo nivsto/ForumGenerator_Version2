@@ -329,7 +329,7 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
                   //  res = this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
                   //  AssertTrue(discussion.comments.Contains(res));
@@ -359,7 +359,7 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.createNewComment("wrong user", SU_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    res = this.bridge.createNewComment("wrong user", ADMIN_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -375,9 +375,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.createNewComment(SU_NAME, "wrong pass", forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
+                    res = this.bridge.createNewComment(ADMIN_NAME, "wrong pass", forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -393,9 +393,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, -2, subForum.subForumId, discussion.discussionId, "no content");
+                    res = this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, -2, subForum.subForumId, discussion.discussionId, "no content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -411,9 +411,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, -1, discussion.discussionId, "no content");
+                    res = this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, forum.forumId, -1, discussion.discussionId, "no content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -429,9 +429,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.createNewComment(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, -1, "no content");
+                    res = this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, -1, "no content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -458,7 +458,7 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
                //    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, SU_PSWD);
                //    AssertFalse(subForum.discussions.Contains(discussion));
@@ -489,7 +489,7 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
                     res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, "wrong user", SU_PSWD);
                     failMsg(testNum);
@@ -507,7 +507,7 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
                     res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, "wrong pass");
                     failMsg(testNum);
@@ -525,9 +525,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.deleteDiscussion(forum.forumId, -2, discussion.discussionId, SU_NAME, SU_PSWD);
+                    res = this.bridge.deleteDiscussion(forum.forumId, -2, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD);
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -543,9 +543,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.deleteDiscussion(forum.forumId, -2, discussion.discussionId, SU_NAME, SU_PSWD);
+                    res = this.bridge.deleteDiscussion(forum.forumId, -2, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD);
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -561,9 +561,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, -2, SU_NAME, SU_PSWD);
+                    res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, -2, ADMIN_NAME, ADMIN_PSWD);
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -623,7 +623,7 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
                     res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, "wrong user", SU_PSWD, "new content");
                     failMsg(testNum);
@@ -641,7 +641,7 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
                     res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, SU_NAME, "wrong pass", "new content");
                     failMsg(testNum);
@@ -659,9 +659,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(-1, subForum.subForumId, discussion.discussionId, SU_NAME, SU_PSWD, "new content");
+                    res = this.bridge.editDiscussion(-1, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -677,9 +677,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(forum.forumId, -1, discussion.discussionId, SU_NAME, SU_PSWD, "new content");
+                    res = this.bridge.editDiscussion(forum.forumId, -1, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }
@@ -695,9 +695,9 @@ namespace ConsoleApplication1.AccTests
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
-                    Discussion discussion = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    Discussion discussion = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
 
-                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, -1, SU_NAME, SU_PSWD, "new content");
+                    res = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, -1, ADMIN_NAME, ADMIN_PSWD, "new content");
                     failMsg(testNum);
                 }
                 catch { testNum++; }

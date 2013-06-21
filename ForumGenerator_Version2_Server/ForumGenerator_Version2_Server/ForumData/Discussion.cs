@@ -113,7 +113,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.content = newContent;
             lock (db)
             {
-                db.Entry(db.Discussions.Find(this)).CurrentValues.SetValues(this);
+                db.Entry(db.Discussions.Find(this.discussionId)).CurrentValues.SetValues(this);
                 db.SaveChanges();
             }
             return true;

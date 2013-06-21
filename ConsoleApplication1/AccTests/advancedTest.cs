@@ -26,15 +26,15 @@ namespace ConsoleApplication1.AccTests
             this.testsLogger.logTestsSection("Advanced Tests");
 
             Console.WriteLine("testing advancedTest1:");
-           // test(advancedTest1);
+            test(advancedTest1);
             Console.WriteLine("Done \n");
 
             Console.WriteLine("testing advancedTest2:");
-         //   test(advancedTest2);
+            test(advancedTest2);
             Console.WriteLine("Done \n");
 
             Console.WriteLine("testing LargeScalability:");
-            test(LargeScalability);
+           // test(LargeScalability);
             Console.WriteLine("Done \n");
             
         }
@@ -50,6 +50,7 @@ namespace ConsoleApplication1.AccTests
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                 Discussion d = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                this.bridge.login(forum.forumId, "user1", "pswd1");
 
                 for (int i = 1; i <= 10; i++)
                 {

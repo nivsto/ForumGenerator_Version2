@@ -315,9 +315,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
                 }
+                Forum newForum;
                 lock (db)
                 {
-                    Forum newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
+                    newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
                     this.forums.Add(newForum);
                     this.db.Forums.Add(newForum);
                     this.db.SaveChanges();
