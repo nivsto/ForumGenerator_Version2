@@ -43,7 +43,7 @@ namespace ForumGenerator_Version2_Server.Sys
         // Regular expr of contents
         const string LETTERS_ONLY = "a-zA-Z";
         const string LETTERS_NUMS = "a-zA-Z0-9";
-        const string LETTERS_NUMS_SIGNS = "a-zA-Z0-9,: /&|"; // not checking '-'
+        const string LETTERS_NUMS_SIGNS = "a-zA-Z0-9,: /&|+-?!@#$%^*()><=_{}[]~"; // not checking '-'
         
 
 

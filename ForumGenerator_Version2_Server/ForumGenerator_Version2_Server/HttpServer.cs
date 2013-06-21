@@ -181,8 +181,15 @@ namespace ForumService
 
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
-            SubForum res = _forumGen.createNewSubForum(userName, password, forumId, subForumTitle);
-            return res;
+            try
+            {
+                SubForum res = _forumGen.createNewSubForum(userName, password, forumId, subForumTitle);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
         }
 
 
@@ -397,7 +404,5 @@ namespace ForumService
                 throw new FaultException(e.Message);
             }
         }
-
-
     }
 }
