@@ -789,6 +789,19 @@ namespace ForumGenerator_Version2_Server.Sys
                 return this.getForum(forumId).getUserType(subForumId, userName);
         }
 
+        //#Niv - For web purposes
+        public int getDiscussionsPerForum(int forumId)
+        {
+            int ans = 0;
+            List<SubForum> subForums = getForum(forumId).subForums;
+            foreach (SubForum sf in subForums)
+            {
+                ans += sf.discussions.Count();
+            }
+
+            return ans;
+        }
+
 
     }
 }

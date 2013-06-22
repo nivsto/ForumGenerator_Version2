@@ -1,0 +1,241 @@
+﻿@charset "utf-8";
+
+@font-face
+{
+font-family: overLock;
+src: url(font\OverlockSC-Regular);
+}
+
+@font-face
+{
+font-family: overLock;
+src: url(font\OverlockSC-Regular);
+font-weight: bold;
+}
+
+h1 {
+	font-family: overLock;
+	font-size: 40px;
+	font-style: normal;
+	color: rgb(0, 203, 255);
+	font-weight: bold;
+	top: auto;
+	line-height: 5px;
+    text-align: center;
+}
+
+h2 {
+    margin-left: 3px;
+    margin-right: 3px;
+    font-size: 100%;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+Div {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.Header {
+    position: relative;
+    height: 60px;
+    top: 20px;
+}
+
+.ListHeader {
+    background: #7192a8;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Arial, Tahoma, Calibri, Verdana, Geneva, sans-serif;
+    color: #ffffff;
+    clear: both;
+    margin-top: 8px;
+    float: left;
+    border: 1px solid #5a7f97;
+    width: 100%;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    position: relative;
+    box-shadow: -2px 2px 2px #c8c8c8;
+}
+
+.ListHeaderTitle {
+    display: block;
+    float: left;
+    clear: right;
+    font: bold 12px Arial, Tahoma,Calibri,Verdana,Geneva,sans-serif;
+    padding: 4px 0;
+    color: #ffffff;
+    min-width: 57%;
+}
+
+.ListHeaderStatistics {
+    display: block;
+    float: left;
+    clear: right;
+    font: bold 12px Arial, Tahoma,Calibri,Verdana,Geneva,sans-serif;
+    padding: 4px 0;
+    color: #ffffff;
+    width: 19%;
+    text-align: Left;
+}
+
+.ListHeaderLast {
+    display: block;
+    float: left;
+    clear: right;
+    font: bold 12px Arial, Tahoma,Calibri,Verdana,Geneva,sans-serif;
+    padding: 4px 0;
+    color: #ffffff;
+    width: 21%;
+}
+
+.Forum {
+    background: rgb(255, 255, 255);
+    border-top: 1px solid rgb(255, 255, 255);
+    display: block;
+    width: 100%;
+    float: left;
+    min-height: 58px;
+    position: relative;
+    border-bottom: 1px solid #c4c4c4;
+    border-left: 1px solid #c4c4c4;
+    border-right: 1px solid #c4c4c4;
+    box-shadow: -2px 2px 2px #c8c8c8;
+    table-layout: fixed;
+}
+
+.forumTitleContainer {
+    float: left;
+    width: 88%;
+    padding-left: 68px;
+    padding-top: 5px;
+}
+
+.forumTitle {
+    font-size: 15px;
+    margin-right: 10px;
+    float: left;
+    clear: right;
+    color: #4e4e4e;
+    font-weight: bold;
+}
+
+body {
+    margin-top: 0px;
+    margin-left: 35px;
+    margin-bottom: 0px;
+    margin-right: 35px;
+    background: #ffffff;
+    padding: 0;
+    min-width: 650px;
+    width: auto;
+    font-size: 13px;
+    color: #3e3e3e;
+    line-height: 1.230;
+}
+
+html {
+    background: #e9e9e9 none;
+    color: #000;
+    direction: ltr;
+}
+
+ol {
+    display: block;
+    list-style-type: decimal;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-padding-start: 0px;
+}
+
+.ForumsList {
+    clear: both;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    -webkit-margin-start: 10px;
+    -webkit-margin-end: 10px;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-padding-start: 0px;
+}
+
+.BodyBox {
+    padding: 10px 20px 10px 20px;
+    background: rgb(255, 255, 255) none;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.forumIcon {
+    position: absolute;
+    left: 10px;
+    width: 48px;
+}
+
+li {
+    clear: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+a {
+    color: #417394;
+    text-decoration: none;
+
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.forumStats {
+    display: block;
+    float: left;
+    clear: right;
+    width: 17%;
+    margin-right: 2%;
+    padding: 0px;
+}
+
+.forumAdmin {
+    display: block;
+    float: left;
+    clear: right;
+    width: 14%;
+    margin-right: 2%;
+    padding: 5px 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: square;
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+
+.forumInfo {
+    width: 57%;
+    min-width: 30%;
+    float: left;
+    clear: right;
+    min-height: 48px;
+    padding: 5px 0;
+    display: table-cell;
+}
