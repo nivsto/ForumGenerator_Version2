@@ -36,6 +36,10 @@ namespace ForumGenerator_Client
             this.forumId = forumId;
             this.superUser = superUser;
             InitializeComponent();
+            if (superUser)
+            {
+                this.chkbxSuperUser.Checked = true;
+              }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -52,7 +56,8 @@ namespace ForumGenerator_Client
                 okClicked = true;
                 userName = txtBoxUserName.Text;
                 password = txtBoxPassword.Text;
-         
+
+                superUser = chkbxSuperUser.Checked;
                 if (superUser)
                 {
                     try
@@ -63,25 +68,28 @@ namespace ForumGenerator_Client
                     }
                     catch (Exception err)
                     {
-                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
                 else
                 {
-                    try{
-                    user = this.communicator.login(forumId, userName, password);
-                    loginLevel = this.communicator.getUserType(forumId, user.userName);
-                    Hide();
+                    try
+                    {
+                        user = this.communicator.login(forumId, userName, password);
+                        loginLevel = this.communicator.getUserType(forumId, user.userName);
+                        Hide();
                     }
                     catch (Exception err)
                     {
-                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                        MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             else
-                MessageBox.Show("Please Fill All Fields!", "Error", MessageBoxButtons.OK);
+            {
+                MessageBox.Show("Please Fill All Fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
         }
 
         public int getLoginLevel()
@@ -107,6 +115,12 @@ namespace ForumGenerator_Client
         public User getUser()
         {
             return user;
+        }
+
+        private void chkbxSuperUser_CheckedChanged(object sender, EventArgs e)
+        {
+            if (superUser)
+                chkbxSuperUser.Checked = true;
         }
 
     }

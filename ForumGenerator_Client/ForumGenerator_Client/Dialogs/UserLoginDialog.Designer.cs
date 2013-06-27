@@ -35,11 +35,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtBoxUserName = new System.Windows.Forms.TextBox();
             this.txtBoxPassword = new System.Windows.Forms.TextBox();
+            this.chkbxSuperUser = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(42, 121);
+            this.btnLogin.Location = new System.Drawing.Point(69, 143);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 3;
@@ -49,7 +50,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(154, 121);
+            this.btnCancel.Location = new System.Drawing.Point(150, 143);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 4;
@@ -78,7 +79,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(39, 83);
+            this.label3.Location = new System.Drawing.Point(32, 83);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 4;
@@ -99,11 +100,23 @@
             this.txtBoxPassword.Size = new System.Drawing.Size(127, 20);
             this.txtBoxPassword.TabIndex = 2;
             // 
+            // chkbxSuperUser
+            // 
+            this.chkbxSuperUser.AutoSize = true;
+            this.chkbxSuperUser.Location = new System.Drawing.Point(35, 116);
+            this.chkbxSuperUser.Name = "chkbxSuperUser";
+            this.chkbxSuperUser.Size = new System.Drawing.Size(123, 17);
+            this.chkbxSuperUser.TabIndex = 5;
+            this.chkbxSuperUser.Text = "Login As Super User";
+            this.chkbxSuperUser.UseVisualStyleBackColor = true;
+            this.chkbxSuperUser.CheckedChanged += new System.EventHandler(this.chkbxSuperUser_CheckedChanged);
+            // 
             // UserLoginDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 163);
+            this.ClientSize = new System.Drawing.Size(280, 178);
+            this.Controls.Add(this.chkbxSuperUser);
             this.Controls.Add(this.txtBoxPassword);
             this.Controls.Add(this.txtBoxUserName);
             this.Controls.Add(this.label3);
@@ -128,5 +141,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtBoxUserName;
         private System.Windows.Forms.TextBox txtBoxPassword;
+        private System.Windows.Forms.CheckBox chkbxSuperUser;
     }
 }

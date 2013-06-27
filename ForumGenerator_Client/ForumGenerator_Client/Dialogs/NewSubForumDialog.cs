@@ -33,7 +33,7 @@ namespace ForumGenerator_Client
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtBoxName.Text.Trim()))
-                MessageBox.Show("Please Enter Sub-Forum Name!", "Error");
+                MessageBox.Show("Please Enter Sub-Forum Name!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
             {
                 name = txtBoxName.Text;
@@ -45,7 +45,7 @@ namespace ForumGenerator_Client
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

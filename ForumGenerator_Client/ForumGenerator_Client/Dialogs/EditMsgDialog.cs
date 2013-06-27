@@ -39,7 +39,7 @@ namespace ForumGenerator_Client.Dialogs
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

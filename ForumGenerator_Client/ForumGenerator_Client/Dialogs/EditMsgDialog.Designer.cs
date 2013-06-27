@@ -92,6 +92,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAdd);
             this.Name = "EditMsgDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EditMsgDialog";
             this.ResumeLayout(false);
             this.PerformLayout();

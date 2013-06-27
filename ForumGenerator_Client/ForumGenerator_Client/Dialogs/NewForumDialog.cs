@@ -35,7 +35,7 @@ namespace ForumGenerator_Client
         {
             if (String.IsNullOrEmpty(txtBoxName.Text.Trim()) && String.IsNullOrEmpty(txtBoxPassword.Text.Trim())
                 && String.IsNullOrEmpty(txtBoxAdmin.Text.Trim()))
-                MessageBox.Show("Please Enter All Fields!", "Error");
+                MessageBox.Show("Please Enter All Fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
             {
                 
@@ -50,7 +50,7 @@ namespace ForumGenerator_Client
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 
             }

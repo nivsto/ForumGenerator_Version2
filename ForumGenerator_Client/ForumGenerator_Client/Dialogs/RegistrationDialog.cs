@@ -41,11 +41,11 @@ namespace ForumGenerator_Client
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
-                MessageBox.Show("Please Fill All Fields!", "Error");
+                MessageBox.Show("Please Fill All Fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
         }
 

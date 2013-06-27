@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using ForumGenerator_Client.Dialogs;
 
 namespace ForumGenerator_Client
 {
@@ -15,7 +16,7 @@ namespace ForumGenerator_Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainDialog());
+            MainMethods mainMethids = new MainMethods();
         }
     }
 }

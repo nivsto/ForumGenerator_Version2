@@ -35,7 +35,7 @@ namespace ForumGenerator_Client
         {
 
             if (String.IsNullOrEmpty(txtBoxSubject.Text.Trim()) || String.IsNullOrEmpty(txyBoxMsg.Text.Trim()))
-                MessageBox.Show("One of the fields is missing!", "Error");
+                MessageBox.Show("One of the fields is missing!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
             {
                 try
@@ -48,7 +48,7 @@ namespace ForumGenerator_Client
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

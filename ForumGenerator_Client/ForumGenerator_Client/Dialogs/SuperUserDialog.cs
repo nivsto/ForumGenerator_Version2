@@ -9,45 +9,44 @@ using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.ServiceReference1;
 
+
 namespace ForumGenerator_Client.Dialogs
 {
-    public partial class MutualMembersDialog : Form
+    public partial class SuperUserDialog : Form
     {
+
         Communicator communicator = new Communicator();
         string userName;
         string password;
         Forum[] forumsList;
 
-        public MutualMembersDialog(string userName, string password)
+        public SuperUserDialog(string userName, string password)
         {
             InitializeComponent();
             this.userName = userName;
             this.password = password;
+
             try
             {
                 forumsList = communicator.getForums();
+                this.lblNumOfForums.Text = forumsList.Length.ToString();
+                this.comboBox1.Items.Clear();
+                this.comboBox2.Items.Clear();
+
+                for (int i = 0; i < forumsList.Length; i++)
+                {
+                    this.comboBox1.Items.Add(forumsList.ElementAt(i).forumName);
+                    this.comboBox2.Items.Add(forumsList.ElementAt(i).forumName);
+                }
+
             }
-            
+
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
-            }
-            this.comboBox1.Items.Clear();
-            this.comboBox2.Items.Clear();
-
-            for (int i = 0; i < forumsList.Length; i++)
-            {
-                this.comboBox1.Items.Add(forumsList.ElementAt(i).forumName);
-                this.comboBox2.Items.Add(forumsList.ElementAt(i).forumName); 
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
 
         private void btnCompare_Click(object sender, EventArgs e)
         {
@@ -65,11 +64,14 @@ namespace ForumGenerator_Client.Dialogs
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
 
 
     }
