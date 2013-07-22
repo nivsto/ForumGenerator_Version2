@@ -15,7 +15,7 @@ using System.Reflection;
 namespace ForumService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    class HttpServer : IForumService, BrowserService
+    class HttpServer : IForumService
     {
         private ForumGenerator _forumGen;
 
@@ -410,184 +410,236 @@ namespace ForumService
             }
         }
 
-        internal void attachHtmlHead(HtmlTextWriter writer, string pageTitle)
+        public int countDiscussionsPerForum(int forumId)
         {
-            writer.RenderBeginTag(HtmlTextWriterTag.Head);
-            writer.AddAttribute(HtmlTextWriterAttribute.Content, "text/html; charset=utf-8");
-            writer.RenderBeginTag(HtmlTextWriterTag.Meta);
-            writer.RenderBeginTag(HtmlTextWriterTag.Title);
-            writer.Write(pageTitle);
-            writer.RenderEndTag();
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, "style.css");
-            writer.AddAttribute(HtmlTextWriterAttribute.Rel, "stylesheet");
-            writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/css");
-            writer.RenderBeginTag(HtmlTextWriterTag.Link);
-            writer.RenderEndTag();
-        }
-
-        public Stream web_index()
-        {
-            string pageTitle = "The Nimbus Forum Generator";
-            List<Forum> forumList = _forumGen.getForums();
-            
-            StringWriter stringWriter = new StringWriter();
-            HtmlTextWriter writer = new HtmlTextWriter(stringWriter);
-
-            //Section: Head
-            attachHtmlHead(writer, pageTitle);
-
-            //Section: Body
-            int height = forumList.Count() * 60 + 200;
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Height, height.ToString());
-            writer.RenderBeginTag(HtmlTextWriterTag.Body);
-
-            //Header
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "Header");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.RenderBeginTag(HtmlTextWriterTag.H1);
-            writer.Write(pageTitle);
-            writer.RenderEndTag();
-            writer.RenderEndTag();
-
-            //BodyBox
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "BodyBox");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "ForumsList");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeader");
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.RenderBeginTag(HtmlTextWriterTag.H2);
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeaderTitle");
-            writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.Write("Forums List");
-            writer.RenderEndTag();
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeaderStatistics");
-            writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.Write("Sub Forums / Discussions");
-            writer.RenderEndTag();
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeaderLast");
-            writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.Write("Administrator");
-            writer.RenderEndTag();
-            writer.RenderEndTag();
-            writer.RenderEndTag();
-
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, "forumChilds");
-            writer.RenderBeginTag(HtmlTextWriterTag.Ol);
-
-            foreach (Forum forum in forumList)
+            try
             {
-                int subForumsCounter = _forumGen.getSubForums(forum.forumId).Count();
-                int ThreadsCounter = _forumGen.getDiscussionsPerForum(forum.forumId);
-                
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forum");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumInfo");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Src, "img/forum_sign.png");
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumIcon");
-                writer.AddAttribute(HtmlTextWriterAttribute.Alt, "forum_sign");
-                writer.RenderBeginTag(HtmlTextWriterTag.Img);
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumTitleContainer");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumTitle");
-                writer.RenderBeginTag(HtmlTextWriterTag.H2);
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, "index?forumId="+forum.forumId);
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-
-                writer.Write(forum.forumName);
-
-                writer.RenderEndTag();  //Link
-                writer.RenderEndTag();  //forumTitle H2
-                writer.RenderEndTag();  //forumTitleContainer Div
-                writer.RenderEndTag();  //forumInfo img
-                writer.RenderEndTag();  //forumInfo Div
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumStats");
-                writer.RenderBeginTag(HtmlTextWriterTag.Ul);
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
-                writer.Write("Sub Forums: " + subForumsCounter);
-                writer.RenderEndTag();  //Li
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
-                writer.Write("Discussions: " + ThreadsCounter);
-                writer.RenderEndTag();  //Li
-                writer.RenderEndTag();  //forumStats Ul
-
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumAdmin");
-                writer.RenderBeginTag(HtmlTextWriterTag.Ul);
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
-                writer.Write("Admin: " + forum.admin.userName);
-                writer.RenderEndTag();  //Li
-                writer.RenderEndTag();  //forumAdmin Ul
-
-                writer.RenderEndTag();  //Forum Div
-                writer.RenderEndTag();  //Forum ListItem
+                int res = _forumGen.countDiscussionsPerForum(forumId);
+                return res;
             }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
 
-            writer.RenderEndTag();  //forumChilds
-            writer.RenderEndTag();  //ForumList
-            writer.RenderEndTag();  //BodyBox
-            writer.RenderEndTag();  //Body
+        public int countSubForumsPerForum(int forumId)
+        {
+            try
+            {
+                int res = _forumGen.countSubForumsPerForum(forumId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+        public int countDiscussionsPerSubForum(int forumId, int subForumId)
+        {
+            try
+            {
+                int res = _forumGen.countDiscussionsPerSubForum(forumId, subForumId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+        public int countCommentsPerSubForum(int forumId, int subForumId)
+        {
+            try
+            {
+                int res = _forumGen.countCommentsPerSubForum(forumId, subForumId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+        //internal void attachHtmlHead(HtmlTextWriter writer, string pageTitle)
+        //{
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Head);
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Content, "text/html; charset=utf-8");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Meta);
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Title);
+        //    writer.Write(pageTitle);
+        //    writer.RenderEndTag();
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Href, "style.css");
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Rel, "stylesheet");
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/css");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Link);
+        //    writer.RenderEndTag();
+        //}
+
+        //public Stream web_index()
+        //{
+        //    string pageTitle = "The Nimbus Forum Generator";
+        //    List<Forum> forumList = _forumGen.getForums();
+            
+        //    StringWriter stringWriter = new StringWriter();
+        //    HtmlTextWriter writer = new HtmlTextWriter(stringWriter);
+
+        //    //Section: Head
+        //    attachHtmlHead(writer, pageTitle);
+
+        //    //Section: Body
+        //    int height = forumList.Count() * 60 + 200;
+        //    writer.AddStyleAttribute(HtmlTextWriterStyle.Height, height.ToString());
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Body);
+
+        //    //Header
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "Header");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Div);
+        //    writer.RenderBeginTag(HtmlTextWriterTag.H1);
+        //    writer.Write(pageTitle);
+        //    writer.RenderEndTag();
+        //    writer.RenderEndTag();
+
+        //    //BodyBox
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "BodyBox");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "ForumsList");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeader");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Div);
+        //    writer.RenderBeginTag(HtmlTextWriterTag.H2);
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeaderTitle");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        //    writer.Write("Forums List");
+        //    writer.RenderEndTag();
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeaderStatistics");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        //    writer.Write("Sub Forums / Discussions");
+        //    writer.RenderEndTag();
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Class, "ListHeaderLast");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        //    writer.Write("Administrator");
+        //    writer.RenderEndTag();
+        //    writer.RenderEndTag();
+        //    writer.RenderEndTag();
+
+        //    writer.AddAttribute(HtmlTextWriterAttribute.Id, "forumChilds");
+        //    writer.RenderBeginTag(HtmlTextWriterTag.Ol);
+
+        //    foreach (Forum forum in forumList)
+        //    {
+        //        int subForumsCounter = _forumGen.getSubForums(forum.forumId).Count();
+        //        int ThreadsCounter = _forumGen.getDiscussionsPerForum(forum.forumId);
+                
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Li);
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forum");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumInfo");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Src, "img/forum_sign.png");
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumIcon");
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Alt, "forum_sign");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Img);
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumTitleContainer");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumTitle");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.H2);
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Href, "index?forumId="+forum.forumId);
+        //        writer.RenderBeginTag(HtmlTextWriterTag.A);
+
+        //        writer.Write(forum.forumName);
+
+        //        writer.RenderEndTag();  //Link
+        //        writer.RenderEndTag();  //forumTitle H2
+        //        writer.RenderEndTag();  //forumTitleContainer Div
+        //        writer.RenderEndTag();  //forumInfo img
+        //        writer.RenderEndTag();  //forumInfo Div
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumStats");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Li);
+        //        writer.Write("Sub Forums: " + subForumsCounter);
+        //        writer.RenderEndTag();  //Li
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Li);
+        //        writer.Write("Discussions: " + ThreadsCounter);
+        //        writer.RenderEndTag();  //Li
+        //        writer.RenderEndTag();  //forumStats Ul
+
+        //        writer.AddAttribute(HtmlTextWriterAttribute.Class, "forumAdmin");
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+        //        writer.RenderBeginTag(HtmlTextWriterTag.Li);
+        //        writer.Write("Admin: " + forum.admin.userName);
+        //        writer.RenderEndTag();  //Li
+        //        writer.RenderEndTag();  //forumAdmin Ul
+
+        //        writer.RenderEndTag();  //Forum Div
+        //        writer.RenderEndTag();  //Forum ListItem
+        //    }
+
+        //    writer.RenderEndTag();  //forumChilds
+        //    writer.RenderEndTag();  //ForumList
+        //    writer.RenderEndTag();  //BodyBox
+        //    writer.RenderEndTag();  //Body
 
             
-            if (WebOperationContext.Current != null)
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+        //    if (WebOperationContext.Current != null)
+        //        WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
 
-            byte[] htmlBytes = Encoding.UTF8.GetBytes(stringWriter.ToString());
+        //    byte[] htmlBytes = Encoding.UTF8.GetBytes(stringWriter.ToString());
 
-            return new MemoryStream(htmlBytes);
-        }
+        //    return new MemoryStream(htmlBytes);
+        //}
 
-        public Stream web_css()
-        {
-            //string style = System.IO.File.ReadAllText(@"style.css");
-            StreamReader _textStreamReader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("ForumGenerator_Version2_Server.style.css"));
-            string style = _textStreamReader.ReadToEnd();
+        //public Stream web_css()
+        //{
+        //    //string style = System.IO.File.ReadAllText(@"style.css");
+        //    StreamReader _textStreamReader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("ForumGenerator_Version2_Server.style.css"));
+        //    string style = _textStreamReader.ReadToEnd();
 
-            if (WebOperationContext.Current != null)
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/css";
+        //    if (WebOperationContext.Current != null)
+        //        WebOperationContext.Current.OutgoingResponse.ContentType = "text/css";
 
-            byte[] htmlBytes = Encoding.UTF8.GetBytes(style);
+        //    byte[] htmlBytes = Encoding.UTF8.GetBytes(style);
 
-            return new MemoryStream(htmlBytes);
-        }
+        //    return new MemoryStream(htmlBytes);
+        //}
 
-        public Stream web_getForum(int forumId)
-        {
-            string pageTitle = "The Nimbus Forum Generator";
-            List<Forum> forumList = _forumGen.getForums();
+        //public Stream web_getForum(int forumId)
+        //{
+        //    string pageTitle = "The Nimbus Forum Generator";
+        //    List<Forum> forumList = _forumGen.getForums();
 
-            StringWriter stringWriter = new StringWriter();
-            HtmlTextWriter writer = new HtmlTextWriter(stringWriter);
+        //    StringWriter stringWriter = new StringWriter();
+        //    HtmlTextWriter writer = new HtmlTextWriter(stringWriter);
 
-            //Section: Head
-            attachHtmlHead(writer, pageTitle);
+        //    //Section: Head
+        //    attachHtmlHead(writer, pageTitle);
 
-            if (WebOperationContext.Current != null)
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+        //    if (WebOperationContext.Current != null)
+        //        WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
 
-            byte[] htmlBytes = Encoding.UTF8.GetBytes(stringWriter.ToString());
+        //    byte[] htmlBytes = Encoding.UTF8.GetBytes(stringWriter.ToString());
 
-            return new MemoryStream(htmlBytes);
-        }
+        //    return new MemoryStream(htmlBytes);
+        //}
 
-        public Stream web_getImg(string imageName)
-        {
-            string path = Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString();
+        //public Stream web_getImg(string imageName)
+        //{
+        //    string path = Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString();
            
             
-            FileStream fs = File.OpenRead(path + "\\img\\"+imageName);
-            WebOperationContext.Current.OutgoingResponse.ContentType = "image/jpeg";
-            return fs;
-        }
+        //    FileStream fs = File.OpenRead(path + "\\img\\"+imageName);
+        //    WebOperationContext.Current.OutgoingResponse.ContentType = "image/jpeg";
+        //    return fs;
+        //}
     }
 }

@@ -1,0 +1,78 @@
+﻿@using ForumGenerator.WebClient.Communication;
+@using ServiceReference1;
+
+@{
+    Communicator communicator = new Communicator();
+    List<Forum> forumList = communicator.getForums();
+    int pageHeight = forumList.Count() * 60 + 100;
+}
+
+
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" />
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <title>The Nimbus Forum Generator</title>
+    </head>
+
+    <body>
+
+        <!-- Header Section-->
+		<div class="Header">
+            <span style="display: block; float: left; clear: right; min-width: 60%; text-align:center"><img src="img/Nimbus_logo.png" /></span>
+            <span style="display: block; float: left; clear: right; min-width: 40%; height: 110px;">
+            <!--    
+                <input type="text" class="userInput" placeholder ="User Name" />
+                <input type="password" class="userInput" placeholder="Password" />
+                <input type="button" value="login" />
+            -->
+            </span>
+		</div>
+
+        <!-- Content Section-->
+        <div class="BodyBox" style="height: @(pageHeight)px;">
+            <table style="vertical-align: central; height: 30px;">
+                <tr style="vertical-align:central">
+                    <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
+                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp Home</td>
+                </tr>
+            </table>
+			<div class="ForumsList">
+				<div class="ListHeader">
+					<h2>
+						<span class="ListHeaderTitle">Forums List</span>
+                        <span class="ListHeaderStatistics">Sub Forums / Discussions</span>
+                        <span class="ListHeaderLast">Administrator</span>
+					</h2>
+				</div>
+
+                <!-- ForumList Section-->
+                <ol id="forumChilds">
+                    @foreach (Forum f in forumList)
+                    {
+					    <li>
+                            <div class="forum">
+						        <div class="forumInfo">
+							        <img src="img/forum_sign.png" class="forumIcon" alt="forum_sign" />
+                                    <div class="forumTitleContainer">
+								        <h2 class="forumTitle">
+									        <a href="forum?forumId=@f.forumId">@f.forumName</a>
+								        </h2>
+						            </div>
+						        </div>
+                                <ul class="forumStats">
+							        <li>Sub Forums: @communicator.countSubForumsPerForum(f.forumId)</li>
+                                    <li>Discussions: @communicator.countDiscussionsPerForum(f.forumId)</li>
+						        </ul>
+                                <ul class="forumAdmin">
+							        <li>Admin: @f.admin.userName</li>
+						        </ul>
+					        </div>
+					    </li>                        
+                    }
+				</ol>
+			</div>
+		</div>
+	</body>
+
+</html>

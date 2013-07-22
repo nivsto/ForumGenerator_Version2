@@ -790,13 +790,38 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //#Niv - For web purposes
-        public int getDiscussionsPerForum(int forumId)
+        public int countDiscussionsPerForum(int forumId)
         {
             int ans = 0;
             List<SubForum> subForums = getForum(forumId).subForums;
             foreach (SubForum sf in subForums)
             {
                 ans += sf.discussions.Count();
+            }
+
+            return ans;
+        }
+
+        //#Niv - For web purposes
+        public int countSubForumsPerForum(int forumId)
+        {
+            return getForum(forumId).subForums.Count();
+        }
+
+        //#Niv - For web purposes
+        public int countDiscussionsPerSubForum(int forumId, int subForumId)
+        {
+            return getForum(forumId).getSubForum(subForumId).discussions.Count();
+        }
+
+        //#Niv - For web purposes
+        public int countCommentsPerSubForum(int forumId, int subForumId)
+        {
+            int ans = 0;
+            List<Discussion> discussions = getForum(forumId).getSubForum(subForumId).discussions;
+            foreach (Discussion d in discussions)
+            {
+                ans += d.comments.Count();
             }
 
             return ans;

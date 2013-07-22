@@ -66,7 +66,17 @@ namespace ForumGenerator_Version2_Server.Sys
 
         bool removeSubForum(int forumId, int subForumId, string userName, string password);
 
-        void reset();       
+        void reset();
+
+        // Web functions:
+
+        int countDiscussionsPerForum(int forumId);
+
+        int countSubForumsPerForum(int forumId);
+
+        int countDiscussionsPerSubForum(int forumId, int subForumId);
+
+        int countCommentsPerSubForum(int forumId, int subForumId);
 
     }
 }

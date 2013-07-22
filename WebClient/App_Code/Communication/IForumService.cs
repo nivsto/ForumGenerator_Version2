@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
-using ForumGenerator_Version2_Server.Users;
-using ForumGenerator_Version2_Server.ForumData;
+using ServiceReference1;
 
-namespace ForumService
+
+namespace ForumGenerator.WebClient.Communication
 {
     [ServiceContract]
     interface IForumService
