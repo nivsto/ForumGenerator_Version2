@@ -5,6 +5,16 @@
     Communicator communicator = new Communicator();
     List<Forum> forumList = communicator.getForums();
     int pageHeight = forumList.Count() * 60 + 100;
+
+    //if (HttpContext.Current.Session["username"] != null) 
+    //{
+    //    HttpContext.Current.Session.Remove("username");
+    //}
+
+    //if (HttpContext.Current.Session["password"] != null)
+    //{
+    //    HttpContext.Current.Session.Remove("password");
+    //}
 }
 
 
@@ -34,7 +44,7 @@
             <table style="vertical-align: central; height: 30px;">
                 <tr style="vertical-align:central">
                     <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
-                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp Home</td>
+                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a></td>
                 </tr>
             </table>
 			<div class="ForumsList">

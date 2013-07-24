@@ -2,11 +2,45 @@
 @using ServiceReference1;
 
 @{
+    string username = "";
+    string password = "";
     int forumId = Convert.ToInt32(Request.QueryString["forumId"]);
+
+    if (HttpContext.Current.Session["forum_" + forumId + "username"] != null && HttpContext.Current.Session["forum_" + forumId + "password"] != null)
+    {
+        username = HttpContext.Current.Session["forum_" + forumId + "username"].ToString();
+        password = HttpContext.Current.Session["forum_" + forumId + "password"].ToString();
+    }
+    
     Communicator communicator = new Communicator();
     List<SubForum> subForumList = communicator.getSubForums(forumId);
     string forumName = communicator.getForums().Find(delegate(Forum f) { return f.forumId == forumId; }).forumName;
     int pageHeight = subForumList.Count() * 60 + 100;
+
+    string error = null;
+
+    if (IsPost) {
+        switch ( Request.Form["loginout"] ) {
+            case "login":
+                username = Request.Form["username"];
+                password = Request.Form["password"];
+                ///////////// login code!
+                try {
+                    User u = communicator.login(forumId, username, password);
+                    HttpContext.Current.Session["forum_" + forumId + "username"] = username;
+                    HttpContext.Current.Session["forum_" + forumId + "password"] = password;
+                }
+                catch (Exception e) {
+                    error = e.Message;
+                }
+                break;
+            case "logout":
+                communicator.logout(forumId, username, password);
+                HttpContext.Current.Session.Remove("forum_" + forumId + "username"); 
+                HttpContext.Current.Session.Remove("forum_" + forumId + "password");
+                break; 
+        }
+    }
 }
 
 
@@ -22,11 +56,28 @@
         <!-- Header Section-->
 		<div class="Header">
             <span style="display: block; float: left; clear: right; min-width: 60%; text-align:center"><img src="img/Nimbus_logo.png" /></span>
-            <span style="display: block; float: left; clear: right; min-width: 40%; height: 110px;"> 
-                <input type="text" class="userInput" placeholder ="User Name" />
-                <input type="password" class="userInput" placeholder="Password" />
-                <input type="button" value="login" />
-            </span>
+            <div style="display: block; float: left; clear: right; min-width: 40%; height: 110px;">
+                @if (HttpContext.Current.Session["forum_" + forumId + "username"] == null)
+                {
+                    <form method="POST">
+                        <span> 
+                            <input type="text" name="username" class="userInput" placeholder ="User Name" />
+                            <input type="password" name="password" class="userInput" placeholder="Password" />
+                            <input type="submit" value="login" name="loginout" />
+                        </span>
+                    </form>
+                    if(error != null) {
+                        <span id="error_msg" style="color: red;">Error: @error</span>
+                    }
+                }
+                else {
+                    <span id="loggedin_details" style="color: white;">logged in as @username</span>
+                    <form method="POST" style="padding-top:10px; padding-left: 20px;">
+                        <span><input type="submit" name="loginout" value="logout"/></span>
+                    </form>
+                }
+            </div>
+            
 		</div>
 
         <!-- Content Section-->
@@ -34,7 +85,7 @@
             <table style="vertical-align: central; height: 30px;">
                 <tr style="vertical-align:central">
                     <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
-                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp Home -> <a href="forum?forumid=@forumId">@forumName</a></td>
+                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a> -> <a href="forum?forumid=@forumId">@forumName</a></td>
                 </tr>
             </table>
 			<div class="ForumsList">
