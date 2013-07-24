@@ -40,12 +40,6 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public SubForum() { }
 
-        //public SubForum(int subForumId, string subForumTitle)
-        //{
-        //    this.subForumId = subForumId;
-        //    this.subForumTitle = subForumTitle;
-        //}
-
         public SubForum (SubForum sf)
         {
             this.subForumId = sf.subForumId;

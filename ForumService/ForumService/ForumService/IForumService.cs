@@ -56,8 +56,6 @@ namespace ForumService
         [OperationContract]
         User changeAdmin(string userName, string password, int forumId, int newAdminUserId);
 
-        // added in version 3:
-
         [OperationContract]
         Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
 
@@ -68,7 +66,7 @@ namespace ForumService
         Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
 
         [OperationContract]
-        Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+        Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
 
         [OperationContract]
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);

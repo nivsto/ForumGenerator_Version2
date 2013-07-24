@@ -33,8 +33,12 @@ namespace ForumGenerator_Version2_Server.Sys
 
         private string logItemDateFormat()
         {
-            int month = logDate.Month,      day = logDate.Day;
-            int h = logDate.Hour,   m = logDate.Minute,     s = logDate.Second;
+            // Padding digits, so 5 tures to 05. A 2 digits number is not padded.
+            String month = String.Format("{0:00}", logDate.Month);
+            String day = String.Format("{0:00}", logDate.Day);
+            String h = String.Format("{0:00}", logDate.Hour);
+            String m = String.Format("{0:00}", logDate.Minute);
+            String s = String.Format("{0:00}", logDate.Second);
 
             return day + "-" + month + "|" + h + ":" + m + ":" + s;
         }

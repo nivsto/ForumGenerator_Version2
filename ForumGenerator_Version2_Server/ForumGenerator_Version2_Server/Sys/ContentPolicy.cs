@@ -9,6 +9,8 @@ namespace ForumGenerator_Version2_Server.Sys
 {
     public static class ContentPolicy
     {
+        // Unlimited length is actualy 1 MB
+        const int MAX_LEN = 1048576;
 
         public enum cType
         {
@@ -58,23 +60,15 @@ namespace ForumGenerator_Version2_Server.Sys
             int minLen = ranges[(int)contentType, 0];
             int maxLen = ranges[(int)contentType, 1];
 
-            if (maxLen < 0)
-                return isLegalContent(content, minLen);
-            else
-                return isLegalContent(content, minLen, maxLen);
-        }
-
-
-        private static bool isLegalContent(string content, int minLen)
-        {
-            Regex RgxUrl = new Regex("[^"+LETTERS_NUMS_SIGNS+"]");             
-            return (!RgxUrl.IsMatch(content) && content.Length >= minLen);
+            return isLegalContent(content, minLen, maxLen);
         }
 
 
         private static bool isLegalContent(string content, int minLen, int maxLen)
         {
             Regex RgxUrl = new Regex("[^" + LETTERS_NUMS_SIGNS + "]");
+            if (maxLen < 0)         // Unlimited content length
+                maxLen = MAX_LEN;
             return (!RgxUrl.IsMatch(content) && content.Length >= minLen && content.Length <= maxLen);
         }
 

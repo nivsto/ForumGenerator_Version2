@@ -109,8 +109,6 @@ namespace ForumService
             return res;
         }
 
-        // added in version 3:
-
         public Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
         {
             Boolean res = _forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
@@ -129,10 +127,10 @@ namespace ForumService
             return res;
         }
 
-        public Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        public Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
-            Boolean res = _forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
-            return res;
+            Discussion d = _forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
+            return d;
         }
 
         public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
