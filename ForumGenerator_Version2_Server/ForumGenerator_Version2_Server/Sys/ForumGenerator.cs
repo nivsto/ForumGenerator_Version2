@@ -38,7 +38,6 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.Forums.SqlQuery("UPDATE Users SET isLoggedIn = 0 WHERE 1=1");
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
-            this.cp.init();
         }
 
         public ForumGenerator(string superUserName, string superUserPass, bool test)
@@ -55,6 +54,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
             this.db.Forums.SqlQuery("DELETE * FROM Users");
             this.db.SaveChanges();
+            this.cp = new ContentPolicy();
         }
 
         public void reset()
@@ -63,6 +63,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.forums = new List<Forum>();
             this.logger.closeFile();
             this.logger = new Logger();
+            this.cp.init();
             this.db.Forums.SqlQuery("DELETE * FROM Fora");
             this.db.Forums.SqlQuery("DELETE * FROM Comments");
             this.db.Forums.SqlQuery("DELETE * FROM Discussions");

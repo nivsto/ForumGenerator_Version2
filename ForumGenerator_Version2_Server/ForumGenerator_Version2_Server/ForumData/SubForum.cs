@@ -9,7 +9,7 @@ using ForumGenerator_Version2_Server.Sys.Exceptions;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using ForumGenerator_Version2_Server.DataLayer;
-using NClassifier.Bayesian;
+
 
 
 namespace ForumGenerator_Version2_Server.ForumData

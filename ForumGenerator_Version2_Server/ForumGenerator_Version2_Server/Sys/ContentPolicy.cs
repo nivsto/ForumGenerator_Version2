@@ -15,8 +15,8 @@ namespace ForumGenerator_Version2_Server.Sys
         private string badWordsFileName = "badWords.txt";
         const int MAX_LEN = 1048576;
 
-        private Tuple<int, int>[] ranges = new Tuple<int, int>[8];
-        private HashSet<string> badWords = new HashSet<string>();
+        private Tuple<int, int>[] ranges;
+        private HashSet<string> badWords;
 
         public enum cType
         {
@@ -29,7 +29,13 @@ namespace ForumGenerator_Version2_Server.Sys
             COMMENT_CONTENT,
             MEMBER_SIGNATURE
         }
-        
+
+        public ContentPolicy()
+        {
+            ranges = new Tuple<int, int>[8];
+            badWords = new HashSet<string>();
+            init();
+        }
 
         public void init()
         { 
