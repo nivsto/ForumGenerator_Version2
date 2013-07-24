@@ -416,7 +416,13 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
-                this.logger.logAction("performing createNewComment: "); // TODO add content
+                this.logger.logAction("performing createNewComment:     userName: " + userName +             
+                                                                     "\tpassword: " + password +
+                                                                     "\tforumId: " + forumId +
+                                                                     "\tsubForumId: " + subForumId +
+                                                                     "\tdiscussionId: " + discussionId +
+                                                                     "\tcontent: " + content);
+
 
                 Forum forum = getForum(forumId);
                 SubForum sf = forum.getSubForum(subForumId);
