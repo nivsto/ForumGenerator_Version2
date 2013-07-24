@@ -13,11 +13,11 @@ namespace ConsoleApplication1.AccTests
         const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
         const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
         const int min = 0;
-        const int max = 10000;
+        const int max = 1000000;
         static Random random = new Random();
         int testNum = 0;
 
-        static int numOfThreads = 2;
+        static int numOfThreads = 63;
         static ManualResetEvent[] events = new ManualResetEvent[numOfThreads];
 
         //const string ADMIN_NAME = "mngr";
@@ -27,6 +27,7 @@ namespace ConsoleApplication1.AccTests
         {
             this.bridge = bridge;
             this.testsLogger = testsLogger;
+            this.bridge.reset();
         }
 
         public override void runTests()
@@ -43,7 +44,7 @@ namespace ConsoleApplication1.AccTests
             this.bridge.reset();
 
             Console.WriteLine("testing ThreadTest2:");
-            ThreadTest2();
+          //  ThreadTest2();
             testNum++;
             testsLogger.logMethodTestResults("ThreadTest2", testNum);
             Console.WriteLine("Done \n");
@@ -68,18 +69,18 @@ namespace ConsoleApplication1.AccTests
             {
                 list.Add(i);
                 events[i] = new ManualResetEvent(false);
-                ThreadPool.QueueUserWorkItem(delegate
-                {
-                    runAndSetScenario1(i);
-                });
+                ThreadPool.QueueUserWorkItem(new WaitCallback(runAndSetScenario1),i);
+                //{
+                //    runAndSetScenario1(i);
+                //});
             }
             WaitHandle.WaitAll(events);
      
         }
 
-        private void runAndSetScenario1(int index)
+        private void runAndSetScenario1(object index)
         {
-            int j = index;
+            int j = (int)index;
             scenario1();
             events[j].Set(); 
         }
@@ -109,7 +110,7 @@ namespace ConsoleApplication1.AccTests
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, SUB_FORUM1);
                 User user = this.bridge.register(forum.forumId, USER_1, PASSWORD_1, "", "");
                 Discussion d = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, DISCUSSION_1, NO_CONTENT);
-                
+
                 this.bridge.login(forum.forumId, USER_1, PASSWORD_1);
                 for (int i = 1; i <= 10; i++)
                 {
@@ -120,7 +121,7 @@ namespace ConsoleApplication1.AccTests
                 AssertTrue(logoutAns);
 
                 int num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-               // AssertTrue(num_of_comments == 10);
+           
 
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 User user2 = this.bridge.register(forum.forumId, USER_2, PASSWORD_2, "", "");
@@ -131,24 +132,24 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, d.discussionId, NO_CONTENT);
                 }
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-                //AssertTrue(num_of_comments == 110);
+              
 
                 d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, d.discussionId, ADMIN_NAME, ADMIN_PSWD, "brand new content");
                 AssertEquals(d.content, "brand new content");
                
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-               // AssertTrue(num_of_comments == 110);
+              
 
                 Discussion[] discussions = new Discussion[100];
                 for (int i = 1; i <= 10; i++)
                     discussions[i] = this.bridge.createNewDiscussion(USER_2, PASSWORD_2, forum.forumId, subForum.subForumId, "discussion" + i, NO_CONTENT);
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-               // AssertTrue(num_of_comments == 210);
+             
 
                 for (int i = 1; i <= 10; i++)
                     d = this.bridge.editDiscussion(forum.forumId, subForum.subForumId, discussions[i].discussionId, USER_2, PASSWORD_2, "brand new content" + i);
                 num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
-                //AssertTrue(num_of_comments == 210);
+              
 
                 testsLogger.logMethodTestResults("ThreadTest1", testNum);
                 Console.WriteLine("finished scenario1 \n");

@@ -65,12 +65,12 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Comment createNewComment(string content, User user, ForumGeneratorContext db)
         {
             Comment newComment = new Comment(content, user, this);
-            lock (db)
-            {
+            //lock (db)
+            //{
                 this.comments.Add(newComment);
                 db.Comments.Add(newComment);
                 db.SaveChanges();
-            }
+            //}
             return newComment;
         }
 
@@ -111,11 +111,11 @@ namespace ForumGenerator_Version2_Server.ForumData
         internal Discussion editDiscussion(string newContent, ForumGeneratorContext db)
         {
             this.content = newContent;
-            lock (db)
-            {
+            //lock (db)
+            //{
                 db.Entry(db.Discussions.Find(this.discussionId)).CurrentValues.SetValues(this);
                 db.SaveChanges();
-            }
+            //}
             return this;
         }
     }

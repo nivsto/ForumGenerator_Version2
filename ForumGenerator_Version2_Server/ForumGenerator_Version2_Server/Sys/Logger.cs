@@ -25,7 +25,11 @@ namespace ForumGenerator_Version2_Server.Sys
             this.eventID++;
             try
             {
-                String path = getLogFileName();
+                String path;
+                do
+                {
+                    path = getLogFileName();
+                } while (File.Exists(path));
                 setOutputFileStream(path);
                 Console.WriteLine("Log file: " + path);
             }

@@ -58,18 +58,24 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal User login(string userName, string password, ForumGeneratorContext db)
         {
-            User user = getUser(userName);
-            db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
-            db.SaveChanges();
-            return user.login(password);
+            lock (db)
+            {
+                User user = getUser(userName);
+                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+                db.SaveChanges();
+                return user.login(password);
+            }
         }
 
         internal User logout(string userName, string password, ForumGeneratorContext db)
         {
-            User user = getUser(userName);
-            db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
-            db.SaveChanges();
-            return user.logout(password);
+            lock (db)
+            {
+                User user = getUser(userName);
+                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+                db.SaveChanges();
+                return user.logout(password);
+            }
         }
 
         internal User register(string userName, string password, string email, string signature, ForumGeneratorContext db)
@@ -80,14 +86,16 @@ namespace ForumGenerator_Version2_Server.ForumData
             else
             {
                 // userName does not exist - create new User
-                User newUser = new User(userName, password, email, signature, this);
-                lock (db)
-                {
+                //lock (db)
+                //{
+                    User newUser = new User(userName, password, email, signature, this);
+
                     this.members.Add(newUser);
                     db.Users.Add(newUser);
                     db.SaveChanges();
-                }
-                return newUser;
+
+                    return newUser;
+               // }
             }
         }
 
@@ -117,12 +125,12 @@ namespace ForumGenerator_Version2_Server.ForumData
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_TITLE);
             SubForum newSubForum = new SubForum(subForumTitle, this);
-            lock (db)
-            {
+            //lock (db)
+            //{
                 this.subForums.Add(newSubForum);
                 db.SubForums.Add(newSubForum);
                 db.SaveChanges();
-            }
+            //}
             return newSubForum;
         }
 

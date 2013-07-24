@@ -59,18 +59,21 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public void reset()
         {
-            this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
-            this.forums = new List<Forum>();
-            this.logger.closeFile();
-            this.logger = new Logger();
-            this.cp.init();
-            this.db.Forums.SqlQuery("DELETE * FROM Fora");
-            this.db.Forums.SqlQuery("DELETE * FROM Comments");
-            this.db.Forums.SqlQuery("DELETE * FROM Discussions");
-            this.db.Forums.SqlQuery("DELETE * FROM SubForumModerators");
-            this.db.Forums.SqlQuery("DELETE * FROM SubForums");
-            this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
-            this.db.Forums.SqlQuery("DELETE * FROM Users");
+            lock (db)
+            {
+                this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
+                this.forums = new List<Forum>();
+                this.logger.closeFile();
+                this.logger = new Logger();
+                this.cp.init();
+                this.db.Forums.SqlQuery("DELETE * FROM Fora");
+                this.db.Forums.SqlQuery("DELETE * FROM Comments");
+                this.db.Forums.SqlQuery("DELETE * FROM Discussions");
+                this.db.Forums.SqlQuery("DELETE * FROM SubForumModerators");
+                this.db.Forums.SqlQuery("DELETE * FROM SubForums");
+                this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
+                this.db.Forums.SqlQuery("DELETE * FROM Users");
+            }
         }
 
 
@@ -87,8 +90,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.logger.logAction("performing login: forumId: " + forumId + 
                                                   "\tuserName: " + userName + 
                                                   "\tpassword: " + password);
-
-                return new User(getForum(forumId).login(userName, password, db));
+                lock (db)
+                {
+                    return new User(getForum(forumId).login(userName, password, db));
+                }
             }
             catch (Exception e)
             {
@@ -105,8 +110,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.logger.logAction("performing logout: forumId: " + forumId +
                                         "\tuserName: " + userName +
                                         "\tpassword: " + password);
-
-                User loggedOutUser = getForum(forumId).logout(userName, password, db);
+                lock (db)
+                {
+                    User loggedOutUser = getForum(forumId).logout(userName, password, db);
+                }
                 return true;
             }
             catch (Exception e)
@@ -123,8 +130,10 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logAction("performing superUserLogin: userName: " + userName +
                                                            "\tpassword: " + password);
-
-                return this.superUser.login(userName, password);
+                lock (db)
+                {
+                    return this.superUser.login(userName, password);
+                }
             }
             catch (Exception e)
             {
@@ -139,8 +148,10 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logAction("performing superUserLogout: userName: " + userName +
                                                 "\tpassword: " + password);
-
-                return this.superUser.logout(userName, password);
+                lock (db)
+                {
+                    return this.superUser.logout(userName, password);
+                }
             }
             catch (Exception e)
             {
@@ -165,8 +176,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
-
-                return new User(this.getForum(forumId).register(userName, password, email, signature, db));
+                lock (db)
+                {
+                    return new User(this.getForum(forumId).register(userName, password, email, signature, db));
+                }
             }
             catch (Exception e)
             {
@@ -299,29 +312,30 @@ namespace ForumGenerator_Version2_Server.Sys
                                                               "\tforumName: " + forumName +
                                                               "\tadminUserName: " + adminUserName +
                                                               "\tadminPassword: " + adminPassword);
-
-                if (!this.cp.isLegalContent(ContentPolicy.cType.FORUM_NAME, forumName))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
-
-                // Check if forum name already exist
-                if (this.isForumNameExist(forumName))
-                    throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_FNAME);
-                if (!Security.checkSuperUserAuthorization(this, userName, password))
-                {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
-                }
-                Forum newForum;
-                forumName = this.cp.censor(forumName);
                 lock (db)
                 {
+                    if (!this.cp.isLegalContent(ContentPolicy.cType.FORUM_NAME, forumName))
+                    {
+                        throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
+                    }
+
+                    // Check if forum name already exist
+                    if (this.isForumNameExist(forumName))
+                        throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_FNAME);
+                    if (!Security.checkSuperUserAuthorization(this, userName, password))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
+                    }
+                    Forum newForum;
+                 //   forumName = this.cp.censor(forumName);
+
                     newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
                     this.forums.Add(newForum);
                     this.db.Forums.Add(newForum);
                     this.db.SaveChanges();
+                    return new Forum(newForum);
                 }
-                return new Forum(newForum);
+                
             }
             catch (Exception e)
             {
@@ -345,14 +359,17 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
-                Forum forum = getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
-                    !Security.checkAdminAuthorization(forum, userName, password))
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    Forum forum = getForum(forumId);
+                    if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                        !Security.checkAdminAuthorization(forum, userName, password))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
+                    //subForumTitle = this.cp.censor(subForumTitle);
+                    return new SubForum(forum.createNewSubForum(subForumTitle, db));
                 }
-                subForumTitle = this.cp.censor(subForumTitle);
-                return new SubForum(forum.createNewSubForum(subForumTitle, db));
             }
             catch (Exception e)
             {
@@ -379,24 +396,34 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
-                Forum forum = getForum(forumId);
-                SubForum sf = forum.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
-                    !Security.checkMemberAuthorization(forum, userName, password))
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    Forum forum = getForum(forumId);
+                    SubForum sf = forum.getSubForum(subForumId);
+                    if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                        !Security.checkMemberAuthorization(forum, userName, password))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
+                    User user;
+                    // if(isSuperUser(userName, password)
+                    //    currently not supported.
+                   // title = this.cp.censor(title);
+                  //  content = this.cp.censor(content);
+                    user = forum.getUser(userName);
+                    return new Discussion(sf.createNewDiscussion(title, content, user, db));
                 }
-                User user;
-                // if(isSuperUser(userName, password)
-                //    currently not supported.
-                title = this.cp.censor(title);
-                content = this.cp.censor(content);
-                user = forum.getUser(userName);
-                return new Discussion(sf.createNewDiscussion(title, content, user, db));
             }
             catch (Exception e)
             {
-                this.logger.logError("createNewDiscussion: " + e.Message);
+                this.logger.logError("createNewDiscussion: " + e.Message+
+                     "userName: " + userName +
+                    "\tpassword: " + password +
+                    "\tforumId: " + forumId +
+                    "\tsubForumId: " + subForumId +
+                    "\ttitle: " + title +
+                    "\tcontent: " + content);
+
                 throw e;
             }
         }
@@ -406,10 +433,7 @@ namespace ForumGenerator_Version2_Server.Sys
         {
             try
             {
-                if (!this.cp.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
+
 
                 this.logger.logAction("performing createNewComment:     userName: " + userName +             
                                                                      "\tpassword: " + password +
@@ -417,26 +441,40 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                      "\tsubForumId: " + subForumId +
                                                                      "\tdiscussionId: " + discussionId +
                                                                      "\tcontent: " + content);
-
-                Forum forum = getForum(forumId);
-                SubForum sf = forum.getSubForum(subForumId);
-                Discussion d = sf.getDiscussion(discussionId);
-                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
-                    !Security.checkAdminAuthorization(forum, userName, password) &&
-                    !Security.checkMemberAuthorization(forum, userName, password))
+              
+                if (!this.cp.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content))
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
-                // if(isSuperUser(userName, password)
-                //    currently not supported.
-                content = this.cp.censor(content);
-                User user = forum.getUser(userName);
-                return new Comment(d.createNewComment(content, user, db));
+                lock (db)
+                {
+                    Forum forum = getForum(forumId);
+                    SubForum sf = forum.getSubForum(subForumId);
+                    Discussion d = sf.getDiscussion(discussionId);
+                    if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                        !Security.checkAdminAuthorization(forum, userName, password) &&
+                        !Security.checkMemberAuthorization(forum, userName, password))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
+
+                    // if(isSuperUser(userName, password)
+                    //    currently not supported.
+                //    content = this.cp.censor(content);
+                    User user = forum.getUser(userName);
+                    return new Comment(d.createNewComment(content, user, db));
+                }
             }
             catch (Exception e)
             {
-                this.logger.logError("createNewComment: " + e.Message);
+                this.logger.logError("createNewComment: " + e.Message + 
+                     "userName: " + userName +             
+                    "\tpassword: " + password +
+                    "\tforumId: " + forumId +
+                    "\tsubForumId: " + subForumId +
+                    "\tdiscussionId: " + discussionId +
+                    "\tcontent: " + content);
                 throw e;
             }
         }
@@ -458,8 +496,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
-
-                f.removeSubForum(subForumId);
+                lock (db)
+                {
+                    f.removeSubForum(subForumId);
+                }
                 return true;
             }
             catch (Exception e)
@@ -482,19 +522,22 @@ namespace ForumGenerator_Version2_Server.Sys
                                                               "\tsubForumId: " + subForumId +
                                                               "\tdiscussionId: " + discussionId);
 
-                Forum f = this.getForum(forumId);
-                SubForum sf = f.getSubForum(subForumId);
-                Discussion d = sf.getDiscussion(discussionId);
-                // check authorization
-                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
-                    !Security.checkAdminAuthorization(f, userName, password) &&
-                    !Security.checkModeratorAuthorization(sf, userName, password) &&
-                    !Security.checkPublisherAuthorization(d, userName, password))
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    Forum f = this.getForum(forumId);
+                    SubForum sf = f.getSubForum(subForumId);
+                    Discussion d = sf.getDiscussion(discussionId);
+                    // check authorization
+                    if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                        !Security.checkAdminAuthorization(f, userName, password) &&
+                        !Security.checkModeratorAuthorization(sf, userName, password) &&
+                        !Security.checkPublisherAuthorization(d, userName, password))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
+                    sf.removeDiscussion(discussionId, db);
+                    return true;
                 }
-                sf.removeDiscussion(discussionId, db);
-                return true;
             }
             catch (Exception e)
             {
@@ -517,7 +560,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
-                return new User(this.getForum(forumId).changeAdmin(newAdminUserId, db));
+                lock (db)
+                {
+                    return new User(this.getForum(forumId).changeAdmin(newAdminUserId, db));
+                }
             }
             catch (Exception e)
             {
@@ -530,10 +576,17 @@ namespace ForumGenerator_Version2_Server.Sys
         // #Asa how to throw exception
         public Forum getForum(int forumId)
         {
-            Forum forum = this.db.Forums.Find(forumId);
-            if(forum == null)
-                throw new ForumNotFoundException(ForumGeneratorDefs.FORUM_NF);
-            return forum;
+            try
+            {
+                Forum forum = this.db.Forums.Find(forumId);
+                if (forum == null)
+                    throw new ForumNotFoundException(ForumGeneratorDefs.FORUM_NF);
+                return forum;
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ForumNotFoundException(ForumGeneratorDefs.DISCUSSION_NF);
+            }
         }
 
 
@@ -563,16 +616,18 @@ namespace ForumGenerator_Version2_Server.Sys
                                                          "\tsubForumId: " + subForumId +
                                                          "\tadderUserName: " + adderUsrName +
                                                          "\tadderPswd: " + adderPswd);
-
-                Forum f = this.getForum(forumId);
-                SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderPswd) &&
-                    !Security.checkAdminAuthorization(f, adderUsrName, adderPswd))
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    Forum f = this.getForum(forumId);
+                    SubForum sf = f.getSubForum(subForumId);
+                    if (!Security.checkSuperUserAuthorization(this, adderUsrName, adderPswd) &&
+                        !Security.checkAdminAuthorization(f, adderUsrName, adderPswd))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
+                    sf.addModerator(modUserName, db);
+                    return true;
                 }
-                sf.addModerator(modUserName, db);
-                return true;
             }
             catch (Exception e)
             {
@@ -590,17 +645,19 @@ namespace ForumGenerator_Version2_Server.Sys
                                                             "\tsubForumId: " + subForumId +
                                                             "\trmverUserName: " + rmverUsrName +
                                                             "\trmverPswd: " + rmverPswd);
-
-                Forum f = this.getForum(forumId);
-                SubForum sf = f.getSubForum(subForumId);
-                if (!Security.checkSuperUserAuthorization(this, rmverUsrName, rmverPswd) &&
-                    !Security.checkAdminAuthorization(f, rmverUsrName, rmverPswd))
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
-                }
+                    Forum f = this.getForum(forumId);
+                    SubForum sf = f.getSubForum(subForumId);
+                    if (!Security.checkSuperUserAuthorization(this, rmverUsrName, rmverPswd) &&
+                        !Security.checkAdminAuthorization(f, rmverUsrName, rmverPswd))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
 
-                sf.removeModerator(modUserName, db);
-                return true;
+                    sf.removeModerator(modUserName, db);
+                    return true;
+                }
             }
             catch (Exception e)
             {
@@ -616,6 +673,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 this.logger.logAction("editDiscussion: userName: " + userName +
                                                 "\tpassword: " + password +
                                                 "\tforumId: " + forumId +
+                                                "\tdiscussionId: " + discussionId +
                                                 "\tsubForumId: " + subForumId +
                                                 "\tnew content: <not detailed in log>");
 
@@ -624,20 +682,23 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
 
-                Forum f = this.getForum(forumId);
-                SubForum sf = f.getSubForum(subForumId);
-                Discussion d = sf.getDiscussion(discussionId);
-                // check authorization
-                if (!Security.checkSuperUserAuthorization(this, userName, password) &&
-                    !Security.checkAdminAuthorization(f, userName, password) &&
-                    !Security.checkModeratorAuthorization(sf, userName, password) &&
-                    !Security.checkPublisherAuthorization(d, userName, password))
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
-                }
+                    Forum f = this.getForum(forumId);
+                    SubForum sf = f.getSubForum(subForumId);
+                    Discussion d = sf.getDiscussion(discussionId);
+                    // check authorization
+                    if (!Security.checkSuperUserAuthorization(this, userName, password) &&
+                        !Security.checkAdminAuthorization(f, userName, password) &&
+                        !Security.checkModeratorAuthorization(sf, userName, password) &&
+                        !Security.checkPublisherAuthorization(d, userName, password))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
 
-                this.cp.censor(newContent);
-                return new Discussion(d.editDiscussion(newContent, db));
+                  //  newContent = this.cp.censor(newContent);
+                    return new Discussion(d.editDiscussion(newContent, db));
+                }
             }
             catch (Exception e)
             {
@@ -710,15 +771,17 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                      "\tpswd: " + pswd +
                                                                      "\tforumId: " + forumId +
                                                                      "\tsubForumId: " + subForumId);
-
-                Forum forum = this.getForum(forumId);
-                if (!Security.checkSuperUserAuthorization(this, userName, pswd) &&
-                    !Security.checkAdminAuthorization(forum, userName, pswd)) 
+                lock (db)
                 {
-                    throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
-                }
+                    Forum forum = this.getForum(forumId);
+                    if (!Security.checkSuperUserAuthorization(this, userName, pswd) &&
+                        !Security.checkAdminAuthorization(forum, userName, pswd))
+                    {
+                        throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
+                    }
 
-                return forum.getNumOfCommentsSubForum(subForumId);
+                    return forum.getNumOfCommentsSubForum(subForumId);
+                }
             }
             catch (Exception e)
             {
