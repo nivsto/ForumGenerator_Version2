@@ -26,6 +26,7 @@ namespace ForumGenerator_Version2_Server.Sys
         internal List<Forum> forums { get; private set; }
         public Logger logger { get; private set; }
         public ForumGeneratorContext db { get; set; }
+        internal ContentPolicy cp;
 
 
         public ForumGenerator(string superUserName, string superUserPass)
@@ -36,6 +37,8 @@ namespace ForumGenerator_Version2_Server.Sys
             this.logger = new Logger();
             this.db.Forums.SqlQuery("UPDATE Users SET isLoggedIn = 0 WHERE 1=1");
             this.db.SaveChanges();
+            this.cp = new ContentPolicy();
+            this.cp.init();
         }
 
         public ForumGenerator(string superUserName, string superUserPass, bool test)
@@ -156,10 +159,8 @@ namespace ForumGenerator_Version2_Server.Sys
                                                             "\temail: " + email +
                                                             "\tsignature: " + signature);
 
-                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
-                    !ContentPolicy.isLegalEmailFormat(email) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature) )
+                if (!this.cp.isLegalEmailFormat(email) ||
+                    !this.cp.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature))
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
@@ -187,7 +188,6 @@ namespace ForumGenerator_Version2_Server.Sys
                     returnedList.Add(new Forum(f));
                 }
                 return returnedList;
-                //return this.forums;
             }
             catch (Exception e)
             {
@@ -299,11 +299,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                               "\tadminUserName: " + adminUserName +
                                                               "\tadminPassword: " + adminPassword);
 
-                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.FORUM_NAME, forumName) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, adminUserName) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, adminPassword))
+                if (!this.cp.isLegalContent(ContentPolicy.cType.FORUM_NAME, forumName))
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
@@ -316,6 +312,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
                 }
                 Forum newForum;
+                forumName = this.cp.censor(forumName);
                 lock (db)
                 {
                     newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
@@ -342,9 +339,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                   "\tforumId: " + forumId +
                                                                   "\tsubForumTitle: " + subForumTitle);
 
-                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.SUBFORUM_TITLE, subForumTitle) )
+                if (!this.cp.isLegalContent(ContentPolicy.cType.SUBFORUM_TITLE, subForumTitle))
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
@@ -355,6 +350,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
+                subForumTitle = this.cp.censor(subForumTitle);
                 return new SubForum(forum.createNewSubForum(subForumTitle, db));
             }
             catch (Exception e)
@@ -376,14 +372,12 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                      "\ttitle: " + title +
                                                                      "\tcontent: " + content);
 
-                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.DISCUSSION_TITLE, title) ||
-                    !ContentPolicy.isLegalContent(ContentPolicy.cType.DISCUSSION_CONTENT, content) )
+                if (!this.cp.isLegalContent(ContentPolicy.cType.DISCUSSION_TITLE, title) ||
+                    !this.cp.isLegalContent(ContentPolicy.cType.DISCUSSION_CONTENT, content))
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
-            
+
                 Forum forum = getForum(forumId);
                 SubForum sf = forum.getSubForum(subForumId);
                 if (!Security.checkSuperUserAuthorization(this, userName, password) &&
@@ -394,7 +388,9 @@ namespace ForumGenerator_Version2_Server.Sys
                 User user;
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
-                    user = forum.getUser(userName);
+                title = this.cp.censor(title);
+                content = this.cp.censor(content);
+                user = forum.getUser(userName);
                 return new Discussion(sf.createNewDiscussion(title, content, user, db));
             }
             catch (Exception e)
@@ -404,14 +400,12 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-        //creates a new comment and a new user which is the forum's administrator
+
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
         {
             try
             {
-                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.USER_NAME, userName) ||
-                   !ContentPolicy.isLegalContent(ContentPolicy.cType.PASSWORD, password) ||
-                   !ContentPolicy.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content) )
+                if (!this.cp.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content))
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
@@ -422,7 +416,6 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                      "\tsubForumId: " + subForumId +
                                                                      "\tdiscussionId: " + discussionId +
                                                                      "\tcontent: " + content);
-
 
                 Forum forum = getForum(forumId);
                 SubForum sf = forum.getSubForum(subForumId);
@@ -436,6 +429,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
                 // if(isSuperUser(userName, password)
                 //    currently not supported.
+                content = this.cp.censor(content);
                 User user = forum.getUser(userName);
                 return new Comment(d.createNewComment(content, user, db));
             }
@@ -624,7 +618,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                 "\tsubForumId: " + subForumId +
                                                 "\tnew content: <not detailed in log>");
 
-                if (!ContentPolicy.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, newContent))
+                if (!this.cp.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, newContent))
                 {
                     throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
                 }
@@ -641,6 +635,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
 
+                this.cp.censor(newContent);
                 return new Discussion(d.editDiscussion(newContent, db));
             }
             catch (Exception e)

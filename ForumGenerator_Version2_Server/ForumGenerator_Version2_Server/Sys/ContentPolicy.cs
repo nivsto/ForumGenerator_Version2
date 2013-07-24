@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
+using System.Collections;
+using System.IO;
+
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    public static class ContentPolicy
+    public class ContentPolicy
     {
-        // Unlimited length is actualy 1 MB
+        private string badWordsFileName = "badWords.txt";
         const int MAX_LEN = 1048576;
+
+        private Tuple<int, int>[] ranges = new Tuple<int, int>[8];
+        private HashSet<string> badWords = new HashSet<string>();
 
         public enum cType
         {
@@ -23,23 +29,24 @@ namespace ForumGenerator_Version2_Server.Sys
             COMMENT_CONTENT,
             MEMBER_SIGNATURE
         }
+        
 
-        // For each cType, there is a minLength and maxLength.
-        // Range for USER_NAME is in index 0,
-        // Range for PASSWORD is in index 1, and so on.
-        // -1 in Index[i,1] means there is no limitation on maxLength.
-        private static int[,] ranges = new int[,]
+        public void init()
         { 
-       /* minLen, maxLen */
-              {1, 20},      //  USER_NAME
-              {1, 20},      //  PASSWORD
-              {0, 50},      //  FORUM_NAME
-              {0, 80},      //  SUBFORUM_TITLE
-              {0, 80},      //  DISCUSSION_TITLE
-              {0, -1},      //  DISCUSSION_CONTENT
-              {0, -1},      //  COMMENT_CONTENT
-              {0, 20}       //  MEMBER_SIGNATURE                          
-        };
+                                                      /* minLen, maxLen */
+            ranges[(int)cType.USER_NAME] = new Tuple<int, int>(1, 20);               //  USER_NAME
+            ranges[(int)cType.PASSWORD] = new Tuple<int, int>(1, 20);                //  PASSWORD
+            ranges[(int)cType.FORUM_NAME] = new Tuple<int, int>(0, 50);              //  FORUM_NAME
+            ranges[(int)cType.SUBFORUM_TITLE] = new Tuple<int, int>(0, 80);          //  SUBFORUM_TITLE
+            ranges[(int)cType.DISCUSSION_TITLE] = new Tuple<int, int>(0, 80);        //  DISCUSSION_TITLE
+            ranges[(int)cType.DISCUSSION_CONTENT] = new Tuple<int, int>(0, MAX_LEN); //  DISCUSSION_CONTENT
+            ranges[(int)cType.COMMENT_CONTENT] = new Tuple<int, int>(0, MAX_LEN);    //  COMMENT_CONTENT
+            ranges[(int)cType.MEMBER_SIGNATURE] = new Tuple<int, int>(0, 20);        //  MEMBER_SIGNATURE 
+            
+            // Init list of bad words out of file
+            string[] lines = File.ReadAllLines(badWordsFileName);
+            foreach (string line in lines) { badWords.Add(line); };
+        }
 
 
         // Regular expr of contents
@@ -48,32 +55,27 @@ namespace ForumGenerator_Version2_Server.Sys
         const string LETTERS_NUMS_SIGNS = "a-zA-Z0-9,: /&|+-?!@#$%^*()><=_{}[]~"; // not checking '-'
         
 
-
-
         // Checks if the given data contains only legal chars and if its length is in the
         // given range, according to forum policy.
-        public static bool isLegalContent(cType contentType, string content)
+        public bool isLegalContent(cType contentType, string content)
         {
             if (content == null)
                 return false;
-
-            int minLen = ranges[(int)contentType, 0];
-            int maxLen = ranges[(int)contentType, 1];
+            int minLen = ranges[(int)contentType].Item1;
+            int maxLen = ranges[(int)contentType].Item2;
 
             return isLegalContent(content, minLen, maxLen);
         }
 
 
-        private static bool isLegalContent(string content, int minLen, int maxLen)
+        private bool isLegalContent(string content, int minLen, int maxLen)
         {
             Regex RgxUrl = new Regex("[^" + LETTERS_NUMS_SIGNS + "]");
-            if (maxLen < 0)         // Unlimited content length
-                maxLen = MAX_LEN;
             return (!RgxUrl.IsMatch(content) && content.Length >= minLen && content.Length <= maxLen);
         }
 
 
-        public static bool isLegalEmailFormat(string email)
+        public bool isLegalEmailFormat(string email)
         {
             if (email == null)
                 return false;
@@ -89,6 +91,23 @@ namespace ForumGenerator_Version2_Server.Sys
                 return false;
             }
 
+        }
+
+
+        // Replace any bad word with **** and returns the new string.
+        public string censor(string text)
+        {
+            string res = "";
+            const string CensoredText = "****";
+            const string PatternTemplate = @"\b({0})(s?)\b";
+            const RegexOptions Options = RegexOptions.IgnoreCase;
+
+            IEnumerable<Regex> badWordMatchers = badWords.
+                Select(x => new Regex(string.Format(PatternTemplate, x), Options));
+            res = badWordMatchers.
+                Aggregate(text, (current, matcher) => matcher.Replace(current, CensoredText));
+
+            return res;
         }
 
 
