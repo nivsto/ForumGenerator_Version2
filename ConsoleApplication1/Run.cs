@@ -24,11 +24,11 @@ namespace ConsoleApplication1
         {
        
             string logFileName = getPath() + "/TestForumGenerator.Log.txt";
-            TestForumGenerator tests = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);                                   
+            //TestForumGenerator tests = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);
             //tests.runTests();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new testGui());
+            Application.Run(new testGui(logFileName));
             //Console.ReadKey();
 
         }

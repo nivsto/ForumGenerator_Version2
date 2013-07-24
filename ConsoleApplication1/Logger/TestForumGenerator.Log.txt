@@ -1,1 +1,18 @@
  -- T E S T S   L O G G E R --
+
+** ForumGenerator Tests **
+Testing on Real mode
+
+*testing Advanced Tests functions*
+
+test method: advancedTest1
+test summary for advancedTest1: 1 tests passed
+
+test method: advancedTest2
+test summary for advancedTest2: 1 tests passed
+
+*testing Thread functions*
+
+test method: ThreadTest1
+test summary for ThreadTest1: 0 tests passed
+

@@ -17,6 +17,9 @@ namespace ConsoleApplication1.AccTests
         static Random random = new Random();
         int testNum = 0;
 
+        static int numOfThreads = 2;
+        static ManualResetEvent[] events = new ManualResetEvent[numOfThreads];
+
         //const string ADMIN_NAME = "mngr";
         // const string ADMIN_PSWD = "mngrPswd";
 
@@ -37,8 +40,10 @@ namespace ConsoleApplication1.AccTests
             testsLogger.logMethodTestResults("ThreadTest1", testNum);
             Console.WriteLine("Done \n");
 
+            this.bridge.reset();
+
             Console.WriteLine("testing ThreadTest2:");
-            ThreadTest1();
+            ThreadTest2();
             testNum++;
             testsLogger.logMethodTestResults("ThreadTest2", testNum);
             Console.WriteLine("Done \n");
@@ -55,25 +60,31 @@ namespace ConsoleApplication1.AccTests
     
         private void ThreadTest1()
         {
-            var events = new ManualResetEvent[10];
+            //int numOfThreads = 2;
+            //var events = new ManualResetEvent[numOfThreads];
             var list = new List<int>();
-            int numOfThreads = 2;
+            
             for (int i = 0; i < numOfThreads; i++)
             {
                 list.Add(i);
                 events[i] = new ManualResetEvent(false);
-                int j = i;
-                ThreadPool.QueueUserWorkItem(x =>
+                ThreadPool.QueueUserWorkItem(delegate
                 {
-                    scenario2();
-                    events[j].Set();
-                }, list[i]);
+                    runAndSetScenario1(i);
+                });
             }
             WaitHandle.WaitAll(events);
-
+     
         }
 
-        private void scenario1(Object stateInfo)
+        private void runAndSetScenario1(int index)
+        {
+            int j = index;
+            scenario1();
+            events[j].Set(); 
+        }
+
+        private void scenario1()
         {
             /* Initialization of uniqe string names*/
             // int num = random.Next(min, max);
@@ -98,7 +109,8 @@ namespace ConsoleApplication1.AccTests
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, SUB_FORUM1);
                 User user = this.bridge.register(forum.forumId, USER_1, PASSWORD_1, "", "");
                 Discussion d = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, DISCUSSION_1, NO_CONTENT);
-
+                
+                this.bridge.login(forum.forumId, USER_1, PASSWORD_1);
                 for (int i = 1; i <= 10; i++)
                 {
                     this.bridge.createNewComment(USER_1, PASSWORD_1, forum.forumId, subForum.subForumId, d.discussionId, NO_CONTENT);
@@ -200,6 +212,7 @@ namespace ConsoleApplication1.AccTests
                 User user = this.bridge.register(forum.forumId, USER_1, PASSWORD_1, "", "");
                 Discussion d = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, DISCUSSION_1, NO_CONTENT);
 
+                this.bridge.login(forum.forumId, USER_1, PASSWORD_1);
                 for (int i = 1; i <= 10; i++)
                 {
                     this.bridge.createNewComment(USER_1, PASSWORD_1, forum.forumId, subForum.subForumId, d.discussionId, NO_CONTENT);
