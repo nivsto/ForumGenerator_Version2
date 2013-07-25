@@ -210,39 +210,6 @@ namespace ConsoleApplication1.AccTests
 
             this.bridge.reset();
 
-            //Forum name with wrong characters (not A-Z,a-z,0-9)
-            try
-            {
-                this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd~;forum", "mngr", "pswd");
-                failMsg(6);
-            }
-            catch { testNum++; }
-
-            this.bridge.reset();
-
-            //Forum Admin UserName with wrong characters (not A-Z,a-z,0-9)
-            try
-            {
-                this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr;*$#", "pswd");
-                failMsg(7);
-            }
-            catch { testNum++; }
-
-            this.bridge.reset();
-
-            //Forum Admin Password with wrong characters (not A-Z,a-z,0-9)
-            try
-            {
-                this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd;(*%^)");
-                failMsg(8);
-            }
-            catch { testNum++; }
-
-            this.bridge.reset();
-
             return testNum;
         }
 

@@ -16,11 +16,12 @@ namespace ConsoleApplication1.AccTests
         {
             this.bridge = bridge;
             this.testsLogger = testsLogger;
+            this.bridge.reset();
         }
 
         public override void runTests()
         {
-            this.testsLogger.logTestsSection("Member");
+            this.testsLogger.logTestsSection("Guest");
             Console.WriteLine("testing GetForums:");
             test(testGetForums);
             Console.WriteLine("Done \n");
@@ -42,12 +43,14 @@ namespace ConsoleApplication1.AccTests
         {
             {
                 int testNum = 0;
+                this.bridge.reset();
 
                 List<Forum> res;
 
                 /* success tests */
                 try
                 {
+                    this.bridge.reset();
                     res = this.bridge.getForums();
                     AssertTrue(res.Count == 0);
 

@@ -63,8 +63,9 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
                 this.forums = new List<Forum>();
-                this.logger.closeFile();
-                this.logger = new Logger();
+                this.logger.logAction("\n\n\n\t ####################    NEW TEST    ####################n\n\n");
+                //this.logger.closeFile();
+               // this.logger = new Logger();
                 this.cp.init();
                 this.db.Forums.SqlQuery("DELETE * FROM Fora");
                 this.db.Forums.SqlQuery("DELETE * FROM Comments");
@@ -114,6 +115,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     User loggedOutUser = getForum(forumId).logout(userName, password, db);
                 }
+
                 return true;
             }
             catch (Exception e)
@@ -195,13 +197,14 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logAction("performing getForums");
 
-                List<Forum> fl = this.db.Forums.ToList();
-                List<Forum> returnedList = new List<Forum>();
-                foreach (Forum f in fl)
-                {
-                    returnedList.Add(new Forum(f));
-                }
-                return returnedList;
+                    List<Forum> fl = this.db.Forums.ToList();
+                    List<Forum> returnedList = new List<Forum>();
+                    foreach (Forum f in fl)
+                    {
+                        returnedList.Add(new Forum(f));
+                    }
+                    return returnedList;
+                
             }
             catch (Exception e)
             {

@@ -144,14 +144,25 @@ namespace ConsoleApplication1.AccTests
                     User user = this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
                     res = this.bridge.logout(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
-                    AssertFalse(user.isLoggedIn);
                     AssertTrue(res);
+                    List<User> ul = this.bridge.getUsers(forum.forumId);
+                    foreach (User u in ul)
+                    {
+                        if (u.userName == user.userName)
+                             AssertFalse(u.isLogged());
+                    }
 
                     user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
                     res = this.bridge.logout(forum.forumId, user.userName, user.password);
-                    AssertFalse(user.isLoggedIn);
                     AssertTrue(res);
+                    ul = this.bridge.getUsers(forum.forumId);
+                    foreach (User u in ul)
+                    {
+                        if (u.userName == user.userName)
+                            AssertFalse(u.isLogged());
+                    }
+                   
 
                     testNum++;
                 }
@@ -224,15 +235,15 @@ namespace ConsoleApplication1.AccTests
                     User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                     this.bridge.login(forum.forumId, user.userName, user.password);
 
-                    res = this.bridge.createNewDiscussion(SU_NAME, SU_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
-                    AssertTrue(subForum.discussions.Contains(res));
+                    res = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion1", "no content");
+                    AssertTrue(this.bridge.getDiscussions(forum.forumId, subForum.subForumId).Count == 1);
 
                     res = this.bridge.createNewDiscussion(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, "discussion2", "no content");
-                    AssertTrue(subForum.discussions.Contains(res));
+                    AssertTrue(this.bridge.getDiscussions(forum.forumId, subForum.subForumId).Count == 2);
 
                     res = this.bridge.createNewDiscussion(user.userName, user.password, forum.forumId, subForum.subForumId, "discussion3", "no content");
-                    AssertTrue(subForum.discussions.Contains(res));
-
+                    AssertTrue(this.bridge.getDiscussions(forum.forumId, subForum.subForumId).Count == 3);
+                   
                     testNum++;
                 }
                 catch { failMsg(testNum); }
@@ -335,10 +346,11 @@ namespace ConsoleApplication1.AccTests
                   //  AssertTrue(discussion.comments.Contains(res));
 
                     res = this.bridge.createNewComment(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
-                    AssertTrue(discussion.comments.Contains(res));
+                    AssertTrue(this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId) == 2);
+                    //AssertTrue(discussion.comments.Contains(res));
 
                     res = this.bridge.createNewComment(user.userName, user.password, forum.forumId, subForum.subForumId, discussion.discussionId, "no content");
-                    AssertTrue(discussion.comments.Contains(res));
+                    AssertTrue(this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId) == 3);
 
                     testNum++;
                 }
@@ -465,7 +477,7 @@ namespace ConsoleApplication1.AccTests
                //    AssertTrue(res);
 
                     res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, ADMIN_NAME, ADMIN_PSWD);
-                    AssertFalse(subForum.discussions.Contains(discussion));
+                    AssertTrue(this.bridge.getDiscussions(forum.forumId, subForum.subForumId).Count == 0);
                     AssertTrue(res);
 
                  //   res = this.bridge.deleteDiscussion(forum.forumId, subForum.subForumId, discussion.discussionId, user.userName, user.password);
@@ -579,9 +591,7 @@ namespace ConsoleApplication1.AccTests
             {
                 int testNum = 0;
 
-                Boolean res;
-
-                /* success tests */
+               /* success tests */
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
@@ -721,9 +731,9 @@ namespace ConsoleApplication1.AccTests
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                     Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
-
+                    int before = this.bridge.getUsers(forum.forumId).Count;
                     res = this.bridge.register(forum.forumId, "user1", "pswd1", "a@a.com", "");
-                    AssertTrue(forum.members.Contains(res));
+                    AssertTrue(this.bridge.getUsers(forum.forumId).Count == before + 1 );
                     AssertTrue(res.userName == "user1");
                     AssertTrue(res.email == "a@a.com");
 
@@ -735,34 +745,6 @@ namespace ConsoleApplication1.AccTests
 
 
                 /* failure tests */
-
-                // userName with wrong characters
-                try
-                {
-                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
-                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
-
-                    res = this.bridge.register(forum.forumId, "fs^&-!~", "pswd1", "a@a.com", "");
-                    failMsg(testNum++);
-                }
-                catch { testNum++; }
-
-                this.bridge.reset();
-
-                // password with wrong characters
-                try
-                {
-                    this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
-                    this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
-
-                    res = this.bridge.register(forum.forumId, "user1", "1~-#~!", "a@a.com", "");
-                    failMsg(testNum++);
-                }
-                catch { testNum++; }
-
-                this.bridge.reset();
 
                 // wrong forumId
                 try

@@ -160,6 +160,10 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
+        public List<User> getModerators(int forumId, int subForumId)
+        {
+            throw new NotImplementedException();
+        }
         public void reset()
         {
             throw new NotImplementedException();

@@ -3,6 +3,23 @@
 ** ForumGenerator Tests **
 Testing on Real mode
 
+*testing Guest functions*
+
+test method: testGetForums
+-- FAILED --  failed test number 0
+-- FAILED --  failed test number 0
+-- FAILED --  failed test number 0
+test summary for testGetForums: 0 tests passed
+
+test method: testGetsubForums
+test summary for testGetsubForums: 2 tests passed
+
+test method: testGetDiscussions
+test summary for testGetDiscussions: 2 tests passed
+
+test method: testGetComments
+test summary for testGetComments: 2 tests passed
+
 *testing Advanced Tests functions*
 
 test method: advancedTest1
@@ -14,5 +31,3 @@ test summary for advancedTest2: 1 tests passed
 *testing Thread functions*
 
 test method: ThreadTest1
-test summary for ThreadTest1: 0 tests passed
-

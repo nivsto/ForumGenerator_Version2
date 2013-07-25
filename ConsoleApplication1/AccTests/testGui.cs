@@ -6,8 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-//using ForumGenerator_Version2_Server;
-//using ForumGenerator_Version2_Server.Sys;
 using ForumGenerator_Version2_Server;
 using ForumGenerator_Version2_Server.Sys;
 
@@ -16,6 +14,7 @@ namespace ConsoleApplication1.AccTests
     public partial class testGui : Form
     {
         TestForumGenerator tests;
+        
         public testGui(string logFileName)
         {
             this.tests = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);
@@ -34,12 +33,12 @@ namespace ConsoleApplication1.AccTests
 
         private void btnRunConnect_Click(object sender, EventArgs e)
         {
-
+            Hide();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Hide();
+            Dispose();
         }
 
         private void btnOpenLog_Click(object sender, EventArgs e)
@@ -47,6 +46,15 @@ namespace ConsoleApplication1.AccTests
 
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void testGui_Load(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }
