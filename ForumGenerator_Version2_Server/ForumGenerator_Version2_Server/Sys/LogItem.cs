@@ -33,7 +33,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         private string logItemDateFormat()
         {
-            // Padding digits, so 5 tures to 05. A 2 digits number is not padded.
+            // Padding digits, so 5 turnes to 05. A 2 digits number is not padded.
             String month = String.Format("{0:00}", logDate.Month);
             String day = String.Format("{0:00}", logDate.Day);
             String h = String.Format("{0:00}", logDate.Hour);
