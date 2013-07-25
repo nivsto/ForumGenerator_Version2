@@ -23,12 +23,12 @@ namespace ConsoleApplication1.AccTests
         /*  Run Forum Generator Tests    */
         private void btnRunFg_Click(object sender, EventArgs e)
         {
-            tests.runTests();
+            tests.runTests(1);
         }
 
         private void btnRunScal_Click(object sender, EventArgs e)
         {
-
+            tests.runTests(2);
         }
 
         private void btnRunConnect_Click(object sender, EventArgs e)

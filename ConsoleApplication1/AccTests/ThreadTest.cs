@@ -57,12 +57,7 @@ namespace ConsoleApplication1.AccTests
             testNum++;
             testsLogger.logMethodTestResults("ThreadTest2", testNum);
             Console.WriteLine("Done \n");
-            Console.WriteLine("Press Enter to exit");
-            do
-            {
-                while (!Console.KeyAvailable)
-                { }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Enter);
+           
         }
 
 

@@ -44,25 +44,38 @@ namespace ConsoleApplication1
 
 
         // main function
-        public void runTests()
+        public void runTests(int i)
         {
-            this.testsLogger.logAction("\n** ForumGenerator Tests **\n" +
-                                        "Testing on " + this.mode + " mode\n");
+            if (i == 1)
+            {
+                this.testsLogger.logAction("\n** ForumGenerator Tests **\n" +
+                                            "Testing on " + this.mode + " mode\n");
 
-            SuperUserAccTests superUserAccTests = new SuperUserAccTests(this.testsLogger, this.bridge);
-            AdminAccTests adminAccTests = new AdminAccTests(this.testsLogger, this.bridge);
-            MemberAccTests memberAccTests = new MemberAccTests(this.testsLogger, this.bridge);
-            GuestAccTests guestAccTests = new GuestAccTests(this.testsLogger, this.bridge);
-            AdvancedTest advancedTest = new AdvancedTest(this.testsLogger, this.bridge);
-            ThreadTest threadTest = new ThreadTest(this.testsLogger, this.bridge);
+                SuperUserAccTests superUserAccTests = new SuperUserAccTests(this.testsLogger, this.bridge);
+                AdminAccTests adminAccTests = new AdminAccTests(this.testsLogger, this.bridge);
+                MemberAccTests memberAccTests = new MemberAccTests(this.testsLogger, this.bridge);
+                GuestAccTests guestAccTests = new GuestAccTests(this.testsLogger, this.bridge);
+                AdvancedTest advancedTest = new AdvancedTest(this.testsLogger, this.bridge);
+                ThreadTest threadTest = new ThreadTest(this.testsLogger, this.bridge);
 
-          //  superUserAccTests.runTests();
-           // adminAccTests.runTests();
-          //  memberAccTests.runTests();
-            guestAccTests.runTests();
-            advancedTest.runTests();
-            threadTest.runTests();
-            //sumTests();
+                superUserAccTests.runTests();
+                adminAccTests.runTests();
+                memberAccTests.runTests();
+                guestAccTests.runTests();
+                advancedTest.runTests();
+                threadTest.runTests();
+                //sumTests();
+            }
+            else if (i == 2)
+            {
+
+                this.testsLogger.logAction("\n** Scalabilty Tests **\n" +
+                                            "Testing on " + this.mode + " mode\n");
+
+                ScalabiltyTest scalabiltyTest = new ScalabiltyTest(this.testsLogger, this.bridge);
+                scalabiltyTest.runTests();
+
+            }
         }
 
         /************************************************************/

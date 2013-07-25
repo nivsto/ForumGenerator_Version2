@@ -66,6 +66,7 @@
     <Compile Include="AccTests\AdvancedTest.cs" />
     <Compile Include="AccTests\GuestAccTests.cs" />
     <Compile Include="AccTests\MemberAccTests.cs" />
+    <Compile Include="AccTests\ScalabiltyTest.cs" />
     <Compile Include="AccTests\SuperUserAccTests.cs" />
     <Compile Include="AccTests\testGui.cs">
       <SubType>Form</SubType>
