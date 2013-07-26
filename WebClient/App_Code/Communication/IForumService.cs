@@ -108,6 +108,9 @@ namespace ForumGenerator.WebClient.Communication
         [OperationContract]
         int countCommentsPerSubForum(int forumId, int subForumId);
 
+        [OperationContract]
+        int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
+
     }
 
 }

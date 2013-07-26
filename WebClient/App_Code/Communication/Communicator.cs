@@ -471,5 +471,17 @@ namespace ForumGenerator.WebClient.Communication
             }
         }
 
+        public int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId)
+        {
+            try
+            {
+                return httpProxy.countCommentsPerDiscussion(forumId, subForumId, discussionId);
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
+
     }
 }

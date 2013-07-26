@@ -14,10 +14,9 @@
     }
     
     Communicator communicator = new Communicator();
-    List<Discussion> discussions = communicator.getDiscussions(forumId,subForumId);
+    
     string forumName = communicator.getForums().Find(delegate(Forum f) { return f.forumId == forumId; }).forumName;
     string subForumName = communicator.getSubForums(forumId).Find(delegate(SubForum sf) { return sf.subForumId == subForumId; }).subForumTitle;    
-    int pageHeight = discussions.Count() * 60 + 140;
 
     string error = null;
 
@@ -79,72 +78,20 @@
                     </form>
                 }
             </div>
-            
 		</div>
 
         <!-- Content Section-->
-        <div class="BodyBox" style="height: @(pageHeight)px;">
+        <div class="BodyBox" style="height: 400px;">
             <table style="vertical-align: central; height: 30px;">
                 <tr style="vertical-align:central">
                     <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
                     <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a> -> <a href="forum?forumid=@forumId">@forumName</a> -> <a href="subforum?forumid=@forumId&subForumId=@subForumId">@subForumName</a></td>
                 </tr>
             </table>
-            @if (HttpContext.Current.Session["forum_" + forumId + "username"] != null)
-            {
-                <a href="post?forumId=@forumId&subForumId=@subForumId"><div class="postButton">+ Post New Discussion</div></a>
-            }
-			<div class="ForumsList">
-				<div class="ListHeader">
-					<h2>
-						<span class="ListHeaderTitle">Title / Thread Starter</span>
-                        <span class="ListHeaderStatistics">Replies</span>
-                        <span class="ListHeaderLast">Last Post</span>
-					</h2>
-				</div>
+            <form>
+                <textarea style="width:150px;height:80px;">Type something</textarea>
+            </form>
 
-                <!-- ForumList Section-->
-                <ol id="forumChilds">
-                    @foreach (Discussion d in discussions)
-                    {
-                        int commentCounter = @communicator.countCommentsPerDiscussion(forumId, subForumId, d.discussionId);
-                        string discussion_img = "img/single_discussion_sign.png";
-                        if (commentCounter > 0)
-                        {
-                            discussion_img = "img/multi_discussion_sign.png";
-                        }
-                        <li>
-                            <div class="forum">
-						        <div class="forumInfo">
-							        <img src=@discussion_img class="forumIcon" alt="discussion_sign" />
-                                    <div class="forumTitleContainer">
-								        <h2 class="forumTitle">
-									        <a href="discussion?forumId=@forumId&subforumid=@subForumId&discussionId=@d.discussionId">@d.title</a>
-								        </h2>
-						            </div>
-                                    <span style="padding-left:68px;">Started by @d.publisher.userName at @d.publishDate</span>
-						        </div>
-                                <ul class="forumStats">
-                                    <li>Comments: @commentCounter</li>
-						        </ul>
-                                <ul class="forumAdmin">
-                                @{
-                                    List<Comment> comments = communicator.getComments(forumId, subForumId, d.discussionId);
-                                    if(comments.Count() > 0) {
-                                        <li>@comments.Last().publisher.userName</li>
-                                        <li>@comments.Last().publishDate</li>
-                                    }
-                                    else {
-                                        <li>@d.publisher.userName</li>
-                                        <li>@d.publishDate</li>
-                                    }
-                                }
-						        </ul>
-					        </div>
-					    </li>                        
-                    }
-				</ol>
-			</div>
 		</div>
 	</body>
 

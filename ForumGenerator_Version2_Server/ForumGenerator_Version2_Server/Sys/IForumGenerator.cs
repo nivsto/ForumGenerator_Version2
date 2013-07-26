@@ -78,5 +78,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         int countCommentsPerSubForum(int forumId, int subForumId);
 
+        int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
+
     }
 }

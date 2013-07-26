@@ -895,6 +895,10 @@ namespace ForumGenerator_Version2_Server.Sys
             return ans;
         }
 
+        public int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId)
+        {
+            return getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).comments.Count();
+        }
 
     }
 }
