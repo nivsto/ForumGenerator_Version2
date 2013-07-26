@@ -162,7 +162,7 @@ namespace ConsoleApplication1.AccTests
 
 
                 res = this.bridge.getResponsersForSingleUser(ADMIN_NAME, ADMIN_PSWD, forum.forumId, users[0].userName);
-                AssertTrue(res.Count == USERS_NUMBER); 
+                AssertTrue(res.Count == USERS_NUMBER - 1); //  (USERS_NUMBER - 1) - because it doesn't include user[0] (publisher)
 
 
                 testNum++;

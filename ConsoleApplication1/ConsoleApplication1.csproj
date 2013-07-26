@@ -64,6 +64,7 @@
     <Compile Include="AccTests\AccTestsForumGenerator.cs" />
     <Compile Include="AccTests\AdminAccTests.cs" />
     <Compile Include="AccTests\AdvancedTest.cs" />
+    <Compile Include="AccTests\ClientTest.cs" />
     <Compile Include="AccTests\GuestAccTests.cs" />
     <Compile Include="AccTests\MemberAccTests.cs" />
     <Compile Include="AccTests\ScalabiltyTest.cs" />
