@@ -2,44 +2,40 @@
 @using ServiceReference1;
 
 @{
-    string username = "";
-    string password = "";
     int forumId = Convert.ToInt32(Request.QueryString["forumId"]);
     int subForumId = Convert.ToInt32(Request.QueryString["subForumId"]);
 
-    if (HttpContext.Current.Session["forum_" + forumId + "username"] != null && HttpContext.Current.Session["forum_" + forumId + "password"] != null)
+    if (HttpContext.Current.Session["forum_" + forumId + "username"] == null || HttpContext.Current.Session["forum_" + forumId + "password"] == null)
     {
-        username = HttpContext.Current.Session["forum_" + forumId + "username"].ToString();
-        password = HttpContext.Current.Session["forum_" + forumId + "password"].ToString();
+        Response.Redirect("subForum?forumId=" + forumId + "&subForumId=" + subForumId);
     }
-    
+
+    string username = HttpContext.Current.Session["forum_" + forumId + "username"].ToString();
+    string password = HttpContext.Current.Session["forum_" + forumId + "password"].ToString();
+        
     Communicator communicator = new Communicator();
     
     string forumName = communicator.getForums().Find(delegate(Forum f) { return f.forumId == forumId; }).forumName;
-    string subForumName = communicator.getSubForums(forumId).Find(delegate(SubForum sf) { return sf.subForumId == subForumId; }).subForumTitle;    
+    string subForumName = communicator.getSubForums(forumId).Find(delegate(SubForum sf) { return sf.subForumId == subForumId; }).subForumTitle;
 
     string error = null;
-
+    
     if (IsPost) {
-        switch ( Request.Form["loginout"] ) {
-            case "login":
-                username = Request.Form["username"];
-                password = Request.Form["password"];
-                ///////////// login code!
-                try {
-                    User u = communicator.login(forumId, username, password);
-                    HttpContext.Current.Session["forum_" + forumId + "username"] = username;
-                    HttpContext.Current.Session["forum_" + forumId + "password"] = password;
-                }
-                catch (Exception e) {
-                    error = e.Message;
-                }
-                break;
-            case "logout":
-                communicator.logout(forumId, username, password);
-                HttpContext.Current.Session.Remove("forum_" + forumId + "username"); 
-                HttpContext.Current.Session.Remove("forum_" + forumId + "password");
-                break; 
+        if ( Request.Form["loginout"] == "logout") {
+            communicator.logout(forumId, username, password);
+            HttpContext.Current.Session.Remove("forum_" + forumId + "username"); 
+            HttpContext.Current.Session.Remove("forum_" + forumId + "password");
+            Response.Redirect("subForum?forumId=" + forumId + "&subForumId=" + subForumId);
+        }
+        if (Request.Form["post_msg"] == "Post Your Discussion")
+        {
+            try {
+                communicator.createNewDiscussion(username, password, forumId, subForumId, Request.Form["title"], Request.Form["content"]);
+                Response.Redirect("subForum?forumId=" + forumId + "&subForumId=" + subForumId);
+            }
+            catch (Exception e) {
+                error = e.Message;
+            }
         }
     }
 }
@@ -58,41 +54,33 @@
 		<div class="Header">
             <span style="display: block; float: left; clear: right; min-width: 60%; text-align:center"><img src="img/Nimbus_logo.png" /></span>
             <div style="display: block; float: left; clear: right; min-width: 40%; height: 110px;">
-                @if (HttpContext.Current.Session["forum_" + forumId + "username"] == null)
-                {
-                    <form method="POST">
-                        <span> 
-                            <input type="text" name="username" class="userInput" placeholder ="User Name" />
-                            <input type="password" name="password" class="userInput" placeholder="Password" />
-                            <input type="submit" value="login" name="loginout" />
-                        </span>
-                    </form>
-                    if(error != null) {
-                        <span id="error_msg" style="color: red;">Error: @error</span>
-                    }
-                }
-                else {
                     <span id="loggedin_details" style="color: white;">logged in as @username</span>
                     <form method="POST" style="padding-top:10px; padding-left: 20px;">
                         <span><input type="submit" name="loginout" value="logout"/></span>
                     </form>
-                }
             </div>
 		</div>
 
         <!-- Content Section-->
-        <div class="BodyBox" style="height: 400px;">
+        <div class="BodyBox" style="height: 450px;">
             <table style="vertical-align: central; height: 30px;">
                 <tr style="vertical-align:central">
                     <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
                     <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a> -> <a href="forum?forumid=@forumId">@forumName</a> -> <a href="subforum?forumid=@forumId&subForumId=@subForumId">@subForumName</a></td>
                 </tr>
             </table>
-            <form>
-                <textarea style="width:150px;height:80px;">Type something</textarea>
+            <form method="POST">
+                <label style="position: relative; top: 10px; font-family: Arial; font-weight: bold;">Discussion Title</label>
+                <input name="title" type="text" placeholder="Type your title here" style="width: 400px; position: relative; top: 10px; left: 5px; border-color: #99a9cf; border-width: 1px;" />
+                <br />
+                <textarea name="content" placeholder="Type your message here" style="width:600px; height:300px; position: relative; left:106px; top: 15px; border-color: #99a9cf; border-width: 1px;"></textarea>
+                <br />
+                <input type="submit" name="post_msg" value="Post Your Discussion" class="postButton" style="position: relative; top: 20px; left: 100px;"/>
             </form>
-
-		</div>
+            @if(error != null) {
+                <span id="error_msg" style="color: red;">Error: @error</span>
+            }
+        </div>
 	</body>
 
 </html>

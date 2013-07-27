@@ -19,7 +19,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         [DataMember]
         public string title { get; private set; }
         [DataMember]
-        public string content;
+        public string content { get; private set; }
         [DataMember]
         public DateTime publishDate { get; private set; }
         [DataMember]

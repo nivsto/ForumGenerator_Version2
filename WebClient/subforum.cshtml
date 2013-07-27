@@ -92,7 +92,7 @@
             </table>
             @if (HttpContext.Current.Session["forum_" + forumId + "username"] != null)
             {
-                <a href="post?forumId=@forumId&subForumId=@subForumId"><div class="postButton">+ Post New Discussion</div></a>
+                <a href="post?forumId=@forumId&subForumId=@subForumId"><div class="postButton" style="position: relative; top: 6px; left: 8px;">+ Post New Discussion</div></a>
             }
 			<div class="ForumsList">
 				<div class="ListHeader">

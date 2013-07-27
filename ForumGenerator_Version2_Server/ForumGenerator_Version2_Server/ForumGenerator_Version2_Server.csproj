@@ -121,6 +121,10 @@
     <Compile Include="Migrations\201305312203184_changeAdminCreation5.Designer.cs">
       <DependentUpon>201305312203184_changeAdminCreation5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201307271035329_content.cs" />
+    <Compile Include="Migrations\201307271035329_content.Designer.cs">
+      <DependentUpon>201307271035329_content.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="StartHttpServer.cs" />
     <Compile Include="Sys\ContentPolicy.cs" />
@@ -178,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201305312203184_changeAdminCreation5.resx">
       <DependentUpon>201305312203184_changeAdminCreation5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307271035329_content.resx">
+      <DependentUpon>201307271035329_content.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

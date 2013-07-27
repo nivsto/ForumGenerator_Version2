@@ -1,0 +1,177 @@
+﻿@using ForumGenerator.WebClient.Communication;
+@using ServiceReference1;
+
+@{
+    string username = "";
+    string password = "";
+    int forumId = Convert.ToInt32(Request.QueryString["forumId"]);
+    int subForumId = Convert.ToInt32(Request.QueryString["subForumId"]);
+    int discussionId = Convert.ToInt32(Request.QueryString["discussionId"]);    
+
+    if (HttpContext.Current.Session["forum_" + forumId + "username"] != null && HttpContext.Current.Session["forum_" + forumId + "password"] != null)
+    {
+        username = HttpContext.Current.Session["forum_" + forumId + "username"].ToString();
+        password = HttpContext.Current.Session["forum_" + forumId + "password"].ToString();
+    }
+    
+    Communicator communicator = new Communicator();
+    List<Comment> comments = communicator.getComments(forumId, subForumId, discussionId);
+    string forumName = communicator.getForums().Find(delegate(Forum f) { return f.forumId == forumId; }).forumName;
+    string subForumName = communicator.getSubForums(forumId).Find(delegate(SubForum sf) { return sf.subForumId == subForumId; }).subForumTitle;
+    Discussion discussion = communicator.getDiscussions(forumId, subForumId).Find(delegate(Discussion d) { return d.discussionId == discussionId; });    
+    int pageHeight = comments.Count() * 60 + 500;
+
+    int counter = 2;
+
+    string error = null;
+    string error_cmt = null;
+
+    if (IsPost) {
+        if ( Request.Form["loginout"] == "login") 
+        {
+            username = Request.Form["username"];
+            password = Request.Form["password"];
+            ///////////// login code!
+            try {
+                User u = communicator.login(forumId, username, password);
+                HttpContext.Current.Session["forum_" + forumId + "username"] = username;
+                HttpContext.Current.Session["forum_" + forumId + "password"] = password;
+            }
+            catch (Exception e) {
+                error = e.Message;
+            }
+        }
+        if (Request.Form["loginout"] == "logout")
+        {
+            communicator.logout(forumId, username, password);
+            HttpContext.Current.Session.Remove("forum_" + forumId + "username"); 
+            HttpContext.Current.Session.Remove("forum_" + forumId + "password");
+        }
+        if (Request.Form["post_cmt"] == "Post Your Comment")
+        {
+            try
+            {
+                communicator.createNewComment(username, password, forumId, subForumId, discussionId, Request.Form["content"]);
+                Response.Redirect("discussion?forumId=" + forumId + "&subForumId=" + subForumId + "&discussionId=" + discussionId);
+            }
+            catch (Exception e)
+            {
+                error_cmt = e.Message;
+            }
+        }
+    }
+}
+
+
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" />
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <title>The Nimbus Forum Generator</title>
+    </head>
+
+    <body>
+
+        <!-- Header Section-->
+		<div class="Header">
+            <span style="display: block; float: left; clear: right; min-width: 60%; text-align:center"><img src="img/Nimbus_logo.png" /></span>
+            <div style="display: block; float: left; clear: right; min-width: 40%; height: 110px;">
+                @if (HttpContext.Current.Session["forum_" + forumId + "username"] == null)
+                {
+                    <form method="POST">
+                        <span> 
+                            <input type="text" name="username" class="userInput" placeholder ="User Name" />
+                            <input type="password" name="password" class="userInput" placeholder="Password" />
+                            <input type="submit" value="login" name="loginout" />
+                        </span>
+                    </form>
+                    if(error != null) {
+                        <span id="error_msg" style="color: red;">Error: @error</span>
+                    }
+                }
+                else {
+                    <span id="loggedin_details" style="color: white;">logged in as @username</span>
+                    <form method="POST" style="padding-top:10px; padding-left: 20px;">
+                        <span><input type="submit" name="loginout" value="logout"/></span>
+                    </form>
+                }
+            </div>
+            
+		</div>
+
+        <!-- Content Section-->
+        <div class="BodyBox" >
+            <table style="vertical-align: central; height: 30px;">
+                <tr style="vertical-align:central">
+                    <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
+                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a> -> <a href="forum?forumid=@forumId">@forumName</a> -> <a href="subforum?forumid=@forumId&subForumId=@subForumId">@subForumName</a> -> <a href="discussion?forumid=@forumId&subForumId=@subForumId&discussion=@discussionId">Discussion: @discussion.title</a></td>
+                </tr>
+            </table>
+
+            <!-- Comments Section-->
+            <div>
+                <ol>
+                    <li style="margin-bottom: 15px;">
+                        <div class="commentHeader">
+                            <span style="background: transparent url(img/comment_icon.png) no-repeat center left; font: normal 12px Tahoma,Calibri,Verdana,Geneva,sans-serif; display: block; float: left; clear: right; width: 49%; margin-left: 10px; font: normal 12px Tahoma,Calibri,Verdana,Geneva,sans-serif; padding-left: 20px;">@discussion.publishDate</span>
+                            <span style="position: absolute; color: #ffffff; right: 0; top: 0; width: 50%; padding: 4px 10px 0; text-align: right; font: normal 12px Tahoma,Calibri,Verdana,Geneva,sans-serif; vertical-align: middle;">#1</span>
+                        </div>
+                        <div class="commentDetails" style="float: left; width: 100%; background: #f2f6f8 none;">
+                            <div class="userInfo">
+                                <span style="font-weight: bold; color: darkblue">@discussion.publisher.userName</span>
+                                <hr />
+                                <span>&nbsp comments: @communicator.getNumOfCommentsSingleUser("admin", "admin", forumId, discussion.publisher.userName)</span>
+                            </div>
+                            <div class="commentBody">
+                                <span style="font-weight: bold; font-size: 14px;">@discussion.title</span>
+                                <hr />
+                                <span style="word-wrap: break-word;">@discussion.content &nbsp</span>
+                            </div>
+                        </div>
+                        <div class="commentFooter">&nbsp</div>
+                    </li>
+                    @foreach (Comment c in comments) {
+                        <li style="margin-bottom: 15px;">
+                            <div class="commentHeader">
+                                <span style="background: transparent url(img/comment_icon.png) no-repeat center left; font: normal 12px Tahoma,Calibri,Verdana,Geneva,sans-serif; display: block; float: left; clear: right; width: 49%; margin-left: 10px; font: normal 12px Tahoma,Calibri,Verdana,Geneva,sans-serif; padding-left: 20px;">@c.publishDate</span>
+                                <span style="position: absolute; color: #ffffff; right: 0; top: 0; width: 50%; padding: 4px 10px 0; text-align: right; font: normal 12px Tahoma,Calibri,Verdana,Geneva,sans-serif; vertical-align: middle;">#@counter</span>
+                            </div>
+                            <div class="commentDetails" style="float: left; width: 100%; background: #f2f6f8 none;">
+                                <div class="userInfo">
+                                    <span style="font-weight: bold; color: darkblue">@c.publisher.userName</span>
+                                    <hr />
+                                    <span>&nbsp comments: @communicator.getNumOfCommentsSingleUser("admin", "admin", forumId, c.publisher.userName)</span>
+                                </div>
+                                <div class="commentBody">
+                                    <span style="word-wrap: break-word;">@c.content &nbsp</span>
+                                </div>
+                            </div>
+                            <div class="commentFooter">&nbsp</div>
+                        </li>
+                        {counter++;}
+                    }
+                </ol>
+            </div>
+
+            @if (HttpContext.Current.Session["forum_" + forumId + "username"] != null)
+            {
+                <hr />
+                <form method="POST">
+                    <label style="position: relative; top: 10px; font-family: Arial; font-weight: bold;">Post a new comment:</label>
+                    <br />
+                    <textarea name="content" placeholder="Type a new comment" style="width:100%; height:200px; position: relative; top: 15px; border-color: #99a9cf; border-width: 1px;"></textarea>
+                    <br />
+                    <input type="submit" name="post_cmt" value="Post Your Comment" class="postButton" style="position: relative; top: 20px;"/>
+                </form>
+                if(error != null) {
+                    <span id="error_msg2" style="color: red;">Error: @error_cmt</span>
+                }
+            }
+            
+            &nbsp
+            <br /><br /><br />
+
+		</div>
+	</body>
+
+</html>

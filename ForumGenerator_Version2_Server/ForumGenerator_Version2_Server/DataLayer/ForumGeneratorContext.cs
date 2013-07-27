@@ -15,6 +15,11 @@ namespace ForumGenerator_Version2_Server.DataLayer
         {
         }
 
+        public ForumGeneratorContext() // "ForumGenerator_DB1" for the real, "ForumGenerator_DB1_TEST" for the tests
+            : base("ForumGenerator_DB1")
+        {
+        }
+
         public DbSet<Forum> Forums { get; set; }
         public DbSet<SubForum> SubForums { get; set; }
         public DbSet<Discussion> Discussions { get; set; }
@@ -53,4 +58,5 @@ namespace ForumGenerator_Version2_Server.DataLayer
             //    .WithRequired(s => s.parentForum);
         }
     }
+
 }

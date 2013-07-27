@@ -9,7 +9,7 @@ namespace ForumGenerator_Version2_Server.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ForumGenerator_Version2_Server.DataLayer.ForumGeneratorContext context)
