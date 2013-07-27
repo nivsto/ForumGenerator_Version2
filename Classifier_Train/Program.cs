@@ -13,14 +13,18 @@ namespace Classifier_Train
         static void Main(string[] args)
         {
             Trainer tr = new Trainer();
+            tr.trainMatch("goodMsgs.txt");
+      //      tr.trainNonMatch("badMsgs.txt");
+            string text1 = "I am talking about algorithm c++";
+            tr.teachNonMatch("cooking and football");
+            string text2 = "I am talking about cooking and football. also about sport";
+            string text3 = "A wounded protester says he saw plain clothes officers open fire on pro-Morsy sport balls demonstrators as rival rallies stretched into the early hours of Saturday.";
+            string text4 = "Yes";
 
-            string text = "The phrases are more complicated. You could try to " +
-                          "split the text into phrases first and then apply the " +
-                          "keyword search on these phrases instead of searching " +
-                          "the keywords in the whole text. This would give you " +
-                          "the number of keywords in a phrase at the same time." +
-                          " asa doron niv irit gideon ofer mira uri avraham";
-            tr.classify(text);
+            tr.classify(text1);
+            tr.classify(text2);
+            tr.classify(text3);
+            tr.classify(text4);
         }
     }
 }

@@ -10,8 +10,13 @@ using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using ForumGenerator_Version2_Server.DataLayer;
 
+using NClassifier.Bayesian;
+using NClassifier;
 
 
+// #Asa 
+// Add assignment for isClassify
+// Handle editDiscussion, createNewComment
 namespace ForumGenerator_Version2_Server.ForumData
 {
     [DataContract(IsReference = true)]
@@ -29,6 +34,15 @@ namespace ForumGenerator_Version2_Server.ForumData
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
 
+        internal BayesianClassifier bc;
+        // Number of comments in this subForum that are used in order to
+        // train the classifier. Those comments are not being classified.
+        public const int MIN_BEFORE_CLASSIFY = 10;
+        // Min probability required to text, in order to be considered as relevant
+        // to this subForum.
+        public const double MIN_RELEVANT_PROB = 0.9d;
+        internal bool isClassifies;
+
 
         public SubForum(string subForumTitle, Forum parentForun)
         {
@@ -38,6 +52,10 @@ namespace ForumGenerator_Version2_Server.ForumData
             User u = this.parentForum.admin;
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
+
+            this.bc = new BayesianClassifier(new SimpleWordsDataSource(), new DefaultTokenizer());
+            this.trainClassifier();
+            this.isClassifies = (this.getNumOfComments() >= MIN_BEFORE_CLASSIFY);
         }
 
         public SubForum() { }
@@ -53,15 +71,23 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db)
         {
+            if (isClassifies)
+            {
+                this.checkRelevantContent(content);
+            }
+            else
+            {
+                // Set isClassifies if necessary.
+                isClassifies = (this.getNumOfComments() + 1) >= MIN_BEFORE_CLASSIFY;
+            }
             Discussion newDiscussion = new Discussion(title, content, user, this);
-            //lock (db)
-            //{
-                this.discussions.Add(newDiscussion);
-                db.Discussions.Add(newDiscussion);
-                db.SaveChanges();
-          //  }
+            this.discussions.Add(newDiscussion);
+            db.Discussions.Add(newDiscussion);
+            db.SaveChanges();
+
             return newDiscussion;
         }
+
 
         internal Discussion getDiscussion(int discussionId)
         {
@@ -212,6 +238,48 @@ namespace ForumGenerator_Version2_Server.ForumData
             {
                 return (int)ForumGenerator.userTypes.MEMBER;
             }              
+        }
+
+        // The training is based on all discussions' content, then (if needed)
+        // on comments.
+        private void trainClassifier()
+        {
+            int i = 0;
+            // Train classifier in discussions only.
+            foreach (Discussion d in this.discussions)
+            {
+                i++;
+                this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, d.content);
+                if (i >= MIN_BEFORE_CLASSIFY)
+                    return;
+            }
+            // If needed - train classifier on comments also.
+            if (i < MIN_BEFORE_CLASSIFY)
+            {
+                foreach (Discussion d in this.discussions)
+                {
+                    List<Comment> comments = d.comments;
+                    foreach (Comment c in comments)
+                    {
+                        i++;
+                        this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, c.content);
+                        if (i >= MIN_BEFORE_CLASSIFY)
+                            return;
+                    }
+                }
+            }
+            return;
+        }
+
+
+        public bool checkRelevantContent(string text)
+        {
+            double prob = this.bc.Classify(ICategorizedClassifierConstants.DEFAULT_CATEGORY, text);
+            if (prob < MIN_RELEVANT_PROB)
+            {
+                this.bc.TeachNonMatch(text);
+            }
+            return (prob >= MIN_RELEVANT_PROB);
         }
 
     }

@@ -1,0 +1,19 @@
+I've been writing C and C++ code for almost twenty years, but there's one aspect of these languages that I've never really understood. I've obviously used regular casts
+
+Don't use it myself and am very happy about it
+
+ Yes it is. Thank you so much for pointing out my inadequacy
+
+I would not call the legacy C-style cast a "regular cast" in C++, since it is anything but. You generally shouldn't use in C++, especially with classes, it's just too easy to make mistakes with it. Use of it is a sign of a C programmer who has moved to C++ but hasn't quite learned C++ yet
+
+dynamic_cast is used for cases where you don't know what the dynamic type of the object is. You cannot use dynamic_cast if you downcast and the argument type is not polymorphic.
+
+These casts are also called c-style cast. A c-style cast is basically identical to trying out a range of sequences of C++ casts, and taking the first c++ cast that works, without ever considering dynamic_cast. Needless to say that this is much more powerful as it combines all of const_cast, static_cast and reinterpret_cast, but it's also unsafe because it does not use dynamic_cast.
+
+The logic involved makes it complicated to be programmed in T-SQL. Choose a language like C#. First try to make a simple desktop application. Later, if you find that loading all the records to this application is too slow, you could write a c# stored procedure that is executed on the SQL-Server. Depending on the security policy of the SQL-Server, it will have to have a strong key.
+
+To the algorithm now. A list of excluded words is commonly called a stop word list. If you do some googling for this search term, you might find stop word lists you can start with. Add these stop words to a HashSet<T> (I'll be using c# here)
+
+HashSets are fast. They have an access time of O(1), meaning that the time required to do a lookup does not depend on the number items it contains.
+
+This searches punctuations followed either by a whitespace or an end of line. But I must agree that this is not perfect. It might erroneously detect abbreviations as sentence end. You will have to make experiments in order to refine the splitting mechanism

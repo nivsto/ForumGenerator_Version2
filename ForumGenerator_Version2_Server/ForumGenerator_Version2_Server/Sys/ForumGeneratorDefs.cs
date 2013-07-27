@@ -22,8 +22,10 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string UNAUTH_OP = "Unauthorized operation";
 
         public const string WRONG_USR_PSWD = "Wrong user name or password";
-        public const string ILL_CONTENT = "Illegal content";
         public const string INVALID_EMAIL = "Invalid Email address";
+        public const string ILL_CONTENT = "Illegal content";
+        public const string IRELEVANT_CONTENT = "Content is not relevant to this subForum";
+        
 
         public const string ALREADY_IN = "User is already logged in";
         public const string ALREADY_OUT = "User is already logged out";
