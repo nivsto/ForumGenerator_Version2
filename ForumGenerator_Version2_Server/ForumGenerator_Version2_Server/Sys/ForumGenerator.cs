@@ -330,7 +330,7 @@ namespace ForumGenerator_Version2_Server.Sys
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_SUPERUSER);
                     }
                     Forum newForum;
-                 //   forumName = this.cp.censor(forumName);
+                    forumName = this.cp.censor(forumName);
 
                     newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
                     this.forums.Add(newForum);
@@ -370,7 +370,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     {
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
-                    //subForumTitle = this.cp.censor(subForumTitle);
+                    subForumTitle = this.cp.censor(subForumTitle);
                     return new SubForum(forum.createNewSubForum(subForumTitle, db));
                 }
             }
@@ -411,8 +411,8 @@ namespace ForumGenerator_Version2_Server.Sys
                     User user;
                     // if(isSuperUser(userName, password)
                     //    currently not supported.
-                   // title = this.cp.censor(title);
-                  //  content = this.cp.censor(content);
+                    title = this.cp.censor(title);
+                    content = this.cp.censor(content);
                     user = forum.getUser(userName);
                     return new Discussion(sf.createNewDiscussion(title, content, user, db));
                 }
@@ -461,10 +461,10 @@ namespace ForumGenerator_Version2_Server.Sys
                     {
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
-
                     // if(isSuperUser(userName, password)
                     //    currently not supported.
-                //    content = this.cp.censor(content);
+                    sf.checkRelevantContent(content);
+                    content = this.cp.censor(content);
                     User user = forum.getUser(userName);
                     return new Comment(d.createNewComment(content, user, db));
                 }
@@ -699,7 +699,7 @@ namespace ForumGenerator_Version2_Server.Sys
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
 
-                  //  newContent = this.cp.censor(newContent);
+                    newContent = this.cp.censor(newContent);
                     return new Discussion(d.editDiscussion(newContent, db));
                 }
             }
