@@ -32,14 +32,13 @@ namespace ForumGenerator_Version2_Server.ForumData
         public virtual List<Discussion> discussions { get; private set; }
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
-
-        public virtual HashSet<string> relevantWords { get; private set; }
+        [IgnoreDataMember]
+        public virtual HashSet<string> vocabulary { get; private set; }
         // Number of comments in this subForum that are used in order to
         // train the classifier. Those comments are not being classified.
+        [IgnoreDataMember]
         public const int MIN_BEFORE_CLASSIFY = 10;
-        // Min probability required to classified text, in order to be 
-        // considered as relevant to this subForum.
-        public const double MIN_RELEVANT_PROB = 0.9d;
+        [IgnoreDataMember]
         internal bool isClassifies;
 
 
@@ -51,7 +50,8 @@ namespace ForumGenerator_Version2_Server.ForumData
             User u = this.parentForum.admin;
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
-
+            this.vocabulary = new HashSet<string>();
+            this.isClassifies = false;
             
         }
 
@@ -64,11 +64,19 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.moderators = null;
             this.discussions = null;
             this.parentForum = null;
+            this.vocabulary = null;
+            this.isClassifies = false;
         }
 
-        internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db)
+        internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db, HashSet<string> stopWords)
         {
-            
+            if (this.isClassifies)
+            {
+                checkRelevantContent(content, stopWords);
+            }
+            else
+                this.isClassifies = (getNumOfComments() + 1) >= MIN_BEFORE_CLASSIFY;
+                
             Discussion newDiscussion = new Discussion(title, content, user, this);
             this.discussions.Add(newDiscussion);
             db.Discussions.Add(newDiscussion);
@@ -261,9 +269,19 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public bool checkRelevantContent(string text)
+        public void checkRelevantContent(string content, HashSet<string> stopWords)
         {
-            return true;
+            List<string> input = TextClassifier.removePanctuation(content);
+            input = TextClassifier.removeStopWords(input, stopWords);
+
+            if (TextClassifier.isRelevantText(input, this.vocabulary))
+            {
+                this.vocabulary = TextClassifier.addToVocabulary(input, this.vocabulary);
+            }
+            else
+            {
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.IRELEVANT_CONTENT);
+            }
         }
 
     }

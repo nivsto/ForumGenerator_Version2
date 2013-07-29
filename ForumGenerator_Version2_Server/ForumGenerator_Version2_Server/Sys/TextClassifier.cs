@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
-    public class TextFilter
+    public class TextClassifier
     {
 
         public const double MIN_PROB = 0.5d;
@@ -19,15 +20,17 @@ namespace ForumGenerator_Version2_Server.Sys
             return stopWords;
         }
 
-
-
         // Removes all panctuations and trims by spaces.
         public static List<string> removePanctuation(string text)
         {
             List<string> res = new List<string>();
-
-
-
+            text = text.ToLower();
+            text = Regex.Replace(text, @"[^\w\s\']", "");
+            string[] words = text.Split(' ');
+            foreach (string w in words)
+            {
+                res.Add(w);
+            }
             return res;
         }
 
@@ -50,7 +53,7 @@ namespace ForumGenerator_Version2_Server.Sys
             int i = 0;
             foreach (string word in keyWords)
             {
-                if(vocabulary.Contains(word))
+                if (vocabulary.Contains(word))
                     i++;
             }
             prob = i / size;
@@ -60,13 +63,13 @@ namespace ForumGenerator_Version2_Server.Sys
 
 
 
-        public static HashSet<string> mergeWords(HashSet<string> src, HashSet<string> dest)
+        public static HashSet<string> addToVocabulary(List<string> words, HashSet<string> vocabulary)
         {
-            foreach (string word in src)
+            foreach (string word in words)
             {
-                dest.Add(word);
+                vocabulary.Add(word);
             }
-            return dest;
+            return vocabulary;
         }
 
 

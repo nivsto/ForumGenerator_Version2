@@ -143,6 +143,7 @@
     <Compile Include="Sys\Logger.cs" />
     <Compile Include="Sys\LogItem.cs" />
     <Compile Include="Sys\Security.cs" />
+    <Compile Include="Sys\TextClassifier.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="ForumData\Forum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

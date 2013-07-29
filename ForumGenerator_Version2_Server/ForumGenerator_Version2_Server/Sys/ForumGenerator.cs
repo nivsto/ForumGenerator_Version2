@@ -27,6 +27,7 @@ namespace ForumGenerator_Version2_Server.Sys
         public Logger logger { get; private set; }
         public ForumGeneratorContext db { get; set; }
         internal ContentPolicy cp;
+        internal HashSet<string> stopWords { get; private set; }
 
 
         public ForumGenerator(string superUserName, string superUserPass)
@@ -38,6 +39,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.Forums.SqlQuery("UPDATE Users SET isLoggedIn = 0 WHERE 1=1");
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
+            this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
         }
 
         public ForumGenerator(string superUserName, string superUserPass, bool test)
@@ -55,6 +57,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.Forums.SqlQuery("DELETE * FROM Users");
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
+            this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
         }
 
         public void reset()
@@ -414,7 +417,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     title = this.cp.censor(title);
                     content = this.cp.censor(content);
                     user = forum.getUser(userName);
-                    return new Discussion(sf.createNewDiscussion(title, content, user, db));
+                    return new Discussion(sf.createNewDiscussion(title, content, user, db, stopWords));
                 }
             }
             catch (Exception e)
@@ -463,7 +466,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     }
                     // if(isSuperUser(userName, password)
                     //    currently not supported.
-                    sf.checkRelevantContent(content);
+                    //sf.checkRelevantContent(content);
                     content = this.cp.censor(content);
                     User user = forum.getUser(userName);
                     return new Comment(d.createNewComment(content, user, db));
