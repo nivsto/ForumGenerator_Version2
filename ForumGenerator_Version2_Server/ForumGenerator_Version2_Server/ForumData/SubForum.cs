@@ -33,7 +33,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
 
-        internal BayesianClassifier bc;
+        public virtual HashSet<string> relevantWords { get; private set; }
         // Number of comments in this subForum that are used in order to
         // train the classifier. Those comments are not being classified.
         public const int MIN_BEFORE_CLASSIFY = 10;
@@ -52,9 +52,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
 
-            this.bc = new BayesianClassifier(new SimpleWordsDataSource(), new DefaultTokenizer());
-            this.trainClassifier();
-            this.isClassifies = (this.getNumOfComments() >= MIN_BEFORE_CLASSIFY);
+            
         }
 
         public SubForum() { }
@@ -70,18 +68,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db)
         {
-            if (isClassifies)
-            {
-                if (!this.checkRelevantContent(content))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.IRELEVANT_CONTENT);
-                }
-            }
-            else
-            {
-                this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, content);
-                isClassifies = (this.getNumOfComments() + 1) >= MIN_BEFORE_CLASSIFY;
-            }
+            
             Discussion newDiscussion = new Discussion(title, content, user, this);
             this.discussions.Add(newDiscussion);
             db.Discussions.Add(newDiscussion);
@@ -251,7 +238,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             foreach (Discussion d in this.discussions)
             {
                 i++;
-                this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, d.content);
+                //this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, d.content);
                 if (i >= MIN_BEFORE_CLASSIFY)
                     return;
             }
@@ -264,7 +251,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                     foreach (Comment c in comments)
                     {
                         i++;
-                        this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, c.content);
+                    //    this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, c.content);
                         if (i >= MIN_BEFORE_CLASSIFY)
                             return;
                     }
@@ -276,13 +263,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         public bool checkRelevantContent(string text)
         {
-            double prob = this.bc.Classify(ICategorizedClassifierConstants.DEFAULT_CATEGORY, text);
-            Console.WriteLine("Match = " + prob);
-            if (prob < MIN_RELEVANT_PROB)
-            {
-                this.bc.TeachNonMatch(text);
-            }
-            return (prob >= MIN_RELEVANT_PROB);
+            return true;
         }
 
     }

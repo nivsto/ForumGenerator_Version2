@@ -4,27 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using NClassifier.Bayesian;
-
 namespace Classifier_Train
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Trainer tr = new Trainer();
-            tr.trainMatch("goodMsgs.txt");
-      //      tr.trainNonMatch("badMsgs.txt");
-            string text1 = "I am talking about algorithm c++";
-            tr.teachNonMatch("cooking and football");
-            string text2 = "I am talking about cooking and football. also about sport";
-            string text3 = "A wounded protester says he saw plain clothes officers open fire on pro-Morsy sport balls demonstrators as rival rallies stretched into the early hours of Saturday.";
-            string text4 = "Yes";
+            HashSet<string> stopWords = TextFilter.getStopWords("DefaultStopWords.txt");
+            HashSet<string> vocabulary = new HashSet<string>();
 
-            tr.classify(text1);
-            tr.classify(text2);
-            tr.classify(text3);
-            tr.classify(text4);
+            string[] text = {"I am Asa and I'm a student in BGU, means I am a SLAVE!",
+                             "Niv is also a fucking slave. He works in Intel with Doron...",
+                             "class lectures are suck. also all teaching assignments.",
+                             "When can we finally go home? University is suck. real suck",
+                             "this is now the exams peroid - WOW"};
+            foreach (string line in text)
+            {
+                vocabulary = teachMatch(line, stopWords, vocabulary);
+            }
+            List<string> input = new List<string>();
+            string text1 = "I'm going to be a STUDENT next year!";
+            string text2 = "Me too";
+
+            input = TextFilter.removePanctuation(text1);
+            input = TextFilter.removeStopWords(input, stopWords);
+            TextFilter.isRelevantText(input, vocabulary);
+            input = TextFilter.removePanctuation(text2);
+            input = TextFilter.removeStopWords(input, stopWords);
+            TextFilter.isRelevantText(input, vocabulary);
+            Console.ReadKey();
+
         }
+
+        public static HashSet<string> teachMatch(string text, HashSet<string> stopWords, HashSet<string> vocabulary)
+        {
+            List<string> keyWords = TextFilter.removePanctuation(text);
+            keyWords = TextFilter.removeStopWords(keyWords, stopWords);
+            vocabulary = TextFilter.addWordsToHashSet(keyWords, vocabulary);
+            return vocabulary;
+        }
+
     }
 }
