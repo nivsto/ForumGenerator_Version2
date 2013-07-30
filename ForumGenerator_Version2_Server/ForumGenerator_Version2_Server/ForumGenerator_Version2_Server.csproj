@@ -88,6 +88,7 @@
     <Compile Include="DataLayer\ForumGeneratorContext.cs" />
     <Compile Include="ForumData\Comment.cs" />
     <Compile Include="ForumData\Discussion.cs" />
+    <Compile Include="ForumData\Word.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="IForumService.cs" />
     <Compile Include="Migrations\201305311940349_InitialCreate.cs" />
@@ -125,6 +126,10 @@
     <Compile Include="Migrations\201307271035329_content.cs" />
     <Compile Include="Migrations\201307271035329_content.Designer.cs">
       <DependentUpon>201307271035329_content.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307302210209_Hash-Words.cs" />
+    <Compile Include="Migrations\201307302210209_Hash-Words.Designer.cs">
+      <DependentUpon>201307302210209_Hash-Words.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="StartHttpServer.cs" />
@@ -187,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307271035329_content.resx">
       <DependentUpon>201307271035329_content.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307302210209_Hash-Words.resx">
+      <DependentUpon>201307302210209_Hash-Words.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -94,6 +94,9 @@
                     <form method="POST" style="padding-top:10px; padding-left: 20px;">
                         <span><input type="submit" name="loginout" value="logout"/></span>
                     </form>
+                    if(error_cmt != null) {
+                        <span id="error_msg2" style="color: red;">Error: @error_cmt</span>
+                    }
                 }
             </div>
             
@@ -104,7 +107,7 @@
             <table style="vertical-align: central; height: 30px;">
                 <tr style="vertical-align:central">
                     <td><a href="index"><img style="vertical-align:central" src="img/Home_button.png" /></a></td>
-                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a> -> <a href="forum?forumid=@forumId">@forumName</a> -> <a href="subforum?forumid=@forumId&subForumId=@subForumId">@subForumName</a> -> <a href="discussion?forumid=@forumId&subForumId=@subForumId&discussion=@discussionId">Discussion: @discussion.title</a></td>
+                    <td style ="vertical-align: central; font-size: 16px; font-family: Overlock">&nbsp <a href="index">Home</a> -> <a href="forum?forumid=@forumId">@forumName</a> -> <a href="subforum?forumid=@forumId&subForumId=@subForumId">@subForumName</a> -> <a href="discussion?forumId=@forumId&subForumId=@subForumId&discussionId=@discussionId">Discussion: @discussion.title</a></td>
                 </tr>
             </table>
 
@@ -163,9 +166,6 @@
                     <br />
                     <input type="submit" name="post_cmt" value="Post Your Comment" class="postButton" style="position: relative; top: 20px;"/>
                 </form>
-                if(error != null) {
-                    <span id="error_msg2" style="color: red;">Error: @error_cmt</span>
-                }
             }
             
             &nbsp

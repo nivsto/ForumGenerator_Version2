@@ -33,7 +33,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
         [IgnoreDataMember]
-        public virtual HashSet<string> vocabulary { get; private set; }
+        public virtual HashSet<Word> vocabulary { get; private set; }
   
 
         public SubForum(string subForumTitle, Forum parentForun)
@@ -44,7 +44,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             User u = this.parentForum.admin;
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
-            this.vocabulary = new HashSet<string>();
+            this.vocabulary = new HashSet<Word>();
         }
 
         public SubForum() { }
@@ -234,14 +234,14 @@ namespace ForumGenerator_Version2_Server.ForumData
             List<string> input = TextClassifier.removePanctuation(content);
             input = TextClassifier.removeStopWords(input, stopWords);
 
-            if (TextClassifier.isRelevantText(input, this.vocabulary))
-            {
-                this.vocabulary = TextClassifier.addToVocabulary(input, this.vocabulary);
-            }
-            else
-            {
-                throw new UnauthorizedOperationException(ForumGeneratorDefs.IRELEVANT_CONTENT);
-            }
+            //if (TextClassifier.isRelevantText(input, this.vocabulary))
+            //{
+            //    this.vocabulary = TextClassifier.addToVocabulary(input, this.vocabulary);
+            //}
+            //else
+            //{
+            //    throw new UnauthorizedOperationException(ForumGeneratorDefs.IRELEVANT_CONTENT);
+            //}
         }
 
     }
