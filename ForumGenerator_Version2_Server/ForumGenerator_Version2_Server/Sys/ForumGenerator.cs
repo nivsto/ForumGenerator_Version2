@@ -175,12 +175,11 @@ namespace ForumGenerator_Version2_Server.Sys
                                                             "\tpassword: " + password +
                                                             "\temail: " + email +
                                                             "\tsignature: " + signature);
-
-                if (!this.cp.isLegalEmailFormat(email) ||
-                    !this.cp.isLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
+                this.cp.checkLegalContent(ContentPolicy.cType.USER_NAME, userName);
+                this.cp.checkLegalContent(ContentPolicy.cType.PASSWORD, password);
+                this.cp.checkLegalEmailFormat(email);
+                this.cp.checkLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature);
+            
                 lock (db)
                 {
                     return new User(this.getForum(forumId).register(userName, password, email, signature, db));
@@ -320,11 +319,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                               "\tadminPassword: " + adminPassword);
                 lock (db)
                 {
-                    if (!this.cp.isLegalContent(ContentPolicy.cType.FORUM_NAME, forumName))
-                    {
-                        throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                    }
-
+                    this.cp.checkLegalContent(ContentPolicy.cType.FORUM_NAME, forumName);
                     // Check if forum name already exist
                     if (this.isForumNameExist(forumName))
                         throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_FNAME);
@@ -360,11 +355,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                   "\tforumId: " + forumId +
                                                                   "\tsubForumTitle: " + subForumTitle);
 
-                if (!this.cp.isLegalContent(ContentPolicy.cType.SUBFORUM_TITLE, subForumTitle))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
-
+                this.cp.checkLegalContent(ContentPolicy.cType.SUBFORUM_TITLE, subForumTitle);
                 lock (db)
                 {
                     Forum forum = getForum(forumId);
@@ -396,11 +387,8 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                      "\ttitle: " + title +
                                                                      "\tcontent: " + content);
 
-                if (!this.cp.isLegalContent(ContentPolicy.cType.DISCUSSION_TITLE, title) ||
-                    !this.cp.isLegalContent(ContentPolicy.cType.DISCUSSION_CONTENT, content))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
+                this.cp.checkLegalContent(ContentPolicy.cType.DISCUSSION_TITLE, title);
+                this.cp.checkLegalContent(ContentPolicy.cType.DISCUSSION_CONTENT, content);
 
                 lock (db)
                 {
@@ -448,10 +436,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                                      "\tdiscussionId: " + discussionId +
                                                                      "\tcontent: " + content);
               
-                if (!this.cp.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
+                this.cp.checkLegalContent(ContentPolicy.cType.COMMENT_CONTENT, content);
 
                 lock (db)
                 {
@@ -683,10 +668,7 @@ namespace ForumGenerator_Version2_Server.Sys
                                                 "\tsubForumId: " + subForumId +
                                                 "\tnew content: <not detailed in log>");
 
-                if (!this.cp.isLegalContent(ContentPolicy.cType.COMMENT_CONTENT, newContent))
-                {
-                    throw new IllegalContentException(ForumGeneratorDefs.ILL_CONTENT);
-                }
+                this.cp.checkLegalContent(ContentPolicy.cType.COMMENT_CONTENT, newContent);
 
                 lock (db)
                 {

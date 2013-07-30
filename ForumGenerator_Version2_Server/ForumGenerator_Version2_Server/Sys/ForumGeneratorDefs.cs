@@ -10,6 +10,11 @@ namespace ForumGenerator_Version2_Server.Sys
      */
     public class ForumGeneratorDefs
     {
+        // Extra information
+        const string USE_ONLY_ASCII = "Try only English characters, digits and punctuation";
+        const string TRY_ANOTHER = "Try a different one.";
+
+
         // Errors defs
         public const string FORUM_NF = "Forum not found";
         public const string SUBFORUM_NF = "SubFurom not found";
@@ -18,20 +23,27 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string USER_NF = "Wrong user name or password";
 
         public const string UNAUTH_SUPERUSER = "Unauthorized superUser";
-        public const string UNAUTH_USER = "Unauthorized user";
+        public const string UNAUTH_USER = "Unauthorized user - you have no permissions to do this action";
         public const string UNAUTH_OP = "Unauthorized operation";
 
         public const string WRONG_USR_PSWD = "Wrong user name or password";
         public const string INVALID_EMAIL = "Invalid Email address";
-        public const string ILL_CONTENT = "Illegal content";
+        public const string ILL_CONTENT = "Illegal content. " + USE_ONLY_ASCII;
         public const string IRELEVANT_CONTENT = "Content is not relevant to this subForum";
-        
+
+        public const string INVALID_USERNAME = "Invalid userName. Try only English characters and digits.";
+        public const string INVALID_SIGNATURE = "Invalid signature. " + USE_ONLY_ASCII;
+        public const string INVALID_FORUM_NAME = "Invalid forum name. " + USE_ONLY_ASCII;
+        public const string INVALID_SUBFORUM_TITLE = "Invalid subForum title. " + USE_ONLY_ASCII;
+        public const string INVALID_DISC_SUBJECT = "Invalid subject. " + USE_ONLY_ASCII;
+
+
 
         public const string ALREADY_IN = "User is already logged in";
         public const string ALREADY_OUT = "User is already logged out";
-        public const string EXIST_FNAME = "Forum name is already exist";
-        public const string EXIST_TITLE = "Title is already exist";
-        public const string EXIST_USERNAME = "UserName is already exist";
+        public const string EXIST_FNAME = "Forum name is already exist." + TRY_ANOTHER;
+        public const string EXIST_TITLE = "Title is already exist." + TRY_ANOTHER;
+        public const string EXIST_USERNAME = "UserName is already exist." + TRY_ANOTHER;
 
         public const string EXIST_ADMIN = "User is already an admin";
         public const string EXIST_MODERATOR = "User is already a moderator";

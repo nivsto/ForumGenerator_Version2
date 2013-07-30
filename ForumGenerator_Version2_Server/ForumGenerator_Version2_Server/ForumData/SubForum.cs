@@ -34,13 +34,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         public virtual Forum parentForum { get; private set; }
         [IgnoreDataMember]
         public virtual HashSet<string> vocabulary { get; private set; }
-        // Number of comments in this subForum that are used in order to
-        // train the classifier. Those comments are not being classified.
-        [IgnoreDataMember]
-        public const int MIN_BEFORE_CLASSIFY = 10;
-        [IgnoreDataMember]
-        internal bool isClassifies;
-
+  
 
         public SubForum(string subForumTitle, Forum parentForun)
         {
@@ -51,8 +45,6 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.moderators.Add(parentForum.admin);
             this.discussions = new List<Discussion>();
             this.vocabulary = new HashSet<string>();
-            this.isClassifies = false;
-            
         }
 
         public SubForum() { }
@@ -65,17 +57,16 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.discussions = null;
             this.parentForum = null;
             this.vocabulary = null;
-            this.isClassifies = false;
         }
 
         internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db, HashSet<string> stopWords)
         {
-            if (this.isClassifies)
+            if (this.discussions.Count >= 10)
             {
                 checkRelevantContent(content, stopWords);
             }
-            else
-                this.isClassifies = (getNumOfComments() + 1) >= MIN_BEFORE_CLASSIFY;
+            //else
+                // add to content to vocabulary
                 
             Discussion newDiscussion = new Discussion(title, content, user, this);
             this.discussions.Add(newDiscussion);
@@ -236,38 +227,7 @@ namespace ForumGenerator_Version2_Server.ForumData
                 return (int)ForumGenerator.userTypes.MEMBER;
             }              
         }
-
-        // The training is based on all discussions' content, then (if needed)
-        // on comments.
-        private void trainClassifier()
-        {
-            int i = 0;
-            // Train classifier in discussions only.
-            foreach (Discussion d in this.discussions)
-            {
-                i++;
-                //this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, d.content);
-                if (i >= MIN_BEFORE_CLASSIFY)
-                    return;
-            }
-            // If needed - train classifier on comments also.
-            if (i < MIN_BEFORE_CLASSIFY)
-            {
-                foreach (Discussion d in this.discussions)
-                {
-                    List<Comment> comments = d.comments;
-                    foreach (Comment c in comments)
-                    {
-                        i++;
-                    //    this.bc.TeachMatch(ICategorizedClassifierConstants.DEFAULT_CATEGORY, c.content);
-                        if (i >= MIN_BEFORE_CLASSIFY)
-                            return;
-                    }
-                }
-            }
-            return;
-        }
-
+      
 
         public void checkRelevantContent(string content, HashSet<string> stopWords)
         {

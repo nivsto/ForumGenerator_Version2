@@ -152,7 +152,7 @@ namespace ForumGenerator_Client.Dialogs
 
             }
             else
-                lblHello.Text = "Hello" + userName + "!";
+                lblHello.Text = "Hello " + userName + "!";
 
 
             if (level == (int)loginLevels.SUPER)

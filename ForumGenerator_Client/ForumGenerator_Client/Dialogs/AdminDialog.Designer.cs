@@ -336,7 +336,7 @@
             this.lblCom_Num.Name = "lblCom_Num";
             this.lblCom_Num.Size = new System.Drawing.Size(19, 13);
             this.lblCom_Num.TabIndex = 7;
-            this.lblCom_Num.Text = "10";
+            this.lblCom_Num.Text = "0";
             // 
             // label2
             // 

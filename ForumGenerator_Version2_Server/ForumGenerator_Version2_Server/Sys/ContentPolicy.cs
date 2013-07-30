@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System.Collections;
 using System.IO;
-
+using ForumGenerator_Version2_Server.Sys.Exceptions;
 
 namespace ForumGenerator_Version2_Server.Sys
 {
@@ -15,7 +15,7 @@ namespace ForumGenerator_Version2_Server.Sys
         private string badWordsFileName = "badWords.txt";
         const int MAX_LEN = 1048576;
 
-        private Tuple<int, int>[] ranges;
+        private Tuple<int, int, string>[] ranges;
         private HashSet<string> badWords;
 
         public enum cType
@@ -32,7 +32,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ContentPolicy()
         {
-            ranges = new Tuple<int, int>[8];
+            ranges = new Tuple<int, int, string>[8];
             badWords = new HashSet<string>();
             init();
         }
@@ -40,16 +40,16 @@ namespace ForumGenerator_Version2_Server.Sys
         public void init()
         { 
                                                       /* minLen, maxLen */
-            ranges[(int)cType.USER_NAME] = new Tuple<int, int>(1, 20);               //  USER_NAME
-            ranges[(int)cType.PASSWORD] = new Tuple<int, int>(1, 20);                //  PASSWORD
-            ranges[(int)cType.FORUM_NAME] = new Tuple<int, int>(0, 50);              //  FORUM_NAME
-            ranges[(int)cType.SUBFORUM_TITLE] = new Tuple<int, int>(0, 80);          //  SUBFORUM_TITLE
-            ranges[(int)cType.DISCUSSION_TITLE] = new Tuple<int, int>(0, 80);        //  DISCUSSION_TITLE
-            ranges[(int)cType.DISCUSSION_CONTENT] = new Tuple<int, int>(0, MAX_LEN); //  DISCUSSION_CONTENT
-            ranges[(int)cType.COMMENT_CONTENT] = new Tuple<int, int>(0, MAX_LEN);    //  COMMENT_CONTENT
-            ranges[(int)cType.MEMBER_SIGNATURE] = new Tuple<int, int>(0, 20);        //  MEMBER_SIGNATURE 
+            ranges[(int)cType.USER_NAME] = new Tuple<int, int, string>(1, 20, LETTERS_NUMS);                     //  USER_NAME
+            ranges[(int)cType.PASSWORD] = new Tuple<int, int, string>(1, 20, ASCII);                //  PASSWORD
+            ranges[(int)cType.FORUM_NAME] = new Tuple<int, int, string>(0, 50, ASCII);              //  FORUM_NAME
+            ranges[(int)cType.SUBFORUM_TITLE] = new Tuple<int, int, string>(0, 80, ASCII);          //  SUBFORUM_TITLE
+            ranges[(int)cType.DISCUSSION_TITLE] = new Tuple<int, int, string>(0, 80, ASCII);        //  DISCUSSION_TITLE
+            ranges[(int)cType.DISCUSSION_CONTENT] = new Tuple<int, int, string>(0, MAX_LEN, ASCII); //  DISCUSSION_CONTENT
+            ranges[(int)cType.COMMENT_CONTENT] = new Tuple<int, int, string>(0, MAX_LEN, ASCII);    //  COMMENT_CONTENT
+            ranges[(int)cType.MEMBER_SIGNATURE] = new Tuple<int, int, string>(0, 20, ASCII);        //  MEMBER_SIGNATURE 
             
-            // Init list of bad words out of file
+            // Init list of bad words from file
             string[] lines = File.ReadAllLines(badWordsFileName);
             foreach (string line in lines) { badWords.Add(line); };
         }
@@ -58,43 +58,72 @@ namespace ForumGenerator_Version2_Server.Sys
         // Regular expr of contents
         const string LETTERS_ONLY = "a-zA-Z";
         const string LETTERS_NUMS = "a-zA-Z0-9";
-        const string LETTERS_NUMS_SIGNS = "a-zA-Z0-9,: /&|+-?!@#$%^*()><=_{}[]~"; // not checking '-'
+        const string LETTERS_NUMS_SIGNS = LETTERS_NUMS + ",:.?+()!_'@#(){}+"; // not checking '-'
+        const string ASCII = "\x00-\x7F";
         
 
         // Checks if the given data contains only legal chars and if its length is in the
         // given range, according to forum policy.
-        public bool isLegalContent(cType contentType, string content)
+        public void checkLegalContent(cType contentType, string content)
         {
             if (content == null)
-                return false;
+                return;
             int minLen = ranges[(int)contentType].Item1;
             int maxLen = ranges[(int)contentType].Item2;
+            string goodChars = ranges[(int)contentType].Item3;
 
-            return isLegalContent(content, minLen, maxLen);
+            if (!isLegalContent(content, minLen, maxLen, goodChars))
+            {
+                string err_msg = "";
+                switch (contentType)
+                {
+                    case (cType.USER_NAME):
+                        err_msg = ForumGeneratorDefs.INVALID_USERNAME;
+                        break;
+                    case (cType.MEMBER_SIGNATURE):
+                        err_msg = ForumGeneratorDefs.INVALID_SIGNATURE;
+                        break;
+                    case (cType.FORUM_NAME):
+                        err_msg = ForumGeneratorDefs.INVALID_FORUM_NAME;
+                        break;
+                    case (cType.SUBFORUM_TITLE):
+                        err_msg = ForumGeneratorDefs.INVALID_SUBFORUM_TITLE;
+                        break;
+                    case (cType.DISCUSSION_TITLE):
+                        err_msg = ForumGeneratorDefs.INVALID_DISC_SUBJECT;
+                        break;
+
+                    default:
+                        err_msg = ForumGeneratorDefs.ILL_CONTENT;
+                        break;
+                }
+
+                throw new IllegalContentException(err_msg);
+            }          
         }
 
 
-        private bool isLegalContent(string content, int minLen, int maxLen)
+        private bool isLegalContent(string content, int minLen, int maxLen, string regex_goodChars)
         {
-            Regex RgxUrl = new Regex("[^" + LETTERS_NUMS_SIGNS + "]");
+            Regex RgxUrl = new Regex("[^" + regex_goodChars + "]");
             return (!RgxUrl.IsMatch(content) && content.Length >= minLen && content.Length <= maxLen);
         }
 
 
-        public bool isLegalEmailFormat(string email)
+        public void checkLegalEmailFormat(string email)
         {
             if (email == null)
-                return false;
+                return;
             if (email == "")
-                return true; // TODO remove
+                return; // TODO remove
             try
             {
                 MailAddress m = new MailAddress(email);
-                return true;
+                return;
             }
             catch(Exception)
             {
-                return false;
+                throw new IllegalContentException(ForumGeneratorDefs.INVALID_EMAIL);
             }
 
         }
