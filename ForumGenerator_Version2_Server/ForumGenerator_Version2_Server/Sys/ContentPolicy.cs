@@ -12,9 +12,6 @@ namespace ForumGenerator_Version2_Server.Sys
 {
     public class ContentPolicy
     {
-        private string badWordsFileName = "badWords.txt";
-        const int MAX_LEN = 1048576;
-
         private Tuple<int, int, string>[] ranges;
         private HashSet<string> badWords;
 
@@ -39,18 +36,25 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public void init()
         { 
-                                                      /* minLen, maxLen */
-            ranges[(int)cType.USER_NAME] = new Tuple<int, int, string>(1, 20, LETTERS_NUMS);                     //  USER_NAME
-            ranges[(int)cType.PASSWORD] = new Tuple<int, int, string>(1, 20, ASCII);                //  PASSWORD
-            ranges[(int)cType.FORUM_NAME] = new Tuple<int, int, string>(0, 50, ASCII);              //  FORUM_NAME
-            ranges[(int)cType.SUBFORUM_TITLE] = new Tuple<int, int, string>(0, 80, ASCII);          //  SUBFORUM_TITLE
-            ranges[(int)cType.DISCUSSION_TITLE] = new Tuple<int, int, string>(0, 80, ASCII);        //  DISCUSSION_TITLE
-            ranges[(int)cType.DISCUSSION_CONTENT] = new Tuple<int, int, string>(0, MAX_LEN, ASCII); //  DISCUSSION_CONTENT
-            ranges[(int)cType.COMMENT_CONTENT] = new Tuple<int, int, string>(0, MAX_LEN, ASCII);    //  COMMENT_CONTENT
-            ranges[(int)cType.MEMBER_SIGNATURE] = new Tuple<int, int, string>(0, 20, ASCII);        //  MEMBER_SIGNATURE 
+            ranges[(int)cType.USER_NAME] = new Tuple<int, int, string>
+                (ForumGeneratorDefs.MIN_USER_NAME_LEN, ForumGeneratorDefs.MAX_USER_NAME_LEN, LETTERS_NUMS);            //  USER_NAME
+            ranges[(int)cType.PASSWORD] = new Tuple<int, int, string>                                               
+                (ForumGeneratorDefs.MIN_PASSWORD_LEN, ForumGeneratorDefs.MAX_PASSWORD_LEN, ASCII);                     //  PASSWORD
+            ranges[(int)cType.FORUM_NAME] = new Tuple<int, int, string>                                             
+                (ForumGeneratorDefs.MIN_FORUM_NAME_LEN, ForumGeneratorDefs.MAX_FORUM_NAME_LEN, ASCII);                 //  FORUM_NAME
+            ranges[(int)cType.SUBFORUM_TITLE] = new Tuple<int, int, string>                                         
+                (ForumGeneratorDefs.MIN_SUBFORUM_TITLE_LEN, ForumGeneratorDefs.MAX_SUBFORUM_TITLE_LEN, ASCII);         //  SUBFORUM_TITLE
+            ranges[(int)cType.DISCUSSION_TITLE] = new Tuple<int, int, string>                                       
+                (ForumGeneratorDefs.MIN_DISCUSSION_TITLE_LEN, ForumGeneratorDefs.MAX_DISCUSSION_TITLE_LEN, ASCII);     //  DISCUSSION_TITLE
+            ranges[(int)cType.DISCUSSION_CONTENT] = new Tuple<int, int, string>
+                (ForumGeneratorDefs.MIN_DISCUSSION_CONTENT_LEN, ForumGeneratorDefs.MAX_DISCUSSION_CONTENT_LEN, ASCII); //  DISCUSSION_CONTENT
+            ranges[(int)cType.COMMENT_CONTENT] = new Tuple<int, int, string>
+                (ForumGeneratorDefs.MIN_COMMENT_CONTENT_LEN, ForumGeneratorDefs.MAX_COMMENT_CONTENT_LEN, ASCII);       //  COMMENT_CONTENT
+            ranges[(int)cType.MEMBER_SIGNATURE] = new Tuple<int, int, string>
+                (ForumGeneratorDefs.MIN_MEMBER_SIGNATURE_LEN, ForumGeneratorDefs.MAX_MEMBER_SIGNATURE_LEN, ASCII);     //  MEMBER_SIGNATURE 
             
             // Init list of bad words from file
-            string[] lines = File.ReadAllLines(badWordsFileName);
+            string[] lines = File.ReadAllLines(ForumGeneratorDefs.BAD_WORDS_FILE);
             foreach (string line in lines) { badWords.Add(line); };
         }
 
