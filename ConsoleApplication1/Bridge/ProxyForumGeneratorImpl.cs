@@ -64,43 +64,23 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public LinkedList<Forum> getForums()
+
+        public List<Forum> getForums()
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<SubForum> getSubForums(int forumId)
+        public List<SubForum> getSubForums(int forumId)
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<Discussion> getDiscussions(int forumId, int subForumId)
+        public List<Discussion> getDiscussions(int forumId, int subForumId)
         {
             throw new NotImplementedException();
         }
 
-        public LinkedList<Comment> getComments(int forumId, int subForumId, int discussionId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        List<Forum> BridgeForumGenerator.getForums()
-        {
-            throw new NotImplementedException();
-        }
-
-        List<SubForum> BridgeForumGenerator.getSubForums(int forumId)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<Discussion> BridgeForumGenerator.getDiscussions(int forumId, int subForumId)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<Comment> BridgeForumGenerator.getComments(int forumId, int subForumId, int discussionId)
+        public List<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
             throw new NotImplementedException();
         }
@@ -164,6 +144,18 @@ namespace ConsoleApplication1
         {
             throw new NotImplementedException();
         }
+
+        public int getUserType(int forumId, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int getUserType(int forumId, int subForumId, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public void reset()
         {
             throw new NotImplementedException();

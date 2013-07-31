@@ -48,9 +48,9 @@ namespace ForumGenerator_Client.Communication
 
         Boolean deleteDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd);
 
-        Boolean editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
+        Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
 
-        List<User> getMutualForumMembers(string userName, string pswd);
+    //    List<User> getMutualForumMembers(string userName, string pswd);
 
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
 
@@ -66,7 +66,7 @@ namespace ForumGenerator_Client.Communication
 
         List<User> getModerators(int forumId, int subForumId);
 
-        void removeSubForum(int forumId, int subForumId, string userName, string password);
+        bool removeSubForum(int forumId, int subForumId, string userName, string password);
 
     }
 }

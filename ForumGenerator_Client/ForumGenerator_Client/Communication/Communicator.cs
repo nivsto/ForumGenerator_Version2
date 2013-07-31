@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ForumGenerator_Client.Communication
 {
 
-    class Communicator
+    public class Communicator
     {
 
         ChannelFactory<IForumService> httpFactory;

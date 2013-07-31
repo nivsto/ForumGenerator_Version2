@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Windows.Forms;
 using ForumGenerator_Version2_Server.Sys;
+using ForumGenerator_Client;
+using ForumGenerator_Client.Dialogs;
 
 namespace ConsoleApplication1.AccTests
 {
     public partial class testGui : Form
     {
-        TestForumGenerator tests;
+        TestForumGenerator testsFG;
+        TestForumGenerator testsClient;
         
         public testGui(string logFileName)
         {
-            this.tests = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);
+            this.testsFG = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);
+            this.testsClient = new TestForumGenerator(new MainMethods(), logFileName);
             InitializeComponent();
         }
         /*  Run Forum Generator Tests    */
         private void btnRunFg_Click(object sender, EventArgs e)
         {
-            tests.runTests(1);
+            this.testsFG.runTests(1);
         }
 
         private void btnRunScal_Click(object sender, EventArgs e)
         {
-            tests.runTests(2);
+            testsFG.runTests(2);
         }
 
         private void btnRunConnect_Click(object sender, EventArgs e)
         {
-            Hide();
+            testsClient.runTests(3);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

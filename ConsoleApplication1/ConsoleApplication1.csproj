@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="AccTests\ThreadTest.cs" />
     <Compile Include="Bridge\BridgeForumGenerator.cs" />
+    <Compile Include="Bridge\Client_RealForumGeneratorImpl.cs" />
     <Compile Include="Bridge\ProxyForumGeneratorImpl.cs" />
     <Compile Include="Bridge\RealForumGeneratorImpl.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -115,6 +116,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ForumGenerator_Client\ForumGenerator_Client\ForumGenerator_Client.csproj">
+      <Project>{25791596-4dfa-43d4-b227-6050df20eead}</Project>
+      <Name>ForumGenerator_Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ForumGenerator_Version2_Server\ForumGenerator_Version2_Server\ForumGenerator_Version2_Server.csproj">
       <Project>{9348D782-8904-4316-AE0C-5893356CC773}</Project>
       <Name>ForumGenerator_Version2_Server</Name>

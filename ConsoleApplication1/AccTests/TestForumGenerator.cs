@@ -12,6 +12,8 @@ using System.Net;
 using System.Xml;
 using System.IO;
 using ConsoleApplication1.AccTests;
+using ForumGenerator_Client.Dialogs;
+using ForumGenerator_Client.Communication;
 
 namespace ConsoleApplication1
 {
@@ -38,6 +40,12 @@ namespace ConsoleApplication1
         public TestForumGenerator(ForumGenerator forumGen, string outFile)
         {
             this.bridge = new RealForumGeneratorImpl(forumGen);
+            this.testsLogger = new TestsLogger(outFile);
+            this.mode = REAL;
+        }
+        public TestForumGenerator(Communicator mainMethods, string outFile)
+        {
+            this.bridge = new Client_RealForumGeneratorImpl(mainMethods);
             this.testsLogger = new TestsLogger(outFile);
             this.mode = REAL;
         }

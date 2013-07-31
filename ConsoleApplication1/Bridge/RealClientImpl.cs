@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Users;
-using ForumGenerator_Version2_Server.ForumData;
+using System.Linq;
+using System.Text;
+//using ForumGenerator_Version2_Server.Sys;
+//using ForumGenerator_Version2_Server.Users;
+//using ForumGenerator_Version2_Server.ForumData;
+using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.Dialogs;
+using ForumGenerator_Client.ServiceReference1;
 
-namespace ConsoleApplication1
+namespace ConsoleApplication1.AccTests
 {
-    public class RealForumGeneratorImpl : BridgeForumGenerator
+    public class RealClientImpl : BridgeForumGenerator
     {
 
         //const string ADMIN = ForumGenerator.ADMIN;
         const string ADMIN = "admin";
 
-        private IForumGenerator forumGen;
+        public Communicator forumGen;
 
 
-        public RealForumGeneratorImpl(ForumGenerator forumGen)
+        public RealClientImpl(Communicator forumGen)
         {
             Console.Write("Creating ForumGenerator...  ");
             this.forumGen = forumGen;
@@ -72,28 +77,28 @@ namespace ConsoleApplication1
 
         public List<Forum> getForums()
         {
-            return this.forumGen.getForums();
+            return this.forumGen.getForums().ToList();
         }
 
         public List<SubForum> getSubForums(int forumId)
         {
-            return this.forumGen.getSubForums(forumId);
+            return this.forumGen.getSubForums(forumId).ToList();
         }
 
         public List<Discussion> getDiscussions(int forumId, int subForumId)
         {
-            return this.forumGen.getDiscussions(forumId, subForumId);
+            return this.forumGen.getDiscussions(forumId, subForumId).ToList();
         }
 
         public List<Comment> getComments(int forumId, int subForumId, int discussionId)
         {
-            return this.forumGen.getComments(forumId, subForumId, discussionId);
+            return this.forumGen.getComments(forumId, subForumId, discussionId).ToList();
         }
 
 
         public List<User> getUsers(int forumId)
         {
-            return this.forumGen.getUsers(forumId);
+            return this.forumGen.getUsers(forumId).ToList();
         }
 
         public User changeAdmin(string userName, string password, int forumId, int newAdminUserId)
@@ -122,9 +127,9 @@ namespace ConsoleApplication1
             return this.forumGen.deleteDiscussion(forumId, subForumId, discussionId, userName, pswd);
         }
 
-        public Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
+        public void editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent)
         {
-            return this.forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
+           this.forumGen.editDiscussion(forumId, subForumId, discussionId, userName, pswd, newContent);
         }
 
         public int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName)
@@ -139,32 +144,21 @@ namespace ConsoleApplication1
 
         public List<User> getResponsersForSingleUser(string reqUserName, string reqPswd, int forumId, string memberUserName)
         {
-            return this.forumGen.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName);
+            return this.forumGen.getResponsersForSingleUser(reqUserName, reqPswd, forumId, memberUserName).ToList();
         }
 
         public List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2)
         {
-            return this.forumGen.getMutualUsers(userName, password, forumId1, forumId2);
+            return this.forumGen.getMutualUsers(userName, password, forumId1, forumId2).ToList(); 
         }
         public List<User> getModerators(int forumId, int subForumId)
         {
-            return this.forumGen.getModerators(forumId, subForumId);
+            return this.forumGen.getModerators(forumId, subForumId).ToList();
         }
-
-        public int getUserType(int forumId, string userName)
-        {
-            return this.forumGen.getUserType(forumId, userName);
-        }
-
-        public int getUserType(int forumId, int subForumId, string userName)
-        {
-            return this.forumGen.getUserType(forumId, subForumId, userName);
-        }
-
 
         public void reset()
         {
-            this.forumGen.reset();
+            
         }
       
     }

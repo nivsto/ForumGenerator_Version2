@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Version2_Server.Users;
-using ForumGenerator_Version2_Server.ForumData;
+
+using ForumGenerator_Client.Communication;
+using ForumGenerator_Client.ServiceReference1;
 
 namespace ConsoleApplication1
 {
-    public class RealForumGeneratorImpl : BridgeForumGenerator
+    public class Client_RealForumGeneratorImpl : IForumGenerator
     {
 
         //const string ADMIN = ForumGenerator.ADMIN;
@@ -15,13 +15,12 @@ namespace ConsoleApplication1
         private IForumGenerator forumGen;
 
 
-        public RealForumGeneratorImpl(ForumGenerator forumGen)
+        public Client_RealForumGeneratorImpl(IForumGenerator forumGen)
         {
             Console.Write("Creating ForumGenerator...  ");
             this.forumGen = forumGen;
             Console.WriteLine("done");
-        }        
-
+        }
 
 
         public SuperUser superUserLogin(string usrName, string usrPswd)
@@ -40,9 +39,9 @@ namespace ConsoleApplication1
             return this.forumGen.login(forumID, usrName, usrPswd);
         }
 
-        public bool logout(int forumId, string userName, string password)
+        public bool logout(int forumId, int userId)
         {
-            return this.forumGen.logout(forumId, userName, password);
+            return this.forumGen.logout(forumId, userId);
         }
 
         public User register(int forumId, string userName, string password, string email, string signature)
@@ -161,12 +160,7 @@ namespace ConsoleApplication1
             return this.forumGen.getUserType(forumId, subForumId, userName);
         }
 
-
-        public void reset()
-        {
-            this.forumGen.reset();
-        }
-      
+        
     }
 
 }
