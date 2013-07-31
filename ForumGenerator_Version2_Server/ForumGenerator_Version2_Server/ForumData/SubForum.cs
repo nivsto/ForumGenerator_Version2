@@ -61,13 +61,17 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal Discussion createNewDiscussion(string title, string content, User user, ForumGeneratorContext db, HashSet<string> stopWords)
         {
-            if (this.discussions.Count >= 10)
+            List<string> keyWords = parseKeyWords(content, stopWords);
+            if (keyWords != null && keyWords.Count > 0)
             {
-                checkRelevantContent(content, stopWords);
+                if (isClassifies())
+                {
+                    checkRelevantContent(keyWords);
+                }
+                else
+                    this.vocabulary = TextClassifier.addToVocabulary(keyWords, this.vocabulary);
             }
-            //else
-                // add to content to vocabulary
-                
+   
             Discussion newDiscussion = new Discussion(title, content, user, this);
             this.discussions.Add(newDiscussion);
             db.Discussions.Add(newDiscussion);
@@ -227,21 +231,40 @@ namespace ForumGenerator_Version2_Server.ForumData
                 return (int)ForumGenerator.userTypes.MEMBER;
             }              
         }
-      
 
-        public void checkRelevantContent(string content, HashSet<string> stopWords)
+
+        private List<string> parseKeyWords(string text, HashSet<string> stopWords)
         {
-            List<string> input = TextClassifier.removePanctuation(content);
-            input = TextClassifier.removeStopWords(input, stopWords);
+            List<string> keyWords = TextClassifier.removePanctuation(text);
+            keyWords = TextClassifier.removeStopWords(keyWords, stopWords);
+            return keyWords;
+        }
 
-            //if (TextClassifier.isRelevantText(input, this.vocabulary))
-            //{
-            //    this.vocabulary = TextClassifier.addToVocabulary(input, this.vocabulary);
-            //}
-            //else
-            //{
-            //    throw new UnauthorizedOperationException(ForumGeneratorDefs.IRELEVANT_CONTENT);
-            //}
+
+        public void checkRelevantContent(string text, HashSet<string> stopWords)
+        {
+            if (isClassifies())
+            {
+                List<string> keyWords = parseKeyWords(text, stopWords);
+                checkRelevantContent(keyWords);
+            }
+        }
+
+        public void checkRelevantContent(List<string> keyWords)
+        {
+            if (TextClassifier.isRelevantText(keyWords, this.vocabulary))
+            {
+                this.vocabulary = TextClassifier.addToVocabulary(keyWords, this.vocabulary);
+            }
+            else
+            {
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.IRELEVANT_CONTENT);
+            }
+        }
+
+        internal bool isClassifies()
+        {
+            return (this.discussions.Count >= 5);
         }
 
     }

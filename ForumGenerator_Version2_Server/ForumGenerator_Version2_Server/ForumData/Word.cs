@@ -11,9 +11,30 @@ namespace ForumGenerator_Version2_Server.ForumData
         [Key]
         public string word { get; private set; }
 
+
+        public Word()
+        {
+            this.word = "";
+        }
+
         public Word(string word)
         {
             this.word = word;
+        }
+
+
+        public override bool Equals(object other)
+        {
+            var obj = other as Word;
+            if (obj == null)
+                return false;
+
+            return this.word.Equals(((Word)other).word);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.word.GetHashCode();
         }
 
     }

@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using ForumGenerator_Version2_Server.ForumData;
+
 namespace ForumGenerator_Version2_Server.Sys
 {
     public class TextClassifier
@@ -29,7 +31,8 @@ namespace ForumGenerator_Version2_Server.Sys
             string[] words = text.Split(' ');
             foreach (string w in words)
             {
-                res.Add(w);
+                if(w != "")
+                    res.Add(w);
             }
             return res;
         }
@@ -46,14 +49,18 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
 
-        public static bool isRelevantText(List<string> keyWords, HashSet<string> vocabulary)
+        public static bool isRelevantText(List<string> keyWords, HashSet<Word> vocabulary)
         {
             double prob = 0;
-            int size = keyWords.Count;
-            int i = 0;
+            double size = keyWords.Count;
+            if (size == 0)
+                return true;
+
+            double i = 0;
             foreach (string word in keyWords)
             {
-                if (vocabulary.Contains(word))
+                Word w = new Word(word);
+                if (vocabulary.Contains(w))
                     i++;
             }
             prob = i / size;
@@ -63,11 +70,12 @@ namespace ForumGenerator_Version2_Server.Sys
 
 
 
-        public static HashSet<string> addToVocabulary(List<string> words, HashSet<string> vocabulary)
+        public static HashSet<Word> addToVocabulary(List<string> words, HashSet<Word> vocabulary)
         {
             foreach (string word in words)
             {
-                vocabulary.Add(word);
+                Word w = new Word(word);
+                vocabulary.Add(w);
             }
             return vocabulary;
         }
