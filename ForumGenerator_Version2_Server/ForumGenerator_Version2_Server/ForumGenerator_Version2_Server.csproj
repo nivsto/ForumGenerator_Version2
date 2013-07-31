@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ForumGenerator_Version2_Server</RootNamespace>
     <AssemblyName>ForumGenerator_Version2_Server</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -38,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +48,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>412D8D6439F64F0DDD8E99E4772E1684A257EC76</ManifestCertificateThumbprint>
@@ -61,8 +63,12 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="NClassifier, Version=0.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -71,7 +77,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Discovery" />
@@ -130,6 +135,14 @@
     <Compile Include="Migrations\201307302210209_Hash-Words.cs" />
     <Compile Include="Migrations\201307302210209_Hash-Words.Designer.cs">
       <DependentUpon>201307302210209_Hash-Words.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307312224214_Registration-Confirmation.cs" />
+    <Compile Include="Migrations\201307312224214_Registration-Confirmation.Designer.cs">
+      <DependentUpon>201307312224214_Registration-Confirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307312251024_RegPolicy.cs" />
+    <Compile Include="Migrations\201307312251024_RegPolicy.Designer.cs">
+      <DependentUpon>201307312251024_RegPolicy.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="StartHttpServer.cs" />
@@ -195,6 +208,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307302210209_Hash-Words.resx">
       <DependentUpon>201307302210209_Hash-Words.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307312224214_Registration-Confirmation.resx">
+      <DependentUpon>201307312224214_Registration-Confirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307312251024_RegPolicy.resx">
+      <DependentUpon>201307312251024_RegPolicy.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

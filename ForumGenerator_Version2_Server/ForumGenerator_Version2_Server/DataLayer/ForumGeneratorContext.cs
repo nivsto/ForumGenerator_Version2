@@ -48,6 +48,8 @@ namespace ForumGenerator_Version2_Server.DataLayer
                     m.MapRightKey("moderatorID");
                 });
 
+            //modelBuilder.Entity<Forum>().Property(p => p.registrationPolicy).HasColumnName("rp");
+
             //modelBuilder.Entity<User>().HasKey(t => new { t.memberID, t.paremtForumId });
 
             //modelBuilder.Entity<Forum>()

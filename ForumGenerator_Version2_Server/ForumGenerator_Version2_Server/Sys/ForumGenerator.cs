@@ -32,7 +32,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB2");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB1");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
@@ -308,7 +308,8 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //creates a new forum and a new user which is the forum's administrator
-        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, 
+                                    string adminPassword, ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy registrationPolicy)
         {
             try
             {
@@ -330,7 +331,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     Forum newForum;
                     forumName = this.cp.censor(forumName);
 
-                    newForum = new Forum(forumName, adminUserName, adminPassword, this.db);
+                    newForum = new Forum(forumName, adminUserName, adminPassword, this.db, registrationPolicy);
                     this.forums.Add(newForum);
                     this.db.Forums.Add(newForum);
                     this.db.SaveChanges();
@@ -884,6 +885,34 @@ namespace ForumGenerator_Version2_Server.Sys
         public int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId)
         {
             return getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).comments.Count();
+        }
+
+        public bool confirmUser(int forumId, string userName)
+        {
+            try{
+                Forum forum = this.getForum(forumId);
+                User user = forum.getUser(userName);
+                user.isConfirmed = true;
+                db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
+                db.SaveChanges();
+                return true;
+            }
+            catch(Exception){
+                return false;
+            }
+        }
+
+        public List<User> getUnconfirmedUsers(int forumId)
+        {
+            try
+            {
+                return this.getForum(forumId).members.Where(u => u.isConfirmed == false).ToList();
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("getUnconfirmedUsers: " + e.Message);
+                throw e;
+            }
         }
 
     }

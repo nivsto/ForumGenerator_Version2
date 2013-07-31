@@ -18,12 +18,7 @@ namespace ForumGenerator.WebClient.Communication
 
         public Communicator()
         {
-           // httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
-           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8080/methods"));
-           httpProxy = httpFactory.CreateChannel();
-
- //           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
-            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8080/methods"));
+            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://localhost:8888/methods"));
             httpProxy = httpFactory.CreateChannel();
 
         }
@@ -476,6 +471,18 @@ namespace ForumGenerator.WebClient.Communication
             try
             {
                 return httpProxy.countCommentsPerDiscussion(forumId, subForumId, discussionId);
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
+
+        public bool confirmUser(int forumId, string userName)
+        {
+            try
+            {
+                return httpProxy.confirmUser(forumId, userName);
             }
             catch (FaultException fe)
             {

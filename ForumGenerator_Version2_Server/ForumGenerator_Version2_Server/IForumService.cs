@@ -42,7 +42,7 @@ namespace ForumService
         List<User> getUsers(int forumId);
 
         [OperationContract]
-        Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword);
+        Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword, ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy registrationPolicy);
 
         [OperationContract]
         SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle);
@@ -110,6 +110,12 @@ namespace ForumService
 
         [OperationContract]
         int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
+
+        [OperationContract]
+        bool confirmUser(int forumId, string userName);
+
+        [OperationContract]
+        List<User> getUnconfirmedUsers(int forumId);
 
     }
 

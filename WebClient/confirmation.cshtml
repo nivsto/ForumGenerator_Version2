@@ -1,0 +1,42 @@
+﻿@using ForumGenerator.WebClient.Communication;
+@using ServiceReference1;
+
+@{
+    string userName = Request.QueryString["userName"];
+    int forumId = Convert.ToInt32(Request.QueryString["forumId"]);
+    
+    Communicator communicator = new Communicator();
+    bool isConfirmed = communicator.confirmUser(forumId, userName);
+}
+
+
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" />
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <title>The Nimbus Forum Generator</title>
+    </head>
+
+    <body>
+
+        <!-- Header Section-->
+		<div class="Header">
+            <span style="display: block; float: left; clear: right; min-width: 60%; text-align:center"><img src="img/Nimbus_logo.png" /></span>
+            <span style="display: block; float: left; clear: right; min-width: 40%; height: 110px;">
+            </span>
+		</div>
+
+        <!-- Content Section-->
+        <div class="BodyBox" style="height: 200px;">
+            @if (isConfirmed)
+            {
+                <H2>Congratulation! Your account has been activated</H2>
+            }
+            else
+            {
+                <h2>Your account has not been activated</h2>
+            }
+		</div>
+	</body>
+
+</html>

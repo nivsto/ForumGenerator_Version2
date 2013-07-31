@@ -111,6 +111,9 @@ namespace ForumGenerator.WebClient.Communication
         [OperationContract]
         int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
 
+        [OperationContract]
+        bool confirmUser(int forumId, string userName);
+
     }
 
 }

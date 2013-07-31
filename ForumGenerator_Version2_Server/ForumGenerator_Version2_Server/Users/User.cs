@@ -28,9 +28,11 @@ namespace ForumGenerator_Version2_Server.Users
         public string signature { get; private set; }
         [DataMember]
         public bool isLoggedIn { get; private set; }
+        [DataMember]
+        public bool isConfirmed { get; internal set; }
 
 
-        internal User(string userName, string password, string email, string signature, Forum forum)
+        public User(string userName, string password, string email, string signature, Forum forum)
         {
             this.userName = userName;
             this.password = password;
@@ -38,6 +40,7 @@ namespace ForumGenerator_Version2_Server.Users
             this.friends = new List<User>();
             this.signature = signature;
             this.isLoggedIn = false;
+            this.isConfirmed = false;
         }
 
         public User(User oldUser) 
@@ -49,6 +52,7 @@ namespace ForumGenerator_Version2_Server.Users
             this.friends = null;
             this.signature = oldUser.signature;
             this.isLoggedIn = oldUser.isLoggedIn;
+            this.isConfirmed = oldUser.isConfirmed;
         }
 
         public User() { }

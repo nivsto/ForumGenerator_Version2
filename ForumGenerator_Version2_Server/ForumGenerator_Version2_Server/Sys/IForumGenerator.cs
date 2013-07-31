@@ -30,7 +30,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         List<User> getUsers(int forumId);
 
-        Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword);
+        Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword, ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy registrationPolicy);
 
         SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle);
 
@@ -68,6 +68,8 @@ namespace ForumGenerator_Version2_Server.Sys
 
         void reset();
 
+        List<User> getUnconfirmedUsers(int forumId);
+
         // Web functions:
 
         int countDiscussionsPerForum(int forumId);
@@ -79,6 +81,8 @@ namespace ForumGenerator_Version2_Server.Sys
         int countCommentsPerSubForum(int forumId, int subForumId);
 
         int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
+
+        bool confirmUser(int forumId, string userName);
 
     }
 }

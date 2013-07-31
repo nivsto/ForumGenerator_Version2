@@ -169,11 +169,11 @@ namespace ForumService
         }
 
 
-        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword, ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy registrationPolicy)
         {
             try
             {
-                Forum res = _forumGen.createNewForum(userName, password, forumName, adminUserName, adminPassword);
+                Forum res = _forumGen.createNewForum(userName, password, forumName, adminUserName, adminPassword, registrationPolicy);
                 return res;
             }
             catch (Exception e)
@@ -467,6 +467,32 @@ namespace ForumService
             try
             {
                 int res = _forumGen.countCommentsPerDiscussion(forumId, subForumId, discussionId);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+        public bool confirmUser(int forumId, string userName)
+        {
+            try
+            {
+                bool res = _forumGen.confirmUser(forumId, userName);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
+        public List<User> getUnconfirmedUsers(int forumId)
+        {
+            try
+            {
+                List<User> res = _forumGen.getUnconfirmedUsers(forumId);
                 return res;
             }
             catch (Exception e)

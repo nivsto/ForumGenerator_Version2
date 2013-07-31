@@ -10,6 +10,8 @@ using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 using ForumGenerator_Version2_Server.DataLayer;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
+using System.Net.Mail;
 
 
 namespace ForumGenerator_Version2_Server.ForumData
@@ -30,18 +32,29 @@ namespace ForumGenerator_Version2_Server.ForumData
         //[DataMember]
         [IgnoreDataMember]
         public virtual List<User> members { get; private set; }
+        [DataMember]
+        public RegPolicy registrationPolicy { get; private set; }
 
+        [Flags]
+        public enum RegPolicy
+        {
+            NONE,
+            MAIL_ACTIVATION,
+            ADMIN_CONFIRMATION
+        }
 
-        public Forum(string forumName, string adminUserName, string adminPassword, ForumGeneratorContext db)
+        public Forum(string forumName, string adminUserName, string adminPassword, ForumGeneratorContext db, RegPolicy registrationPolicy)
         {
             // TODO: Complete member initialization
             this.forumName = forumName;
             this.members = new List<User>();
             this.admin = new User(adminUserName, adminPassword, "", "", this);
+            this.admin.isConfirmed = true;
             db.Users.Add(this.admin);
             db.SaveChanges();
             this.members.Add(this.admin);
             this.subForums = new List<SubForum>();
+            this.registrationPolicy = registrationPolicy;
         }
 
         public Forum(Forum f)
@@ -51,6 +64,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             this.subForums = null;
             this.forumName = f.forumName;
             this.members = null;
+            this.registrationPolicy = f.registrationPolicy;
         }
 
         public Forum() { }
@@ -89,6 +103,47 @@ namespace ForumGenerator_Version2_Server.ForumData
                 //lock (db)
                 //{
                     User newUser = new User(userName, password, email, signature, this);
+
+                    // RegistrationPolicy handling
+                    switch (this.registrationPolicy)
+                    {
+                        case RegPolicy.NONE:
+                            newUser.isConfirmed = true;
+                            break;
+                        case RegPolicy.ADMIN_CONFIRMATION:
+                            newUser.isConfirmed = false;
+                            break;
+                        case RegPolicy.MAIL_ACTIVATION:
+                            var fromAddress = new MailAddress("nimbusgenerator@gmail.com", "Nimbus - Forum Generator");
+                            var toAddress = new MailAddress(email, userName);
+                            const string fromPassword = "nimbus123";
+                            string subject = "Nimbus - Registration Confirmation Mail";
+                            StringBuilder sb = new StringBuilder();
+                            sb.AppendLine("Hey,");
+                            sb.AppendLine("We've just got your registration. Please use <a href=\"http://localhost:56068/confirmation?forumId=" + forumId + "&userName=" + userName + "\">this link</a> to confirm your registration.");
+                            sb.AppendLine("Thanks,");
+                            sb.AppendLine("Nimbus Forum Generator");
+                            string body = sb.ToString();
+
+                            var smtp = new SmtpClient
+                                       {
+                                           Host = "smtp.gmail.com",
+                                           Port = 587,
+                                           EnableSsl = true,
+                                           DeliveryMethod = SmtpDeliveryMethod.Network,
+                                           UseDefaultCredentials = false,
+                                           Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                                       };
+                            using (var message = new MailMessage(fromAddress, toAddress)
+                                                 {
+                                                     Subject = subject,
+                                                     Body = body
+                                                 })
+                            {
+                                smtp.Send(message);
+                            }
+                            break;
+                    }
 
                     this.members.Add(newUser);
                     db.Users.Add(newUser);
