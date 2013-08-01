@@ -176,7 +176,6 @@ namespace ForumGenerator_Version2_Server.Sys
                                                             "\temail: " + email +
                                                             "\tsignature: " + signature);
                 this.cp.checkLegalContent(ContentPolicy.cType.USER_NAME, userName);
-                this.cp.checkLegalContent(ContentPolicy.cType.PASSWORD, password);
                 this.cp.checkLegalEmailFormat(email);
                 this.cp.checkLegalContent(ContentPolicy.cType.MEMBER_SIGNATURE, signature);
             
