@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumGenerator_Version2_Server.Sys;
+using ForumGenerator_Version2_Server.ForumData;
 
 namespace ForumGeneratorTest
 {
@@ -66,8 +67,16 @@ namespace ForumGeneratorTest
             //
             // TODO: Add test logic here
             //
-            this.fg.superUserLogin("admin", "admin");
-            this.fg.createNewForum("admin", "admin", "activation_forum", "admin1", "admin1", ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy.MAIL_ACTIVATION);
+            try
+            {
+                this.fg.superUserLogin("admin", "admin");
+                Forum f = this.fg.createNewForum("admin", "admin", "activation_forum", "admin1", "admin1", ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy.MAIL_ACTIVATION);
+                this.fg.login(f.forumId, "admin1", "admin1");
+            }
+            catch (Exception e)
+            {
+
+            }
 
         }
     }
