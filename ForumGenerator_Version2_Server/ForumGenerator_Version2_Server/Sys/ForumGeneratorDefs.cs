@@ -40,6 +40,7 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string INVALID_EMAIL = "Invalid Email address";
         public const string ILL_CONTENT = "Illegal content. " + USE_ONLY_ASCII;
         public const string IRELEVANT_CONTENT = "Content is not relevant to this subForum.";
+        public const string INACTIVE_USR = "User account is not activated";
 
         public const string INVALID_USERNAME = "Invalid userName. Try only English characters and digits.";
         public const string INVALID_SIGNATURE = "Invalid signature. " + USE_ONLY_ASCII;

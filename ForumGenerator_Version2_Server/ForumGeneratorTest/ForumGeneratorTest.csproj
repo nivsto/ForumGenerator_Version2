@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="SecurityTest.cs" />
+    <Compile Include="RegistrationConfirmationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ForumGenerator_Version2_Server\ForumGenerator_Version2_Server.csproj">

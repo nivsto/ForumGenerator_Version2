@@ -64,6 +64,8 @@ namespace ForumGenerator_Version2_Server.Users
                 this.isLoggedIn = true;
                 return this;
             }
+            else if (this.isConfirmed == false)
+                throw new UnauthorizedAccessException(ForumGeneratorDefs.INACTIVE_USR);
             else
                 throw new UnauthorizedAccessException(ForumGeneratorDefs.WRONG_USR_PSWD);
         }

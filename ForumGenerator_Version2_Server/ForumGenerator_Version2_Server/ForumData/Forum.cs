@@ -74,10 +74,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             lock (db)
             {
-                User user = getUser(userName);
+                User user = getUser(userName).login(password);
                 db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
                 db.SaveChanges();
-                return user.login(password);
+                return user;
             }
         }
 
@@ -85,10 +85,10 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             lock (db)
             {
-                User user = getUser(userName);
+                User user = getUser(userName).logout(password);
                 db.Entry(db.Users.Find(user.memberID)).CurrentValues.SetValues(user);
                 db.SaveChanges();
-                return user.logout(password);
+                return user;
             }
         }
 
