@@ -21,7 +21,7 @@ namespace ForumService
 
         public HttpServer()
         {
-            _forumGen = new ForumGenerator("admin", "admin");
+            _forumGen = new ForumGenerator("admin", "=:150");
         }
 
         public User login(int forumId, string userName, string password)

@@ -72,7 +72,7 @@ namespace ForumGenerator_Version2_Server.Sys
         public const int MIN_USER_NAME_LEN = 1;
         public const int MAX_USER_NAME_LEN = 20;
         public const int MIN_PASSWORD_LEN = 1;
-        public const int MAX_PASSWORD_LEN = 20;
+        public const int MAX_PASSWORD_LEN = 10;
         public const int MIN_FORUM_NAME_LEN = 1;
         public const int MAX_FORUM_NAME_LEN = 30;
         public const int MIN_SUBFORUM_TITLE_LEN = 1;

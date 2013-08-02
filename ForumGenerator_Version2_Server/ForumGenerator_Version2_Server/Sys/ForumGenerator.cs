@@ -32,7 +32,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB1");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB3");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
@@ -44,7 +44,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass, bool test)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB1_TEST");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB3");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
