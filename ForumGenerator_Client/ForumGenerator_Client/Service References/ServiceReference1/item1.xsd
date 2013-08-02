@@ -161,13 +161,14 @@
         <xs:element minOccurs="0" name="forumName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="adminUserName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="adminPassword" nillable="true" type="xs:string" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="registrationPolicy" type="q9:Forum.RegPolicy" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="createNewForumResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewForumResult" nillable="true" type="q9:Forum" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewForumResult" nillable="true" type="q10:Forum" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -184,7 +185,7 @@
   <xs:element name="createNewSubForumResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewSubForumResult" nillable="true" type="q10:SubForum" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewSubForumResult" nillable="true" type="q11:SubForum" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -203,7 +204,7 @@
   <xs:element name="createNewDiscussionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewDiscussionResult" nillable="true" type="q11:Discussion" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewDiscussionResult" nillable="true" type="q12:Discussion" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -222,7 +223,7 @@
   <xs:element name="createNewCommentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewCommentResult" nillable="true" type="q12:Comment" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="createNewCommentResult" nillable="true" type="q13:Comment" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -239,7 +240,7 @@
   <xs:element name="changeAdminResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="changeAdminResult" nillable="true" type="q13:User" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="changeAdminResult" nillable="true" type="q14:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -329,7 +330,7 @@
   <xs:element name="editDiscussionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="editDiscussionResult" nillable="true" type="q14:Discussion" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="editDiscussionResult" nillable="true" type="q15:Discussion" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -380,7 +381,7 @@
   <xs:element name="getResponsersForSingleUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getResponsersForSingleUserResult" nillable="true" type="q15:ArrayOfUser" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getResponsersForSingleUserResult" nillable="true" type="q16:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -397,7 +398,7 @@
   <xs:element name="getMutualUsersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getMutualUsersResult" nillable="true" type="q16:ArrayOfUser" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getMutualUsersResult" nillable="true" type="q17:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -412,7 +413,7 @@
   <xs:element name="getModeratorsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getModeratorsResult" nillable="true" type="q17:ArrayOfUser" />
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getModeratorsResult" nillable="true" type="q18:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -444,6 +445,109 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="getUserTypeSubForumResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countDiscussionsPerForum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countDiscussionsPerForumResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="countDiscussionsPerForumResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countSubForumsPerForum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countSubForumsPerForumResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="countSubForumsPerForumResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countDiscussionsPerSubForum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="subForumId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countDiscussionsPerSubForumResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="countDiscussionsPerSubForumResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countCommentsPerSubForum">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="subForumId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countCommentsPerSubForumResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="countCommentsPerSubForumResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countCommentsPerDiscussion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="subForumId" type="xs:int" />
+        <xs:element minOccurs="0" name="discussionId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="countCommentsPerDiscussionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="countCommentsPerDiscussionResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="confirmUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="confirmUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="confirmUserResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getUnconfirmedUsers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getUnconfirmedUsersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getUnconfirmedUsersResult" nillable="true" type="q19:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

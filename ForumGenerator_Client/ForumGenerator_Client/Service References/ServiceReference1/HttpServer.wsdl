@@ -170,6 +170,48 @@
   <wsdl:message name="IForumService_getUserTypeSubForum_OutputMessage">
     <wsdl:part name="parameters" element="tns:getUserTypeSubForumResponse" />
   </wsdl:message>
+  <wsdl:message name="IForumService_countDiscussionsPerForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:countDiscussionsPerForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countDiscussionsPerForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:countDiscussionsPerForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countSubForumsPerForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:countSubForumsPerForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countSubForumsPerForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:countSubForumsPerForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countDiscussionsPerSubForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:countDiscussionsPerSubForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countDiscussionsPerSubForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:countDiscussionsPerSubForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countCommentsPerSubForum_InputMessage">
+    <wsdl:part name="parameters" element="tns:countCommentsPerSubForum" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countCommentsPerSubForum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:countCommentsPerSubForumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countCommentsPerDiscussion_InputMessage">
+    <wsdl:part name="parameters" element="tns:countCommentsPerDiscussion" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_countCommentsPerDiscussion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:countCommentsPerDiscussionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_confirmUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:confirmUser" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_confirmUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:confirmUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUnconfirmedUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:getUnconfirmedUsers" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_getUnconfirmedUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getUnconfirmedUsersResponse" />
+  </wsdl:message>
   <wsdl:portType name="IForumService">
     <wsdl:operation name="login">
       <wsdl:input wsaw:Action="http://tempuri.org/IForumService/login" message="tns:IForumService_login_InputMessage" />
@@ -278,6 +320,34 @@
     <wsdl:operation name="getUserTypeSubForum">
       <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getUserTypeSubForum" message="tns:IForumService_getUserTypeSubForum_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getUserTypeSubForumResponse" message="tns:IForumService_getUserTypeSubForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="countDiscussionsPerForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/countDiscussionsPerForum" message="tns:IForumService_countDiscussionsPerForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/countDiscussionsPerForumResponse" message="tns:IForumService_countDiscussionsPerForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="countSubForumsPerForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/countSubForumsPerForum" message="tns:IForumService_countSubForumsPerForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/countSubForumsPerForumResponse" message="tns:IForumService_countSubForumsPerForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="countDiscussionsPerSubForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/countDiscussionsPerSubForum" message="tns:IForumService_countDiscussionsPerSubForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/countDiscussionsPerSubForumResponse" message="tns:IForumService_countDiscussionsPerSubForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="countCommentsPerSubForum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/countCommentsPerSubForum" message="tns:IForumService_countCommentsPerSubForum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/countCommentsPerSubForumResponse" message="tns:IForumService_countCommentsPerSubForum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="countCommentsPerDiscussion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/countCommentsPerDiscussion" message="tns:IForumService_countCommentsPerDiscussion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/countCommentsPerDiscussionResponse" message="tns:IForumService_countCommentsPerDiscussion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/confirmUser" message="tns:IForumService_confirmUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/confirmUserResponse" message="tns:IForumService_confirmUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getUnconfirmedUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getUnconfirmedUsers" message="tns:IForumService_getUnconfirmedUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getUnconfirmedUsersResponse" message="tns:IForumService_getUnconfirmedUsers_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IForumService" type="tns:IForumService">
@@ -518,6 +588,69 @@
     </wsdl:operation>
     <wsdl:operation name="getUserTypeSubForum">
       <soap:operation soapAction="http://tempuri.org/IForumService/getUserTypeSubForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countDiscussionsPerForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/countDiscussionsPerForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countSubForumsPerForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/countSubForumsPerForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countDiscussionsPerSubForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/countDiscussionsPerSubForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countCommentsPerSubForum">
+      <soap:operation soapAction="http://tempuri.org/IForumService/countCommentsPerSubForum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="countCommentsPerDiscussion">
+      <soap:operation soapAction="http://tempuri.org/IForumService/countCommentsPerDiscussion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmUser">
+      <soap:operation soapAction="http://tempuri.org/IForumService/confirmUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUnconfirmedUsers">
+      <soap:operation soapAction="http://tempuri.org/IForumService/getUnconfirmedUsers" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

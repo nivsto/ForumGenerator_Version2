@@ -35,6 +35,10 @@ namespace ForumGenerator_Client.Dialogs
 
         User[] repliersTab_users = null;
 
+        User[] confirmTab_confirmedUsers = null;
+        User[] confirmTab_notConfirmedUsers = null;
+
+
 
         public AdminDialog(int forumId, string adderUsrName, string adderPswd)
         {
@@ -47,6 +51,7 @@ namespace ForumGenerator_Client.Dialogs
             initMessagesTab();
             initCommentsTab();
             initRepliersTab();
+            initConfirmUsersTab();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -347,10 +352,91 @@ namespace ForumGenerator_Client.Dialogs
             }
         }
 
+
+        /********************************/
+        /*     Confirm Users            */
+        /********************************/
+        private void initConfirmUsersTab()
+        {
+            this.lstConfirmed.Items.Clear();
+            this.lstNotConfirmed.Items.Clear();
+
+            //init users list
+            try
+            {
+                confirmTab_confirmedUsers = communicator.getUsers(forumId);
+                confirmTab_notConfirmedUsers = communicator.getUnconfirmedUsers(forumId);
+
+                for (int i = 0; i < confirmTab_notConfirmedUsers.Length; i++)
+                    lstNotConfirmed.Items.Add(confirmTab_notConfirmedUsers.ElementAt(i).userName);
+
+          
+                bool exist = false;
+
+                for (int i = 0; i < confirmTab_confirmedUsers.Length; i++)
+                {
+                    for (int j = 0; j < confirmTab_notConfirmedUsers.Length; j++)
+                    {
+                        if (confirmTab_notConfirmedUsers[j].userName == confirmTab_confirmedUsers[i].userName)
+                        {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (!exist)
+                        lstConfirmed.Items.Add(confirmTab_confirmedUsers.ElementAt(i).userName);
+
+                    exist = false;
+                }
+
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+  
+        private void lstConfirmed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstConfirmed.SelectedIndex != -1)
+                lstUsers.ClearSelected();
+        }
+
+        private void lstNotConfirmed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstNotConfirmed.SelectedIndex != -1)
+                lstConfirmed.ClearSelected();
+
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            int index = lstNotConfirmed.SelectedIndex;
+            if (index >= 0)
+            {
+                string name = lstNotConfirmed.Text;
+
+                try
+                {
+                    communicator.confirmUser(forumId, name);
+                    initConfirmUsersTab();
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /********************************/
+
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+   
 
 
 

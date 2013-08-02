@@ -4,6 +4,7 @@
   <xs:complexType name="User">
     <xs:sequence>
       <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isConfirmed" type="xs:boolean" />
       <xs:element minOccurs="0" name="isLoggedIn" type="xs:boolean" />
       <xs:element minOccurs="0" name="memberID" type="xs:int" />
       <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />

@@ -9,10 +9,11 @@ namespace ForumGenerator_Client.Communication
 {
     public interface IForumGenerator
     {
-        
+
+
         User login(int forumId, string userName, string password);
 
-        bool logout(int forumId, int userId);
+        bool logout(int forumId, string userName, string password);
 
         SuperUser superUserLogin(string userName, string password);
 
@@ -30,7 +31,7 @@ namespace ForumGenerator_Client.Communication
 
         List<User> getUsers(int forumId);
 
-        Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword);
+        Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword, Forum.RegPolicy registrationPolicy);
 
         SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle);
 
@@ -50,8 +51,6 @@ namespace ForumGenerator_Client.Communication
 
         Discussion editDiscussion(int forumId, int subForumId, int discussionId, string userName, string pswd, string newContent);
 
-    //    List<User> getMutualForumMembers(string userName, string pswd);
-
         int getNumOfCommentsSingleUser(string reqUserName, string reqPswd, int forumId, string userName);
 
         int getNumOfCommentsSubForum(string userName, string pswd, int forumId, int subForumId);
@@ -60,13 +59,31 @@ namespace ForumGenerator_Client.Communication
 
         List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
+        List<User> getModerators(int forumId, int subForumId);
+
         int getUserType(int forumId, string userName);
 
         int getUserType(int forumId, int subForumId, string userName);
 
-        List<User> getModerators(int forumId, int subForumId);
-
         bool removeSubForum(int forumId, int subForumId, string userName, string password);
+
+        void reset();
+
+        List<User> getUnconfirmedUsers(int forumId);
+
+        // Web functions:
+
+        int countDiscussionsPerForum(int forumId);
+
+        int countSubForumsPerForum(int forumId);
+
+        int countDiscussionsPerSubForum(int forumId, int subForumId);
+
+        int countCommentsPerSubForum(int forumId, int subForumId);
+
+        int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
+
+        bool confirmUser(int forumId, string userName);
 
     }
 }

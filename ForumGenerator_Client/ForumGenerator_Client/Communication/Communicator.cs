@@ -184,12 +184,12 @@ namespace ForumGenerator_Client.Communication
         }
 
 
-        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword,  Forum.RegPolicy policy)
         {
             Forum ans = null;
             try
             {
-                ans = httpProxy.createNewForum(userName, password, forumName, adminUserName, adminPassword);
+                ans = httpProxy.createNewForum(userName, password, forumName, adminUserName, adminPassword, policy);
                 return ans;
             }
             catch (FaultException fe)
@@ -416,6 +416,30 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 httpProxy.removeSubForum(forumId, subForumId, userName, password);    
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
+
+        public User[] getUnconfirmedUsers(int forumId)
+        {
+            try
+            {
+                return httpProxy.getUnconfirmedUsers(forumId);
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
+
+        public bool confirmUser(int forumId, string userName)
+        {
+            try
+            {
+                return httpProxy.confirmUser(forumId, userName);
             }
             catch (FaultException fe)
             {

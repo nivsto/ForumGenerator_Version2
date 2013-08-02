@@ -38,13 +38,19 @@ namespace ForumGenerator_Client
                 MessageBox.Show("Please Enter All Fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
             {
-                
+                Forum.RegPolicy policy = Forum.RegPolicy.NONE;
+                if (rdbtnAdminConfirm.Checked)
+                    policy = Forum.RegPolicy.ADMIN_CONFIRMATION;
+                if (rdbtnMailAct.Checked)
+                    policy = Forum.RegPolicy.MAIL_ACTIVATION;
+
                 forumName = txtBoxName.Text;
                 admin = txtBoxAdmin.Text;
                 adminPassword = encryptPassword(txtBoxPassword.Text);
+
                 try
                 {
-                    Forum forum = communicator.createNewForum(currUser, userPassword, forumName, admin, adminPassword);
+                    Forum forum = communicator.createNewForum(currUser, userPassword, forumName, admin, adminPassword, policy);
                     forumId = forum.forumId;
                     Close();
                 }
