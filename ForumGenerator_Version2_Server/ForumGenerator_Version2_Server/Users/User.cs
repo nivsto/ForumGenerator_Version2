@@ -59,13 +59,13 @@ namespace ForumGenerator_Version2_Server.Users
 
         internal User login(string password)
         {
-            if (this.password == password)
+            if (this.isConfirmed == false)
+                throw new UnauthorizedAccessException(ForumGeneratorDefs.INACTIVE_USR);
+            else if (this.password == password)
             {
                 this.isLoggedIn = true;
                 return this;
             }
-            else if (this.isConfirmed == false)
-                throw new UnauthorizedAccessException(ForumGeneratorDefs.INACTIVE_USR);
             else
                 throw new UnauthorizedAccessException(ForumGeneratorDefs.WRONG_USR_PSWD);
         }
