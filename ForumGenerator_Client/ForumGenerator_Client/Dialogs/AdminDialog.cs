@@ -40,7 +40,7 @@ namespace ForumGenerator_Client.Dialogs
 
 
 
-        public AdminDialog(int forumId, string adderUsrName, string adderPswd)
+        public AdminDialog(int forumId, string adderUsrName, string adderPswd, Forum.RegPolicy policy)
         {
             InitializeComponent();
             this.forumId = forumId;
@@ -51,7 +51,23 @@ namespace ForumGenerator_Client.Dialogs
             initMessagesTab();
             initCommentsTab();
             initRepliersTab();
-            initConfirmUsersTab();
+
+            //show confirm option only if this is the forum policy
+            if (policy == Forum.RegPolicy.ADMIN_CONFIRMATION)
+            {
+                initConfirmUsersTab();
+            }
+            else
+            {
+                for (int i = 0; i < tabControl1.TabPages.Count; i++)
+                {
+                    if (tabControl1.TabPages[i].Name.Equals("tabConfirm", StringComparison.OrdinalIgnoreCase))
+                    {
+                        tabControl1.TabPages.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -62,7 +62,7 @@
             this.lstRep_repliers = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabConfirm = new System.Windows.Forms.TabPage();
             this.lstConfirmed = new System.Windows.Forms.ListBox();
             this.lstNotConfirmed = new System.Windows.Forms.ListBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -75,7 +75,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.tabPage6.SuspendLayout();
+            this.tabConfirm.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -85,7 +85,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabConfirm);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -422,20 +422,20 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Users That Commented:";
             // 
-            // tabPage6
+            // tabConfirm
             // 
-            this.tabPage6.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage6.Controls.Add(this.lstConfirmed);
-            this.tabPage6.Controls.Add(this.lstNotConfirmed);
-            this.tabPage6.Controls.Add(this.label12);
-            this.tabPage6.Controls.Add(this.label13);
-            this.tabPage6.Controls.Add(this.btnConfirm);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(483, 251);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "Confirm Users";
+            this.tabConfirm.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabConfirm.Controls.Add(this.lstConfirmed);
+            this.tabConfirm.Controls.Add(this.lstNotConfirmed);
+            this.tabConfirm.Controls.Add(this.label12);
+            this.tabConfirm.Controls.Add(this.label13);
+            this.tabConfirm.Controls.Add(this.btnConfirm);
+            this.tabConfirm.Location = new System.Drawing.Point(4, 22);
+            this.tabConfirm.Name = "tabConfirm";
+            this.tabConfirm.Padding = new System.Windows.Forms.Padding(3);
+            this.tabConfirm.Size = new System.Drawing.Size(483, 251);
+            this.tabConfirm.TabIndex = 5;
+            this.tabConfirm.Text = "Confirm Users";
             // 
             // lstConfirmed
             // 
@@ -516,8 +516,8 @@
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.tabPage6.ResumeLayout(false);
-            this.tabPage6.PerformLayout();
+            this.tabConfirm.ResumeLayout(false);
+            this.tabConfirm.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -558,7 +558,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cmbxPer_subs;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.TabPage tabConfirm;
         private System.Windows.Forms.ListBox lstConfirmed;
         private System.Windows.Forms.ListBox lstNotConfirmed;
         private System.Windows.Forms.Label label12;

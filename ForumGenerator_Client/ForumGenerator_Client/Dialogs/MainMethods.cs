@@ -40,6 +40,7 @@ namespace ForumGenerator_Client.Dialogs
         string forumName = "";
         string subForumName = "";
         int currForumId = 0;
+        Forum.RegPolicy policy = Forum.RegPolicy.NONE;
         int currSubForumId = 0;
 
         User currUser;
@@ -140,6 +141,7 @@ namespace ForumGenerator_Client.Dialogs
             if (currentView == (int)view.MAIN)
             {
                 currForumId = forumsList[index].forumId;
+                policy = forumsList[index].registrationPolicy;
                 forumName = forumsList[index].forumName;
             }
 
@@ -315,7 +317,7 @@ namespace ForumGenerator_Client.Dialogs
 
         public void adminDialog()
         {
-            AdminDialog admin = new AdminDialog(currForumId, userName, password);
+            AdminDialog admin = new AdminDialog(currForumId, userName, password, policy);
             admin.Show();
         }
 
