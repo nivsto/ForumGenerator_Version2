@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.Dialogs;
 using ForumGenerator_Client.ServiceReference1;
+using System.Threading;
+
 
 namespace ForumGenerator_Client.Dialogs
 {
@@ -52,16 +54,25 @@ namespace ForumGenerator_Client.Dialogs
         Comment[] commentsList;
         Discussion[] discussionList;
 
-
+        splashScreen splashS;
+        Thread t;
         public MainMethods()
         {
-            mainViewDialog = new MainViewDialog(this);
+            t = new Thread(new ThreadStart(splash));
+            t.Start();
+            mainViewDialog = new MainViewDialog(this, t);
             subForumView = new SubForumDialog(this);
             this.communicator = new Communicator();
             updateVisibilty();
-
             Application.Run(mainViewDialog);
         }
+
+        public void splash()
+        {
+            splashS = new splashScreen();
+            Application.Run(splashS);
+        }
+
 
         /*************************************/
         /*   Login User                      */

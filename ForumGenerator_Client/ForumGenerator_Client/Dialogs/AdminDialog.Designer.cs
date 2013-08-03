@@ -69,6 +69,10 @@
             this.label13 = new System.Windows.Forms.Label();
             this.btnConfirm = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.close = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.minimize = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -76,6 +80,7 @@
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabConfirm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -86,7 +91,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabConfirm);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Location = new System.Drawing.Point(12, 40);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(491, 277);
@@ -486,7 +491,8 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(428, 295);
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button1.Location = new System.Drawing.Point(428, 323);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -494,14 +500,68 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // close
+            // 
+            this.close.AccessibleDescription = "Close";
+            this.close.AccessibleName = "Close";
+            this.close.AutoSize = true;
+            this.close.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.close.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.close.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.close.Location = new System.Drawing.Point(495, 3);
+            this.close.Name = "close";
+            this.close.Size = new System.Drawing.Size(19, 18);
+            this.close.TabIndex = 76;
+            this.close.Text = "X";
+            this.close.Click += new System.EventHandler(this.close_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.label14.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label14.Location = new System.Drawing.Point(9, 4);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(91, 17);
+            this.label14.TabIndex = 75;
+            this.label14.Text = "Admin Dialog";
+            // 
+            // minimize
+            // 
+            this.minimize.AutoSize = true;
+            this.minimize.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.minimize.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.minimize.Location = new System.Drawing.Point(469, -3);
+            this.minimize.Name = "minimize";
+            this.minimize.Size = new System.Drawing.Size(20, 25);
+            this.minimize.TabIndex = 74;
+            this.minimize.Text = "-";
+            this.minimize.Click += new System.EventHandler(this.minimize_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(-15, 24);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(542, 10);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 73;
+            this.pictureBox1.TabStop = false;
+            // 
             // AdminDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(517, 328);
+            this.CancelButton = this.button1;
+            this.ClientSize = new System.Drawing.Size(517, 358);
+            this.Controls.Add(this.close);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.minimize);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AdminDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Admin ";
@@ -518,7 +578,9 @@
             this.tabPage4.PerformLayout();
             this.tabConfirm.ResumeLayout(false);
             this.tabConfirm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -564,5 +626,9 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Label close;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label minimize;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

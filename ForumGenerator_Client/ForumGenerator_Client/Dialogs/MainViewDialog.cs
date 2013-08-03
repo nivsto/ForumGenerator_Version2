@@ -9,11 +9,70 @@ using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.Dialogs;
 using ForumGenerator_Client.ServiceReference1;
+using System.Threading;
+
 
 namespace ForumGenerator_Client.Dialogs
 {
     public partial class MainViewDialog : Form
     {
+        protected override void OnLoad(EventArgs e)
+        {
+            if (this.FormBorderStyle == System.Windows.Forms.FormBorderStyle.None)
+            {
+                this.MouseDown += new MouseEventHandler(AppFormBase_MouseDown);
+                this.MouseMove += new MouseEventHandler(AppFormBase_MouseMove);
+                this.MouseUp += new MouseEventHandler(AppFormBase_MouseUp);
+            }
+
+            base.OnLoad(e);
+        }
+
+        void AppFormBase_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            downPoint = new Point(e.X, e.Y);
+        }
+
+        void AppFormBase_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (downPoint == Point.Empty)
+            {
+                return;
+            }
+            Point location = new Point(
+                this.Left + e.X - downPoint.X,
+                this.Top + e.Y - downPoint.Y);
+            this.Location = location;
+        }
+
+        void AppFormBase_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            downPoint = Point.Empty;
+        }
+
+
+        private const int CS_DROPSHADOW = 0x00020000;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                // add the drop shadow flag for automatically drawing
+                // a drop shadow around the form
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= CS_DROPSHADOW;
+                return cp;
+            }
+        }
+
+        public Point downPoint = Point.Empty;
         enum loginLevels
         {
             GUEST,
@@ -37,7 +96,7 @@ namespace ForumGenerator_Client.Dialogs
         int currentView = 0;
         int loginLevel = 0;
         string forumName = "";
-        Timer timer;
+        System.Windows.Forms.Timer timer;
         struct line
         {
             public System.Windows.Forms.Label lblName;
@@ -46,17 +105,23 @@ namespace ForumGenerator_Client.Dialogs
 
         List<line> lines;
 
-        public MainViewDialog(MainMethods parent)
+
+        public MainViewDialog(MainMethods parent, Thread t)
         {
             resources = new System.ComponentModel.ComponentResourceManager(typeof(MainViewDialog));
             lines = new List<line>();
             mainMethods = parent;
             InitializeComponent();
 
-          timer = new Timer();
-          timer.Tick += new EventHandler(TimerOnTick);
-          timer.Interval = 4000;
-          timer.Start();
+
+            timer = new System.Windows.Forms.Timer();
+            timer.Tick += new EventHandler(TimerOnTick);
+            timer.Interval = 4000;
+            timer.Start();
+
+            Thread.Sleep(4000);
+            t.Abort();
+         
         }
 
         private void mnuLogin_Click(object sender, EventArgs e)
@@ -238,18 +303,18 @@ namespace ForumGenerator_Client.Dialogs
 
             tmp.lblName.AutoSize = true;
             tmp.lblName.Cursor = System.Windows.Forms.Cursors.Hand;
-            tmp.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            tmp.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             tmp.lblName.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             tmp.lblName.Location = new System.Drawing.Point(nextX, nextY);
-            tmp.lblName.MinimumSize = new System.Drawing.Size(200, 40);
+            tmp.lblName.MinimumSize = new System.Drawing.Size(700, 40);
             tmp.lblName.Name = index.ToString();
-            tmp.lblName.Size = new System.Drawing.Size(200, 40);
+            tmp.lblName.Size = new System.Drawing.Size(700, 40);
             tmp.lblName.Text = "       " + name;
             tmp.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             tmp.lblName.Click += new System.EventHandler(this.viewItem_Click);
             tmp.lblDelete.AutoSize = true;
             tmp.lblDelete.Cursor = System.Windows.Forms.Cursors.Hand;
-            tmp.lblDelete.Location = new System.Drawing.Point(209, nextY+4);
+            tmp.lblDelete.Location = new System.Drawing.Point(709, nextY+4);
             tmp.lblDelete.Name = index.ToString();
             tmp.lblDelete.Size = new System.Drawing.Size(14, 13);
             tmp.lblDelete.Text = "X";
@@ -290,6 +355,17 @@ namespace ForumGenerator_Client.Dialogs
         private void TimerOnTick(object obj, EventArgs ea)
         {
             toolStripStatusLabel2.Text = "";
+        }
+
+        private void close_Click(object sender, EventArgs e)
+        {
+            mainMethods.quit();
+            Close();
+        }
+
+        private void minimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
 
     }

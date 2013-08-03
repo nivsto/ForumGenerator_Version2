@@ -40,6 +40,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtBoxEmail = new System.Windows.Forms.TextBox();
             this.txtBoxSignature = new System.Windows.Forms.TextBox();
+            this.close = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.minimize = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRegister
@@ -103,12 +108,43 @@
             resources.ApplyResources(this.txtBoxSignature, "txtBoxSignature");
             this.txtBoxSignature.Name = "txtBoxSignature";
             // 
+            // close
+            // 
+            resources.ApplyResources(this.close, "close");
+            this.close.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.close.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.close.Name = "close";
+            this.close.Click += new System.EventHandler(this.close_Click);
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label6.Name = "label6";
+            // 
+            // minimize
+            // 
+            resources.ApplyResources(this.minimize, "minimize");
+            this.minimize.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.minimize.Name = "minimize";
+            this.minimize.Click += new System.EventHandler(this.minimize_Click);
+            // 
+            // pictureBox1
+            // 
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
             // RegistrationDialog
             // 
             this.AcceptButton = this.btnRegister;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
+            this.Controls.Add(this.close);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.minimize);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtBoxSignature);
             this.Controls.Add(this.txtBoxEmail);
             this.Controls.Add(this.label5);
@@ -120,7 +156,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnRegister);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "RegistrationDialog";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -139,5 +177,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtBoxEmail;
         private System.Windows.Forms.TextBox txtBoxSignature;
+        private System.Windows.Forms.Label close;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label minimize;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

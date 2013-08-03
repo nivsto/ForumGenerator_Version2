@@ -20,7 +20,9 @@
             base.Dispose(disposing);
         }
 
+
         #region Windows Form Designer generated code
+
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -50,6 +52,10 @@
             this.btnBack = new System.Windows.Forms.PictureBox();
             this.lblAddNew = new System.Windows.Forms.Label();
             this.btnAddNew = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnNotifications)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).BeginInit();
@@ -57,38 +63,43 @@
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnBack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAddNew)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // mnuLogin
             // 
             this.mnuLogin.Name = "mnuLogin";
-            this.mnuLogin.Size = new System.Drawing.Size(48, 20);
+            this.mnuLogin.Size = new System.Drawing.Size(60, 23);
             this.mnuLogin.Text = "Login";
             this.mnuLogin.Click += new System.EventHandler(this.mnuLogin_Click);
             // 
             // mnuSuper
             // 
             this.mnuSuper.Name = "mnuSuper";
-            this.mnuSuper.Size = new System.Drawing.Size(75, 20);
+            this.mnuSuper.Size = new System.Drawing.Size(94, 23);
             this.mnuSuper.Text = "SuperUser";
             this.mnuSuper.Click += new System.EventHandler(this.mnuSuper_Click);
             // 
             // mnuAdmin
             // 
             this.mnuAdmin.Name = "mnuAdmin";
-            this.mnuAdmin.Size = new System.Drawing.Size(53, 20);
+            this.mnuAdmin.Size = new System.Drawing.Size(68, 23);
             this.mnuAdmin.Text = "Admin";
             this.mnuAdmin.Click += new System.EventHandler(this.mnuAdmin_Click);
             // 
             // mnuLogput
             // 
             this.mnuLogput.Name = "mnuLogput";
-            this.mnuLogput.Size = new System.Drawing.Size(58, 20);
+            this.mnuLogput.Size = new System.Drawing.Size(70, 23);
             this.mnuLogput.Text = "Logout";
             this.mnuLogput.Click += new System.EventHandler(this.mnuLogput_Click);
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip1.Font = new System.Drawing.Font("Tahoma", 12F);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuLogin,
             this.mnuRegister,
@@ -97,14 +108,14 @@
             this.mnuAdmin});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(604, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(378, 27);
             this.menuStrip1.TabIndex = 58;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // mnuRegister
             // 
             this.mnuRegister.Name = "mnuRegister";
-            this.mnuRegister.Size = new System.Drawing.Size(63, 20);
+            this.mnuRegister.Size = new System.Drawing.Size(78, 23);
             this.mnuRegister.Text = "Register";
             this.mnuRegister.Click += new System.EventHandler(this.mnuRegister_Click);
             // 
@@ -112,7 +123,7 @@
             // 
             this.lblSecondTitle.AutoSize = true;
             this.lblSecondTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lblSecondTitle.Location = new System.Drawing.Point(56, 95);
+            this.lblSecondTitle.Location = new System.Drawing.Point(170, 136);
             this.lblSecondTitle.Name = "lblSecondTitle";
             this.lblSecondTitle.Size = new System.Drawing.Size(108, 20);
             this.lblSecondTitle.TabIndex = 56;
@@ -126,7 +137,7 @@
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label11.Image = ((System.Drawing.Image)(resources.GetObject("label11.Image")));
             this.label11.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label11.Location = new System.Drawing.Point(27, 0);
+            this.label11.Location = new System.Drawing.Point(23, 5);
             this.label11.MinimumSize = new System.Drawing.Size(200, 40);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(200, 40);
@@ -139,9 +150,10 @@
             // 
             this.btnNotifications.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNotifications.Image = ((System.Drawing.Image)(resources.GetObject("btnNotifications.Image")));
-            this.btnNotifications.Location = new System.Drawing.Point(528, 27);
+            this.btnNotifications.Location = new System.Drawing.Point(1000, 1);
             this.btnNotifications.Name = "btnNotifications";
-            this.btnNotifications.Size = new System.Drawing.Size(29, 39);
+            this.btnNotifications.Size = new System.Drawing.Size(25, 27);
+            this.btnNotifications.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btnNotifications.TabIndex = 65;
             this.btnNotifications.TabStop = false;
             this.btnNotifications.Click += new System.EventHandler(this.btnNotifications_Click);
@@ -150,9 +162,10 @@
             // 
             this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
-            this.btnRefresh.Location = new System.Drawing.Point(563, 27);
+            this.btnRefresh.Location = new System.Drawing.Point(1031, 1);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(33, 29);
+            this.btnRefresh.Size = new System.Drawing.Size(27, 29);
+            this.btnRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btnRefresh.TabIndex = 66;
             this.btnRefresh.TabStop = false;
             this.btnRefresh.Tag = "Refresh";
@@ -176,9 +189,9 @@
             this.pnlForums.Controls.Add(this.label1);
             this.pnlForums.Controls.Add(this.label21);
             this.pnlForums.Controls.Add(this.label11);
-            this.pnlForums.Location = new System.Drawing.Point(140, 137);
+            this.pnlForums.Location = new System.Drawing.Point(147, 180);
             this.pnlForums.Name = "pnlForums";
-            this.pnlForums.Size = new System.Drawing.Size(262, 356);
+            this.pnlForums.Size = new System.Drawing.Size(816, 356);
             this.pnlForums.TabIndex = 67;
             // 
             // label1
@@ -203,9 +216,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblHello,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 597);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 669);
+            this.statusStrip1.MinimumSize = new System.Drawing.Size(1118, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(604, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1133, 22);
             this.statusStrip1.TabIndex = 57;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -219,7 +233,7 @@
             // 
             this.toolStripStatusLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(516, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(1045, 17);
             this.toolStripStatusLabel2.Spring = true;
             this.toolStripStatusLabel2.Text = "New Sub-Forum was created succesfully!";
             this.toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -228,7 +242,7 @@
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Aharoni", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lblTitle.Location = new System.Drawing.Point(23, 61);
+            this.lblTitle.Location = new System.Drawing.Point(255, 85);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(499, 30);
             this.lblTitle.TabIndex = 59;
@@ -238,7 +252,7 @@
             // 
             this.lblBack.AutoSize = true;
             this.lblBack.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblBack.Location = new System.Drawing.Point(232, 557);
+            this.lblBack.Location = new System.Drawing.Point(198, 631);
             this.lblBack.Name = "lblBack";
             this.lblBack.Size = new System.Drawing.Size(104, 13);
             this.lblBack.TabIndex = 64;
@@ -249,7 +263,7 @@
             // 
             this.btnBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBack.Image = ((System.Drawing.Image)(resources.GetObject("btnBack.Image")));
-            this.btnBack.Location = new System.Drawing.Point(202, 546);
+            this.btnBack.Location = new System.Drawing.Point(166, 621);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(33, 34);
             this.btnBack.TabIndex = 63;
@@ -260,7 +274,7 @@
             // 
             this.lblAddNew.AutoSize = true;
             this.lblAddNew.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblAddNew.Location = new System.Drawing.Point(237, 517);
+            this.lblAddNew.Location = new System.Drawing.Point(602, 631);
             this.lblAddNew.Name = "lblAddNew";
             this.lblAddNew.Size = new System.Drawing.Size(83, 13);
             this.lblAddNew.TabIndex = 62;
@@ -271,18 +285,69 @@
             // 
             this.btnAddNew.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddNew.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNew.Image")));
-            this.btnAddNew.Location = new System.Drawing.Point(202, 506);
+            this.btnAddNew.Location = new System.Drawing.Point(570, 621);
             this.btnAddNew.Name = "btnAddNew";
             this.btnAddNew.Size = new System.Drawing.Size(33, 34);
             this.btnAddNew.TabIndex = 61;
             this.btnAddNew.TabStop = false;
             this.btnAddNew.Click += new System.EventHandler(this.btnAddNew_Click);
             // 
+            // label2
+            // 
+            this.label2.AccessibleDescription = "Close";
+            this.label2.AccessibleName = "Close";
+            this.label2.AutoSize = true;
+            this.label2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.label2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(1104, 8);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(19, 18);
+            this.label2.TabIndex = 68;
+            this.label2.Text = "X";
+            this.label2.Click += new System.EventHandler(this.close_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.label3.Location = new System.Drawing.Point(1078, 1);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(20, 25);
+            this.label3.TabIndex = 68;
+            this.label3.Text = "-";
+            this.label3.Click += new System.EventHandler(this.minimize_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(13, 28);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1120, 10);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 69;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(1064, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(19, 32);
+            this.pictureBox2.TabIndex = 70;
+            this.pictureBox2.TabStop = false;
+            // 
             // MainViewDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 619);
+            this.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.ClientSize = new System.Drawing.Size(1133, 691);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.lblSecondTitle);
             this.Controls.Add(this.btnNotifications);
@@ -294,6 +359,8 @@
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.lblAddNew);
             this.Controls.Add(this.btnAddNew);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainViewDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "The Forum Generator 4.0";
@@ -307,6 +374,8 @@
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnBack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAddNew)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,5 +404,9 @@
         private System.Windows.Forms.Label lblAddNew;
         private System.Windows.Forms.PictureBox btnAddNew;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

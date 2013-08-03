@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SuperUserDialog));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblNumOfForums = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -41,15 +42,20 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
+            this.close = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.minimize = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lblNumOfForums);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 40);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(386, 48);
             this.groupBox1.TabIndex = 0;
@@ -61,9 +67,9 @@
             this.lblNumOfForums.AutoSize = true;
             this.lblNumOfForums.Location = new System.Drawing.Point(126, 25);
             this.lblNumOfForums.Name = "lblNumOfForums";
-            this.lblNumOfForums.Size = new System.Drawing.Size(19, 13);
+            this.lblNumOfForums.Size = new System.Drawing.Size(13, 13);
             this.lblNumOfForums.TabIndex = 1;
-            this.lblNumOfForums.Text = "10";
+            this.lblNumOfForums.Text = "0";
             // 
             // label5
             // 
@@ -84,7 +90,7 @@
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 66);
+            this.groupBox2.Location = new System.Drawing.Point(12, 94);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(386, 297);
             this.groupBox2.TabIndex = 1;
@@ -163,7 +169,8 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(323, 369);
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(323, 397);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 2;
@@ -171,14 +178,68 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // close
+            // 
+            this.close.AccessibleDescription = "Close";
+            this.close.AccessibleName = "Close";
+            this.close.AutoSize = true;
+            this.close.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.close.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.close.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.close.Location = new System.Drawing.Point(388, 4);
+            this.close.Name = "close";
+            this.close.Size = new System.Drawing.Size(19, 18);
+            this.close.TabIndex = 76;
+            this.close.Text = "X";
+            this.close.Click += new System.EventHandler(this.close_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label6.Location = new System.Drawing.Point(12, 5);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(124, 17);
+            this.label6.TabIndex = 75;
+            this.label6.Text = "Super User Dialog";
+            // 
+            // minimize
+            // 
+            this.minimize.AutoSize = true;
+            this.minimize.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.minimize.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.minimize.Location = new System.Drawing.Point(362, -2);
+            this.minimize.Name = "minimize";
+            this.minimize.Size = new System.Drawing.Size(20, 25);
+            this.minimize.TabIndex = 74;
+            this.minimize.Text = "-";
+            this.minimize.Click += new System.EventHandler(this.minimize_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(-7, 25);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(427, 10);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 73;
+            this.pictureBox1.TabStop = false;
+            // 
             // SuperUserDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 406);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(411, 432);
+            this.Controls.Add(this.close);
             this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.minimize);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SuperUserDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SuperUserDialog";
@@ -186,7 +247,9 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -205,5 +268,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblNumOfForums;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label close;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label minimize;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -289,7 +289,7 @@ namespace ForumGenerator_Client.Dialogs
             tmp.tnodeTitle.NodeFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             tmp.tnodeTitle.Text = discussion.title;         //
             tmp.tree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { tmp.tnodeTitle });
-            tmp.tree.Size = new System.Drawing.Size(481, hieght); //need to calculate according to the number of comments + add comment line
+            tmp.tree.Size = new System.Drawing.Size(780, hieght); //need to calculate according to the number of comments + add comment line
             tmp.tree.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(treeViewBeforeCollapse);
             tmp.tree.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(treeViewBeforeExpand);
 
@@ -303,7 +303,7 @@ namespace ForumGenerator_Client.Dialogs
             // 
             tmp.lblEdit.AutoSize = true;
             tmp.lblEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            tmp.lblEdit.Location = new System.Drawing.Point(438, nextY + 4);
+            tmp.lblEdit.Location = new System.Drawing.Point(711, nextY + 4);
             tmp.lblEdit.Name = index.ToString();       //
             tmp.lblEdit.Size = new System.Drawing.Size(38, 13);
             tmp.lblEdit.TabIndex = 48;
@@ -316,7 +316,7 @@ namespace ForumGenerator_Client.Dialogs
             // 
             tmp.lblDelete.AutoSize = true;
             tmp.lblDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            tmp.lblDelete.Location = new System.Drawing.Point(407, nextY + 4);
+            tmp.lblDelete.Location = new System.Drawing.Point(742, nextY + 4);
             tmp.lblDelete.Name = index.ToString();       //
             tmp.lblDelete.Size = new System.Drawing.Size(25, 13);
             tmp.lblDelete.TabIndex = 47;
@@ -337,7 +337,7 @@ namespace ForumGenerator_Client.Dialogs
             // button - comment
             // 
             tmp.btnComment.BackColor = System.Drawing.SystemColors.HighlightText;
-            tmp.btnComment.Location = new System.Drawing.Point(406, y);
+            tmp.btnComment.Location = new System.Drawing.Point(714, y);
             tmp.btnComment.Name = index.ToString();       //
             tmp.btnComment.Size = new System.Drawing.Size(63, 20);
             tmp.btnComment.TabIndex = 46;
@@ -350,8 +350,9 @@ namespace ForumGenerator_Client.Dialogs
             // 
             tmp.lnedComment.Location = new System.Drawing.Point(35, y);
             tmp.lnedComment.Name = index.ToString();       //
-            tmp.lnedComment.Size = new System.Drawing.Size(360, 20);
+            tmp.lnedComment.Size = new System.Drawing.Size(673, 20);
             tmp.lnedComment.TabIndex = 45;
+            tmp.lnedComment.MaxLength = 80;
 
 
         }
@@ -370,9 +371,9 @@ namespace ForumGenerator_Client.Dialogs
             tmp.lstDates.DrawMode = DrawMode.OwnerDrawVariable;
             tmp.lstDates.ItemHeight = 20;
             tmp.lstDates.Items.AddRange(new object[] { tmp.dates[0]});
-            tmp.lstDates.Location = new System.Drawing.Point(487, nextY);
+            tmp.lstDates.Location = new System.Drawing.Point(786, nextY);
             tmp.lstDates.Name = index.ToString();       //
-            tmp.lstDates.Size = new System.Drawing.Size(140, hieght); //need to calculate height
+            tmp.lstDates.Size = new System.Drawing.Size(120, hieght); //need to calculate height
             tmp.lstDates.TabIndex = 44;
             tmp.lstDates.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstDastes_DrawItem);
    
@@ -406,9 +407,9 @@ namespace ForumGenerator_Client.Dialogs
             tmp.lstPublishers.DrawMode = DrawMode.OwnerDrawVariable;
             tmp.lstPublishers.ItemHeight = 20;
             tmp.lstPublishers.Items.AddRange(new object[] { tmp.publishers[0] });
-            tmp.lstPublishers.Location = new System.Drawing.Point(633, nextY);
+            tmp.lstPublishers.Location = new System.Drawing.Point(912, nextY);
             tmp.lstPublishers.Name = index.ToString();       //
-            tmp.lstPublishers.Size = new System.Drawing.Size(100, hieght); //need to calculate height
+            tmp.lstPublishers.Size = new System.Drawing.Size(130, hieght); //need to calculate height
             tmp.lstPublishers.TabIndex = 43;
             tmp.lstPublishers.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstPublishers_DrawItem);
 
@@ -498,15 +499,15 @@ namespace ForumGenerator_Client.Dialogs
 
             tmp.tree.Location = new System.Drawing.Point(0, nextY);
 
-            tmp.tree.Size = new System.Drawing.Size(481, hieght); //need to calculate according to the number of comments + add comment line
-            tmp.lblDelete.Location = new System.Drawing.Point(407, nextY + 4);
-            tmp.lblEdit.Location = new System.Drawing.Point(438, nextY + 4);
-            tmp.btnComment.Location = new System.Drawing.Point(406, y);
+            tmp.tree.Size = new System.Drawing.Size(780, hieght); //need to calculate according to the number of comments + add comment line
+            tmp.lblDelete.Location = new System.Drawing.Point(711, nextY + 4);
+            tmp.lblEdit.Location = new System.Drawing.Point(742, nextY + 4);
+            tmp.btnComment.Location = new System.Drawing.Point(714, y);
             tmp.lnedComment.Location = new System.Drawing.Point(35, y);
-            tmp.lstDates.Location = new System.Drawing.Point(487, nextY);
-            tmp.lstDates.Size = new System.Drawing.Size(140, hieght);
-            tmp.lstPublishers.Location = new System.Drawing.Point(633, nextY);
-            tmp.lstPublishers.Size = new System.Drawing.Size(100, hieght);
+            tmp.lstDates.Location = new System.Drawing.Point(786, nextY);
+            tmp.lstDates.Size = new System.Drawing.Size(120, hieght);
+            tmp.lstPublishers.Location = new System.Drawing.Point(912, nextY);
+            tmp.lstPublishers.Size = new System.Drawing.Size(130, hieght);
 
             if (loginLevel != (int)loginLevels.GUEST)
             {
@@ -589,7 +590,80 @@ namespace ForumGenerator_Client.Dialogs
             toolStripStatusLabel2.Text = "";
         }
 
-    
 
+        protected override void OnLoad(EventArgs e)
+        {
+            if (this.FormBorderStyle == System.Windows.Forms.FormBorderStyle.None)
+            {
+                this.MouseDown += new MouseEventHandler(AppFormBase_MouseDown);
+                this.MouseMove += new MouseEventHandler(AppFormBase_MouseMove);
+                this.MouseUp += new MouseEventHandler(AppFormBase_MouseUp);
+            }
+
+            base.OnLoad(e);
+        }
+
+        void AppFormBase_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            downPoint = new Point(e.X, e.Y);
+        }
+
+        void AppFormBase_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (downPoint == Point.Empty)
+            {
+                return;
+            }
+            Point location = new Point(
+                this.Left + e.X - downPoint.X,
+                this.Top + e.Y - downPoint.Y);
+            this.Location = location;
+        }
+
+        void AppFormBase_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            downPoint = Point.Empty;
+        }
+
+
+        private const int CS_DROPSHADOW = 0x00020000;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                // add the drop shadow flag for automatically drawing
+                // a drop shadow around the form
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= CS_DROPSHADOW;
+                return cp;
+            }
+        }
+
+        public Point downPoint = Point.Empty;
+
+
+        private void close_Click(object sender, EventArgs e)
+        {
+            mainMethods.quit();
+            Close();
+        }
+
+        private void minimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

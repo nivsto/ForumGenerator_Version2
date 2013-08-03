@@ -80,9 +80,9 @@ namespace ForumGenerator_Version2_Server.Sys
         public const int MIN_DISCUSSION_TITLE_LEN = 1;
         public const int MAX_DISCUSSION_TITLE_LEN = 80;
         public const int MIN_DISCUSSION_CONTENT_LEN = 1;
-        public const int MAX_DISCUSSION_CONTENT_LEN = INFINITE_LEN;
+        public const int MAX_DISCUSSION_CONTENT_LEN = 80;
         public const int MIN_COMMENT_CONTENT_LEN = 1;
-        public const int MAX_COMMENT_CONTENT_LEN = INFINITE_LEN;
+        public const int MAX_COMMENT_CONTENT_LEN = 80;
         public const int MIN_MEMBER_SIGNATURE_LEN = 1;
         public const int MAX_MEMBER_SIGNATURE_LEN = 40;
 
