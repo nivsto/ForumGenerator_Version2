@@ -27,8 +27,18 @@ namespace ForumGenerator_Version2_Server.Users
             ALL
         }
 
+
+        public Moderator()
+        {
+            this.moderatorId = 0;
+            this.user = null;
+            this.level = modLevel.NONE;
+        }
+
+
         public Moderator(User user, modLevel level)
         {
+            this.moderatorId = 0;
             this.user = user;
             this.level = level;
         }

@@ -22,7 +22,7 @@ namespace ForumGenerator_Version2_Server.Sys
      *                                  E R R O R S
      * ******************************************************************************************************/
         // Extra information - for internal use
-        const string USE_ONLY_ASCII = "Try only English characters, digits and punctuation";
+        const string USE_ONLY_ASCII = "Try only English characters, digits and punctuation.";
         const string TRY_ANOTHER = "Try a different one.";
 
         // Errors defs

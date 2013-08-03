@@ -152,7 +152,7 @@ namespace ForumGenerator_Client.Dialogs
             if (currentView == (int)view.MAIN)
             {
                 currForumId = forumsList[index].forumId;
-                policy = forumsList[index].registrationPolicy;
+                policy = (ForumGenerator_Client.ServiceReference1.Forum.RegPolicy) forumsList[index].registrationPolicy;
                 forumName = forumsList[index].forumName;
             }
 

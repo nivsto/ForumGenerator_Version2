@@ -20,11 +20,11 @@ namespace ForumGenerator_Client.Dialogs
 
         int addTab_subForumId;
         User[] addTab_users = null;
-        User[] addTab_moderators = null;
+        Moderator[] addTab_moderators = null;
         SubForum[] addTab_subForums = null;
 
         SubForum[] permisionTab_subForums = null;     
-        User[] permisionTab_moderators = null;
+        Moderator[] permisionTab_moderators = null;
         int permisionTab_subId;
         bool edit;
         bool delete;
@@ -109,9 +109,10 @@ namespace ForumGenerator_Client.Dialogs
 
             try
             {
+                lstModerators.Items.Clear();
                 addTab_moderators = communicator.getModerators(forumId, addTab_subForumId);
                 for (int i = 0; i < addTab_moderators.Length; i++)
-                    lstModerators.Items.Add(addTab_moderators.ElementAt(i).userName);
+                    lstModerators.Items.Add(addTab_moderators.ElementAt(i).user.userName);
 
                 bool exist = false;
 
@@ -120,7 +121,7 @@ namespace ForumGenerator_Client.Dialogs
                 {
                     for (int j = 0; j < addTab_moderators.Length; j++)
                     {
-                        if (addTab_moderators[j].userName == addTab_users[i].userName)
+                        if (addTab_moderators[j].user.userName == addTab_users[i].userName)
                         {
                             exist = true;
                             break;
@@ -230,11 +231,10 @@ namespace ForumGenerator_Client.Dialogs
 
             try
             {
-
                 permisionTab_moderators = communicator.getModerators(forumId, permisionTab_subId);
-
+                this.cmbxPer_moder.Items.Clear();
                 for (int i = 0; i < permisionTab_moderators.Length; i++)
-                    cmbxPer_moder.Items.Add(permisionTab_moderators.ElementAt(i).userName);
+                    cmbxPer_moder.Items.Add(permisionTab_moderators.ElementAt(i).user.userName);
 
 
             }
@@ -248,12 +248,28 @@ namespace ForumGenerator_Client.Dialogs
         {
             //show permissions
             int index = cmbxPer_moder.SelectedIndex;
-            
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //save permissions
+            int subForumId = this.permisionTab_subId;
+            bool en_edit = this.chkbxEdit.Checked;
+            bool en_delete = this.chkbxDelete.Checked;
+            int index = this.cmbxPer_moder.SelectedIndex;
+            string userName = this.permisionTab_moderators[index].user.userName;
+            Moderator.modLevel permission;
+
+            // Set new permission level. A bit smelly but works...
+            if (en_edit && en_delete)
+                permission = Moderator.modLevel.ALL;
+            else if (en_edit)
+                permission = Moderator.modLevel.EDIT;
+            else if (en_delete)
+                permission = Moderator.modLevel.DEL;
+            else
+                permission = Moderator.modLevel.NONE;
+
+            this.communicator.changeModLevel(forumId, subForumId, userName, permission);
         }
 
 
@@ -519,6 +535,11 @@ namespace ForumGenerator_Client.Dialogs
         }
 
         public Point downPoint = Point.Empty;
+
+        private void chkbxEdit_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
 
           
     }

@@ -252,6 +252,7 @@
         <xs:element minOccurs="0" name="subForumId" type="xs:int" />
         <xs:element minOccurs="0" name="adderUsrName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="adderPswd" nillable="true" type="xs:string" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="level" type="q15:Moderator.modLevel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -330,7 +331,7 @@
   <xs:element name="editDiscussionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="editDiscussionResult" nillable="true" type="q15:Discussion" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" minOccurs="0" name="editDiscussionResult" nillable="true" type="q16:Discussion" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -381,7 +382,7 @@
   <xs:element name="getResponsersForSingleUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getResponsersForSingleUserResult" nillable="true" type="q16:ArrayOfUser" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getResponsersForSingleUserResult" nillable="true" type="q17:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -398,7 +399,7 @@
   <xs:element name="getMutualUsersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getMutualUsersResult" nillable="true" type="q17:ArrayOfUser" />
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getMutualUsersResult" nillable="true" type="q18:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -413,7 +414,7 @@
   <xs:element name="getModeratorsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getModeratorsResult" nillable="true" type="q18:ArrayOfUser" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getModeratorsResult" nillable="true" type="q19:ArrayOfModerator" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -547,7 +548,24 @@
   <xs:element name="getUnconfirmedUsersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getUnconfirmedUsersResult" nillable="true" type="q19:ArrayOfUser" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="getUnconfirmedUsersResult" nillable="true" type="q20:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="changeModLevel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="forumId" type="xs:int" />
+        <xs:element minOccurs="0" name="subForumId" type="xs:int" />
+        <xs:element minOccurs="0" name="moderatorName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" minOccurs="0" name="newLevel" type="q21:Moderator.modLevel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="changeModLevelResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="changeModLevelResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

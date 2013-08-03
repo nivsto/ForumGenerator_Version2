@@ -31,4 +31,29 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
+  <xs:simpleType name="Moderator.modLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE" />
+      <xs:enumeration value="DEL" />
+      <xs:enumeration value="EDIT" />
+      <xs:enumeration value="ALL" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Moderator.modLevel" nillable="true" type="tns:Moderator.modLevel" />
+  <xs:complexType name="ArrayOfModerator">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Moderator" nillable="true" type="tns:Moderator" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfModerator" nillable="true" type="tns:ArrayOfModerator" />
+  <xs:complexType name="Moderator">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="level" nillable="true" type="tns:Moderator.modLevel" />
+      <xs:element minOccurs="0" name="moderatorId" type="xs:int" />
+      <xs:element minOccurs="0" name="user" nillable="true" type="tns:User" />
+    </xs:sequence>
+    <xs:attribute ref="ser:Id" />
+    <xs:attribute ref="ser:Ref" />
+  </xs:complexType>
+  <xs:element name="Moderator" nillable="true" type="tns:Moderator" />
 </xs:schema>

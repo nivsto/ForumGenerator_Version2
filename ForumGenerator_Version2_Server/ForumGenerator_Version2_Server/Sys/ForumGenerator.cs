@@ -32,7 +32,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB10");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB6");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
@@ -93,7 +93,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logAction("performing login: forumId: " + forumId + 
                                                   "\tuserName: " + userName + 
-                                                  "\tpassword: " + password);
+                                                  "\tpassword: <not detailed>");
                 lock (db)
                 {
                     return new User(getForum(forumId).login(userName, password, db));
@@ -113,7 +113,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logAction("performing logout: forumId: " + forumId +
                                         "\tuserName: " + userName +
-                                        "\tpassword: " + password);
+                                        "\tpassword: <not detailed>");
                 lock (db)
                 {
                     User loggedOutUser = getForum(forumId).logout(userName, password, db);
@@ -134,7 +134,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing superUserLogin: userName: " + userName +
-                                                           "\tpassword: " + password);
+                                                           "\tpassword: <not detailed>");
                 lock (db)
                 {
                     return this.superUser.login(userName, password);
@@ -152,7 +152,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing superUserLogout: userName: " + userName +
-                                                "\tpassword: " + password);
+                                                "\tpassword: <not detailed>");
                 lock (db)
                 {
                     return this.superUser.logout(userName, password);
@@ -172,7 +172,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logAction("performing register: forumId: " + forumId +
                                                             "\tuserName: " + userName +
-                                                            "\tpassword: " + password +
+                                                            "\tpassword: <not detailed>" +
                                                             "\temail: " + email +
                                                             "\tsignature: " + signature);
                 this.cp.checkLegalContent(ContentPolicy.cType.USER_NAME, userName);
@@ -313,7 +313,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing createNewForum:  userName: " + userName +
-                                                              "\tpassword: " + password +
+                                                              "\tpassword: <not detailed>" +
                                                               "\tforumName: " + forumName +
                                                               "\tadminUserName: " + adminUserName +
                                                               "\tadminPassword: " + adminPassword);
@@ -351,7 +351,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing createNewSubForum: userName: " + userName +
-                                                                  "\tpassword: " + password +
+                                                                  "\tpassword: <not detailed>" +
                                                                   "\tforumId: " + forumId +
                                                                   "\tsubForumTitle: " + subForumTitle);
 
@@ -381,7 +381,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing createNewDiscussion: userName: " + userName +
-                                                                     "\tpassword: " + password +
+                                                                     "\tpassword: <not detailed>" +
                                                                      "\tforumId: " + forumId +
                                                                      "\tsubForumId: " + subForumId +
                                                                      "\ttitle: " + title +
@@ -412,7 +412,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.logger.logError("createNewDiscussion: " + e.Message+
                      "userName: " + userName +
-                    "\tpassword: " + password +
+                    "\tpassword: <not detailed>" +
                     "\tforumId: " + forumId +
                     "\tsubForumId: " + subForumId +
                     "\ttitle: " + title +
@@ -430,7 +430,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
 
                 this.logger.logAction("performing createNewComment:     userName: " + userName +             
-                                                                     "\tpassword: " + password +
+                                                                     "\tpassword: <not detailed>" +
                                                                      "\tforumId: " + forumId +
                                                                      "\tsubForumId: " + subForumId +
                                                                      "\tdiscussionId: " + discussionId +
@@ -459,13 +459,7 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (Exception e)
             {
-                this.logger.logError("createNewComment: " + e.Message + 
-                     "userName: " + userName +             
-                    "\tpassword: " + password +
-                    "\tforumId: " + forumId +
-                    "\tsubForumId: " + subForumId +
-                    "\tdiscussionId: " + discussionId +
-                    "\tcontent: " + content);
+                this.logger.logError("createNewComment: " + e.Message);
                 throw e;
             }
         }
@@ -476,7 +470,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("removeSubForum: userName: " + userName +
-                                                "\tpassword: " + password +
+                                                "\tpassword: <not detailed>" +
                                                 "\tforumId: " + forumId +
                                                 "\tsubForumId: " + subForumId);
 
@@ -508,7 +502,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing deleteDiscussion: userName: " + userName +
-                                                              "\tpassword: " + password +
+                                                              "\tpassword: <not detailed>" +
                                                               "\tforumId: " + forumId +
                                                               "\tsubForumId: " + subForumId +
                                                               "\tdiscussionId: " + discussionId);
@@ -521,7 +515,8 @@ namespace ForumGenerator_Version2_Server.Sys
                     // check authorization
                     if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                         !Security.checkAdminAuthorization(f, userName, password) &&
-                        !Security.checkModeratorAuthorization(sf, userName, password) &&
+                        !Security.checkModeratorAuthorization(sf, userName, password, Moderator.modLevel.DEL) &&
+                        !Security.checkModeratorAuthorization(sf, userName, password, Moderator.modLevel.ALL) &&
                         !Security.checkPublisherAuthorization(d, userName, password))
                     {
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
@@ -543,7 +538,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing changeAdmin: userName: " + userName +
-                                                        "\tpassword: " + password +
+                                                        "\tpassword: <not detailed>" +
                                                         "\tforumId: " + forumId +
                                                         "\tnewAdminUserId: " + newAdminUserId);
 
@@ -662,7 +657,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("editDiscussion: userName: " + userName +
-                                                "\tpassword: " + password +
+                                                "\tpassword: <not detailed>" +
                                                 "\tforumId: " + forumId +
                                                 "\tdiscussionId: " + discussionId +
                                                 "\tsubForumId: " + subForumId +
@@ -678,7 +673,8 @@ namespace ForumGenerator_Version2_Server.Sys
                     // check authorization
                     if (!Security.checkSuperUserAuthorization(this, userName, password) &&
                         !Security.checkAdminAuthorization(f, userName, password) &&
-                        !Security.checkModeratorAuthorization(sf, userName, password) &&
+                        !Security.checkModeratorAuthorization(sf, userName, password, Moderator.modLevel.EDIT ) &&
+                        !Security.checkModeratorAuthorization(sf, userName, password, Moderator.modLevel.ALL) &&
                         !Security.checkPublisherAuthorization(d, userName, password))
                     {
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
@@ -784,7 +780,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing getMutualUsers: userName: " + userName +
-                                                           "\tpassword: " + password +
+                                                           "\tpassword: <not detailed>" +
                                                            "\tforumId1: " + forumId1 +
                                                            "\tforumId2: " + forumId2);
 

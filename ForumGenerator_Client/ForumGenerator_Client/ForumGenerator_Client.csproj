@@ -225,6 +225,9 @@
     <None Include="Service References\ServiceReference1\ForumGenerator_Client.ServiceReference1.Forum.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ServiceReference1\ForumGenerator_Client.ServiceReference1.Moderator.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServiceReference1\ForumGenerator_Client.ServiceReference1.SubForum.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

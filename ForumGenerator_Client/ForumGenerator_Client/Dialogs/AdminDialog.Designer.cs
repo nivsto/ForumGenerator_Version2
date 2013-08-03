@@ -259,6 +259,7 @@
             this.chkbxEdit.TabIndex = 2;
             this.chkbxEdit.Text = "Enable Discussions Editing";
             this.chkbxEdit.UseVisualStyleBackColor = true;
+            this.chkbxEdit.CheckedChanged += new System.EventHandler(this.chkbxEdit_CheckedChanged);
             // 
             // cmbxPer_moder
             // 

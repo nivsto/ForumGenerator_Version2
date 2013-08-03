@@ -26,14 +26,16 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
 
-        public static bool checkModeratorAuthorization(SubForum sf, string userName, string password)
+        public static bool checkModeratorAuthorization(SubForum sf, string userName, string password, Moderator.modLevel modLevel)
         {
             // forum admin is also a subforum moderator
             try
             {
                 Moderator moderator = sf.getModerator(userName);
-                if (moderator != null && moderator.user.password == password && moderator.user.isLogged())
+                if (moderator != null && moderator.user.password == password && 
+                    moderator.user.isLogged() && moderator.level == modLevel)
                     return true;
+
                 return false;
             }
             catch

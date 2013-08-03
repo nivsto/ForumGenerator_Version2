@@ -19,16 +19,16 @@ namespace ForumGenerator_Client.Communication
         {
             BasicHttpBinding bb = new BasicHttpBinding();
             bb.MaxReceivedMessageSize = 1048576; // 1 MB
-           // httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
-           httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
-           httpProxy = httpFactory.CreateChannel();
+            // httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+            httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
+            httpProxy = httpFactory.CreateChannel();
 
- //           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+            //           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
             httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
             httpProxy = httpFactory.CreateChannel();
         }
 
-        
+
         public User login(int forumId, string userName, string password)
         {
             User ans = null;
@@ -124,7 +124,7 @@ namespace ForumGenerator_Client.Communication
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
-            } 
+            }
         }
 
         public Discussion[] getDiscussions(int forumId, int subForumId)
@@ -169,9 +169,9 @@ namespace ForumGenerator_Client.Communication
             }
         }
 
-        public User[] getModerators(int forumId, int subForumId)
+        public Moderator[] getModerators(int forumId, int subForumId)
         {
-            User[] ans = null;
+            Moderator[] ans = null;
             try
             {
                 ans = httpProxy.getModerators(forumId, subForumId);
@@ -184,7 +184,7 @@ namespace ForumGenerator_Client.Communication
         }
 
 
-        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword,  Forum.RegPolicy policy)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName, string adminPassword, Forum.RegPolicy policy)
         {
             Forum ans = null;
             try
@@ -194,7 +194,7 @@ namespace ForumGenerator_Client.Communication
             }
             catch (FaultException fe)
             {
-               // TODO Identify error type and throw exception according to type.
+                // TODO Identify error type and throw exception according to type.
                 throw new Exception(fe.Message);
             }
         }
@@ -224,7 +224,7 @@ namespace ForumGenerator_Client.Communication
             catch (FaultException fe)
             {
                 throw new Exception(fe.Message);
-            } 
+            }
         }
 
         public Comment createNewComment(string userName, string password, int forumId, int subForumId, int discussionId, string content)
@@ -262,7 +262,7 @@ namespace ForumGenerator_Client.Communication
             Boolean ans = false;
             try
             {
-                ans = httpProxy.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+                ans = httpProxy.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd, Moderator.modLevel.NONE);
                 return ans;
             }
             catch (FaultException fe)
@@ -331,7 +331,7 @@ namespace ForumGenerator_Client.Communication
             int ans = 0;
             try
             {
-                ans = httpProxy.getNumOfCommentsSingleUser( reqUserName, reqPswd, forumId, userName);
+                ans = httpProxy.getNumOfCommentsSingleUser(reqUserName, reqPswd, forumId, userName);
                 return ans;
             }
             catch (FaultException fe)
@@ -384,10 +384,10 @@ namespace ForumGenerator_Client.Communication
 
         public int getUserType(int forumId, string userName)
         {
-           int ans = 0;
+            int ans = 0;
             try
             {
-                ans = httpProxy. getUserType(forumId, userName);
+                ans = httpProxy.getUserType(forumId, userName);
                 return ans;
             }
             catch (FaultException fe)
@@ -415,7 +415,7 @@ namespace ForumGenerator_Client.Communication
         {
             try
             {
-                httpProxy.removeSubForum(forumId, subForumId, userName, password);    
+                httpProxy.removeSubForum(forumId, subForumId, userName, password);
             }
             catch (FaultException fe)
             {
@@ -446,5 +446,20 @@ namespace ForumGenerator_Client.Communication
                 throw new Exception(fe.Message);
             }
         }
+
+
+        public bool changeModLevel(int forumId, int subForumId, string moderatorName, Moderator.modLevel newLevel)
+        {
+            try
+            {
+                return httpProxy.changeModLevel(forumId, subForumId, moderatorName, newLevel);
+            }
+            catch (FaultException fe)
+            {
+                throw new Exception(fe.Message);
+            }
+        }
+
     }
 }
+        

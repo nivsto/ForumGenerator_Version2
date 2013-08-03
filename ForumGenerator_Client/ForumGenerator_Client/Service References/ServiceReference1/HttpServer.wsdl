@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="HttpServer" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="HttpServer" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8888/?xsd=xsd0" namespace="http://tempuri.org/" />
@@ -212,6 +212,12 @@
   <wsdl:message name="IForumService_getUnconfirmedUsers_OutputMessage">
     <wsdl:part name="parameters" element="tns:getUnconfirmedUsersResponse" />
   </wsdl:message>
+  <wsdl:message name="IForumService_changeModLevel_InputMessage">
+    <wsdl:part name="parameters" element="tns:changeModLevel" />
+  </wsdl:message>
+  <wsdl:message name="IForumService_changeModLevel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:changeModLevelResponse" />
+  </wsdl:message>
   <wsdl:portType name="IForumService">
     <wsdl:operation name="login">
       <wsdl:input wsaw:Action="http://tempuri.org/IForumService/login" message="tns:IForumService_login_InputMessage" />
@@ -348,6 +354,10 @@
     <wsdl:operation name="getUnconfirmedUsers">
       <wsdl:input wsaw:Action="http://tempuri.org/IForumService/getUnconfirmedUsers" message="tns:IForumService_getUnconfirmedUsers_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IForumService/getUnconfirmedUsersResponse" message="tns:IForumService_getUnconfirmedUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="changeModLevel">
+      <wsdl:input wsaw:Action="http://tempuri.org/IForumService/changeModLevel" message="tns:IForumService_changeModLevel_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IForumService/changeModLevelResponse" message="tns:IForumService_changeModLevel_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IForumService" type="tns:IForumService">
@@ -651,6 +661,15 @@
     </wsdl:operation>
     <wsdl:operation name="getUnconfirmedUsers">
       <soap:operation soapAction="http://tempuri.org/IForumService/getUnconfirmedUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeModLevel">
+      <soap:operation soapAction="http://tempuri.org/IForumService/changeModLevel" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
