@@ -14,8 +14,6 @@ using NClassifier.Bayesian;
 using NClassifier;
 
 
-// #Asa 
-// Handle editDiscussion, createNewComment
 namespace ForumGenerator_Version2_Server.ForumData
 {
     [DataContract(IsReference = true)]

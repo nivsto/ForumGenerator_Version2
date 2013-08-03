@@ -174,7 +174,6 @@ namespace ForumGenerator_Version2_Server.ForumData
             }
         }
 
-        // #Asa check if delegatre might throw exception
         internal SubForum createNewSubForum(string subForumTitle, ForumGeneratorContext db)
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)

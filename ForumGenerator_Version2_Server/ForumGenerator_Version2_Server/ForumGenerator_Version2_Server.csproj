@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram_Server.cd" />
     <None Include="ForumGenerator_Version2_Server_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>

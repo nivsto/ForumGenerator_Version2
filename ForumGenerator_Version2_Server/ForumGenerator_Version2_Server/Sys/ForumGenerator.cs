@@ -66,7 +66,7 @@ namespace ForumGenerator_Version2_Server.Sys
             {
                 this.superUser = new SuperUser(this.superUser.userName, this.superUser.password);
                 this.forums = new List<Forum>();
-                this.logger.logAction("\n\n\n\t ####################    NEW TEST    ####################n\n\n");
+                this.logger.logAction("\n\n\n\t ####################    R E S E T    ####################n\n\n");
                 //this.logger.closeFile();
                // this.logger = new Logger();
                 this.cp.init();
@@ -243,7 +243,7 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing getDiscussions: forumId: " + forumId +
-                                                  "subForumId: " + subForumId);
+                                                               "\tsubForumId: " + subForumId);
 
                 List<Discussion> dl = this.getForum(forumId).getSubForum(subForumId).discussions;
                 List<Discussion> returnedList = new List<Discussion>();
@@ -266,8 +266,8 @@ namespace ForumGenerator_Version2_Server.Sys
             try
             {
                 this.logger.logAction("performing getComments: forumId: " + forumId +
-                                                  "subForumId: " + subForumId +
-                                                " discussionId: " + discussionId);
+                                                            "\tsubForumId: " + subForumId +
+                                                            "\tdiscussionId: " + discussionId);
 
                 List<Comment> cl = this.getForum(forumId).getSubForum(subForumId).getDiscussion(discussionId).comments;
                 List<Comment> returnedList = new List<Comment>();
@@ -410,14 +410,7 @@ namespace ForumGenerator_Version2_Server.Sys
             }
             catch (Exception e)
             {
-                this.logger.logError("createNewDiscussion: " + e.Message+
-                     "userName: " + userName +
-                    "\tpassword: <not detailed>" +
-                    "\tforumId: " + forumId +
-                    "\tsubForumId: " + subForumId +
-                    "\ttitle: " + title +
-                    "\tcontent: " + content);
-
+                this.logger.logError("createNewDiscussion: " + e.Message);
                 throw e;
             }
         }
@@ -449,8 +442,6 @@ namespace ForumGenerator_Version2_Server.Sys
                     {
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
-                    // if(isSuperUser(userName, password)
-                    //    currently not supported.
                     sf.checkRelevantContent(content, stopWords);
                     content = this.cp.censor(content);
                     User user = forum.getUser(userName);
@@ -559,7 +550,6 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //get a forum by its forumId 
-        // #Asa how to throw exception
         public Forum getForum(int forumId)
         {
             try
@@ -569,14 +559,14 @@ namespace ForumGenerator_Version2_Server.Sys
                     throw new ForumNotFoundException(ForumGeneratorDefs.FORUM_NF);
                 return forum;
             }
-            catch (ArgumentNullException)
+            catch (Exception)
             {
                 throw new ForumNotFoundException(ForumGeneratorDefs.DISCUSSION_NF);
             }
         }
 
 
-        public bool isForumNameExist(string forumName)
+        internal bool isForumNameExist(string forumName)
         {
             try
             {
@@ -790,7 +780,6 @@ namespace ForumGenerator_Version2_Server.Sys
                 {
                     throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                 }
-                // #Asa what is returnedList for ? deep copy ?
                 List<User> ul = forum1.getMutualUsers(forum2);
                 List<User> returnedList = new List<User>();
                 foreach (User u in ul)
@@ -806,19 +795,29 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
-        //#Asa throw exception
+
         public List<Moderator> getModerators(int forumId, int subForumId)
         {
-            List<Moderator> ml = getForum(forumId).getSubForum(subForumId).moderators;
-            List<Moderator> returnedList = new List<Moderator>();
-            foreach (Moderator m in ml)
+            this.logger.logAction("performing getModerators: \tforumId: " + forumId +
+                                                            "\tsubForumId: " + subForumId);
+            try
             {
-                returnedList.Add(new Moderator(m));
+                List<Moderator> ml = getForum(forumId).getSubForum(subForumId).moderators;
+                List<Moderator> returnedList = new List<Moderator>();
+                foreach (Moderator m in ml)
+                {
+                    returnedList.Add(new Moderator(m));
+                }
+                return returnedList;
             }
-            return returnedList;
+            catch (Exception e)
+            {
+                this.logger.logError("getModerators: " + e.Message);
+                throw e;
+            }
         }
 
-        //#Asa throw exception
+ 
         public int getUserType(int forumId, string userName)
         {
             if (userName == this.superUser.userName)
@@ -827,10 +826,10 @@ namespace ForumGenerator_Version2_Server.Sys
                 return this.getForum(forumId).getUserType(userName); 
         }
 
-        //#Asa throw exception
+
         public int getUserType(int forumId, int subForumId, string userName)
         {
-            this.logger.logAction("getUserType: userName: " + userName +
+            this.logger.logAction("performing getUserType: userName: " + userName +
                                               "\tforumId: " + forumId +
                                               "\tsubForumId: " + subForumId);
             if (userName == this.superUser.userName)
@@ -884,6 +883,8 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public bool confirmUser(int forumId, string userName)
         {
+            this.logger.logAction("performing confirmUser: forumId: " + forumId +
+                                                        "\tuserName: " + userName);
             try{
                 Forum forum = this.getForum(forumId);
                 User user = forum.getUser(userName);
@@ -892,13 +893,15 @@ namespace ForumGenerator_Version2_Server.Sys
                 db.SaveChanges();
                 return true;
             }
-            catch(Exception){
+            catch(Exception e){
+                this.logger.logError("confirmUser: " + e.Message);
                 return false;
             }
         }
 
         public List<User> getUnconfirmedUsers(int forumId)
         {
+            this.logger.logAction("performing getUnconfirmedUsers: forumId: " + forumId);
             try
             {
                 return this.getForum(forumId).members.Where(u => u.isConfirmed == false).ToList();
@@ -914,6 +917,10 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public bool changeModLevel(int forumId, int subForumId, string moderatorName, Moderator.modLevel newLevel)
         {
+            this.logger.logAction("performing changeModLevel: forumId: " + forumId +
+                                                           "\tsubForumId: " + subForumId +
+                                                           "\tmoderatorName: " + moderatorName +
+                                                           "\tnewLevel: " + newLevel.ToString());
             try
             {
                 return this.getForum(forumId).getSubForum(subForumId).changeModLevel(forumId, subForumId, moderatorName, newLevel, this.db);
@@ -925,4 +932,5 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
     }
-}
+
+}// End of class

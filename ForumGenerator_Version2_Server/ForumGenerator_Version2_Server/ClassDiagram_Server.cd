@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ForumService.HttpServer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="2.25" Width="1.25" />
+    <AssociationLine Name="_forumGen" Type="ForumGenerator_Version2_Server.Sys.ForumGenerator">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.023" Y="0.443" Height="0.167" Width="0.993" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EgIAZCEQAgAAIAAAAsAgABYTBCAGQQACCQUACAAIECA=</HashCode>
+      <FileName>HttpServer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_forumGen" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ForumService.StartHttpServer">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>StartHttpServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.DataLayer.ForumGeneratorContext">
+    <Position X="3.75" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAICAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAgAAJAA=</HashCode>
+      <FileName>DataLayer\ForumGeneratorContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.ForumData.Comment" Collapsed="true">
+    <Position X="10.25" Y="7.75" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAgAAAICAAAAAAAAAgAACgAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>ForumData\Comment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="publisher" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.ForumData.Discussion" Collapsed="true">
+    <Position X="9" Y="6.75" Width="1.25" />
+    <AssociationLine Name="publisher" Type="ForumGenerator_Version2_Server.Users.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="-0.265" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAiYAAgQIAIAAAAAIAAEAgAAAAEAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ForumData\Discussion.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="publisher" />
+      <Property Name="parentSubForum" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="comments" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.ForumData.Forum" Collapsed="true">
+    <Position X="6.5" Y="4.75" Width="1.25" />
+    <NestedTypes>
+      <Enum Name="ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ForumData\Forum.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <AssociationLine Name="members" Type="ForumGenerator_Version2_Server.Users.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.089" Y="-0.2" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIgZAEBAIAAAAAAAgAgAAYAAAECgAQAAQAAABIAECA=</HashCode>
+      <FileName>ForumData\Forum.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="subForums" />
+      <Property Name="members" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.ForumData.SubForum" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="1.25" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="moderators" Type="ForumGenerator_Version2_Server.Users.Moderator">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.277" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="parentForum" Type="ForumGenerator_Version2_Server.ForumData.Forum">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.11" Y="-0.065" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAICYAAAACAAABAAAkAAgQABQAoABCAAAAEGAAIAQAA=</HashCode>
+      <FileName>ForumData\SubForum.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="parentForum" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="discussions" />
+      <Property Name="moderators" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.ForumData.Word" Collapsed="true">
+    <Position X="11.5" Y="8.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>ForumData\Word.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Migrations.Configuration" Collapsed="true">
+    <Position X="3.75" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Migrations\Configuration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.ContentPolicy" Collapsed="true">
+    <Position X="8.5" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="ForumGenerator_Version2_Server.Sys.ContentPolicy.cType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Sys\ContentPolicy.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAIAIEACAAAAAQAAAAAEAAAAAYAAEAgAAAAAAA=</HashCode>
+      <FileName>Sys\ContentPolicy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.ForumGenerator" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="3.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="ForumGenerator_Version2_Server.Sys.ForumGenerator.userTypes" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Sys\ForumGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AiIAZCEUAgAQIAgiCsAgABYTAGAGQQACCYUACAAIECI=</HashCode>
+      <FileName>Sys\ForumGenerator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="db" />
+      <Property Name="logger" />
+      <Property Name="superUser" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="forums" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs" Collapsed="true">
+    <Position X="10.25" Y="1.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CgQACI5IChIACgkSMIgQAIiEmYECgIBABACCIAAEgBg=</HashCode>
+      <FileName>Sys\ForumGeneratorDefs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.Logger" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgIAAAAAAAAAAAAAIAAABQAAKAAAABEAAAAAA=</HashCode>
+      <FileName>Sys\Logger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.LogItem" Collapsed="true">
+    <Position X="6.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAABAAIAAABAAAAAADAAAAAQAAAEAAAAA=</HashCode>
+      <FileName>Sys\LogItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.Security" Collapsed="true">
+    <Position X="8.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAABAAIAAAAAAAAAAAACAAQAA=</HashCode>
+      <FileName>Sys\Security.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Sys.TextClassifier" Collapsed="true">
+    <Position X="10.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAQAAAAAAAAEAABAAAAAAAAAAAAAAAAAQABAA=</HashCode>
+      <FileName>Sys\TextClassifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Users.Moderator" Collapsed="true">
+    <Position X="11.25" Y="4" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ForumGenerator_Version2_Server.Users.Moderator.modLevel" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Users\Moderator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAwA=</HashCode>
+      <FileName>Users\Moderator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="user" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Users.SuperUser" Collapsed="true">
+    <Position X="11.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgEAEgA=</HashCode>
+      <FileName>Users\SuperUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForumGenerator_Version2_Server.Users.User" Collapsed="true">
+    <Position X="11.25" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIEEAQAAAAAAAAAgAAAAAAAAAAACAAAAAAAAAgEAMgA=</HashCode>
+      <FileName>Users\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ForumService.IForumService">
+    <Position X="0.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EgIAZCEQAgAAIAAAAsAgABYTACAGQQACCQUACAAIECA=</HashCode>
+      <FileName>IForumService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ForumGenerator_Version2_Server.Sys.IForumGenerator" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgIAZCEUAgAAIAAAAsAgABYTACAGQQACCQUACAAIECA=</HashCode>
+      <FileName>Sys\IForumGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="9" />
+</ClassDiagram>
