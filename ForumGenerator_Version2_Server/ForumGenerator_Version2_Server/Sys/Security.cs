@@ -31,8 +31,8 @@ namespace ForumGenerator_Version2_Server.Sys
             // forum admin is also a subforum moderator
             try
             {
-                User moderator = sf.getModerator(userName);
-                if (moderator != null && moderator.password == password && moderator.isLogged())
+                Moderator moderator = sf.getModerator(userName);
+                if (moderator != null && moderator.user.password == password && moderator.user.isLogged())
                     return true;
                 return false;
             }

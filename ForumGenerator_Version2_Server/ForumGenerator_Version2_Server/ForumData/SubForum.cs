@@ -27,22 +27,24 @@ namespace ForumGenerator_Version2_Server.ForumData
         [DataMember]
         public string subForumTitle { get; private set; }
         [IgnoreDataMember]
-        public virtual List<User> moderators { get; private set; }
+        public virtual List<Moderator> moderators { get; private set; }
         [IgnoreDataMember]
         public virtual List<Discussion> discussions { get; private set; }
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
         [IgnoreDataMember]
         public virtual HashSet<Word> vocabulary { get; private set; }
-  
 
-        public SubForum(string subForumTitle, Forum parentForun)
+
+        public SubForum(string subForumTitle, Forum parentForun, ForumGeneratorContext db)
         {
             this.subForumTitle = subForumTitle;
-            this.moderators = new List<User>();
+            this.moderators = new List<Moderator>();
             this.parentForum = parentForun;
-            User u = this.parentForum.admin;
-            this.moderators.Add(parentForum.admin);
+            Moderator m = new Moderator(parentForum.admin, ForumGenerator_Version2_Server.Users.Moderator.modLevel.ALL);
+            this.moderators.Add(m);
+            db.Moderators.Add(m);
+            db.SaveChanges();
             this.discussions = new List<Discussion>();
             this.vocabulary = new HashSet<Word>();
         }
@@ -110,14 +112,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public User getModerator(string userName)
+        public Moderator getModerator(string userName)
         {
             try
             {
-                User u = this.moderators.Find(delegate(User mem) { return mem.userName == userName; });
-                if (u == null)
+                Moderator m = this.moderators.Find(delegate(Moderator mod) { return mod.user.userName == userName; });
+                if (m == null)
                     throw new UserNotFoundException(ForumGeneratorDefs.USER_NF);
-                return u;
+                return m;
             }
             catch (ArgumentNullException)
             {
@@ -130,7 +132,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                if (this.moderators.Find(delegate(User mem) { return mem.userName == userName; }) == null)
+                if (this.moderators.Find(delegate(Moderator mod) { return mod.user.userName == userName; }) == null)
                     return false;
                 return true;
             }
@@ -141,21 +143,18 @@ namespace ForumGenerator_Version2_Server.ForumData
         }
 
 
-        public Boolean addModerator(string modUserName, ForumGeneratorContext db)
+        public Boolean addModerator(string modUserName, ForumGeneratorContext db, ForumGenerator_Version2_Server.Users.Moderator.modLevel level)
         {
             // check if user is registered to the forum
-            User newModerator = parentForum.getUser(modUserName);
+            Moderator newModerator = new Moderator(parentForum.getUser(modUserName), level);
             if (moderatorExists(modUserName))
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_MODERATOR);
             else
             {
                 // OK, moderator is not exist
                 this.moderators.Add(newModerator);
-                //lock (db)
-                //{
-                    db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
-                    db.SaveChanges();
-               // }
+                db.Moderators.Add(newModerator);
+                db.SaveChanges();
                 return true;
             }
         }
@@ -168,12 +167,12 @@ namespace ForumGenerator_Version2_Server.ForumData
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.F_ADMIN_S_MOD);
             }
 
-            User moderator = parentForum.getUser(modUserName);
+            Moderator moderator = this.moderators.Find(delegate(Moderator mod) { return mod.user.userName == modUserName; });
             bool ans = moderators.Remove(moderator);
             //lock (db)
             //{
-                db.Entry(db.SubForums.Find(this.subForumId)).CurrentValues.SetValues(this);
-                db.SaveChanges();
+            db.Moderators.Remove(moderator);
+            db.SaveChanges();
           //  }
             return ans;
         }
@@ -223,7 +222,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             try
             {
-                User user = getModerator(userName);
+                Moderator mod = getModerator(userName);
                 return (int)ForumGenerator.userTypes.MODERATOR;
             }
             catch (UserNotFoundException)
@@ -267,5 +266,14 @@ namespace ForumGenerator_Version2_Server.ForumData
             return (this.discussions.Count >= 5);
         }
 
+
+        internal bool changeModLevel(int forumId, int subForumId, string moderatorName, Moderator.modLevel newLevel, ForumGeneratorContext db)
+        {
+            Moderator moderator = this.getModerator(moderatorName);
+            moderator.level = newLevel;
+            db.Entry(db.Moderators.Find(moderator.moderatorId)).CurrentValues.SetValues(moderator);
+            db.SaveChanges();
+            return true;
+        }
     }
 }

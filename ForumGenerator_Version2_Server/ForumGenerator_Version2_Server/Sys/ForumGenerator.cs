@@ -32,7 +32,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB3");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB10");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
@@ -44,7 +44,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass, bool test)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB3");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB10_TEST");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
@@ -598,7 +598,7 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
 
-        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd, ForumGenerator_Version2_Server.Users.Moderator.modLevel level)
         {
             try
             {
@@ -616,7 +616,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     {
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
-                    sf.addModerator(modUserName, db);
+                    sf.addModerator(modUserName, db, level);
                     return true;
                 }
             }
@@ -811,13 +811,13 @@ namespace ForumGenerator_Version2_Server.Sys
         }
 
         //#Asa throw exception
-        public List<User> getModerators(int forumId, int subForumId)
+        public List<Moderator> getModerators(int forumId, int subForumId)
         {
-            List<User> ul = getForum(forumId).getSubForum(subForumId).moderators;
-            List<User> returnedList = new List<User>();
-            foreach (User u in ul)
+            List<Moderator> ml = getForum(forumId).getSubForum(subForumId).moderators;
+            List<Moderator> returnedList = new List<Moderator>();
+            foreach (Moderator m in ml)
             {
-                returnedList.Add(new User(u));
+                returnedList.Add(new Moderator(m));
             }
             return returnedList;
         }
@@ -914,5 +914,19 @@ namespace ForumGenerator_Version2_Server.Sys
             }
         }
 
+
+
+        public bool changeModLevel(int forumId, int subForumId, string moderatorName, Moderator.modLevel newLevel)
+        {
+            try
+            {
+                return this.getForum(forumId).getSubForum(subForumId).changeModLevel(forumId, subForumId, moderatorName, newLevel, this.db);
+            }
+            catch (Exception e)
+            {
+                this.logger.logError("changeModLevel: " + e.Message);
+                throw e;
+            }
+        }
     }
 }
