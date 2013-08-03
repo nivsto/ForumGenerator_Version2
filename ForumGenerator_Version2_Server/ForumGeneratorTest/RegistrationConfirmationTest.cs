@@ -73,7 +73,7 @@ namespace ForumGeneratorTest
                 Forum f = this.fg.createNewForum("admin", "admin", "activation_forum", "admin1", "admin1", ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy.MAIL_ACTIVATION);
                 this.fg.login(f.forumId, "admin1", "admin1");
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

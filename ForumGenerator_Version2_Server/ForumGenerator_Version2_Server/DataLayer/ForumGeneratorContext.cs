@@ -16,7 +16,7 @@ namespace ForumGenerator_Version2_Server.DataLayer
         }
 
         public ForumGeneratorContext() // "ForumGenerator_DB1" for the real, "ForumGenerator_DB1_TEST" for the tests
-            : base("ForumGenerator_DB3")
+            : base("ForumGenerator_DB10")
         {
         }
 
@@ -25,6 +25,7 @@ namespace ForumGenerator_Version2_Server.DataLayer
         public DbSet<Discussion> Discussions { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Moderator> Moderators { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,15 +39,15 @@ namespace ForumGenerator_Version2_Server.DataLayer
                     m.MapRightKey("friendID");
                 });
 
-            modelBuilder.Entity<SubForum>()
-                .HasMany(a => a.moderators)
-                .WithMany()
-                .Map(m =>
-                {
-                    m.ToTable("SubForumModerators");
-                    m.MapLeftKey("subForumID");
-                    m.MapRightKey("moderatorID");
-                });
+            //modelBuilder.Entity<SubForum>()
+            //    .HasMany(a => a.moderators)
+            //    .WithMany()
+            //    .Map(m =>
+            //    {
+            //        m.ToTable("SubForumModerators");
+            //        m.MapLeftKey("subForumID");
+            //        m.MapRightKey("moderatorID");
+            //    });
 
             //modelBuilder.Entity<Forum>().Property(p => p.registrationPolicy).HasColumnName("rp");
 

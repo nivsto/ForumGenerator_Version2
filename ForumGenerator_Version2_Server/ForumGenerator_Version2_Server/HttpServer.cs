@@ -244,11 +244,11 @@ namespace ForumService
 
         // added in version 3:
 
-        public Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd, ForumGenerator_Version2_Server.Users.Moderator.modLevel level)
         {
             try
             {
-                Boolean res = _forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+                Boolean res = _forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd, level);
                 return res;
             }
             catch (Exception e)
@@ -369,11 +369,11 @@ namespace ForumService
         }
 
 
-        public List<User> getModerators(int forumId, int subForumId)
+        public List<Moderator> getModerators(int forumId, int subForumId)
         {
             try
             {
-                List<User> resList = _forumGen.getModerators(forumId, subForumId);
+                List<Moderator> resList = _forumGen.getModerators(forumId, subForumId);
                 return resList;
             }
             catch (Exception e)
@@ -500,6 +500,20 @@ namespace ForumService
                 throw new FaultException(e.Message);
             }
         }
+
+        public bool changeModLevel(int forumId, int subForumId, string moderatorName, ForumGenerator_Version2_Server.Users.Moderator.modLevel newLevel)
+        {
+            try
+            {
+                bool res = _forumGen.changeModLevel(forumId, subForumId, moderatorName, newLevel);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new FaultException(e.Message);
+            }
+        }
+
 
     }
 }

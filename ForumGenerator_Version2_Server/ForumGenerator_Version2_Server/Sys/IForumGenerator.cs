@@ -42,7 +42,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         // added in version 3:
 
-        Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
+        Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd, ForumGenerator_Version2_Server.Users.Moderator.modLevel level);
 
         Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
 
@@ -58,7 +58,7 @@ namespace ForumGenerator_Version2_Server.Sys
 
         List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
-        List<User> getModerators(int forumId, int subForumId);
+        List<Moderator> getModerators(int forumId, int subForumId);
 
         int getUserType(int forumId, string userName);
 
@@ -83,6 +83,8 @@ namespace ForumGenerator_Version2_Server.Sys
         int countCommentsPerDiscussion(int forumId, int subForumId, int discussionId);
 
         bool confirmUser(int forumId, string userName);
+
+        bool changeModLevel(int forumId, int subForumId, string moderatorName, ForumGenerator_Version2_Server.Users.Moderator.modLevel newLevel);
 
     }
 }

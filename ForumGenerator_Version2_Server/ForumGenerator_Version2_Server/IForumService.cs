@@ -59,7 +59,7 @@ namespace ForumService
         // added in version 3:
 
         [OperationContract]
-        Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
+        Boolean addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd, ForumGenerator_Version2_Server.Users.Moderator.modLevel level);
 
         [OperationContract]
         Boolean removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd);
@@ -86,7 +86,7 @@ namespace ForumService
         List<User> getMutualUsers(string userName, string password, int forumId1, int forumId2);
 
         [OperationContract]
-        List<User> getModerators(int forumId, int subForumId);
+        List<Moderator> getModerators(int forumId, int subForumId);
 
         [OperationContract]
         int getUserType(int forumId, string userName);
@@ -117,6 +117,8 @@ namespace ForumService
         [OperationContract]
         List<User> getUnconfirmedUsers(int forumId);
 
+        [OperationContract]
+        bool changeModLevel(int forumId, int subForumId, string moderatorName, ForumGenerator_Version2_Server.Users.Moderator.modLevel newLevel);
     }
 
 }

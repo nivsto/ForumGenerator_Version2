@@ -33,14 +33,14 @@ namespace ForumGenerator_Version2_Server.ForumData
         [IgnoreDataMember]
         public virtual List<User> members { get; private set; }
         [DataMember]
-        public RegPolicy registrationPolicy { get; private set; }
+        public virtual RegPolicy? registrationPolicy { get; private set; }
 
-        [Flags]
+        
         public enum RegPolicy
         {
-            NONE,
-            MAIL_ACTIVATION,
-            ADMIN_CONFIRMATION
+            NONE = 0,
+            MAIL_ACTIVATION = 1,
+            ADMIN_CONFIRMATION = 2
         }
 
         public Forum(string forumName, string adminUserName, string adminPassword, ForumGeneratorContext db, RegPolicy registrationPolicy)
@@ -119,10 +119,10 @@ namespace ForumGenerator_Version2_Server.ForumData
                             const string fromPassword = "nimbus123";
                             string subject = "Nimbus - Registration Confirmation Mail";
                             StringBuilder sb = new StringBuilder();
-                            sb.AppendLine("Hey,");
+                            sb.AppendLine("<HTML>Hey,");
                             sb.AppendLine("We've just got your registration. Please use <a href=\"http://localhost:56068/confirmation?forumId=" + forumId + "&userName=" + userName + "\">this link</a> to confirm your registration.");
                             sb.AppendLine("Thanks,");
-                            sb.AppendLine("Nimbus Forum Generator");
+                            sb.AppendLine("Nimbus Forum Generator</HTML>");
                             string body = sb.ToString();
 
                             var smtp = new SmtpClient
@@ -179,7 +179,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         {
             if (this.subForums.Find(delegate(SubForum subfrm) { return subfrm.subForumTitle == subForumTitle; }) != null)
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_TITLE);
-            SubForum newSubForum = new SubForum(subForumTitle, this);
+            SubForum newSubForum = new SubForum(subForumTitle, this, db);
             //lock (db)
             //{
                 this.subForums.Add(newSubForum);
