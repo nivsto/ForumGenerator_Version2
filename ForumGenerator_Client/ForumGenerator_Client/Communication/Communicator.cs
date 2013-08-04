@@ -11,6 +11,9 @@ namespace ForumGenerator_Client.Communication
 
     public class Communicator
     {
+        // Server IP: http://192.168.1.105:8888/methods
+        internal const string HOST = "http://192.168.1.105";
+        internal const string PORT = "8888/methods";
 
         ChannelFactory<IForumService> httpFactory;
         IForumService httpProxy;
@@ -19,12 +22,7 @@ namespace ForumGenerator_Client.Communication
         {
             BasicHttpBinding bb = new BasicHttpBinding();
             bb.MaxReceivedMessageSize = 1048576; // 1 MB
-            // httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
-            httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
-            httpProxy = httpFactory.CreateChannel();
-
-            //           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
-            httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
+            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress(HOST + ":" + PORT));
             httpProxy = httpFactory.CreateChannel();
         }
 
