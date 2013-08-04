@@ -17,6 +17,11 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string BAD_WORDS_FILE = "badWords.txt";
         public const string STOP_WORDS_FILE = "DefaultStopWords.txt";
 
+    /* ******************************************************************************************************
+     *                                  U S E R S
+     * ******************************************************************************************************/
+        public const string SU_USERNAME = "admin";
+        public const string SU_PSWD = "=:150";
 
     /* ******************************************************************************************************
      *                                  E R R O R S
@@ -53,7 +58,7 @@ namespace ForumGenerator_Version2_Server.Sys
         public const string EXIST_FNAME = "Forum name is already exist." + TRY_ANOTHER;
         public const string EXIST_TITLE = "Title is already exist." + TRY_ANOTHER;
         public const string EXIST_USERNAME = "UserName is already exist." + TRY_ANOTHER;
-
+        
         public const string EXIST_ADMIN = "User is already an admin.";
         public const string EXIST_MODERATOR = "User is already a moderator.";
         public const string F_ADMIN_S_MOD = "Forum admin must be a moderator.";

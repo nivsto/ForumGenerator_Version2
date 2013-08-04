@@ -16,7 +16,7 @@ namespace ForumGenerator_Version2_Server.DataLayer
         }
 
         public ForumGeneratorContext() // "ForumGenerator_DB1" for the real, "ForumGenerator_DB1_TEST" for the tests
-            : base("ForumGenerator_DB6")
+            : base("ForumGenerator_DB10")
         {
         }
 

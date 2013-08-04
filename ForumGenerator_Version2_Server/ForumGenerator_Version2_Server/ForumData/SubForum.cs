@@ -147,6 +147,9 @@ namespace ForumGenerator_Version2_Server.ForumData
             Moderator newModerator = new Moderator(parentForum.getUser(modUserName), level);
             if (moderatorExists(modUserName))
                 throw new UnauthorizedOperationException(ForumGeneratorDefs.EXIST_MODERATOR);
+            if (!newModerator.user.isConfirmed)
+                throw new UnauthorizedOperationException(ForumGeneratorDefs.INACTIVE_USR);
+
             else
             {
                 // OK, moderator is not exist
