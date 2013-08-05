@@ -19,14 +19,13 @@ namespace ForumService
     public class HttpServer : IForumService
     {
         private ForumGenerator _forumGen;
-        private List<IForumServiceCallback> _tempsubscribers; 
-        private List<Subscriber> _subscribers; //each subscriber has callback channel, forumID and a username
-        
+        //private List<IForumServiceCallback> _subscribers; 
+        private List<Subscriber> _subscribers;
 
         public HttpServer()
         {
             _forumGen = new ForumGenerator(ForumGeneratorDefs.SU_USERNAME, ForumGeneratorDefs.SU_PSWD, this);
-            _tempsubscribers = new List<IForumServiceCallback>();
+            //_subscribers = new List<IForumServiceCallback>();
             _subscribers = new List<Subscriber>();
         }
 
@@ -525,26 +524,20 @@ namespace ForumService
         {
             try
             {
-                //retreive the callback instance
                 IForumServiceCallback callback = OperationContext.Current.GetCallbackChannel<IForumServiceCallback>();
 
-                _tempsubscribers.Add(callback);
-                ////callback.notify("just checking");
-                //if (_subscribers.Capacity == 0)
-                //{
-                //    Subscriber newSubscriber = new Subscriber(callback, forumId, userName);
-                //    _subscribers.Add(newSubscriber);
-                //}
-                ////check if callback does not exist
-                //foreach (var currSubscriber in _subscribers)
-                //{
-                //    if (!(currSubscriber.callbackChannel == callback) && !(currSubscriber.forumId == forumId) && !(currSubscriber.userName == userName))
-                //    {
-                //        Subscriber newSubscriber = new Subscriber(callback, forumId, userName);
-                //        _subscribers.Add(newSubscriber);
-                //    }
-                //}
+                bool doesContainSub = false;
+                foreach (Subscriber currSub in _subscribers)
+                {
+                    if ( (currSub.forumId == forumId) && (currSub.userName == userName) )
+                        doesContainSub = true;                    
+                }
 
+                if ( !(doesContainSub) )
+                {
+                    Subscriber newSubscriber = new Subscriber(callback, forumId, userName);
+                    _subscribers.Add(newSubscriber);
+                }
 
                 return true;              
             }
@@ -555,69 +548,51 @@ namespace ForumService
         }
 
         //removes the client from the subscribers list
-        public bool unsubscribe()
+        public bool unsubscribe(int forumId, string userName)
         {
-            return true;
-            //try
-            //{
-            //    IForumServiceCallback callback = OperationContext.Current.GetCallbackChannel<IForumServiceCallback>();
-            //    if (_subscribers.Contains(callback))
-            //        _subscribers.Remove(callback);
-            //    return true;
-            //}
-            //catch
-            //{
-            //    return false;                
-            //}
+            try
+            {
+                IForumServiceCallback callback = OperationContext.Current.GetCallbackChannel<IForumServiceCallback>();
+
+                bool doesContainSub = false;
+                foreach (Subscriber currSub in _subscribers)
+                {
+                    if ((currSub.forumId == forumId) && (currSub.userName == userName))
+                        doesContainSub = true;
+                }
+
+                if (doesContainSub)
+                {
+                    Subscriber subscriberToRem = new Subscriber(callback, forumId, userName);
+                    _subscribers.Remove(subscriberToRem);
+                }
+                
+                return true;
+            }
+            catch
+            {
+                return false;                
+            }
         }
 
-        //notifies userName of a new comment that was added to the discussion he created
-        public void notifyCreator(int forumId, string userName, int discussionId)
+        public void notifyAllForum(int forumId, string userName, string newSubforumTitle)
         {
-            //_subscribers.ForEach(delegate(Subscriber currSub)
-            //{
-            //    if (((ICommunicationObject)currSub.callbackChannel).State == CommunicationState.Opened)
-            //    {
-            //        if ((currSub.forumId == forumId) && (currSub.userName == userName))
-            //        {
-            //            currSub.callbackChannel.notify("A new comment was added to discussion: " + discussionId);
-            //        }
-            //    }
-            //    else
-            //    { //if callback channel is closed we remove it from the subscribers list
-            //        _subscribers.Remove(currSub);
-            //    }
-            //});
-            _tempsubscribers.ForEach(delegate(IForumServiceCallback callback)
+            foreach (Subscriber currSub in _subscribers)
             {
-                if (((ICommunicationObject)callback).State == CommunicationState.Opened)
+                if (((ICommunicationObject)currSub.callbackChannel).State == CommunicationState.Opened)
                 {
-                    callback.notify("A new comment was added to discussion");
+                    //if ( !((currSub.forumId == forumId) && (currSub.userName == userName)) )
+                    //{ // we dont notify the user who triggered the event
+                        currSub.callbackChannel.notify("A new subforum: " + newSubforumTitle + " was created");    
+                    //}
+                    
                 }
                 else
-                { //if callback channel is closed we remove it from the subscribers list
-                    _tempsubscribers.Remove(callback);
-                }
-            });
-        }
-
-        //notify everyone in forumId except userName (the one who added the subforum) of a new sub-forum that was created in the forum
-        public void notifyAllForum(int forumId, string userName, string titleOfNewSubforum)
-        {
-            _subscribers.ForEach(delegate(Subscriber currSub)
-            {
-                if ( ((ICommunicationObject)currSub.callbackChannel).State == CommunicationState.Opened ) 
-                {
-                    if ( (currSub.forumId == forumId) && (currSub.userName != userName) )
-                    {
-                        currSub.callbackChannel.notify("A new sub-forum: " + titleOfNewSubforum + " was created in forum: " + forumId); 
-                    }
-                }
-                else
-                { //if callback channel is closed we remove it from the subscribers list
+                { // callback channel is closed so removing entry from the _subscribers list
                     _subscribers.Remove(currSub);
                 }
-            });
+            }
+
         }
 
         //public void notifyAll()

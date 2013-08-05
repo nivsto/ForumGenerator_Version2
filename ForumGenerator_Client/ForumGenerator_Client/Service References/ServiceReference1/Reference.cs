@@ -719,7 +719,7 @@ namespace ForumGenerator_Client.ServiceReference1 {
         bool subscribe(int forumId, string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IForumService/unsubscribe", ReplyAction="http://tempuri.org/IForumService/unsubscribeResponse")]
-        bool unsubscribe();
+        bool unsubscribe(int forumId, string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IForumService/login", ReplyAction="http://tempuri.org/IForumService/loginResponse")]
         ForumGenerator_Client.ServiceReference1.User login(int forumId, string userName, string password);
@@ -866,8 +866,8 @@ namespace ForumGenerator_Client.ServiceReference1 {
             return base.Channel.subscribe(forumId, userName);
         }
         
-        public bool unsubscribe() {
-            return base.Channel.unsubscribe();
+        public bool unsubscribe(int forumId, string userName) {
+            return base.Channel.unsubscribe(forumId, userName);
         }
         
         public ForumGenerator_Client.ServiceReference1.User login(int forumId, string userName, string password) {

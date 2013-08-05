@@ -5,26 +5,28 @@ using System.Text;
 using ForumGenerator_Client.ServiceReference1;
 using System.ServiceModel;
 using System.Windows.Forms;
+using ForumGenerator_Client.Dialogs;
 
 namespace ForumGenerator_Client.Communication
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple), ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Communicator : IForumServiceCallback
     {
 
-        ChannelFactory<IForumService> httpFactory;
+        //ChannelFactory<IForumService> httpFactory;
         //IForumService httpProxy;
 
         private ForumServiceClient httpProxy;
+        private MainMethods mainMetProxy;
 
-        public Communicator()
+        public Communicator(MainMethods mainMetProxy)
         {
+            this.mainMetProxy = mainMetProxy;
+            BasicHttpBinding bb = new BasicHttpBinding();
+            bb.MaxReceivedMessageSize = 1048576; // 1 MB
+
             InstanceContext context = new InstanceContext(this);
             httpProxy = new ForumServiceClient(context, "WSDualHttpBinding_IForumService");
-            //httpProxy.subscribe();
-
-            //BasicHttpBinding bb = new BasicHttpBinding();
-            //bb.MaxReceivedMessageSize = 1048576; // 1 MB
             //// httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
             //httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
             //httpProxy = httpFactory.CreateChannel();
@@ -35,16 +37,31 @@ namespace ForumGenerator_Client.Communication
 
         }
 
+        public Communicator()
+        {
+            
+            BasicHttpBinding bb = new BasicHttpBinding();
+            bb.MaxReceivedMessageSize = 1048576; // 1 MB
+
+            InstanceContext context = new InstanceContext(this);
+            httpProxy = new ForumServiceClient(context, "WSDualHttpBinding_IForumService");
+            //// httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+            //httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
+            //httpProxy = httpFactory.CreateChannel();
+
+            ////           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+            //httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
+            //httpProxy = httpFactory.CreateChannel();
+
+        }
 
         public User login(int forumId, string userName, string password)
         {
-            //the next 3 lines are used for the push notifications service 
-
             User ans = null;
             try
             {
                 ans = httpProxy.login(forumId, userName, password);
-                if ( !(null == ans) )
+                if (null != ans)
                     httpProxy.subscribe(forumId, userName);
                 
                 return ans;
@@ -61,6 +78,9 @@ namespace ForumGenerator_Client.Communication
             try
             {
                 ans = httpProxy.logout(forumId, userName, password);
+                if (ans)
+                    httpProxy.unsubscribe(forumId, userName);
+                    
                 return ans;
             }
             catch (FaultException fe)
@@ -474,7 +494,9 @@ namespace ForumGenerator_Client.Communication
 
         public void notify(string msg)
         {
-            MessageBox.Show(msg, "Logout", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            //MessageBox.Show(msg, "Logout", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (!(null == this.mainMetProxy))
+                mainMetProxy.notifyGUI(msg);
         }
     }
 }
