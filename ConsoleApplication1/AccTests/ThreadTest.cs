@@ -117,7 +117,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 Console.WriteLine("begining scenario1 - each thread has his own forum \n");
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD);
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD, Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, SUB_FORUM1);
                 User user = this.bridge.register(forum.forumId, USER_1, PASSWORD_1, "", "");
@@ -183,7 +183,7 @@ namespace ConsoleApplication1.AccTests
 
             /* creating one forum for all threads */
             Console.WriteLine("creating one forum for all threads \n");
-          Unitedforum= this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD);
+          Unitedforum= this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD,Forum.RegPolicy.NONE);
             this.bridge.login(Unitedforum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
             var list = new List<int>();

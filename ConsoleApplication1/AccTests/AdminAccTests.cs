@@ -10,8 +10,8 @@ namespace ConsoleApplication1.AccTests
 {
     class AdminAccTests : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
+        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
         const string ADMIN_NAME = "mngr";
         const string ADMIN_PSWD = "mngrPswd";
 
@@ -26,15 +26,15 @@ namespace ConsoleApplication1.AccTests
             this.testsLogger.logTestsSection("Admin");
 
             Console.WriteLine("testing CreateNewSubForum:");
-            test(testCreateNewSubForum);
+           // test(testCreateNewSubForum);
             Console.WriteLine("Done \n");
 
             Console.WriteLine("testing AddModerator:");
-            test(testAddModerator);
+            //test(testAddModerator);
             Console.WriteLine("Done \n");
 
             Console.WriteLine("testing RemoveModerator:");
-            test(testRemoveModerator);
+            //test(testRemoveModerator);
             Console.WriteLine("Done \n");
 
             Console.WriteLine("testing GetNumOfCommentsSubForum:");
@@ -63,12 +63,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 
                 res = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "title1");
                 int subForumsCountPre = this.bridge.getSubForums(forum.forumId).Count;
-                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "");
+                res = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "just a title");
                 AssertEquals(subForumsCountPre + 1, this.bridge.getSubForums(forum.forumId).Count);
                 testNum++;
 
@@ -83,7 +83,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
                 res = this.bridge.createNewSubForum("wrong user", "mngrPswd", forum.forumId, "title1");
@@ -97,7 +97,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
                 res = this.bridge.createNewSubForum("mngr", "wrong pass", forum.forumId, "title1");
@@ -111,7 +111,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
                 res = this.bridge.createNewSubForum("mngr", "mngrPswd", -5, "title1");
@@ -125,7 +125,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
                 res = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "title1");
@@ -149,14 +149,20 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
                 
-                res = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
-                List<User> ul = this.bridge.getModerators(forum.forumId, subForum.subForumId);
-                bool isIn = ul .Contains(user);
+                res = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD,Moderator.modLevel.NONE);
+                List<Moderator> ul = this.bridge.getModerators(forum.forumId, subForum.subForumId);
+                bool isIn = false;
+                foreach (Moderator u in ul)
+                    {
+                        if (u.user.userName == user.userName)
+                           isIn = true;
+                    }
+                AssertTrue(isIn);
                 AssertTrue(res);
                 testNum++;
             }
@@ -170,12 +176,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
 
-                res = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, "wrong user", ADMIN_PSWD);
+                res = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, "wrong user", ADMIN_PSWD, Moderator.modLevel.NONE);
                 failMsg(testNum);
             }
             catch { testNum++; }
@@ -186,12 +192,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
 
-                res = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, "wrong pass");
+                res = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, "wrong pass", Moderator.modLevel.NONE);
                 failMsg(testNum);
             }
             catch { testNum++; }
@@ -202,12 +208,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
 
-                res = this.bridge.addModerator("user1", -3, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                res = this.bridge.addModerator("user1", -3, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
                 failMsg(testNum);
             }
             catch { testNum++; }
@@ -218,12 +224,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
 
-                res = this.bridge.addModerator("user1", forum.forumId, -2, ADMIN_NAME, ADMIN_PSWD);
+                res = this.bridge.addModerator("user1", forum.forumId, -2, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
                 failMsg(testNum);
             }
             catch { testNum++; }
@@ -234,12 +240,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
 
-                res = this.bridge.addModerator("wrong user", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                res = this.bridge.addModerator("wrong user", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
                 failMsg(testNum);
             }
             catch { testNum++; }
@@ -259,11 +265,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
 
                 res = this.bridge.removeModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
                 AssertTrue(res);
@@ -279,11 +285,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
 
                 res = this.bridge.removeModerator("user1", forum.forumId, subForum.subForumId, "wrong user", ADMIN_PSWD);
                 failMsg(testNum);
@@ -296,11 +302,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
 
                 res = this.bridge.removeModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, "wrong pass");
                 failMsg(testNum);
@@ -313,11 +319,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
 
                 res = this.bridge.removeModerator("user1", -3, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
                 failMsg(testNum);
@@ -330,11 +336,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
 
                 res = this.bridge.removeModerator("user1", forum.forumId, -3, ADMIN_NAME, ADMIN_PSWD);
                 failMsg(testNum);
@@ -347,11 +353,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
-                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
 
                 res = this.bridge.removeModerator("wrong user", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
                 failMsg(testNum);
@@ -375,7 +381,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -414,7 +420,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -431,7 +437,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -448,7 +454,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -465,7 +471,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -493,7 +499,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -543,7 +549,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -560,7 +566,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -577,7 +583,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -594,7 +600,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -622,7 +628,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User[] users = new User[10];
@@ -661,7 +667,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User[] users = new User[10];
@@ -679,7 +685,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User[] users = new User[10];
@@ -697,7 +703,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User[] users = new User[10];
@@ -715,7 +721,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                     SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                     User[] users = new User[10];

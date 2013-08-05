@@ -43,12 +43,12 @@ namespace ConsoleApplication1
             this.testsLogger = new TestsLogger(outFile);
             this.mode = REAL;
         }
-        public TestForumGenerator(Communicator mainMethods, string outFile)
-        {
-            this.bridge = new Client_RealForumGeneratorImpl(mainMethods);
-            this.testsLogger = new TestsLogger(outFile);
-            this.mode = REAL;
-        }
+        //public TestForumGenerator(Communicator mainMethods, string outFile)
+        //{
+        //    this.bridge = new Client_RealForumGeneratorImpl(mainMethods);
+        //    this.testsLogger = new TestsLogger(outFile);
+        //    this.mode = REAL;
+        //}
 
 
         // main function
@@ -66,7 +66,7 @@ namespace ConsoleApplication1
                 AdvancedTest advancedTest = new AdvancedTest(this.testsLogger, this.bridge);
                 ThreadTest threadTest = new ThreadTest(this.testsLogger, this.bridge);
 
-                superUserAccTests.runTests();
+                //superUserAccTests.runTests();
                 adminAccTests.runTests();
                 memberAccTests.runTests();
                 guestAccTests.runTests();

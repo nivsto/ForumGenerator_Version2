@@ -44,7 +44,8 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public Forum createNewForum(string superUserName, string superUserpassword, string forumName, string mngrUserName, string mngrPassword)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName,
+                            string adminPassword, ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy registrationPolicy)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +96,7 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd, ForumGenerator_Version2_Server.Users.Moderator.modLevel level)
         {
             throw new NotImplementedException();
         }
@@ -140,7 +141,7 @@ namespace ConsoleApplication1
             throw new NotImplementedException();
         }
 
-        public List<User> getModerators(int forumId, int subForumId)
+        public List<Moderator> getModerators(int forumId, int subForumId)
         {
             throw new NotImplementedException();
         }

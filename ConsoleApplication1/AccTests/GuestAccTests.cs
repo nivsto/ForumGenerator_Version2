@@ -9,8 +9,8 @@ namespace ConsoleApplication1.AccTests
 {
     class GuestAccTests : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
+        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
 
         public GuestAccTests(TestsLogger testsLogger, BridgeForumGenerator bridge)
         {
@@ -63,7 +63,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
 
                     res = this.bridge.getForums();
                     AssertTrue(res.Count == 1);
@@ -78,7 +78,7 @@ namespace ConsoleApplication1.AccTests
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
                     for (int i=0; i<100; i++)
-                        this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum"+i, "mngr"+i, "mngrPswd"+i);
+                        this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum" + i, "mngr" + i, "mngrPswd" + i, Forum.RegPolicy.NONE);
 
                     res = this.bridge.getForums();
                     AssertTrue(res.Count == 100);
@@ -106,7 +106,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     res = this.bridge.getSubForums(forum.forumId);
                     AssertTrue(res.Count == 0);
 
@@ -119,7 +119,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
                     for(int i=0; i<100; i++)
                         this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum" + i);
@@ -150,7 +150,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
                     SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
                     res = this.bridge.getDiscussions(forum.forumId, subForum.subForumId);
@@ -165,7 +165,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
                     SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
                     for (int i = 0; i < 100; i++)
@@ -197,7 +197,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
                     SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
                     Discussion discussion = this.bridge.createNewDiscussion("mngr", "mngrPswd", forum.forumId, subForum.subForumId, "discussion", "no content");
@@ -213,7 +213,7 @@ namespace ConsoleApplication1.AccTests
                 try
                 {
                     this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                    Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                     this.bridge.login(forum.forumId, "mngr", "mngrPswd");
                     SubForum subForum = this.bridge.createNewSubForum("mngr", "mngrPswd", forum.forumId, "subForum");
                     Discussion discussion = this.bridge.createNewDiscussion("mngr", "mngrPswd", forum.forumId, subForum.subForumId, "discussion", "no content");

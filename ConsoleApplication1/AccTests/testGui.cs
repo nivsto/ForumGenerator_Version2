@@ -9,12 +9,10 @@ namespace ConsoleApplication1.AccTests
     public partial class testGui : Form
     {
         TestForumGenerator testsFG;
-        TestForumGenerator testsClient;
         
         public testGui(string logFileName)
         {
             this.testsFG = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);
-            this.testsClient = new TestForumGenerator(new MainMethods(), logFileName);
             InitializeComponent();
         }
         /*  Run Forum Generator Tests    */
@@ -30,7 +28,7 @@ namespace ConsoleApplication1.AccTests
 
         private void btnRunConnect_Click(object sender, EventArgs e)
         {
-            testsClient.runTests(3);
+            //testsClient.runTests(3);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

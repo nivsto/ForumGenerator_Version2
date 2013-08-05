@@ -9,9 +9,9 @@ namespace ConsoleApplication1.AccTests
 {
     class SuperUserAccTests : AccTestsForumGenerator
     {
+        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
 
-        const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
 
         public SuperUserAccTests(TestsLogger testsLogger, BridgeForumGenerator bridge)
         {
@@ -152,7 +152,7 @@ namespace ConsoleApplication1.AccTests
             {
                 /* success tests */
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "mngrPswd");
+                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "mngrPswd",Forum.RegPolicy.NONE);
                 AssertTrue(res.forumId > 0);
                 forums = this.bridge.getForums();
                 AssertTrue(isForumExist(forums, "2nd forum"));
@@ -170,7 +170,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum("wrong user", SU_PSWD, "unique Forum", "forum mngr", "pswd");
+                res = this.bridge.createNewForum("wrong user", SU_PSWD, "unique Forum", "forum mngr", "pswd", Forum.RegPolicy.NONE);
                 failMsg(2);
             }
             catch { testNum++;}
@@ -181,20 +181,11 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum(SU_NAME, "wrong pswd", "unique Forum", "forum mngr", "pswd");
+                res = this.bridge.createNewForum(SU_NAME, "wrong pswd", "unique Forum", "forum mngr", "pswd", Forum.RegPolicy.NONE);
                 failMsg(3);
             }
             catch { testNum++; }
 
-            this.bridge.reset();
-
-            //SuperUser wasn't logged in
-            try
-            {
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd");
-                failMsg(4);
-            }
-            catch { testNum++; }
 
             this.bridge.reset();
 
@@ -202,8 +193,8 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd");
-                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "pswd2");
+                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr", "pswd", Forum.RegPolicy.NONE);
+                res = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "pswd2", Forum.RegPolicy.NONE);
                 failMsg(5);
             }
             catch { testNum++; }
@@ -223,8 +214,8 @@ namespace ConsoleApplication1.AccTests
             {
                 /* success tests */
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
+                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
+                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2", Forum.RegPolicy.NONE);
 
                 res = this.bridge.getMutualUsers(SU_NAME, SU_PSWD, forum1.forumId, forum2.forumId);
                 AssertTrue(res.Count() == 0);
@@ -249,8 +240,8 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
+                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
+                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2", Forum.RegPolicy.NONE);
 
                 res = this.bridge.getMutualUsers("wrong user", SU_PSWD, forum1.forumId, forum2.forumId);
                 failMsg(2);
@@ -263,8 +254,8 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
+                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
+                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2", Forum.RegPolicy.NONE);
 
                 res = this.bridge.getMutualUsers(SU_NAME, "wrong pass", forum1.forumId, forum2.forumId);
                 failMsg(3);
@@ -277,8 +268,8 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd");
-                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2");
+                Forum forum1 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "1st forum", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
+                Forum forum2 = this.bridge.createNewForum(SU_NAME, SU_PSWD, "2nd forum", "mngr2", "mngrPswd2", Forum.RegPolicy.NONE);
 
                 res = this.bridge.getMutualUsers(SU_NAME, "wrong pass", -5, forum2.forumId);
                 failMsg(4);

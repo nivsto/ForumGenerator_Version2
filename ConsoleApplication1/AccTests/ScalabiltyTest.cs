@@ -47,7 +47,7 @@ namespace ConsoleApplication1.AccTests
                 const int DISCUSSIONS_NUMBER = 100;
                 const int COMMENTS_NUMBER = 20;
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -90,7 +90,7 @@ namespace ConsoleApplication1.AccTests
                 const int DISCUSSIONS_NUMBER = 10;
                 const int COMMENTS_NUMBER = 25;
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user1 = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -139,7 +139,7 @@ namespace ConsoleApplication1.AccTests
                 const int USERS_NUMBER = 10;
                 const int DISCUSSSION_NEMBER = 25;
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User[] users = new User[USERS_NUMBER];

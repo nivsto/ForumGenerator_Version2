@@ -50,9 +50,11 @@ namespace ConsoleApplication1
             return this.forumGen.register(forumId, userName, password, email, signature);
         }
 
-        public Forum createNewForum(string superUserName, string superUserpassword, string forumName, string mngrUserName, string mngrPassword)
+        public Forum createNewForum(string userName, string password, string forumName, string adminUserName,
+                                    string adminPassword, ForumGenerator_Version2_Server.ForumData.Forum.RegPolicy registrationPolicy)
         {
-            return this.forumGen.createNewForum(superUserName, superUserpassword, forumName, mngrUserName, mngrPassword);
+            return this.forumGen.createNewForum( userName,  password,  forumName,  adminUserName, 
+                                     adminPassword,  registrationPolicy);
         }
 
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
@@ -101,9 +103,9 @@ namespace ConsoleApplication1
             return this.forumGen.changeAdmin(userName, password, forumId, newAdminUserId);
         }
 
-        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
+        public bool addModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd, ForumGenerator_Version2_Server.Users.Moderator.modLevel level)
         {
-            return this.forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd);
+            return this.forumGen.addModerator(modUserName, forumId, subForumId, adderUsrName, adderPswd, level);
         }
 
         public bool removeModerator(string modUserName, int forumId, int subForumId, string adderUsrName, string adderPswd)
@@ -146,7 +148,7 @@ namespace ConsoleApplication1
         {
             return this.forumGen.getMutualUsers(userName, password, forumId1, forumId2);
         }
-        public List<User> getModerators(int forumId, int subForumId)
+        public List<Moderator> getModerators(int forumId, int subForumId)
         {
             return this.forumGen.getModerators(forumId, subForumId);
         }

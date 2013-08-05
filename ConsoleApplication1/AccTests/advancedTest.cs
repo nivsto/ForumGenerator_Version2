@@ -9,8 +9,8 @@ namespace ConsoleApplication1.AccTests
 {
     class AdvancedTest : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
+        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
         const string ADMIN_NAME = "mngr";
         const string ADMIN_PSWD = "mngrPswd";
 
@@ -45,7 +45,7 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
@@ -106,12 +106,12 @@ namespace ConsoleApplication1.AccTests
             try
             {
                 this.bridge.superUserLogin(SU_NAME, SU_PSWD);
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd");
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, "forum1", "mngr", "mngrPswd", Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, "subForum1");
                 User user = this.bridge.register(forum.forumId, "user1", "pswd1", "", "");
 
-                bool moderatorRes = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                bool moderatorRes = this.bridge.addModerator("user1", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
                 AssertTrue(moderatorRes);
                 this.bridge.login(forum.forumId, "user1", "pswd1");
                 Discussion d = this.bridge.createNewDiscussion("user1", "pswd1", forum.forumId, subForum.subForumId, "discussion1", "no content");
@@ -132,7 +132,7 @@ namespace ConsoleApplication1.AccTests
                 int num_of_comments = this.bridge.getNumOfCommentsSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, subForum.subForumId);
                 AssertTrue(num_of_comments == 0);
                 //add new moderator
-                moderatorRes = this.bridge.addModerator("user2", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD);
+                moderatorRes = this.bridge.addModerator("user2", forum.forumId, subForum.subForumId, ADMIN_NAME, ADMIN_PSWD, Moderator.modLevel.NONE);
                 //AssertTrue(subForum.moderators.Contains(user));
                 AssertTrue(moderatorRes);
 

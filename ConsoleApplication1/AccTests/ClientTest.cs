@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-//using ForumGenerator_Version2_Server.Users;
-//using ForumGenerator_Version2_Server.ForumData;
-using ForumGenerator_Client;
-using ForumGenerator_Client.Dialogs;
-using ForumGenerator_Client.ServiceReference1;
-using ForumGenerator_Client.Communication;
+using ForumGenerator_Version2_Server.Users;
+using ForumGenerator_Version2_Server.ForumData;
+//using ForumGenerator_Client;
+//using ForumGenerator_Client.Dialogs;
+//using ForumGenerator_Client.ServiceReference1;
+//using ForumGenerator_Client.Communication;
 using System.Windows.Forms;
 using System.Drawing;
 using ConsoleApplication1.AccTests;
@@ -20,8 +20,8 @@ namespace ConsoleApplication1
 {
     class ClientTest : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin"; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator.SU_PSWD;
+        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
         const int min = 0;
         const int max = 1000000;
         static Random random = new Random();
@@ -121,7 +121,7 @@ namespace ConsoleApplication1
             try
             {
                 Console.WriteLine("begining scenario1 - each thread has his own forum \n");
-                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD);
+                Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD, Forum.RegPolicy.NONE);
                 this.bridge.login(forum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, forum.forumId, SUB_FORUM1);
                 User user = this.bridge.register(forum.forumId, USER_1, PASSWORD_1, "", "");
@@ -187,7 +187,7 @@ namespace ConsoleApplication1
 
             /* creating one forum for all threads */
             Console.WriteLine("creating one forum for all threads \n");
-          Unitedforum= this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD);
+            Unitedforum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD, Forum.RegPolicy.NONE);
             this.bridge.login(Unitedforum.forumId, ADMIN_NAME, ADMIN_PSWD);
 
             var list = new List<int>();
@@ -225,7 +225,7 @@ namespace ConsoleApplication1
 
             try
             {
-             //   Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD);
+                //   Forum forum = this.bridge.createNewForum(SU_NAME, SU_PSWD, FORUM_NAME1, ADMIN_NAME, ADMIN_PSWD,Forum.RegPolicy.NONE);
                 this.bridge.login(Unitedforum.forumId, ADMIN_NAME, ADMIN_PSWD);
                 SubForum subForum = this.bridge.createNewSubForum(ADMIN_NAME, ADMIN_PSWD, Unitedforum.forumId, SUB_FORUM1);
                 User user = this.bridge.register(Unitedforum.forumId, USER_1, PASSWORD_1, "", "");
