@@ -32,7 +32,7 @@ namespace ForumGenerator_Client
         User user;
         Communicator communicator = new Communicator();
 
-        public UserLoginDialog(int forumId, bool superUser)
+        public UserLoginDialog(int forumId, bool superUser, Communicator communicator)
         {
             this.forumId = forumId;
             this.superUser = superUser;

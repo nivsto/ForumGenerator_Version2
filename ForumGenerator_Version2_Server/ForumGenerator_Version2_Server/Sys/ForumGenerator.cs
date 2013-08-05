@@ -2,6 +2,7 @@
 using ForumGenerator_Version2_Server.ForumData;
 using ForumGenerator_Version2_Server.Sys.Exceptions;
 using ForumGenerator_Version2_Server.Users;
+using ForumService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,9 @@ namespace ForumGenerator_Version2_Server.Sys
         public ForumGeneratorContext db { get; set; }
         internal ContentPolicy cp;
         internal HashSet<string> stopWords { get; private set; }
+        public HttpServer httpProxy;
 
-
-        public ForumGenerator(string superUserName, string superUserPass)
+        public ForumGenerator(string superUserName, string superUserPass, HttpServer httpProxy)
         {
             this.db = new ForumGeneratorContext("ForumGenerator_DB6");
             this.superUser = new SuperUser(superUserName, superUserPass);
@@ -40,9 +41,10 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
             this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
+            this.httpProxy = httpProxy;
         }
 
-        public ForumGenerator(string superUserName, string superUserPass, bool test)
+        public ForumGenerator(string superUserName, string superUserPass, bool test, HttpServer httpProxy)
         {
             this.db = new ForumGeneratorContext("ForumGenerator_DB10_TEST");
             this.superUser = new SuperUser(superUserName, superUserPass);
@@ -58,6 +60,7 @@ namespace ForumGenerator_Version2_Server.Sys
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
             this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
+            this.httpProxy = httpProxy;
         }
 
         public void reset()
@@ -344,7 +347,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
-
+        
         //creates a new sub-forum and a new user which is the forum's administrator
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
@@ -365,7 +368,13 @@ namespace ForumGenerator_Version2_Server.Sys
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
                     subForumTitle = this.cp.censor(subForumTitle);
-                    return new SubForum(forum.createNewSubForum(subForumTitle, db));
+                    
+                    SubForum newSubForum = new SubForum(forum.createNewSubForum(subForumTitle, db));
+                    //notifying everyone in forumId except the creator of the subforum of a new subforum
+                    httpProxy.notifyAllForum(forum.forumId, userName, newSubForum.subForumTitle);
+
+                    //return new SubForum(forum.createNewSubForum(subForumTitle, db));
+                    return newSubForum;
                 }
             }
             catch (Exception e)
@@ -445,7 +454,12 @@ namespace ForumGenerator_Version2_Server.Sys
                     sf.checkRelevantContent(content, stopWords);
                     content = this.cp.censor(content);
                     User user = forum.getUser(userName);
-                    return new Comment(d.createNewComment(content, user, db));
+
+                    Comment newComment = d.createNewComment(content, user, db);
+                    //notifying the creator of the discussion on the new comment
+                    //httpProxy.notifyCreator(forumId, d.publisher.userName, d.discussionId);
+
+                    return newComment;
                 }
             }
             catch (Exception e)

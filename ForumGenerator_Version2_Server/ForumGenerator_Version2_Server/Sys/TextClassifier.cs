@@ -12,7 +12,7 @@ namespace ForumGenerator_Version2_Server.Sys
     public class TextClassifier
     {
 
-        public const double MIN_PROB = 0.25d;
+        public const double MIN_PROB = 0.5d;
 
         public static HashSet<string> getStopWords(string fileName)
         {

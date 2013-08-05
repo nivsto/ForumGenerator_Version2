@@ -5,12 +5,20 @@ using System.Text;
 using System.ServiceModel;
 using ForumGenerator_Version2_Server.Users;
 using ForumGenerator_Version2_Server.ForumData;
+using ForumGenerator_Version2_Server;
 
 namespace ForumService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IForumServiceCallback))]
     interface IForumService
     {
+        [OperationContract]
+        bool subscribe(int forumId, string userName);
+
+        [OperationContract]
+        bool unsubscribe();
+
+
         [OperationContract]
         User login(int forumId, string userName, string password);
 

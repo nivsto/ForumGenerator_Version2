@@ -8,31 +8,45 @@ using System.Windows.Forms;
 
 namespace ForumGenerator_Client.Communication
 {
-
-    public class Communicator
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    public class Communicator : IForumServiceCallback
     {
-        // Server IP: http://192.168.1.105:8888/methods
-        internal const string HOST = "http://192.168.1.105";
-        internal const string PORT = "8888/methods";
 
         ChannelFactory<IForumService> httpFactory;
-        IForumService httpProxy;
+        //IForumService httpProxy;
+
+        private ForumServiceClient httpProxy;
 
         public Communicator()
         {
-            BasicHttpBinding bb = new BasicHttpBinding();
-            bb.MaxReceivedMessageSize = 1048576; // 1 MB
-            httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress(HOST + ":" + PORT));
-            httpProxy = httpFactory.CreateChannel();
+            InstanceContext context = new InstanceContext(this);
+            httpProxy = new ForumServiceClient(context, "WSDualHttpBinding_IForumService");
+            //httpProxy.subscribe();
+
+            //BasicHttpBinding bb = new BasicHttpBinding();
+            //bb.MaxReceivedMessageSize = 1048576; // 1 MB
+            //// httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+            //httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
+            //httpProxy = httpFactory.CreateChannel();
+
+            ////           httpFactory = new ChannelFactory<IForumService>(new BasicHttpBinding(), new EndpointAddress("http://192.168.1.117:8888/methods"));
+            //httpFactory = new ChannelFactory<IForumService>(bb, new EndpointAddress("http://localhost:8888/methods"));
+            //httpProxy = httpFactory.CreateChannel();
+
         }
 
 
         public User login(int forumId, string userName, string password)
         {
+            //the next 3 lines are used for the push notifications service 
+
             User ans = null;
             try
             {
                 ans = httpProxy.login(forumId, userName, password);
+                if ( !(null == ans) )
+                    httpProxy.subscribe(forumId, userName);
+                
                 return ans;
             }
             catch (FaultException fe)
@@ -458,6 +472,10 @@ namespace ForumGenerator_Client.Communication
             }
         }
 
+        public void notify(string msg)
+        {
+            MessageBox.Show(msg, "Logout", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+        }
     }
 }
         

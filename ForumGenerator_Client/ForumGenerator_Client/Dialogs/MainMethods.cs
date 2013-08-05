@@ -85,7 +85,7 @@ namespace ForumGenerator_Client.Dialogs
             if (currentView == (int)view.MAIN)
                 super = true;
 
-            UserLoginDialog userLog = new UserLoginDialog(currForumId, super);
+            UserLoginDialog userLog = new UserLoginDialog(currForumId, super, this.communicator);
             userLog.ShowDialog();
             if (userLog.isOkClicked())
             {

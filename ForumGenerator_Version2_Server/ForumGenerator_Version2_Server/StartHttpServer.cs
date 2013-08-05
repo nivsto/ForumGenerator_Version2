@@ -26,11 +26,10 @@ namespace ForumService
             {
                 host.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
                 //adding endpoint for all methods without endpoints
-                host.AddServiceEndpoint(typeof(IForumService), new BasicHttpBinding(), "methods");
+                host.AddServiceEndpoint(typeof(IForumService), new WSDualHttpBinding(), "methods");
                 ////adding web browser compatability
                 //var endpoint = host.AddServiceEndpoint(typeof(BrowserService), new WebHttpBinding(), "");
                 //endpoint.Behaviors.Add(new WebHttpBehavior { AutomaticFormatSelectionEnabled = true });
-                //#TBD - add callback endpoint to host later
 
                 host.Open();
 

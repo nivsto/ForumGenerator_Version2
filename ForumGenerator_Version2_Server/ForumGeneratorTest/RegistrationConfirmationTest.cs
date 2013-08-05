@@ -18,7 +18,7 @@ namespace ForumGeneratorTest
             //
             // TODO: Add constructor logic here
             //
-            this.fg = new ForumGenerator("admin", "admin");
+            this.fg = new ForumGenerator("admin", "admin", null);
         }
 
         private TestContext testContextInstance;

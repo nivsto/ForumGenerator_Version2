@@ -14,7 +14,7 @@ namespace ForumGeneratorTest
         public void login_as_superuser_with_wrong_pass()
         {
             // arrange
-            ForumGenerator fg = new ForumGenerator("admin", "admin");
+            ForumGenerator fg = new ForumGenerator("admin", "admin", null);
 
             // act
             bool ans = Security.checkSuperUserAuthorization(fg, "admin", "wrong");
