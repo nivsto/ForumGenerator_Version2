@@ -9,8 +9,6 @@ using System.Windows.Forms;
 using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.Dialogs;
 using ForumGenerator_Client.ServiceReference1;
-using ForumGenerator_Client.Properties;
-using System.Resources;
 
 namespace ForumGenerator_Client.Dialogs
 {
@@ -666,14 +664,6 @@ namespace ForumGenerator_Client.Dialogs
         private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-        }
-
-        //changes icon for notifications to received notifications
-        public void turnOnNotifIcon()
-        {
-            ResourceManager rm = Resources.ResourceManager;
-            Bitmap myImage = (Bitmap)rm.GetObject("aps_facebook-notify-icon.jpg");
-            this.btnNotifications.Image = myImage;
         }
     }
 }

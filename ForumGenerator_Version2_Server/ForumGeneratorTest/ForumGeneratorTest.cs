@@ -18,7 +18,7 @@ namespace ForumGeneratorTest
         public void adminLogged_After_Login()
         {
             // arrange
-            ForumGenerator fg = new ForumGenerator("admin", "admin",true, null);
+            ForumGenerator fg = new ForumGenerator("admin", "admin", null);
 
             // act
             fg.superUserLogin("admin", "admin");

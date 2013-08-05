@@ -16,7 +16,7 @@ namespace ForumGenerator_Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MainMethods mainMethods = new MainMethods();
+            MainMethods mainMethids = new MainMethods();
         }
     }
 }
