@@ -10,6 +10,8 @@ using ForumGenerator_Client.Communication;
 using ForumGenerator_Client.Dialogs;
 using ForumGenerator_Client.ServiceReference1;
 using System.Threading;
+using System.Resources;
+using ForumGenerator_Client.Properties;
 
 
 namespace ForumGenerator_Client.Dialogs
@@ -366,6 +368,14 @@ namespace ForumGenerator_Client.Dialogs
         private void minimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        //changes icon for notifications to received notifications
+        public void turnOnNotifIcon()
+        {
+            ResourceManager rm = Resources.ResourceManager;
+            Bitmap myImage = (Bitmap)rm.GetObject("aps_facebook-notify-icon.jpg");
+            this.btnNotifications.Image = myImage;
         }
 
     }

@@ -16,7 +16,7 @@ namespace ForumService
         bool subscribe(int forumId, string userName);
 
         [OperationContract]
-        bool unsubscribe();
+        bool unsubscribe(int forumId, string userName);
 
 
         [OperationContract]

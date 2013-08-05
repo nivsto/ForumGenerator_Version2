@@ -347,7 +347,7 @@ namespace ForumGenerator_Version2_Server.Sys
                 throw e;
             }
         }
-        
+
         //creates a new sub-forum and a new user which is the forum's administrator
         public SubForum createNewSubForum(string userName, string password, int forumId, string subForumTitle)
         {
@@ -368,13 +368,11 @@ namespace ForumGenerator_Version2_Server.Sys
                         throw new UnauthorizedUserException(ForumGeneratorDefs.UNAUTH_USER);
                     }
                     subForumTitle = this.cp.censor(subForumTitle);
-                    
-                    SubForum newSubForum = new SubForum(forum.createNewSubForum(subForumTitle, db));
-                    //notifying everyone in forumId except the creator of the subforum of a new subforum
-                    httpProxy.notifyAllForum(forum.forumId, userName, newSubForum.subForumTitle);
 
-                    //return new SubForum(forum.createNewSubForum(subForumTitle, db));
-                    return newSubForum;
+                    SubForum newSubforum = forum.createNewSubForum(subForumTitle, db);
+                    httpProxy.notifyAllForum(forumId, userName, subForumTitle);
+
+                    return newSubforum;
                 }
             }
             catch (Exception e)
@@ -454,12 +452,7 @@ namespace ForumGenerator_Version2_Server.Sys
                     sf.checkRelevantContent(content, stopWords);
                     content = this.cp.censor(content);
                     User user = forum.getUser(userName);
-
-                    Comment newComment = d.createNewComment(content, user, db);
-                    //notifying the creator of the discussion on the new comment
-                    //httpProxy.notifyCreator(forumId, d.publisher.userName, d.discussionId);
-
-                    return newComment;
+                    return new Comment(d.createNewComment(content, user, db));
                 }
             }
             catch (Exception e)
