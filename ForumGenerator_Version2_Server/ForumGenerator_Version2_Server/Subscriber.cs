@@ -8,13 +8,13 @@ namespace ForumGenerator_Version2_Server
 {
     class Subscriber
     {
-        internal IForumServiceCallback callbackChannel { get; set; }
-        internal int forumId { get; set; }
-        internal string userName { get; set; }
+        public IForumServiceCallback callbackChannel { get; set; }
+        public int forumId { get; set; }
+        public string userName { get; set; }
 
         public Subscriber(IForumServiceCallback callback, int forumId, string userName)
         {
-            this.callbackChannel = callback;
+            this.callbackChannel = callbackChannel;
             this.forumId = forumId;
             this.userName = userName;
         }

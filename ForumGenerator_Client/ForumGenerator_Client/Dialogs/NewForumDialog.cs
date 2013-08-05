@@ -150,8 +150,6 @@ namespace ForumGenerator_Client
             downPoint = Point.Empty;
         }
 
-        
-
         public Point downPoint = Point.Empty;
 
     }

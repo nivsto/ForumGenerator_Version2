@@ -49,9 +49,6 @@ namespace ForumGenerator_Client.Dialogs
 
         Communicator communicator;
 
-        string notificationsMsg;
-        
-
         Forum[] forumsList;
         SubForum[] subforumsList;
         Comment[] commentsList;
@@ -65,7 +62,7 @@ namespace ForumGenerator_Client.Dialogs
             t.Start();
             mainViewDialog = new MainViewDialog(this, t);
             subForumView = new SubForumDialog(this);
-            this.communicator = new Communicator(this);
+            this.communicator = new Communicator();
             updateVisibilty();
             Application.Run(mainViewDialog);
         }
@@ -489,18 +486,6 @@ namespace ForumGenerator_Client.Dialogs
         {
             this.mainViewDialog.setStatusMsg(msg);
             this.subForumView.setStatusMsg(msg);
-        }
-
-        //changes the icon for the notifications to received notifications
-        public void notifyGUI(string msg)
-        {
-            if ( (null == msg) )
-                return;
-
-            this.notificationsMsg = msg;
-
-            mainViewDialog.turnOnNotifIcon();
-            subForumView.turnOnNotifIcon();
         }
     }
 }
