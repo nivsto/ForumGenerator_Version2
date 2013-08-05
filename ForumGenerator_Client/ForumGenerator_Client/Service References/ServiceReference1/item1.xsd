@@ -2,33 +2,6 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:8888/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.Users" />
   <xs:import schemaLocation="http://localhost:8888/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/ForumGenerator_Version2_Server.ForumData" />
-  <xs:element name="subscribe">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="forumId" type="xs:int" />
-        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="subscribeResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="subscribeResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="unsubscribe">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="unsubscribeResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="unsubscribeResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="login">
     <xs:complexType>
       <xs:sequence>
@@ -593,13 +566,6 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="changeModLevelResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="notify">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="msg" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

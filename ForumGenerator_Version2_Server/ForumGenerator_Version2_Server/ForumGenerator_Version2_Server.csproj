@@ -94,10 +94,8 @@
     <Compile Include="ForumData\Word.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="IForumService.cs" />
-    <Compile Include="IForumServiceCallback.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="StartHttpServer.cs" />
-    <Compile Include="Subscriber.cs" />
     <Compile Include="Sys\ContentPolicy.cs" />
     <Compile Include="Sys\Exceptions\CommentNotFoundException.cs" />
     <Compile Include="Sys\Exceptions\DiscussionNotFoundException.cs" />
