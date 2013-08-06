@@ -504,6 +504,7 @@ namespace ConsoleApplication1.AccTests
         private int testGetNumOfCommentsSingleUser()
         {
             {
+                this.bridge.reset();
                 int testNum = 0;
 
                 int res;
