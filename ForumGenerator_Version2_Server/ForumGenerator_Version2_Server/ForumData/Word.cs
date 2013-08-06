@@ -9,7 +9,7 @@ namespace ForumGenerator_Version2_Server.ForumData
     public class Word
     {
         [Key]
-        public string word { get; private set; }
+        public string word { get; set; }
 
 
         public Word()
@@ -29,7 +29,7 @@ namespace ForumGenerator_Version2_Server.ForumData
             if (obj == null)
                 return false;
 
-            return this.word.Equals(((Word)other).word);
+            return this.word == ((Word)other).word;
         }
 
         public override int GetHashCode()

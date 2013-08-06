@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 using ForumGenerator_Version2_Server.Sys;
-using ForumGenerator_Client;
-using ForumGenerator_Client.Dialogs;
+
 
 namespace ConsoleApplication1.AccTests
 {
     public partial class testGui : Form
     {
         TestForumGenerator testsFG;
-        
+        const string SU_NAME = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
         public testGui(string logFileName)
         {
-            this.testsFG = new TestForumGenerator(new ForumGenerator("admin", "admin",true), logFileName);
+            this.testsFG = new TestForumGenerator(new ForumGenerator(SU_NAME, SU_PSWD, true), logFileName);
             InitializeComponent();
         }
         /*  Run Forum Generator Tests    */

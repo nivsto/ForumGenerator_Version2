@@ -52,8 +52,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -119,12 +125,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ForumGenerator_Client\ForumGenerator_Client\ForumGenerator_Client.csproj">
-      <Project>{25791596-4dfa-43d4-b227-6050df20eead}</Project>
-      <Name>ForumGenerator_Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ForumGenerator_Version2_Server\ForumGenerator_Version2_Server\ForumGenerator_Version2_Server.csproj">
-      <Project>{9348D782-8904-4316-AE0C-5893356CC773}</Project>
+      <Project>{9348d782-8904-4316-ae0c-5893356cc773}</Project>
       <Name>ForumGenerator_Version2_Server</Name>
     </ProjectReference>
   </ItemGroup>
@@ -132,6 +134,7 @@
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AccTests\testGui.resx">

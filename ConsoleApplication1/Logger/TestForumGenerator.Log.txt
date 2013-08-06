@@ -1,1 +1,9 @@
  -- T E S T S   L O G G E R --
+
+** ForumGenerator Tests **
+Testing on Real mode
+
+*testing Admin functions*
+
+test method: testGetNumOfCommentsSubForum
+-- FAILED --  failed test number 0

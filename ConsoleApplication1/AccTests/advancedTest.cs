@@ -9,8 +9,8 @@ namespace ConsoleApplication1.AccTests
 {
     class AdvancedTest : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
+        const string SU_NAME = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
         const string ADMIN_NAME = "mngr";
         const string ADMIN_PSWD = "mngrPswd";
 

@@ -75,7 +75,8 @@ namespace ForumGenerator_Version2_Server.Sys
             foreach (string word in words)
             {
                 Word w = new Word(word);
-                vocabulary.Add(w);
+                if (!vocabulary.Contains(w))
+                    vocabulary.Add(w);
             }
             return vocabulary;
         }

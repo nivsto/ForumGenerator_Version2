@@ -12,8 +12,6 @@ using System.Net;
 using System.Xml;
 using System.IO;
 using ConsoleApplication1.AccTests;
-using ForumGenerator_Client.Dialogs;
-using ForumGenerator_Client.Communication;
 
 namespace ConsoleApplication1
 {

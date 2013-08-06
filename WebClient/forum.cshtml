@@ -26,6 +26,14 @@
                 password = Request.Form["password"];
                 ///////////// login code!
                 try {
+                    string crptPass = "";
+                    for (int i = 0; i < password.Count(); i++)
+                    {
+                        char c = password.ElementAt(i);
+                        char e = (char)( 126 - (c - 32));
+                        crptPass = crptPass + e;
+                    }
+                    password = crptPass;
                     User u = communicator.login(forumId, username, password);
                     HttpContext.Current.Session["forum_" + forumId + "username"] = username;
                     HttpContext.Current.Session["forum_" + forumId + "password"] = password;

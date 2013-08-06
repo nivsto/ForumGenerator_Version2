@@ -20,8 +20,8 @@ namespace ConsoleApplication1
 {
     class ClientTest : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
+        const string SU_NAME = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD; 
         const int min = 0;
         const int max = 1000000;
         static Random random = new Random();

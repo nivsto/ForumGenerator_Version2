@@ -64,6 +64,7 @@ namespace ForumGenerator_Version2_Server.ForumData
 
         internal Comment createNewComment(string content, User user, ForumGeneratorContext db)
         {
+            content = content.Replace("/","//");
             Comment newComment = new Comment(content, user, this);
             //lock (db)
             //{

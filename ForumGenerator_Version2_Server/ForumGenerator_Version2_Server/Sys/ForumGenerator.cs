@@ -32,11 +32,11 @@ namespace ForumGenerator_Version2_Server.Sys
 
         public ForumGenerator(string superUserName, string superUserPass)
         {
-            this.db = new ForumGeneratorContext("ForumGenerator_DB6");
+            this.db = new ForumGeneratorContext("ForumGenerator_DB10");
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
-            this.db.Forums.SqlQuery("UPDATE Users SET isLoggedIn = 0 WHERE 1=1");
+            this.db.Database.ExecuteSqlCommand("UPDATE Users SET isLoggedIn = 0 WHERE 1=1");
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
             this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
@@ -48,13 +48,9 @@ namespace ForumGenerator_Version2_Server.Sys
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
-            this.db.Forums.SqlQuery("DELETE * FROM Fora");
-            this.db.Forums.SqlQuery("DELETE * FROM Comments");
-            this.db.Forums.SqlQuery("DELETE * FROM Discussions");
-            this.db.Forums.SqlQuery("DELETE * FROM SubForumModerators");
-            this.db.Forums.SqlQuery("DELETE * FROM SubForums");
-            this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
-            this.db.Forums.SqlQuery("DELETE * FROM Users");
+            //this.db.Database.Delete();
+            this.db.Database.Initialize(true);
+
             this.db.SaveChanges();
             this.cp = new ContentPolicy();
             this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
@@ -70,13 +66,8 @@ namespace ForumGenerator_Version2_Server.Sys
                 //this.logger.closeFile();
                // this.logger = new Logger();
                 this.cp.init();
-                this.db.Forums.SqlQuery("DELETE * FROM Fora");
-                this.db.Forums.SqlQuery("DELETE * FROM Comments");
-                this.db.Forums.SqlQuery("DELETE * FROM Discussions");
-                this.db.Forums.SqlQuery("DELETE * FROM SubForumModerators");
-                this.db.Forums.SqlQuery("DELETE * FROM SubForums");
-                this.db.Forums.SqlQuery("DELETE * FROM UserFriends");
-                this.db.Forums.SqlQuery("DELETE * FROM Users");
+                //this.db.Database.Delete();
+                this.db.Database.Initialize(true);
             }
         }
 

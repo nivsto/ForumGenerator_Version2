@@ -31,7 +31,7 @@ namespace ForumGenerator_Version2_Server.ForumData
         [IgnoreDataMember]
         public virtual Forum parentForum { get; private set; }
         [IgnoreDataMember]
-        public virtual HashSet<Word> vocabulary { get; private set; }
+        public virtual HashSet<Word> vocabulary { get; set; }
 
 
         public SubForum(string subForumTitle, Forum parentForun, ForumGeneratorContext db)

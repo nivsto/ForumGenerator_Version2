@@ -74,21 +74,21 @@ namespace ForumGenerator_Version2_Server.Sys
         // Input defs
         public const int INFINITE_LEN = 1048576;
 
-        public const int MIN_USER_NAME_LEN = 1;
+        public const int MIN_USER_NAME_LEN = 0;
         public const int MAX_USER_NAME_LEN = 20;
-        public const int MIN_PASSWORD_LEN = 1;
+        public const int MIN_PASSWORD_LEN = 0;
         public const int MAX_PASSWORD_LEN = 10;
-        public const int MIN_FORUM_NAME_LEN = 1;
+        public const int MIN_FORUM_NAME_LEN = 0;
         public const int MAX_FORUM_NAME_LEN = 30;
-        public const int MIN_SUBFORUM_TITLE_LEN = 1;
+        public const int MIN_SUBFORUM_TITLE_LEN = 0;
         public const int MAX_SUBFORUM_TITLE_LEN = 30;
-        public const int MIN_DISCUSSION_TITLE_LEN = 1;
+        public const int MIN_DISCUSSION_TITLE_LEN = 0;
         public const int MAX_DISCUSSION_TITLE_LEN = 80;
-        public const int MIN_DISCUSSION_CONTENT_LEN = 1;
+        public const int MIN_DISCUSSION_CONTENT_LEN = 0;
         public const int MAX_DISCUSSION_CONTENT_LEN = 80;
-        public const int MIN_COMMENT_CONTENT_LEN = 1;
+        public const int MIN_COMMENT_CONTENT_LEN = 0;
         public const int MAX_COMMENT_CONTENT_LEN = 80;
-        public const int MIN_MEMBER_SIGNATURE_LEN = 1;
+        public const int MIN_MEMBER_SIGNATURE_LEN = 0;
         public const int MAX_MEMBER_SIGNATURE_LEN = 40;
 
     }

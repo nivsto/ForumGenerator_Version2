@@ -8,7 +8,6 @@ using ForumGenerator_Version2_Server.ForumData;
 using System.Windows.Forms;
 using System.Drawing;
 using ConsoleApplication1.AccTests;
-using ForumGenerator_Client;
 using System.ComponentModel;
 using System.Data;
 

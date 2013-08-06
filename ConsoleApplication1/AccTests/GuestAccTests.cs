@@ -9,8 +9,8 @@ namespace ConsoleApplication1.AccTests
 {
     class GuestAccTests : AccTestsForumGenerator
     {
-        const string SU_NAME = "admin";//ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
-        const string SU_PSWD = "admin"; //ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
+        const string SU_NAME = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_USERNAME; // ForumGenerator.SU_NAME;
+        const string SU_PSWD = ForumGenerator_Version2_Server.Sys.ForumGeneratorDefs.SU_PSWD;
 
         public GuestAccTests(TestsLogger testsLogger, BridgeForumGenerator bridge)
         {

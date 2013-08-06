@@ -77,6 +77,8 @@ namespace ConsoleApplication1
             }
             testsLogger.closeFile();
         }
+
+       
     
     }
 

@@ -120,7 +120,9 @@
     <Compile Include="Users\SuperUser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClassDiagram_Server.cd" />
     <None Include="ForumGenerator_Version2_Server_TemporaryKey.pfx" />
     <None Include="packages.config" />
