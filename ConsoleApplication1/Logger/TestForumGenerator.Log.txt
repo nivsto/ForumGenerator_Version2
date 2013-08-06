@@ -6,4 +6,6 @@ Testing on Real mode
 *testing Admin functions*
 
 test method: testGetNumOfCommentsSubForum
--- FAILED --  failed test number 0
+test summary for testGetNumOfCommentsSubForum: 5 tests passed
+
+test method: testGetNumOfCommentsSingleUser

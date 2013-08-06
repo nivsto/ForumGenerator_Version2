@@ -48,15 +48,14 @@ namespace ForumGenerator_Version2_Server.Sys
             this.superUser = new SuperUser(superUserName, superUserPass);
             this.forums = new List<Forum>();
             this.logger = new Logger();
-            this.db.Database.ExecuteSqlCommand("DELETE FROM Words");
-            this.db.Database.ExecuteSqlCommand("DELETE FROM Fora");
             this.db.Database.ExecuteSqlCommand("DELETE FROM Comments");
-            this.db.Database.ExecuteSqlCommand("DELETE FROM Moderators");
             this.db.Database.ExecuteSqlCommand("DELETE FROM Discussions");
+            this.db.Database.ExecuteSqlCommand("DELETE FROM Moderators");
+            this.db.Database.ExecuteSqlCommand("DELETE FROM Words");
             this.db.Database.ExecuteSqlCommand("DELETE FROM SubForums");
-            this.db.Database.ExecuteSqlCommand("DELETE FROM UserFriends");
+            this.db.Database.ExecuteSqlCommand("DELETE FROM Fora");
             this.db.Database.ExecuteSqlCommand("DELETE FROM Users");
-            this.db.SaveChanges();
+            this.db.Database.ExecuteSqlCommand("DELETE FROM UserFriends");
             this.cp = new ContentPolicy();
             this.stopWords = TextClassifier.getStopWords("DefaultStopWords.txt");
         }
@@ -72,14 +71,14 @@ namespace ForumGenerator_Version2_Server.Sys
                 //this.logger.closeFile();
                // this.logger = new Logger();
                 this.cp.init();
-                this.db.Database.ExecuteSqlCommand("DELETE FROM Words");
-                this.db.Database.ExecuteSqlCommand("DELETE FROM Fora");
-                this.db.Database.ExecuteSqlCommand("DELETE FROM SubForums");
-                this.db.Database.ExecuteSqlCommand("DELETE FROM Discussions");
                 this.db.Database.ExecuteSqlCommand("DELETE FROM Comments");
+                this.db.Database.ExecuteSqlCommand("DELETE FROM Discussions");
                 this.db.Database.ExecuteSqlCommand("DELETE FROM Moderators");
-                this.db.Database.ExecuteSqlCommand("DELETE FROM UserFriends");
+                this.db.Database.ExecuteSqlCommand("DELETE FROM Words");
+                this.db.Database.ExecuteSqlCommand("DELETE FROM SubForums");
+                this.db.Database.ExecuteSqlCommand("DELETE FROM Fora");
                 this.db.Database.ExecuteSqlCommand("DELETE FROM Users");
+                this.db.Database.ExecuteSqlCommand("DELETE FROM UserFriends");
                 this.db.SaveChanges();
             }
         }
